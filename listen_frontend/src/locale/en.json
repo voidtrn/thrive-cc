@@ -1,0 +1,27 @@
+{
+    "translation":{
+        "textMenuOurLeaders":"Our Leaders",
+        "textMenuSeeSubmitQuestions":"See Submitted Questions",
+        "textMenuSubmitYourQuestion":"Submit Your Question",
+        "textOurLeaders":"Our Leaders",
+        "textSubmitYourQuestion":"Submit Your Question",
+        "textOurAskOurLeadershipTeamAnything!":"Ask Our Leadership Team Anything!",
+        "textOurAskOurLeadershipTeamAnything!2":"Ask Our Leadership Anything! Your question will be answered by <i>mystery leader</i> in Sampoerna Town Hall!",
+        "textTo":"To",
+        "textQuestion":"Question",
+        "textSubmit":"Submit",
+        "textSeeSubmittedQuestions":"See Submitted Questions",
+        "textClickLikeButtonifYouHaveSimilarQuestion":"Click Like Button if You Have Similar Question",
+        "chooseLeader":"Choose Leader",
+        "textSubmitSuccess":"Congratulations, your question has been submitted.",
+        "textSubmitSuccess2":" Stay tuned, your question will be answered by <i>mystery leader</i> in Sampoerna Town Hall!",
+        "textMorethan9":" have received 9 questions, please select another management team.",
+        "textSubOurLeaders":"Click The Photo to Submit Question.",
+        "textClickPhoto":"please choose the Leader by click on Photo.",        
+        "textPrev":"Prev",
+        "textNext":"Next",    
+        "textAskMeAnything":"Ask Me Anything!"  , 
+        "textCloseForm":"The submission period is over. Thank you."
+
+    }
+}

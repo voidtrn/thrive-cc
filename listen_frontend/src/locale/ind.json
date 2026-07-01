@@ -1,0 +1,27 @@
+{
+    "translation":{
+        "textMenuOurLeaders":"Tim Manajemen Kita",
+        "textMenuSeeSubmitQuestions":"Lihat Pertanyaan yang Diajukan",
+        "textMenuSubmitYourQuestion":"Ajukan Pertanyaan Anda",
+        "textOurLeaders":"Tim Manajemen Kita",
+        "textSubmitYourQuestion":"Ajukan Pertanyaan Anda",
+        "textOurAskOurLeadershipTeamAnything!":"Tanya Apapun ke Tim Manajemen Kita!",
+        "textOurAskOurLeadershipTeamAnything!2":"Tanyakan Apa Saja ke Leaders! Pertanyaan Anda akan dijawab oleh <i>mystery leader</i> di Sampoerna Town Hall!",
+        "textTo":"Kepada",
+        "textQuestion":"Pertanyaan",
+        "textSubmit":"Ajukan",
+        "textSeeSubmittedQuestions":"Lihat Pertanyaan yang Diajukan",
+        "textClickLikeButtonifYouHaveSimilarQuestion":"Klik Tombol Suka Jika Anda Memiliki Pertanyaan Serupa",        
+        "chooseLeader":"Silahkan Pilih Leader",
+        "textSubmitSuccess":"Selamat, pertanyaan Anda telah terkirim.",
+        "textSubmitSuccess2":" Nantikan, pertanyaan Anda akan dijawab oleh <i>mystery leader</i> di Sampoerna Town Hall!",
+        "textMorethan9":" telah menerima 9 pertanyaan, silahkan memilih tim manajemen lainnya.",
+        "textSubOurLeaders":"Klik Foto Untuk Mengajukan Pertanyaan.",
+        "textClickPhoto":"Silahkan pilih Leader dahulu dengan klik Foto Leader.",        
+        "textPrev":"Sebelumnya",
+        "textNext":"Selanjutnya",    
+        "textAskMeAnything":"Ajukan Pertanyaan" , 
+        "textCloseForm":"Periode pengajuan pertanyaan telah berakhir. Terima kasih."
+
+    }
+}

@@ -1,0 +1,77 @@
+import React, { 
+  Suspense, useState
+} from 'react';
+import { Switch, Route } from 'react-router-dom';
+import routeAll from './helpers/route';
+import Layout from './views/user/shared/master';
+import LayoutAdmin from './views/admin/shared/adminMaster';
+import { LoadingPage } from './components/Loading';
+// import { isMobile, isDesktop } from 'react-device-detect';
+
+
+function App(props) {
+  // const [mobile, setMobile] =  useState(isMobile)
+  const adminLevelDatabase = props.adminLevel;
+  const [loading, setLoading] = useState(true)
+
+  const showLoading = (val)=>{
+    if(val===false){
+      setLoading(val)
+    }
+
+  }
+
+  const renderRoute = (value, idx)=>{
+      return(
+        <Route 
+          key={idx} 
+          name={value.name} 
+          path={value.path} 
+          exact={value.exact}
+          
+          render={(props) => (
+              <value.component {...props} pageName={value.pageName} adminLevel={adminLevelDatabase} name={value.name} loading={showLoading}/>
+        )} />
+      ) 
+  }
+
+  return (
+    <Switch>
+      <LoadingPage loading={loading}>
+      {Object.values(routeAll).map((value,idxParentRoute,array)=>
+        <Route path={idxParentRoute===0?'/:path?' : idxParentRoute===1 ? '/admin/:path?' : idxParentRoute===2 ?'/error/:path?' : idxParentRoute===3 ?'/report/:path?' : null} key={idxParentRoute} exact>
+          <Suspense fallback={
+              <div>Please wait...</div>
+          }>
+            {
+              idxParentRoute===0?
+                <Layout adminLevel={adminLevelDatabase} homePath={value.home.path} loading={showLoading}>
+                  {Object.values(array[idxParentRoute]).filter(list=>list.adminLevel <= adminLevelDatabase).map((value,idxChildren)=>
+                    renderRoute(value,idxChildren)
+                  )}
+                </Layout>
+              :
+              idxParentRoute===1 || idxParentRoute === 3?
+                <LayoutAdmin adminLevel={adminLevelDatabase} loading={showLoading}>
+                  {Object.values(array[idxParentRoute]).map((value,idxChildren)=>
+                    renderRoute(value,idxChildren)
+                  )}
+                </LayoutAdmin>
+              :
+              idxParentRoute===2?
+                Object.values(array[idxParentRoute]).map((value,idxChildren)=>
+                  renderRoute(value,idxChildren)
+                )
+              :
+              null
+            }
+          </Suspense>
+
+        </Route>
+      )}
+      </LoadingPage>
+    </Switch>
+  );
+}
+
+export default App;
