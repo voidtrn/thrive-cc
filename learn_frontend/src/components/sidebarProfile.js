@@ -19,13 +19,9 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { XAxis, YAxis, Tooltip, AreaChart, Area, } from 'recharts';
 
-var moment = require('moment');
-
-if(securityData.Security_lang()==="IND"){
-    require('moment/locale/id');
-}
-
-var _ = require('lodash');
+import moment from 'moment';
+import 'moment/locale/id';
+import _ from 'lodash';
 
 export function SidebarProfile(props){
     const lang = securityData.Security_lang()

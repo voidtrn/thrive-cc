@@ -16,11 +16,8 @@ import Slider from 'react-slick';
 import { useRef } from 'react';
 // import ShowMoreText from "react-show-more-text";
 
-var moment = require('moment');
-
-if(securityData.Security_lang()==="IND"){
-    require('moment/locale/id');
-}
+import moment from 'moment';
+import 'moment/locale/id';
 
 const settings = {
     slidesToShow: 1,

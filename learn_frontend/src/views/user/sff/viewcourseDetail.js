@@ -8,7 +8,7 @@ import GlobalState from '../../../helpers/globalState';
 import defaultLang from '../../../helpers/lang';
 import routeAll from '../../../helpers/route';
 
-var _ = require('lodash');
+import _ from 'lodash';
 
 function ViewCourseDetail(props){
     const history = useHistory()
