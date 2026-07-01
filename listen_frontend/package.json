@@ -32,6 +32,9 @@
     "slick-carousel": "^1.8.1",
     "use-bootstrap-select": "^2.2.0"
   },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "vite",
     "build": "vite build",
