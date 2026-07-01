@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Card, Image, Offcanvas, CloseButton, ProgressBar  } from 'react-bootstrap-v-5';
+import { Card, Image, Offcanvas, CloseButton, ProgressBar } from 'react-bootstrap';
 import defaultLang from '../helpers/lang';
 import axiosLibrary from '../helpers/axiosLibrary';
 import { isMobile } from 'react-device-detect';
