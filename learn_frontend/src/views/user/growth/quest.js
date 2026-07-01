@@ -6,7 +6,7 @@ import axiosLibrary from '../../../helpers/axiosLibrary';
 import defaultLang from '../../../helpers/lang';
 // import { isMobile, isDesktop } from 'react-device-detect';
 import NavMenu from '../../../views/user/shared/navMenu';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../../helpers/useHistory';
 import { cssTarget, LoadingDataButton, LoadingData } from '../../../components/Loading';
 
 import { Answer, NotAnswer, QuestNotOpen } from '../../../components/QuestBoxList';

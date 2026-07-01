@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../../helpers/useHistory';
 import routeAll from '../../../helpers/route.js';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';

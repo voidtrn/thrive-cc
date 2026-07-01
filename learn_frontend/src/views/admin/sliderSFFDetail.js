@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import { env, securityData } from '../../helpers/globalHelper';
 import routeAll from '../../helpers/route';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 import { cssTarget, LoadingAdmin } from '../../components/Loading';
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 

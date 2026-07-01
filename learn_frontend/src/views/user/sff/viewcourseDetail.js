@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from '../../../helpers/useHistory';
 import { cssTarget, LoadingData } from '../../../components/Loading';
 import axiosLibrary from '../../../helpers/axiosLibrary';
 import { env, securityData } from '../../../helpers/globalHelper';

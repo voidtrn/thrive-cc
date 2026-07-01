@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import { env, securityData } from '../helpers/globalHelper';
 import axiosLibrary from '../helpers/axiosLibrary';
 import routeAll from '../helpers/route';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from '../helpers/useHistory';
 import GlobalState from '../helpers/globalState';
 import { cssTarget, LoadingAdmin } from './Loading';
 

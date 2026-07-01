@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from '../../../components/head';
 import Footer from './footer';
-import { Redirect, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import routeAll from '../../../helpers/route';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

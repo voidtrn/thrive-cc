@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useHistory } from 'react-router';
+import { useHistory } from './useHistory';
 import routeAll from './route';
 import {authContext} from './adalConfig';
 import {securityData, env} from './globalHelper';

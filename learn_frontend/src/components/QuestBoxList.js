@@ -4,7 +4,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { env, securityData } from '../helpers/globalHelper';
 import axiosLibrary from '../helpers/axiosLibrary';
 import { isMobile } from 'react-device-detect';
-import { useHistory } from 'react-router';
+import { useHistory } from '../helpers/useHistory';
 
 import routeAll from '../helpers/route';
 

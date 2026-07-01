@@ -23,7 +23,7 @@ import SemiCircleProgressBar from "react-progressbar-semicircle";
 import '../../../i18n.js'
 
 import { useTranslation } from "react-i18next";
-import { useHistory } from 'react-router';
+import { useHistory } from '../../../helpers/useHistory';
 
 
 function Growth(props) {
