@@ -11,11 +11,8 @@ import GlobalState from '../helpers/globalState';
 import { cssTarget, LoadingData } from './Loading';
 import CardDataModule from './cardDataModule';
 
-var moment = require('moment');
-
-if(securityData.Security_lang()==="IND"){
-    require('moment/locale/id');
-}
+import moment from 'moment';
+import 'moment/locale/id';
 
 export function SidebarLearningDetail(props){
     const lang = securityData.Security_lang()

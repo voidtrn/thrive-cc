@@ -377,15 +377,15 @@ class securityData{
 }
 
 const env = {
-    apiBaseUri : process.env.REACT_APP_API_BASE_URL,
-    assets : process.env.REACT_APP_ASSETS,
-    userDocument : process.env.REACT_APP_USER_DOCUMENT,
-    expSession : process.env.REACT_APP_EXP_SESSION,
-    rootPath : process.env.REACT_APP_ROOT_LEARN,
-    graphRoute : process.env.REACT_APP_GRAPH_ROUTE,
-    azureWindowLog : process.env.REACT_APP_AZURE_WINDOW_LOG,
-    publicUrl : process.env.PUBLIC_URL,
-    nodeEnv : process.env.NODE_ENV,
+    apiBaseUri : import.meta.env.VITE_API_BASE_URL,
+    assets : import.meta.env.VITE_ASSETS,
+    userDocument : import.meta.env.VITE_USER_DOCUMENT,
+    expSession : import.meta.env.VITE_EXP_SESSION,
+    rootPath : import.meta.env.VITE_ROOT_LEARN,
+    graphRoute : import.meta.env.VITE_GRAPH_ROUTE,
+    azureWindowLog : import.meta.env.VITE_AZURE_WINDOW_LOG,
+    publicUrl : import.meta.env.BASE_URL,
+    nodeEnv : import.meta.env.MODE,
     oldUserDocument: "https://thrive.pmiapps.biz/thrive/awb/_user_document/",
     adminDashboardUrl: window.location.protocol +'//dashboard.'+ window.location.hostname.replace('learn.','') + (window.location.port == 80?'':':'+window.location.port), //"https://dashboard.dev-culture.pmicloud.biz/"
 }

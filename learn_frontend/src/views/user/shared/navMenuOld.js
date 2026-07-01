@@ -78,7 +78,7 @@ function NavMenu(props) {
 
     const getGamificationLink = async () => {
         let urlGamification = "";
-        switch (process.env.REACT_APP_HOME_URL) {
+        switch (import.meta.env.VITE_HOME_URL) {
             case 'https://learn.prd-culture.pmicloud.biz/':
                 urlGamification = "https://learn-gamification.prd-culture.pmicloud.biz?account="+securityData.Security_UserAccount()
                 break;

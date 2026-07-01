@@ -39,7 +39,7 @@ import Slider from "react-slick";
 import { RenderCourseList } from './sff/viewcourseDetail';
 import { ConsoleView, isMobile } from 'react-device-detect';
 
-var _ = require('lodash');
+import _ from 'lodash';
 
 //must remark because link not valid anymore
 // const srcError = 'https://thrive.pmiapps.biz/thrive/awb/_user_document/'

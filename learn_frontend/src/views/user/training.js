@@ -12,7 +12,7 @@ import routeAll from '../../helpers/route';
 
 const year = (new Date()).getFullYear();
 
-var _ = require('lodash');
+import _ from 'lodash';
 
 function training(props){
     const history = useHistory()
