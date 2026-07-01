@@ -185,7 +185,7 @@ function LearningKeyBehaviorDetail(props){
             switch (v.inputType.toLowerCase()) {
                 case 'textarea':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <textarea id={v.inputName} style={{width:v.inputWidth,height:"200px"}} className="form-control" name={v.inputName} onChange={handleInputChange.bind(this)} aria-required="true" aria-invalid="false" defaultValue={v.inputValue} required={v.inputRequired} readOnly={v.inputReadOnly}></textarea>
                             <div className="help-block"></div>
@@ -193,7 +193,7 @@ function LearningKeyBehaviorDetail(props){
                     )
                 case 'select':
                     return(
-                        <div className="form-group field-profile-country" key={idx}>
+                        <div className="mb-3 field-profile-country" key={idx}>
                             <label className="control-label" htmlFor="profile-country">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <select id={v.inputName} style={{width:v.inputWidth}} className="form-control" 
                                 value={v.inputValue} onChange={(e)=>handleInputChange(e)} name={v.inputName} aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly}>
@@ -206,7 +206,7 @@ function LearningKeyBehaviorDetail(props){
                     )
                 case 'select_search':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <Select
                                 className="basic-single"
@@ -223,7 +223,7 @@ function LearningKeyBehaviorDetail(props){
                     )
                 default:
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <input type={v.inputType.toLowerCase()} id="usereditform-email" style={{width:v.inputWidth}} className="form-control"
                                 name={v.inputName} defaultValue={v.inputValue} onChange={(e)=>handleInputChange(e)} aria-required="true" aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly} />

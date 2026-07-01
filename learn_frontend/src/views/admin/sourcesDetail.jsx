@@ -240,7 +240,7 @@ function SourcesDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"250px"}} className="form-control" required
                                                 name="title" aria-required="true" maxLength="30" aria-invalid="false" value={items.title} onChange={handleInputChange} />
@@ -252,7 +252,7 @@ function SourcesDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"250px"}} className="form-control" required
                                                 name="title_ind" aria-required="true" maxLength="30" aria-invalid="false" value={items.title_ind} onChange={handleInputChange} />
@@ -264,7 +264,7 @@ function SourcesDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Description Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <textarea style={{width:"100%",height:"100px"}} className="form-control" required maxLength="500"
                                                 name="description" aria-required="true" aria-invalid="false" value={items.description} onChange={handleInputChange} />
@@ -276,7 +276,7 @@ function SourcesDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Description Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <textarea style={{width:"100%",height:"100px"}} className="form-control" required maxLength="500"
                                                 name="description_ind" aria-required="true" aria-invalid="false" value={items.description_ind} onChange={handleInputChange} />
@@ -288,14 +288,14 @@ function SourcesDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;URL </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" placeholder="http://www.google.co.id"
                                                 name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) <span style={{color:"#ff0404"}}>(*) </span>
                                                 <br/> 
                                                 <ul className="file-upload-requirement">
@@ -325,7 +325,7 @@ function SourcesDetail(props){
                                             <div className="help-block"></div>
                                         </div>
                                         
-                                        <div className="form-group field-profile-country">
+                                        <div className="mb-3 field-profile-country">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">

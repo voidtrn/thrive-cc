@@ -127,7 +127,7 @@ function ImportClaimSFF(props){
                             <div className="tab-content">
                                 <div className="tab-pane active" data-tab-index="0" id="tab-0">
 
-                                    <div className="form-group field-usereditform-email required">
+                                    <div className="mb-3 field-usereditform-email required">
                                         <label className="control-label" for="usereditform-email">&nbsp;Template <span style={{color:"#ff0404"}}>(*) </span>
                                             <br/>  
                                             <ul className="file-upload-requirement">
@@ -139,7 +139,7 @@ function ImportClaimSFF(props){
                                     </div>
 
 
-                                    <div className="form-group field-usereditform-email required">
+                                    <div className="mb-3 field-usereditform-email required">
                                         <label className="control-label" for="usereditform-email">&nbsp;Import file   <span style={{color:"#ff0404"}}>(*) </span>
                                             <br/> 
                                             <ul className="file-upload-requirement">

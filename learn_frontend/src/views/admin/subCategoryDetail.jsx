@@ -196,7 +196,7 @@ function SubCategoryDetail(props){
                             <Col sm={12}>
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Section - Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             {/* <input disabled name="hdnkey" value={items.section_id}/>    */}
                                             {
@@ -224,7 +224,7 @@ function SubCategoryDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
@@ -235,7 +235,7 @@ function SubCategoryDetail(props){
                                             {/* reserve for later */}
                                         </div>
 
-                                        <div className="form-group field-profile-country">
+                                        <div className="mb-3 field-profile-country">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">

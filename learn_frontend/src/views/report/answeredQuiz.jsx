@@ -200,7 +200,7 @@ function answeredQuiz(props){
     <>
         <style>
         {`
-        .search-form .form-group {
+        .search-form .mb-3 {
             display: inline-table;
                 width: 200px;
                 height: 35px;
@@ -212,7 +212,7 @@ function answeredQuiz(props){
                 border: 1px solid #ccc;
                 padding: 0 5px;
             }
-        .search-form .form-group input.form-control {
+        .search-form .mb-3 input.form-control {
         padding-right: 20px;
         border: 0 none;
         background: transparent;
@@ -221,7 +221,7 @@ function answeredQuiz(props){
         }
 
 
-        .search-form .form-group span.form-control-feedback {
+        .search-form .mb-3 span.form-control-feedback {
         position: absolute;
         top: -1px;
         right: -2px;
@@ -267,19 +267,19 @@ function answeredQuiz(props){
                         <div className="col-sm-9">
                             <div className="filter">
                                 <div className="search-form">
-                                    <div className="form-group has-feedback" style={{width:"auto"}}>
-                                        <label htmlFor="search" className="sr-only">Date</label>
+                                    <div className="mb-3 has-feedback" style={{width:"auto"}}>
+                                        <label htmlFor="search" className="visually-hidden">Date</label>
                                         <input autoComplete="off" type="date" id="access_date_to" className="form-control datepicker access_date_to" placeholder="access end date"  
                                                     name="access_date_to" value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
                                     </div>
 
-                                    <div className="form-group has-feedback" style={{width:"auto"}}>
-                                        <label htmlFor="search" className="sr-only">Date</label>
+                                    <div className="mb-3 has-feedback" style={{width:"auto"}}>
+                                        <label htmlFor="search" className="visually-hidden">Date</label>
                                         <input autoComplete="off" type="date" id="access_date_from" className="form-control datepicker access_date_from" placeholder="access start date"  
                                                     name="access_date_from" value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
                                     </div>
                                     
-                                    <div className="form-group has-feedback" style={{width:"auto"}}>
+                                    <div className="mb-3 has-feedback" style={{width:"auto"}}>
                                         <select onChange={(e)=>setCategory(e.target.value)}  style={{width:"150px", border: 'none'}} className="form-control filter-data" id="filterCategory" name="filterCategory">
                                             <option value="all"  {...category != "iqos" ? "selected" : ""} >all category</option>
                                             <option value="iqos" {...category == "iqos" ? "selected" : ""} >IQOS Beliver</option>

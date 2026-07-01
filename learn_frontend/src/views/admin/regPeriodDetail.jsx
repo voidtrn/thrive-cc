@@ -152,28 +152,28 @@ function RegPeriodDetail(props){
                             <Col sm={12}>
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Start Date </label>
                                             <input type="date" id="reg_from" style={{width:"25%"}} className="form-control"
                                                 name="reg_from" value={items.reg_from} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;End Date </label>
                                             <input type="date" id="reg_to" style={{width:"25%"}} className="form-control"
                                                 name="reg_to" value={items.reg_to} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Allow Course </label>
                                             <input type="number" id="allow_course" style={{width:"25%"}} className="form-control" 
                                                 name="allow_course" value={items.allow_course} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Maximum Claim Date </label>
                                             <input type="text" id="claim_period" style={{width:"25%"}} className="form-control" 
                                                 name="claim_period" value={items.claim_period} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />

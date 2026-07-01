@@ -168,13 +168,13 @@ function LearningPlanReport(props){
                         <div className="col-sm-8">
                             <div className="filter">
                                 <div className="search-form">
-                                    <div className="form-group has-feedback">
-                                        <label htmlFor="search" className="sr-only">Date</label>
+                                    <div className="mb-3 has-feedback">
+                                        <label htmlFor="search" className="visually-hidden">Date</label>
                                         <input autoComplete="off" type="date" id="access_date_to" className="form-control datepicker access_date_to" placeholder="access end date"  
                                                     name="access_date_to" value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
                                     </div>
-                                    <div className="form-group has-feedback">
-                                        <label htmlFor="search" className="sr-only">Date</label>
+                                    <div className="mb-3 has-feedback">
+                                        <label htmlFor="search" className="visually-hidden">Date</label>
                                         <input autoComplete="off" type="date" id="access_date_from" className="form-control datepicker access_date_from" placeholder="access start date"  
                                                     name="access_date_from" value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
                                     </div>

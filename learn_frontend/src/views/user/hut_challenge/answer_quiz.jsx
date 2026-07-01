@@ -718,7 +718,7 @@ function AnswerQuiz(props) {
                                             <div className="form-check">
                                               <input
                                                 type="radio"
-                                                className="custom-control-input vertical-align-text-top"
+                                                className="form-check-input vertical-align-text-top"
                                                 id={"answer_" + answerList.id}
                                                 name={"question_" + answerList.question_id}
                                                 value={answerList.id}

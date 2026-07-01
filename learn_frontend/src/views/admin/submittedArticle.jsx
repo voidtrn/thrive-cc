@@ -192,7 +192,7 @@ function SubmittedArticle(props){
                         <div className="row">
                             
                             <div className="col-md-3">
-                                <div className="form-group">
+                                <div className="mb-3">
                                         <label className="control-label">&nbsp;Sort By </label>
                                             <select value={sortByFilter} style={{width:"100%"}} 
                                                 onChange={handleSearchInputChange} onKeyPress={handleKeypress}
@@ -205,7 +205,7 @@ function SubmittedArticle(props){
                             </div>
 
                             <div className="col-md-3">
-                                <div className="form-group">
+                                <div className="mb-3">
                                     <label className="control-label">&nbsp;Search by keyword </label>
                                     <input type="text" style={{width:"100%"}} className="form-control filter-data" placeholder="search article"
                                         name="keyword" value={keywordFilter} onKeyPress={handleKeypress} onChange={handleSearchInputChange} />
@@ -214,7 +214,7 @@ function SubmittedArticle(props){
                             </div>
 
                             <div className="col-md-1">
-                                <div className="form-group">
+                                <div className="mb-3">
                                     <label className="control-label">&nbsp;</label>
                                     <div  style={{display:"inline-flex",position:"relative",top:"5px",right:"15px"}}>
                                         <button type="submit" id="btnReset" className="btn btn-outline btn-sm btn-danger" onClick={resetButton}><i className="fa fa-refresh"></i>&nbsp;reset</button>&nbsp;

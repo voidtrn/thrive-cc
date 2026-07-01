@@ -236,7 +236,7 @@ function ArticlePinned(props){
 
             <div className="row">
                 <div className="col-md-4">
-                    <div className="form-group">
+                    <div className="mb-3">
                         <label className="control-label">&nbsp;Section </label>
                         <select value={sectionIdFilter} style={{width:"100%"}} className="form-control filter-data" 
                             id="section_id" name="section_id" onChange={handleSearchInputChange}>

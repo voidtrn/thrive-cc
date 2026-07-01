@@ -256,7 +256,7 @@ function ArticleSubCategory(props){
         <div className="panel-body">
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
+                    <div className="mb-3">
                         <label className="control-label">&nbsp;Section - Menu - Category </label>
                         <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={handleSectionMenuChange.bind(this)}>
                         <option value="null">-select one-</option>
@@ -277,7 +277,7 @@ function ArticleSubCategory(props){
             <div id='display-search' style={{display:displaySearch}}>
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="form-group field-usereditform-email required">
+                        <div className="mb-3 field-usereditform-email required">
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category (Lvl 4) </label>
                             <select value={subCategoryId} style={{width:"100%"}} className="form-control filter-data" id="id_sub_cat" name="id_sub_cat" onChange={handleSearchInputChange.bind(this)}>
                                 <option value="">All</option>
@@ -294,7 +294,7 @@ function ArticleSubCategory(props){
                     </div>
 
                     <div className="col-md-3">
-                        <div className="form-group field-usereditform-email required">
+                        <div className="mb-3 field-usereditform-email required">
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Title of Article </label>
                             <input type="text" id="usereditform-email" style={{width:"100%"}} className="form-control"
                                 name="title" value={categoryTitle} onChange={handleSearchInputChange.bind(this)} aria-required="true" aria-invalid="false" />
@@ -303,7 +303,7 @@ function ArticleSubCategory(props){
                     </div>
 
                     <div className="col-md-1">
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label className="control-label">&nbsp;</label>
                             <div  style={{display:"inline-flex",position:"relative",top:"5px",right:"15px"}}>
                                 <button type="button" id="btnFilter" className="btn btn-outline btn-sm btn-danger" onClick={resetButton}><i className="fa fa-refresh"></i>&nbsp;reset</button>&nbsp;
@@ -347,20 +347,20 @@ function ArticleSubCategory(props){
                 </Modal.Header>
 
                 <Modal.Body style={{padding:" 40px 50px"}}>
-                    <div className="form-group">
+                    <div className="mb-3">
 						<div className="row">
 							<div className="col-md-12">
-								<div className="form-group">
+								<div className="mb-3">
 										Title Article : <br />
 										<b><span id="title_article" >{titleArticleEdit}</span></b>	
 								</div>
 							</div>
 						</div>
 					</div>
-                    <div className="form-group">
+                    <div className="mb-3">
 						<div className="row">
 							<div className="col-md-12">
-								<div className="form-group">
+								<div className="mb-3">
 									<label className="control-label">&nbsp;Sub Category (Lvl 4) </label>
 									<select value={subCategoryIdEdit} style={{width:"100%"}} className="form-control filter-data" id="sub_category_id" name="sub_category_id" onChange={handleSearchInputChange.bind(this)}>
                                         <option value="">-select one-</option>

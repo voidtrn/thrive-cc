@@ -186,12 +186,12 @@ function TrainingReportScheduleDetail(props){
             <LoadingAdmin loading={loading}/> 
             <div className="panel-body" style={cssTarget(loading)}>
                 {/* <form id="search-form" onSubmit={exportToExcel} method="post" style={{display: "block"}} encType='multipart/form-data' > */}
-                    <div className="form-group field-usereditform-email required">
+                    <div className="mb-3 field-usereditform-email required">
                         <label className="control-label" style={{textDecoration:"underline"}} forHtml="usereditform-email">
                             {trainingData.name}
                         </label>
                     </div>
-                    <div className="form-group field-usereditform-email required">
+                    <div className="mb-3 field-usereditform-email required">
                         <span className="btn btn-success"  title="Total Employee">
                             <i className="fa fa-users" ></i> 
                             &nbsp;{totalUser}

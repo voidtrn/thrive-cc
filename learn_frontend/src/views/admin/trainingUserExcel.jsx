@@ -161,7 +161,7 @@ function TrainingUserExcel(props){
                             <Col sm={12}>
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
-                                    <div className="form-group field-profile-country">
+                                    <div className="mb-3 field-profile-country">
                                         <label className="control-label" forHtml="profile-country">&nbsp;Schedule Date : </label>
                                     
                                         <label className="control-label" forHtml="profile-country">{scheduleData.schedule_date +' '+scheduleData.schedule_start_time+ ' - '+scheduleData.schedule_end_time}</label>
@@ -169,7 +169,7 @@ function TrainingUserExcel(props){
                                         <div className="help-block"></div>
                                     </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;File Excel </label>
                                             <br/>
                                             <input type="file"  

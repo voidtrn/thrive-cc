@@ -166,7 +166,7 @@ function NavMenu(props){
 
           
             <button type="button" className="navbar-toggler collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span className="sr-only">Toggle navigation</span>
+              <span className="visually-hidden">Toggle navigation</span>
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
@@ -205,7 +205,7 @@ function NavMenu(props){
 
             {showFilter ?
                 <form className="navbar-form navbar-right hidden-sm"  action="<?php echo site_url($filter_controller)?>" method="post">
-                    <div className="form-group">
+                    <div className="mb-3">
                         <i className="icon ion-android-search"></i>
                         <input type="text" className="form-control" id="txtFilter" name="txtFilter" placeholder="search user account"/>
                     </div>

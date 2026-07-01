@@ -193,7 +193,7 @@ function WorkshopSharingWorkshop(props){
             <div className="panel-body" style={cssTarget(loading)}>
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group">
+                        <div className="mb-3">
                             <label className="control-label">&nbsp;Menu - Category </label>
                                 <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="id_cat" name="id_cat" onChange={handleCatMenuChange.bind(this)}>
                                 <option value="null">-select one-</option>

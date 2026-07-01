@@ -251,42 +251,42 @@ function BadgeDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <form id="czfrom" onSubmit={validateImage} method="post" style={{display: "block"}} encType='multipart/form-data'>
-                                            <div className="form-group field-usereditform-email required">
+                                            <div className="mb-3 field-usereditform-email required">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Category </label>
                                                 <input type="text" disabled id="usereditform-email" style={{width:"30%"}} className="form-control"
                                                     name="category" value={items.category} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-usereditform-email required">
+                                            <div className="mb-3 field-usereditform-email required">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Badge Name Eng<span style={{color:"#ff0404"}}>(*)</span> </label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                     name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-usereditform-email required">
+                                            <div className="mb-3 field-usereditform-email required">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Badge Name Ind<span style={{color:"#ff0404"}}>(*)</span> </label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                     name="title_ind" value={items.title_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-usereditform-email required">
+                                            <div className="mb-3 field-usereditform-email required">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Eng<span style={{color:"#ff0404"}}>(*)</span> </label>
                                                 <textarea type="text" id="usereditform-email" style={{width:"75%",height:"100px"}} className="form-control" maxLength="500"
                                                     name="short_descr" value={items.short_descr} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-usereditform-email required">
+                                            <div className="mb-3 field-usereditform-email required">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Ind<span style={{color:"#ff0404"}}>(*)</span> </label>
                                                 <textarea type="text" id="usereditform-email" style={{width:"75%",height:"100px"}} className="form-control" maxLength="500"
                                                     name="short_descr_ind" value={items.short_descr_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-usereditform-email required">
+                                            <div className="mb-3 field-usereditform-email required">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;File Image <span style={{color:"#ff0404"}}>(*) </span>
                                                     <br/> 
                                                     <ul className="file-upload-requirement">
@@ -313,7 +313,7 @@ function BadgeDetail(props){
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-profile-country">
+                                            <div className="mb-3 field-profile-country">
                                                 <label className="control-label" htmlFor="profile-country">&nbsp;Flag Publish</label>
                                                 <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                     value={items.flag_publish} onChange={handleInputChange.bind(this)} required name="flag_publish" aria-invalid="false">
@@ -325,7 +325,7 @@ function BadgeDetail(props){
                                                 <div className="help-block"></div>
                                             </div>
 
-                                            <div className="form-group field-profile-country">
+                                            <div className="mb-3 field-profile-country">
                                                 <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                                 <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                     value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">

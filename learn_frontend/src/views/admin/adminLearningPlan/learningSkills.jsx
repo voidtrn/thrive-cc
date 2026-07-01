@@ -241,7 +241,7 @@ function LearningSkills(props){
                         </div>
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
+                                <div className="mb-3">
                                     <label className="control-label">&nbsp;Main Focus</label>
                                     <select defaultValue={idMainFocus} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={(e)=>resetData(e)}>
                                     <option value="">-select one-</option>
@@ -254,7 +254,7 @@ function LearningSkills(props){
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                <div className="form-group">
+                                <div className="mb-3">
                                     <label className="control-label">&nbsp;Key Behavior</label>
                                     <select defaultValue={idKeyBehavior} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={(e)=>{setIdKeyBehavior(e.target.value);setActivePage(1)}} disabled={loadKeyBehavior}>
                                     <option value="">-select one-</option>

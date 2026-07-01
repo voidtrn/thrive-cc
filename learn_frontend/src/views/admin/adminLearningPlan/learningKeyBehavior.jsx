@@ -206,7 +206,7 @@ function LearningKeyBehavior(props){
                         </div>
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
+                                <div className="mb-3">
                                     <label className="control-label">&nbsp;Main Focus</label>
                                     <select defaultValue={idMainFocus} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={(e)=>{setIdMainFocus(e.target.value);setActivePage(1)}}>
                                     <option value="">-select one-</option>
