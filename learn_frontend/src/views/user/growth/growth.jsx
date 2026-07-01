@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef, createRef, Component } from 'react';
 import { useLocation } from 'react-router-dom';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../shared/navMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
 import moment from 'moment';
-import { cssTarget, LoadingData2 } from '../../../components/Loading.js';
+import { cssTarget, LoadingData2 } from '../../../components/Loading.jsx';
 import Slider from "react-slick";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Col from 'react-bootstrap/Col';
@@ -16,7 +16,7 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 
 
-import { YesterdayNotAnswer, TodayNotAnswer, TodayAnswer, AnsweredToday, Tomorrow } from '../../../components/DateChallenge.js';
+import { YesterdayNotAnswer, TodayNotAnswer, TodayAnswer, AnsweredToday, Tomorrow } from '../../../components/DateChallenge.jsx';
 
 import SemiCircleProgressBar from "react-progressbar-semicircle";
 

@@ -4,8 +4,8 @@ import routeAll from '../../../helpers/route';
 import { useHistory } from '../../../helpers/useHistory';
 import { env, securityData } from '../../../helpers/globalHelper';
 import { cssTarget, LoadingAdmin } from '../../../components/Loading';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 

@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from '../../../helpers/useHistory';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 import Pagination from 'react-js-pagination';
 
 
@@ -29,8 +29,8 @@ function AdminDateChallenge(props) {
   const platform_id = securityData.Security_getPlatformId()
   const file_path = env.userDocument;
 
-  const pageRangeDisplayed = 10000
-  const limit = 10000
+  const pageRangeDisplayed = 50
+  const limit = 50
 
   const getTotalPage = useCallback(async () => {
     const credentials = {
@@ -40,7 +40,7 @@ function AdminDateChallenge(props) {
       platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbGrowthQuarter/ListData', credentials);
+    let isi = await axiosLibrary.postData('awbHutDateChallenge/ListData', credentials);
     setTotalData(isi.data.data)
     setLoading(false)
   }, [offset])
@@ -54,7 +54,7 @@ function AdminDateChallenge(props) {
       platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbGrowthQuarter/ListData', credentials);
+    let isi = await axiosLibrary.postData('awbHutDateChallenge/ListData', credentials);
     setItems(isi.data.data)
     getTotalPage()
   }, [offset, getTotalPage])
@@ -64,8 +64,8 @@ function AdminDateChallenge(props) {
     let responseJson = await axiosLibrary.postData('GetMd5', { id: idParam });
     const ID = responseJson.data.data;
     history.push({
-        pathname: routeAdmin.AdminGrowthQuarterDetail.path,
-        search: "?" + new URLSearchParams({data: ID}).toString()// your data array of objects
+        pathname: routeAdmin.AdminQuestionChallengeDetail.path,
+        search: "?" + new URLSearchParams({dateId: ID}).toString()// your data array of objects
     })
   }
 
@@ -73,7 +73,7 @@ function AdminDateChallenge(props) {
     const param = {
       id: id
     }
-    let responseJson = await axiosLibrary.postData('awbGrowthQuarter/DeleteData', param);
+    let responseJson = await axiosLibrary.postData('awbHutDateChallenge/DeleteData', param);
     if (responseJson.status === 200) {
       alert('Data has been deleted')
       getData()
@@ -103,19 +103,16 @@ function AdminDateChallenge(props) {
         <thead>
           <tr>
             <th>
-              Name
+              Date
             </th>
             <th>
-              Order Number
+              Challenge Type
             </th>
             <th>
-              Start Date
+              Title
             </th>
             <th>
-              End Date
-            </th>
-            <th>
-              Status Active
+              Count of Question
             </th>
             <th>
             </th>
@@ -126,21 +123,20 @@ function AdminDateChallenge(props) {
           {items.map(
             (item) =>
               <tr key={item.id}>
+                <td >{item.date}</td>
                 <td >
-                    {item.name}<br/>
+                  <span style={ item.challenge_type === 0 ? {} : item.challenge_type === 1 ? { color:"#0d6efd" } : {  color:"orange" } }>
+                    {item.challenge_type === 0 ? 'Daily Challenge' : item.challenge_type === 1 ? 'Additional Challenge' :'Weekly Challenge'}
+                  </span>
+
                 </td>
-                <td >{item.order_number}</td>
-                <td >{item.start_date}</td>
-                <td >{item.end_date}</td>
-                <td>
-                  <span style={ item.status_active ? {} :{  color:"#ff0707" } }>{item.status_active === 1 ? 'Active': 'Inactive'}</span>{item.default_flag===1 ? <div>( Default )</div> :null}
-                </td>
+                <td >{item.title_challenge}</td>
+                <td >{item.question_count}</td>
                 <td align="right">
                   <a className="btn btn-warning btn-sm tt text-end" onClick={props.edit.bind(this, item.id)} >
-                    <i className="fa fa-edit"></i>&nbsp; Edit 
+                    <i className="fa fa-eye"></i>&nbsp; Detail Question 
                   </a>
                 </td>
-                       
               </tr>
           )}
         </tbody>
@@ -179,20 +175,20 @@ function AdminDateChallenge(props) {
                 <div className="card-header ">
                   <div className="row d-flex ">
                     <span className="text-blue">
-                      Stage - Admin
+                      Question Challenge  - Admin
                     </span>
                   </div>
                 </div>
                 <div className="card-body ">
+
+                  
                   <div className="table-responsive">
-                    <div className="pull-right">
-                    <a href={routeAdmin.AdminGrowthQuarterDetail.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Stage </a>
-                    </div>
 
                     <div id="h182093w0" className="grid-view mt-4">
-                      <div className="summary">Showing <b>{offset + 1} - {limit * (activePage - 1) + items.length}</b> of <b>{totalData}</b> records.</div>
+                      
                       <Table items={items} file_path={file_path} edit={getDetail} deleteItem={deleteItem} loading={loading} />
                     </div>
+
                     {totalData > limit ?
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <Pagination
