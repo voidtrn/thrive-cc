@@ -186,7 +186,7 @@ function PopupPlatform(props){
         >
         <Modal.Body style={{margin:"1% 1%"}}>
             {canClose ? 
-            <span className="close" onClick={()=>setModalShow(false)}>
+            <span className="btn-close" onClick={()=>setModalShow(false)}>
                 <i className="fa fa-close custom" ></i>
             </span>
             :

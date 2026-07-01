@@ -3226,7 +3226,7 @@ function profile(props){
                 <br/>
                 <br/>
                 <Modal.Header>
-                    <button type="button" className="close" style={{top: "17px !important", position:"absolute"}} data-dismiss="modal" aria-hidden="true" onClick={()=>setModalRedeem(false)}>
+                    <button type="button" className="btn-close" style={{top: "17px !important", position:"absolute"}} data-dismiss="modal" aria-hidden="true" onClick={()=>setModalRedeem(false)}>
                         <img src={file_assets+"img/close-btn.png"}/>
                     </button>
                     <br/>
@@ -3280,7 +3280,7 @@ function profile(props){
                 <br/>
                 <br/>
                 <Modal.Header>
-                    <button type="button" className="close" style={{top: "17px !important", position:"absolute"}} data-dismiss="modal" aria-hidden="true" onClick={()=>setModalCourse(false)}>
+                    <button type="button" className="btn-close" style={{top: "17px !important", position:"absolute"}} data-dismiss="modal" aria-hidden="true" onClick={()=>setModalCourse(false)}>
                         <img src={file_assets+"img/close-btn.png"}/>
                     </button>
                     <br/>

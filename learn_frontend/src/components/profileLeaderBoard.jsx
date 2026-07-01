@@ -98,7 +98,7 @@ export function Leaderboard(){
         return(
             <Card body className={`popup-leaderboard ${type=="me" && `popup-leaderboard-active`} ${type=="123" && `popup-leaderboard-123`}`}>
                 <img src={buttonExit} className="buttonExit" onClick={()=>setState(state=>({...state, showPopupLeaderboard:""}))}/>
-                <div className="pt-4 pb-2 pr-2 pl-2">
+                <div className="pt-4 pb-2 pe-2 ps-2">
                     {renderValueCard.map((v,idv)=>
                         <div className="row group-popup " key={idv}>
                             {v.map((x,idx)=>

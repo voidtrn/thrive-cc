@@ -52,20 +52,20 @@ function Footer(){
                 <div className="top_footer text_white">
                     <div className="section-footer">
                         <div className="d-sm-flex flex-row align-items-center">
-                            <div className="footer_logo pr-4">
+                            <div className="footer_logo pe-4">
                                 <a href={routeAll.routesUser.home.path}><img alt="logo" src={env.assets+"img/AWB footer logo.svg"} width={140}/>
                                 </a>
                             </div>
-                            <div className="pl-4">
+                            <div className="ps-4">
                                 <div className="d-flex flex-column flex-wrap list-shortcut-link justify-content-between pt-2 pb-2">
                                     {shortcutLinks.map((v, idx)=>
-                                        <div className="items-shortcut p-2 pr-3" key={idx}>
+                                        <div className="items-shortcut p-2 pe-3" key={idx}>
                                             <a href={v.hyperlink_url} className="a-link-shortcut" rel="noreferrer" target={"_blank"}>{securityData.Security_lang() == "ENG" ? v.title : v.title_ind}</a>
                                         </div>
                                     )}
                                 </div>
                             </div>
-                            <div className="copyright ml-auto">
+                            <div className="copyright ms-auto">
                                 <div id="copyright">
                                     <p className="copyright">AWB &copy; 2022</p>
                                 </div>  

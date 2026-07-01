@@ -1061,7 +1061,7 @@ function Page(props) {
                                             }
 
                                             <div className="panel-heading" style={{ paddingTop: '30px' }}>Refine by</div>
-                                            <div className="list-group pl-2" >
+                                            <div className="list-group ps-2" >
                                                 {state.rsSidebarCategory4List.map((v, idx) =>
                                                     <Form.Check
                                                         type={'checkbox'}
@@ -3012,7 +3012,7 @@ function Custom_page(props) {
                                 {/* <CardDeck className="pt-3 pb-5 card-deck-sub-category"> */}
                                 <Slider {...settingsSubCategoryPage} ref={subCategoryRef}>
                                     {state.rsSidebarSubMenuList.map((value, index) =>
-                                        <Card key={index} className={`border-0 sub-category-card ${state.param.sub === value.idPage && `active-card`} header-sub-category pb-2 pr-2 pl-2`} onClick={() => addSubCategory(value)}>
+                                        <Card key={index} className={`border-0 sub-category-card ${state.param.sub === value.idPage && `active-card`} header-sub-category pb-2 pe-2 ps-2`} onClick={() => addSubCategory(value)}>
                                             <Card.Header className="text-center border-0 header-sub-category pt-0 pb-0" style={{ borderRadius: '0' }} >
                                                 <div className="upperTitle" style={{ height: state.cardHeaderHeightSubCategory }} ref={cardHeaderRef.current[index]} dangerouslySetInnerHTML={{
                                                     __html: lang === 'ENG' ? value.description : value.description_ind
@@ -3041,7 +3041,7 @@ function Custom_page(props) {
                                 }></i>
                             </div>
                             <div className="col-md-12">
-                                <div className="d-flex flex-row justify-content-between pl-3">
+                                <div className="d-flex flex-row justify-content-between ps-3">
                                     <div><img src={`${state.assets}images/icon-text-subcategory-custompage.png`} alt="icon-text-subcategory-custompage" style={{ width: '50vw' }} /></div>
                                     <div><img src={`${state.assets}images/icon-subcategory-custom-page.png`} alt="icon-subcategory-custompage" style={{ width: '26vw' }} /></div>
                                 </div>
@@ -3142,7 +3142,7 @@ function Custom_page(props) {
                                             </>
 
                                             <div className="panel-heading" style={{ paddingTop: '30px' }}>Refine by</div>
-                                            <div className="list-group pl-2" >
+                                            <div className="list-group ps-2" >
                                                 {state.rsSidebarCategory4List.map((v, idx) =>
                                                     <Form.Check
                                                         type={'checkbox'}

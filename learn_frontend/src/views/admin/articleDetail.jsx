@@ -493,7 +493,7 @@ function ArticleDetail(props){
                     <strong>{titlePage}</strong> 
                     <div className="clearfix">
                         <div className="panel-body">
-                            <a className="float-right btn btn-default" href={routeAdmin.article.path} label="Back to overview" data-ui-loader="">
+                            <a className="float-end btn btn-default" href={routeAdmin.article.path} label="Back to overview" data-ui-loader="">
                                 <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
                         </div>
                     </div>
@@ -652,7 +652,7 @@ function ArticleDetail(props){
                                                         <img style={{width:"160px",height:"auto"}}  src={file}    alt="" onError={addDefaultSrc} />
 
                                                         <br/>
-                                                        <span className='badge badge-primary' id="upload-name" name="upload-name">{items.article_image}</span>
+                                                        <span className='badge bg-primary' id="upload-name" name="upload-name">{items.article_image}</span>
                                                                     
                                                         <div className="help-block"></div>
                                                     </div>
@@ -684,7 +684,7 @@ function ArticleDetail(props){
                                                         <img style={{width:"160px",height:"auto"}}  src={filePreview}    alt="" onError={addDefaultSrc} />
 
                                                         <br/>
-                                                        <span className='badge badge-primary' id="upload-name-preview" name="upload-name-preview">{items.article_preview_image}</span>
+                                                        <span className='badge bg-primary' id="upload-name-preview" name="upload-name-preview">{items.article_preview_image}</span>
                                                                     
                                                         <div className="help-block"></div>
                                                     </div>
@@ -739,7 +739,7 @@ function ArticleDetail(props){
                                                 <input type="text" id="txtarticleLink" style={{width:"85%",display:"unset"}} className="form-control"  
                                                     name="txtarticleLink" value={hostname+routeAll.routeViewAll.article.path + '?cate='+md5CategoryId + '&articleId=' +md5ArticleId} 
                                                     aria-required="true" aria-invalid="false"  ref={(ref) => articleLink = ref} />
-                                                <span className="btn btn-default float-right" onClick={linkToClipboard}>Copy Link</span>
+                                                <span className="btn btn-default float-end" onClick={linkToClipboard}>Copy Link</span>
 
                                             </div>
                                             <hr/>

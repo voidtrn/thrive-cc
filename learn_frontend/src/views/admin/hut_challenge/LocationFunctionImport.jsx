@@ -227,7 +227,7 @@ function LocationFunctionImport(props) {
                                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                                     ref={fileInput} onChange={ajaxFileUploadImage.bind(this)} required />
                                                 <br /><br /><br />
-                                                <span className='badge badge-primary text-black' id="upload-name" name="upload-name"></span>
+                                                <span className='badge bg-primary text-black' id="upload-name" name="upload-name"></span>
                                                 <div className="help-block"></div>
                                             </div>
                                         </div>

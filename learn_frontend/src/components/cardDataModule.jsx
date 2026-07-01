@@ -23,13 +23,13 @@ export default function CardDataModule(props){
         <div className="card-horizontal">
             <Card.Img className={`img-square-wrapper`} src={userDocument + (props.data.images ||props.data.content_image)} />
             <Card.Body className="card-body-step-3-skill">
-                <div className="d-flex flex-row pb-3 pr-2">
+                <div className="d-flex flex-row pb-3 pe-2">
                     <div>
                         <Card.Text className={`module-type-of-content text-uppercase`}>{lang==='ENG'?props.data.content_type_title_eng:props.data.content_type_title_ind}</Card.Text>
                     </div>
-                    <div className="ml-auto"> 
+                    <div className="ms-auto"> 
                         <Card.Text className={`module-type-of-content font-italic`}>
-                            <div className="text-right module-optional">{renderOptionalDescription(props.data)}</div>
+                            <div className="text-end module-optional">{renderOptionalDescription(props.data)}</div>
                         </Card.Text>
                     </div>
                 </div>

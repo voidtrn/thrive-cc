@@ -499,13 +499,13 @@ function Quest(props) {
                                                       <label className={
                                                         answerList.correct == 1
                                                           ?
-                                                          "form-check-label ml-4 mt-1  text-content-label-input-green"
+                                                          "form-check-label ms-4 mt-1  text-content-label-input-green"
                                                           :
                                                           answerList.id == answerList.answer_id_by_user
                                                             ?
-                                                            "form-check-label ml-4 mt-1 text-content-label-input-red"
+                                                            "form-check-label ms-4 mt-1 text-content-label-input-red"
                                                             :
-                                                            "form-check-label ml-4 mt-1 text-content-label-input"
+                                                            "form-check-label ms-4 mt-1 text-content-label-input"
                                                       }>
                                                         {
                                                           state.selectLanguageQuestion == 'eng' ?
@@ -534,9 +534,9 @@ function Quest(props) {
                                                       <label className={
                                                         answerList.point > 0
                                                           ?
-                                                          "form-check-label ml-4 mt-1  text-content-label-input-green"
+                                                          "form-check-label ms-4 mt-1  text-content-label-input-green"
                                                           :
-                                                            "form-check-label ml-4 mt-1 text-content-label-input-red"
+                                                            "form-check-label ms-4 mt-1 text-content-label-input-red"
                                                       }>
                                                         <span dangerouslySetInnerHTML={{ __html: answerList.answer }}></span>
 

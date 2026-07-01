@@ -265,7 +265,7 @@ export function ProfileMyLearningPlan(props){
                             <div className="p-2 sidebar-div-card-learning-plan" key={i}>
                                 <Card className="h-100 sidebar-learning-home-card" onClick={()=>openSidebarLearningDetail(el)}>
                                     <Card.Img variant="top" className="img-fluid sidebar-learning-home-card-image" src={state.userDocument + "category/"+ el.category_image} onError={(e)=>e.target.src="https://via.placeholder.com/173x98"}/>
-                                    <Card.Body className="pl-3 pt-3 pr-3 pb-2" >
+                                    <Card.Body className="ps-3 pt-3 pe-3 pb-2" >
                                         <Card.Title className={`sidebar-title-card-learning-plan mb-0`}>{lang==='ENG'?el.title:el.title_ind}</Card.Title>
                                         {/* {cardText(el,state.activeLearningPlan)} */}
                                     </Card.Body>
@@ -386,7 +386,7 @@ export function ProfileMyLearningPlan(props){
             )
         }else{
             return(
-                <Card.Footer className="pt-0 pr-3 pl-3">
+                <Card.Footer className="pt-0 pe-3 ps-3">
                     <Card.Text className="text-white module-description learning-home-card-text">
                         <div className="d-flex flex-column flex-wrap">
                             <div className="pb-1">{defaultLang.lang.completed} &nbsp;{moment(moment.utc(value.complete_date)).format('L')}</div>
@@ -454,10 +454,10 @@ export function ProfileMyLearningPlan(props){
         <div  className="row profile-learning-plan pb-5 mb-5">
             <div className="col-md-12 pb-5" id="header">
                 <div className="d-flex flex-row align-items-center">
-                    <div className="title-header pr-3">
+                    <div className="title-header pe-3">
                         {renderTitleLearningPlan()}
                     </div>
-                    <div className="ml-auto button-create-header pr-3">
+                    <div className="ms-auto button-create-header pe-3">
                         {renderButtonCreateNew()}
                     </div>
                     <div className="tab-inprogress-completed">
@@ -480,10 +480,10 @@ export function ProfileMyLearningPlan(props){
                             {renderCategory()}
                             <div className="header-leftbar pb-3 pt-4 d-flex flex-row align-items-center">
                                 <div>{defaultLang.lang.years}</div>
-                                <div className="pl-4 button-prev">
+                                <div className="ps-4 button-prev">
                                     <img onClick={()=>SliderRef.current.slickPrev()} className="img-button-prev" src={env.assets + "img/button-next-prev.svg"} width="30"/>
                                 </div>
-                                <div className="pl-3 button-next">
+                                <div className="ps-3 button-next">
                                     <img onClick={()=>SliderRef.current.slickNext()} className="img-button-next" src={env.assets + "img/button-next-prev.svg"} width="30"/>
                                 </div>
                             </div>

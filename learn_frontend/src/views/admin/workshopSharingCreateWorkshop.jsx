@@ -290,9 +290,9 @@ function WorkshopSharingCreateWorkshop(props){
                 </div>
                 <div className="clearfix">
                     <div className="panel-body">
-                        <a className="float-right btn btn-default" onClick={handleBackToOverview} label="Back to overview" data-ui-loader="">
+                        <a className="float-end btn btn-default" onClick={handleBackToOverview} label="Back to overview" data-ui-loader="">
                             <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
-                            <h4 className="float-left"></h4>
+                            <h4 className="float-start"></h4>
                     </div>
                 </div>
                 <LoadingAdmin loading={loading}/> 
@@ -392,7 +392,7 @@ function WorkshopSharingCreateWorkshop(props){
                                     <img style={{width:"160px",height:"auto"}}  src={file}    alt="" onError={addDefaultSrc} />
 
                                     <br/>
-                                    <span className='badge badge-primary' id="upload-name" name="upload-name">{items.workshop_image}</span>
+                                    <span className='badge bg-primary' id="upload-name" name="upload-name">{items.workshop_image}</span>
                                                 
                                     <div className="help-block"></div>
                                 </div>
@@ -424,7 +424,7 @@ function WorkshopSharingCreateWorkshop(props){
                                     <img style={{width:"160px",height:"auto"}}  src={filePreview}    alt="" onError={addDefaultSrc} />
 
                                     <br/>
-                                    <span className='badge badge-primary' id="upload-name-preview" name="upload-name-preview">{items.workshop_preview_image}</span>
+                                    <span className='badge bg-primary' id="upload-name-preview" name="upload-name-preview">{items.workshop_preview_image}</span>
                                                 
                                     <div className="help-block"></div>
                                 </div>

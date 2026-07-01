@@ -181,7 +181,7 @@ function TrainingReport(){
                         </div>   
                         {(trainingDetail && key==='#tab-0') || (scheduleDetail && key==='#tab-1')?
                             <div className="clearfix">
-                                <a className="float-right btn btn-default" onClick={handleBackToOverview.bind(this)} label="Back to overview" data-ui-loader="">
+                                <a className="float-end btn btn-default" onClick={handleBackToOverview.bind(this)} label="Back to overview" data-ui-loader="">
                                     <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
                             </div>   
                         :''

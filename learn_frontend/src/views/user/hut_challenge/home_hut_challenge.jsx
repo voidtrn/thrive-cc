@@ -462,7 +462,7 @@ function HUTChallenge(props) {
                   <div className="card-footerheader-card-growth" >
                     <a href={routeAll.routesUser.PointHistory.path} className="nav-link" >
                       {t('textLihatSelengkapnya')} &nbsp;
-                      <img src={env.assets + "landingpage/assets/images/hut/arrow-right.svg"} className="ml-2" />
+                      <img src={env.assets + "landingpage/assets/images/hut/arrow-right.svg"} className="ms-2" />
                     </a>
                   </div>
                 </div>
@@ -575,7 +575,7 @@ function HUTChallenge(props) {
 
                       <div className="col-lg-6 color-white text-end " >
                         {t('textAdditionalChallengeDue')} : &nbsp;
-                        <span className="blue-bg rounded ml-2 p-2">18 August 2024 23:59</span>
+                        <span className="blue-bg rounded ms-2 p-2">18 August 2024 23:59</span>
                         <img src={env.assets + "landingpage/assets/images/hut/chevron-up.png"} style={{ marginLeft: "15px" }} />
                       </div>
                     </div>

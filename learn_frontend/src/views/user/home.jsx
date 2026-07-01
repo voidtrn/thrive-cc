@@ -179,14 +179,14 @@ function App(props) {
             <div className="card-body ">
               <div className="row d-flex">
                 <div className="col-9 justify-content-center m-auto">
-                  <img className="arrow-big ml-3" src={env.assets + "landingpage/assets/images/ph-paper-plane-right-light-bcK.png"} />
+                  <img className="arrow-big ms-3" src={env.assets + "landingpage/assets/images/ph-paper-plane-right-light-bcK.png"} />
                   <b>{t('textLetsKeep')}</b>
                 </div>
                 <div className="col-3 text-end">
                   <button className="btn btn-blue rounded-pill" onClick={() => openInNewTab('https://performancemanager.successfactors.eu/sf/goals?bplte_company=PMIProd&_s.crb=sMbnqXq0493pfPXzGYyKoE7MKLU01OCOgGzk9K%252brZi4%253d#/goal-list?targetUserId=B292475A16FC4EA3B520EDCA575E0804&templateId=2090&templateType=cdp')}>
                     <span className="d-flex align-items-center">
                       Access IDP
-                      <img className="arrow ml-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
+                      <img className="arrow ms-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
                     </span>
                   </button>
                 </div>
@@ -214,7 +214,7 @@ function App(props) {
                   <button className="btn btn-blue rounded-pill " id="btn-visit-1" onClick={() => openInNewTab('https://pmi.fuseuniversal.com/')}>
                     <span className="d-flex align-items-center">
                       {t('textBtnVisitPage')}
-                      <img className="arrow ml-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
+                      <img className="arrow ms-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
                     </span>
                   </button>
                 </div>
@@ -231,7 +231,7 @@ function App(props) {
                   <button className="btn btn-blue rounded-pill " id="btn-visit-2" onClick={() => openInNewTab('https://pmi.fuseuniversal.com/communities/22099')}>
                     <span className="d-flex align-items-center">
                       {t('textBtnVisitPage')}
-                      <img className="arrow ml-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
+                      <img className="arrow ms-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
                     </span>
                   </button>
                 </div>
@@ -254,7 +254,7 @@ function App(props) {
                   <button className="btn btn-blue rounded-pill " id="btn-visit-3" onClick={() => openInNewTab('https://pmicloud.sharepoint.com/sites/RefPCHub/SitePages/People-Manager-Hub/1.0-PMH-Home.aspx?xsdata=MDV8MDJ8fDIyYmU1MDFkMTQzYTQ0ZWM3YjdhMDhkYzBiNGNkNmE0fDhiODZhNjVlM2MzYTQ0MDY4YWMzMTlhNmI1Y2M1MmJjfDB8MHw2MzgzOTc2NzE4MjYyOTE1Nzh8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKV0lqb2lNQzR3TGpBd01EQWlMQ0pRSWpvaVYybHVNeklpTENKQlRpSTZJazkwYUdWeUlpd2lWMVFpT2pFeGZRPT18MXxMMk5vWVhSekx6RTVPakF4TnpBNE56WmhMVFJqWkdJdE5EaGxNaTFpWXpZMkxUQXpNemt4TnpCaU1UWXpZbDlsTTJNMU1HTmpPQzAwTnpZM0xUUmhNekF0WWpZM01TMDJNelZsWW1KbVpUUXdNek5BZFc1eExtZGliQzV6Y0dGalpYTXZiV1Z6YzJGblpYTXZNVGN3TkRFM01ETTRNakExTkE9PXw3MzRhYmEyMWYxOTY0MmNkN2I3YTA4ZGMwYjRjZDZhNHwyNWVmZGRmZGE3N2Q0NmU5OTA5MDJjMTRkNmZkYTU2Ng%3D%3D&sdata=TXJuU05rTStCOHd0VFE4Um1qNzRIYUN2M0hPa2FkRDgzbDl3K1RjTGlwST0%3D&ovuser=8b86a65e-3c3a-4406-8ac3-19a6b5cc52bc%2Cayodo%40PMINTL.NET&OR=Teams-HL&CT=1704170422603&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMzExMDIyNDcwNSIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D')}>
                     <span className="d-flex align-items-center">
                       {t('textBtnVisitPage')}
-                      <img className="arrow ml-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
+                      <img className="arrow ms-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
                     </span>
                   </button>
                 </div>
@@ -273,7 +273,7 @@ function App(props) {
                   <button className="btn btn-blue rounded-pill " id="btn-visit-4" onClick={() => openInNewTab('https://pmi.fuseuniversal.com/communities/22099/contents/1319625')}>
                     <span className="d-flex align-items-center">
                       {t('textBtnVisitPage')}
-                      <img className="arrow ml-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
+                      <img className="arrow ms-3" src={env.assets + "landingpage/assets/images/arrow-forward-Jxf.png"} />
                     </span>
                   </button>
                 </div>

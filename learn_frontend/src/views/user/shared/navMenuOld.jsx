@@ -302,7 +302,7 @@ function NavMenu(props) {
         return (
             <Popover.Content className='body-no-notif'>
                 <div className="d-flex flex-row pt-3">
-                    <div className='p-1 pr-5'>
+                    <div className='p-1 pe-5'>
                         <div>
                             <img className="img-no-notif" src={env.assets + 'img/notif-icon-no-notif.svg'} alt="no-notif" />
                         </div>
@@ -316,8 +316,8 @@ function NavMenu(props) {
                             <div dangerouslySetInnerHTML={{ __html: defaultLang.lang.subheader2NoNotif }} />
                         </div>
                     </div>
-                    <div className='p2 ml-auto text-right cursor-pointer'>
-                        <img id="notif-close-btn-no-notif" src={env.assets + 'img/notif-icon-close.svg'} alt="close"
+                    <div className='p2 ms-auto text-end cursor-pointer'>
+                        <img id="notif-close-btn-no-notif" src={env.assets + 'img/notif-icon-close.svg'} alt="btn-close"
                             onClick={() => setShowNotif(false)}
                         />
                     </div>
@@ -333,9 +333,9 @@ function NavMenu(props) {
                     <div className="row">
                         <div className='col-sm-12'>
                             <div className="d-flex flex-row align-items-center">
-                                <div className="pr-3">{defaultLang.lang.notifications}</div>
+                                <div className="pe-3">{defaultLang.lang.notifications}</div>
                                 <div className="cursor-pointer clear-all-button" onClick={() => clearNotif()}>{defaultLang.lang.clearAll}</div>
-                                <div className="cursor-pointer ml-auto"><img id="notif-close-btn" src={env.assets + 'img/notif-icon-close.svg'} alt="close" onClick={() => setShowNotif(false)} /></div>
+                                <div className="cursor-pointer ms-auto"><img id="notif-close-btn" src={env.assets + 'img/notif-icon-close.svg'} alt="btn-close" onClick={() => setShowNotif(false)} /></div>
                             </div>
                         </div>
                     </div>
@@ -358,7 +358,7 @@ function NavMenu(props) {
                                             }} />
                                         </span>
                                     </div>
-                                    <div className="col-sm-3 p-0 text-right">
+                                    <div className="col-sm-3 p-0 text-end">
                                         <span className='notif-dur-text'>{moment(moment.utc(v.date_created).toDate()).fromNow()}</span>
                                     </div>
                                 </div>
@@ -512,7 +512,7 @@ function NavMenu(props) {
                                             </span>
                                         </a>
                                     </div>
-                                    <div className="ml-auto nav-lang-v2 header-lang-v2 nav-menu-item pr-4">
+                                    <div className="ms-auto nav-lang-v2 header-lang-v2 nav-menu-item pe-4">
                                         <ul className="ul-lang-v2 list-unstyled" style={{ cursor: 'pointer' }}>
                                             <li id="lang-eng-li">
                                                 <a tabIndex="0" id="lang-eng" className=" lang-selector-a" role="button" onClick={changeLang.bind(this, 'ENG')}>
@@ -711,22 +711,22 @@ function NavMenu(props) {
                     `
                     }
                 </style>
-                <div className="new-style-navmenu pt-2 pb-2 pl-0 pr-0">
+                <div className="new-style-navmenu pt-2 pb-2 ps-0 pe-0">
                     <div className="d-flex flex-row align-items-center">
-                        <div className="logo pr-3">
+                        <div className="logo pe-3">
                             <a className="navbar-brand page-scroll" href={routeAll.routesUser.home.path} id="brand-logo">
                                 {/* <img className="logo_light" src={env.assets+"img/header_logo_white.svg"} alt="logo" /> */}
                                 {/* <img className="logo_powered" src={env.assets+"img/powered-by-fuse.png"} alt="fuse" /> */}
                                 <img className="logo-default" src={headerLogo} alt="logo" />
                             </a>
                         </div>
-                        <div className="explore pr-3 dropdown">
+                        <div className="explore pe-3 dropdown">
                             <span style={{ cursor: 'pointer' }} className="dropdown-toggle nav-link nav-menu-white" onClick={() => setdropdown(!dropdown)} dangerouslySetInnerHTML={{ __html: defaultLang.lang.explore }}></span>
                         </div>
-                        <div className="pr-3 search-text">
+                        <div className="pe-3 search-text">
                             <span className="nav-link nav-menu-white" dangerouslySetInnerHTML={{ __html: defaultLang.lang.searchText }}></span>
                         </div>
-                        <div className="search-box flex-fill pr-3">
+                        <div className="search-box flex-fill pe-3">
                             {/* <div className={`search_wrap header-search-form-v2 width-search-subscribe-admin-totalplatform-v2`}> */}
                             <form action="search" method="post" onSubmit={search}>
                                 <div className='input-search'>
@@ -735,7 +735,7 @@ function NavMenu(props) {
                             </form>
                             {/* </div> */}
                         </div>
-                        <div className="subscribe-button pr-2">
+                        <div className="subscribe-button pe-2">
                             {!isSubscribeSff ?
                                 // <li >
                                 <a id="subscribe0" tabIndex="0" role="button" style={{ cursor: 'pointer' }} onClick={() => subscribe()} className="btn btn-outline-white btn-header-subscribe">
@@ -747,7 +747,7 @@ function NavMenu(props) {
                                 null
                             }
                         </div>
-                        <div className="lang-selector nav-lang-v2 header-lang-v2 nav-menu-item pr-3">
+                        <div className="lang-selector nav-lang-v2 header-lang-v2 nav-menu-item pe-3">
                             <ul className="ul-lang-v2" style={{ cursor: 'pointer' }}>
                                 <li id="lang-eng-li">
                                     <a tabIndex="0" id="lang-eng" className="nav-menu-white lang-selector-a" role="button" onClick={changeLang.bind(this, 'ENG')}>
@@ -793,7 +793,7 @@ function NavMenu(props) {
                                 </Overlay>
                             </div>
                         </div>
-                        <div className="profile-picture pr-3">
+                        <div className="profile-picture pe-3">
                             <a
                                 onClick={() => setGlobal(global => ({ ...global, sidebarProfile: true }))}
                                 style={{ cursor: 'pointer' }}
@@ -805,7 +805,7 @@ function NavMenu(props) {
                                 </span>
                             </a>
                         </div>
-                        <div className="admin-area nav-admin pr-3" id="admin-nav-icon">
+                        <div className="admin-area nav-admin pe-3" id="admin-nav-icon">
                             {isAdmin > 0 ?
                                 <a href={{
                                     [1]: routeAll.routesAdmin.trainingReportTraining.path,
@@ -820,7 +820,7 @@ function NavMenu(props) {
                                 null
                             }
                         </div>
-                        <div className="platform-area pr-3">
+                        <div className="platform-area pe-3">
                             {state.showPlatform &&
                                 <ButtonToolbar >
                                     <ButtonGroup>
@@ -843,14 +843,14 @@ function NavMenu(props) {
                 <Collapse in={dropdown}>
                     <div className='row' id="menuTopics">
                         <div className="menu-topics-container col-lg-8" >
-                            <div className="new-style-navmenu pt-2 pb-2 pl-0 pr-0">
+                            <div className="new-style-navmenu pt-2 pb-2 ps-0 pe-0">
                                 <div className="d-flex flex-row align-items-center" style={{ padding: '8px 22px' }}>
-                                    <div className="logo pr-3">
+                                    <div className="logo pe-3">
                                         <a className="navbar-brand page-scroll" href={routeAll.routesUser.home.path} id="brand-logo">
                                             <img className="logo-default" src={env.assets + "img/header_logo_gradient.svg"} alt="logo" />
                                         </a>
                                     </div>
-                                    <div className="explore pr-3 dropdown">
+                                    <div className="explore pe-3 dropdown">
                                         <span style={{ cursor: 'pointer' }} className="dropdown-toggle nav-link nav-menu text-black" onClick={() => setdropdown(!dropdown)} dangerouslySetInnerHTML={{ __html: defaultLang.lang.explore }}></span>
                                     </div>
                                 </div>

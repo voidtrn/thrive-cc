@@ -319,9 +319,9 @@ function SliderDetail(props){
                 </div>
                 <div className="clearfix">
                     <div className="panel-body">
-                        <a className="float-right btn btn-default" href={routeAdmin.slider.path} label="Back to overview" data-ui-loader="">
+                        <a className="float-end btn btn-default" href={routeAdmin.slider.path} label="Back to overview" data-ui-loader="">
                             <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
-                            <h4 className="float-left"></h4>
+                            <h4 className="float-start"></h4>
                     </div>
                 </div>
                 <LoadingAdmin loading={loading}/> 
@@ -417,7 +417,7 @@ function SliderDetail(props){
                                                 <img style={{width:"160px",height:"auto"}}  src={file}    alt="" onError={addDefaultSrc} />
 
                                                 <br/>
-                                                <span className='badge badge-primary' id="upload-name" name="upload-name">{items.slider_video}</span>
+                                                <span className='badge bg-primary' id="upload-name" name="upload-name">{items.slider_video}</span>
                                                             
                                                 <div className="help-block"></div>
                                             </div>
@@ -448,7 +448,7 @@ function SliderDetail(props){
                                                 <img style={{width:"160px",height:"auto"}}  src={fileMobile}    alt="" onError={addDefaultSrc} />
 
                                                 <br/>
-                                                <span className='badge badge-primary' id="upload-name-mobile" name="upload-name-mobile">{items.slider_video_mobile}</span>
+                                                <span className='badge bg-primary' id="upload-name-mobile" name="upload-name-mobile">{items.slider_video_mobile}</span>
                                                             
                                                 <div className="help-block"></div>
                                             </div>

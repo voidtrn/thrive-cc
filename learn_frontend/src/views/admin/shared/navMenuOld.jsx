@@ -176,7 +176,7 @@ function NavMenu(props){
 
           {/* <!-- Collect the nav links, forms, and other content for toggling --> */}
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul className="nav navbar-nav ml-auto main-menu">
+            <ul className="nav navbar-nav ms-auto main-menu">
                 {/* {renderNav()}  */}
 
                 <li id="lilang">

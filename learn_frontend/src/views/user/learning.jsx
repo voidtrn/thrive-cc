@@ -488,7 +488,7 @@ function Learning(props){
                                         }
                                     </div>
                                     {state.step0?.lp_type!==3 && state.dataModule && state.dataModule.length > 0 ?
-                                        <div className="text-right">
+                                        <div className="text-end">
                                             <button type="button" className="btn btn-primary btn-sm btn-choose-step button-finish" onClick={()=>finishLine()}>
                                                 {defaultLang.lang.chooseTheseModuleText}
                                             </button>
@@ -584,7 +584,7 @@ function Learning(props){
         const cardFooter = (value,type)=>{
             if(type==='continue'){
                 return(
-                <Card.Footer className="learning-home-card-footer pl-3 pb-3 pr-3 pt-0">
+                <Card.Footer className="learning-home-card-footer ps-3 pb-3 pe-3 pt-0">
                     {moment(moment.utc(value.date_modified)).add(30,'days').format() <= moment(moment.utc()).format() ?
                         <div className="learning-home-last-visited text-danger">{defaultLang.lang.lastVisited}</div>
                     :
@@ -597,7 +597,7 @@ function Learning(props){
                 )
             }else{
                 return(
-                    <Card.Footer className="pt-0 pr-3 pl-3">
+                    <Card.Footer className="pt-0 pe-3 ps-3">
                         <Card.Text className="text-white module-description learning-home-card-text">
                             <div className="d-flex flex-column flex-wrap">
                                 <div className="pb-2">{defaultLang.lang.completed} &nbsp;{moment(moment.utc(value.complete_date)).format('L')}</div>
@@ -655,7 +655,7 @@ function Learning(props){
                 <div className="col-sm-12 col-lg-3 learning-home-col-card" key={i}>
                     <Card className="h-100 learning-home-card">
                         <Card.Img variant="top" className="img-fluid learning-home-card-image" src={state.userDocument + "category/"+ el.category_image} onError={(e)=>e.target.src="https://via.placeholder.com/173x98"} onClick={()=>openSidebarLearningDetail(el)}/>
-                        <Card.Body className="pl-3 pt-3 pr-3 pb-2" onClick={()=>openSidebarLearningDetail(el)}>
+                        <Card.Body className="ps-3 pt-3 pe-3 pb-2" onClick={()=>openSidebarLearningDetail(el)}>
                             <Card.Title className={`module-title mb-3`}>{lang==='ENG'?el.title:el.title_ind}</Card.Title>
                             {cardText(el,typeCard)}
                         </Card.Body>
@@ -672,7 +672,7 @@ function Learning(props){
             <div className={`col-sm-12 col-lg-3 learning-home-col-card`}>
                 <Card className={`${state.dataUserLearningPlan.length > 0 && ` h-100`} learning-home-card-add-new`} style={{height:state.dataUserLearningPlan.length <= 0 && !isMobile?'250px':''}}>
                     <Card.Body>
-                        <div className="text-right learning-home-card-add-new-button" onClick={()=>startLearning()}>
+                        <div className="text-end learning-home-card-add-new-button" onClick={()=>startLearning()}>
                             <span className="ripple"></span>
                             <Image src={`${state.assets}learningplan/add_new_plan.svg`} width={60}/>
                         </div>
@@ -795,12 +795,12 @@ function Learning(props){
                             </OverlayTrigger>
                         }
                     </div>
-                    <div className="col-sm-6 arrow-title-main-step text-right" >
+                    <div className="col-sm-6 arrow-title-main-step text-end" >
                         {
                             collapseData===idx?
                                 <div className="arrow-child-title-main-step">
                                     {collapseData===0?
-                                        <div className="d-flex flex-row step0-main-arrow pr-3 align-items-center">
+                                        <div className="d-flex flex-row step0-main-arrow pe-3 align-items-center">
                                             <div className="cursor-pointer" onClick={()=>changeTypeDimension()}>
                                                 {state.isTypeDimensionCoreSkills?
                                                     <div className="d-flex flex-row dimension-type">
@@ -815,7 +815,7 @@ function Learning(props){
                                                 }
                                             </div>
                                             {/* {
-                                                !state.isTypeDimensionCoreSkills && <div className="see-all-button pl-4" onClick={()=>changeEditDimension()}>{state.isEditDimension?defaultLang.lang.doneButtonLearningPlan:defaultLang.lang.editButtonLearningPlan}</div>
+                                                !state.isTypeDimensionCoreSkills && <div className="see-all-button ps-4" onClick={()=>changeEditDimension()}>{state.isEditDimension?defaultLang.lang.doneButtonLearningPlan:defaultLang.lang.editButtonLearningPlan}</div>
                                             } */}
 
                                         </div>

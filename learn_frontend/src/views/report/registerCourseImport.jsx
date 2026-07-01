@@ -107,9 +107,9 @@ function ImportClaimSFF(props){
                         
                     <div className="clearfix">
                         <div className="panel-body">
-                            <a className="float-right btn btn-default" href={routeAdmin.registerCourse.path} label="Back to overview" data-ui-loader="">
+                            <a className="float-end btn btn-default" href={routeAdmin.registerCourse.path} label="Back to overview" data-ui-loader="">
                                 <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
-                                <h4 className="float-left"></h4>
+                                <h4 className="float-start"></h4>
                         </div>
                     </div>
                     
@@ -159,7 +159,7 @@ function ImportClaimSFF(props){
                                         accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
                                         ref={fileInput} onChange={ajaxFileUploadImage.bind(this)} required/>
                                         <br/><br/><br/>
-                                        <span className='badge badge-primary' id="upload-name" name="upload-name"></span>
+                                        <span className='badge bg-primary' id="upload-name" name="upload-name"></span>
                                         <div className="help-block"></div>
                                     </div>
 

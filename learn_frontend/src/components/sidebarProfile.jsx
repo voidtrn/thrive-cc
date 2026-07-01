@@ -235,7 +235,7 @@ export function SidebarProfile(props){
             <div className="pt-3">
                 <div className="d-flex flex-row">
                     {dataTxtRecap.map((v,idx)=>
-                        <div className="pr-2 pl-2 data-recap-txt" key={idx}>
+                        <div className="pe-2 ps-2 data-recap-txt" key={idx}>
                             <div className="data-recap-txt-number">{v.value}</div>
                             <div>{v.txt}</div>
                         </div>
@@ -290,7 +290,7 @@ export function SidebarProfile(props){
                         </div>
                     </div>
                 </div>
-                <div className="pl-3 content-week">
+                <div className="ps-3 content-week">
                     {defaultLang.lang.contentsWeek}
                 </div>
             </div> 
@@ -298,7 +298,7 @@ export function SidebarProfile(props){
 
         return(
             <div className="d-flex flex-row flex-wrap align-items-center pt-3">
-                <div className="p-2 mr-auto left-side-goal-plan">
+                <div className="p-2 me-auto left-side-goal-plan">
                     {leftContent}
                 </div>
                 <div className="p-2 button-add-goal">
@@ -428,7 +428,7 @@ export function SidebarProfile(props){
                     <div className="p-2 sidebar-div-card-learning-plan" key={i}>
                         <Card className="h-100 sidebar-learning-home-card" onClick={()=>openSidebarLearningDetail(el)}>
                             <Card.Img variant="top" className="img-fluid sidebar-learning-home-card-image" src={state.userDocument + "category/"+ el.category_image} onError={(e)=>e.target.src="https://via.placeholder.com/173x98"}/>
-                            <Card.Body className="pl-3 pt-3 pr-3 pb-2" >
+                            <Card.Body className="ps-3 pt-3 pe-3 pb-2" >
                                 <Card.Title className={`sidebar-title-card-learning-plan mb-0`}>{lang==='ENG'?el.title:el.title_ind}</Card.Title>
                                 {/* {cardText(el,state.activeLearningPlan)} */}
                             </Card.Body>
@@ -512,7 +512,7 @@ export function SidebarProfile(props){
             )
         }else{
             return(
-                <Card.Footer className="pt-0 pr-3 pl-3">
+                <Card.Footer className="pt-0 pe-3 ps-3">
                     <Card.Text className="text-white module-description learning-home-card-text">
                         <div className="d-flex flex-column flex-wrap">
                             <div className="pb-2">{defaultLang.lang.completed} &nbsp;{moment(moment.utc(value.complete_date)).format('L')}</div>
@@ -654,7 +654,7 @@ export function SidebarProfile(props){
                 getCurrentEvent = calVar.dataEventCalendar.find(item=>moment(item.calendar_date).format('DD/MM/YYYY')==day.format('DD/MM/YYYY'))
                 getCurrentMonth = day.format('M')!==currentMonth && `not-current-month`
                 days.push(
-                    <div className="pl-2 pr-2 text-center fc-list-date" key={day}>
+                    <div className="ps-2 pe-2 text-center fc-list-date" key={day}>
                         <div className="pb-4">{formattedDays}</div>
                         <div 
                             className={`p-4 calendar-date d-flex flex-column justify-content-center align-items-center ${getChoosenDate} ${getCurrentMonth}`}
@@ -682,15 +682,15 @@ export function SidebarProfile(props){
     }
     const calendar = () =>{
         return (
-            <div className="pl-5 pr-5 pb-4 pt-4 calendar-view">
+            <div className="ps-5 pe-5 pb-4 pt-4 calendar-view">
                 <div className="d-flex flex-row align-items-center pb-4">
-                    <div className="pl-2 pr-2 fc-toolbar-title">
+                    <div className="ps-2 pe-2 fc-toolbar-title">
                         {moment(calVar.titleCalendar).format('MMMM YYYY')}
                     </div>
-                    <div className="pl-2 pr-2">
+                    <div className="ps-2 pe-2">
                         <button type="button" className="btn fc-today-button btn-primary"  onClick={()=>changeWeekHandler()}>{defaultLang.lang.today}</button>
                     </div>
-                    <div className="pl-2 pr-2 ml-auto">
+                    <div className="ps-2 pe-2 ms-auto">
                         <div className="d-flex flex-row">
                             <div>
                                 <button type="button" className="btn fc-button btn-light" onClick={()=>changeWeekHandler('prev')}><i className="fa fa-angle-left" aria-hidden="true"></i></button>
@@ -771,12 +771,12 @@ export function SidebarProfile(props){
                         <Accordion.Header>
                             <div className="d-flex flex-column flex-grow-1">
                                 <div className="d-sm-flex flex-row title-event-detail align-items-center justify-content-between">
-                                    <div className="pl-2 pr-5 sub-title-1-event-detail">
+                                    <div className="ps-2 pe-5 sub-title-1-event-detail">
                                         {lang==='ENG'?data.calendar_event:data.calendar_event_ind}
                                     </div>
-                                    <div className="pl-2 pr-2 ">
+                                    <div className="ps-2 pe-2 ">
                                         {data.calendar_date_time ? 
-                                            <div className="sub-title-2-event-detail p-1 pl-2 pr-2">
+                                            <div className="sub-title-2-event-detail p-1 ps-2 pe-2">
                                                 {data.calendar_date_time}
                                             </div>
                                             :null
@@ -802,16 +802,16 @@ export function SidebarProfile(props){
 
     const calendarEvent = () =>{
         return(
-            <div className="pl-5 pr-5 pb-0 pt-5 event-view">
+            <div className="ps-5 pe-5 pb-0 pt-5 event-view">
                 <div className="d-flex flex-column">
-                    <div className="pl-2 pr-2 pb-2 event-header">
+                    <div className="ps-2 pe-2 pb-2 event-header">
                         {defaultLang.lang.myEvents}
                     </div>
                     <div className="d-flex flex-row align-items-center pb-4">
-                        <div className={`pl-2 pr-2 ${renderTabStyle(0)} unselected-tab-view`} onClick={()=>changeEventTab(0)}>{defaultLang.lang.today}</div>
-                        <div className="pl-1 pr-1 unselected-tab-view">|</div>
-                        <div className={`pl-2 pr-2 ${renderTabStyle(1)} unselected-tab-view`} onClick={()=>changeEventTab(1)}>{defaultLang.lang.upcoming}</div>
-                        <div className="pl-2 pr-2 ml-auto">
+                        <div className={`ps-2 pe-2 ${renderTabStyle(0)} unselected-tab-view`} onClick={()=>changeEventTab(0)}>{defaultLang.lang.today}</div>
+                        <div className="ps-1 pe-1 unselected-tab-view">|</div>
+                        <div className={`ps-2 pe-2 ${renderTabStyle(1)} unselected-tab-view`} onClick={()=>changeEventTab(1)}>{defaultLang.lang.upcoming}</div>
+                        <div className="ps-2 pe-2 ms-auto">
                             <form action="search" method="post" onSubmit={submitSearch}>
                                 <input 
                                     type="search" 
@@ -821,9 +821,9 @@ export function SidebarProfile(props){
                                 />
                             </form>
                         </div>
-                        <div className="pl-2 pr-2 search-icon" onClick={()=>showSearchInput()}><i className="fa fa-search" aria-hidden="true"></i></div>
+                        <div className="ps-2 pe-2 search-icon" onClick={()=>showSearchInput()}><i className="fa fa-search" aria-hidden="true"></i></div>
                     </div>
-                    <div className="pr-2 mr-2 area-event-detail">
+                    <div className="pe-2 me-2 area-event-detail">
                         {renderDetailEvent()}
                     </div>
                 </div>
@@ -855,7 +855,7 @@ export function SidebarProfile(props){
                 </li>
                 <li className="sidebar-li-title">
                     <div className="d-flex flex-row flex-wrap justify-content-between align-items-center">
-                        <div className="mr-auto"><h5 className="mb-0">{defaultLang.lang.learningPlan}</h5></div>
+                        <div className="me-auto"><h5 className="mb-0">{defaultLang.lang.learningPlan}</h5></div>
                         <div 
                             className={`pb-1 tab-learning-plan text-lowercase ${state.activeLearningPlan===defaultLang.lang.inProgress && `tab-learning-plan-active`}`}
                             onClick={()=>setState({...state,activeLearningPlan:defaultLang.lang.inProgress})}
@@ -863,7 +863,7 @@ export function SidebarProfile(props){
                             {/* <span><i className="fa fa-circle circle-notif" aria-hidden="true"></i></span>&nbsp; */}
                             {defaultLang.lang.inProgress}<span>&nbsp;</span>
                         </div>
-                        <div className="pr-2 pl-2">&nbsp;</div>
+                        <div className="pe-2 ps-2">&nbsp;</div>
                         <div 
                             className={`pb-1 tab-learning-plan text-lowercase ${state.activeLearningPlan===defaultLang.lang.done && `tab-learning-plan-active`}`}
                             onClick={()=>setState({...state,activeLearningPlan:defaultLang.lang.done})}
@@ -894,7 +894,7 @@ export function SidebarProfile(props){
                 return(
                     <>
                         <LoadingData loading={state.loadingDataLearningPlan} type={`popup`}/>
-                        <div className="pr-5 pl-5 pt-4 mr-1 ml-1" style={cssTarget(state.loadingDataLearningPlan)}>
+                        <div className="pe-5 ps-5 pt-4 me-1 ms-1" style={cssTarget(state.loadingDataLearningPlan)}>
                             {renderProfile()}
                         </div>
                     </>
@@ -907,7 +907,7 @@ export function SidebarProfile(props){
                 return(
                     <>
                         <LoadingData loading={state.loadingDataLearningPlan} type={`popup`}/>
-                        <div className="pr-5 pl-5 pt-4 mr-1 ml-1" style={cssTarget(state.loadingDataLearningPlan)}>
+                        <div className="pe-5 ps-5 pt-4 me-1 ms-1" style={cssTarget(state.loadingDataLearningPlan)}>
                             {renderProfile()}
                         </div>
                     </>
@@ -925,10 +925,10 @@ export function SidebarProfile(props){
                 </linearGradient>
                 </defs>
             </svg>
-            <Offcanvas.Header className="pt-4 pb-0 pr-0 pl-0 mr-0 ml-0 d-block">
+            <Offcanvas.Header className="pt-4 pb-0 pe-0 ps-0 me-0 ms-0 d-block">
                 <div className="d-flex flex-column">
-                    <div className="d-flex flex-row flex-wrap align-items-center pr-5 pl-5 pb-5">
-                        <div className="profile-offcanvas pr-1">
+                    <div className="d-flex flex-row flex-wrap align-items-center pe-5 ps-5 pb-5">
+                        <div className="profile-offcanvas pe-1">
                             <Image 
                             src={securityData.Security_UserProfilePicture()} title={securityData.Security_UserName()}
                             fluid={true}
@@ -946,7 +946,7 @@ export function SidebarProfile(props){
                                 </div>
                             </div>
                         </div>
-                        <div className="ml-auto">
+                        <div className="ms-auto">
                             <CloseButton onClick={()=>handleClose()} />
                         </div>
                     </div>
@@ -957,7 +957,7 @@ export function SidebarProfile(props){
                             `}
                             onClick={()=>setState({...state,activeTab:'profile'})}
                         >{defaultLang.lang.profileSummary}</div>
-                        <div className="pr-5 pl-5">&nbsp;</div>
+                        <div className="pe-5 ps-5">&nbsp;</div>
                         <div                        
                             className={`tab-link pb-1 
                                 ${state.activeTab==='calendar' && `tab-link-active`}

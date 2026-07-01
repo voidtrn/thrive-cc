@@ -109,7 +109,7 @@ function UsersDetail(props){
                     </div>
                     <div className="clearfix">
                         <div className="panel-body">
-                            <a  className="float-right btn btn-default" label="Back to overview" data-ui-loader="" href={routeAdmin.users.path} >
+                            <a  className="float-end btn btn-default" label="Back to overview" data-ui-loader="" href={routeAdmin.users.path} >
                                 <i className="fa fa-arrow-left aria-hidden=" true></i> Back to overview</a>        
                         </div>
                     </div>

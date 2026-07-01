@@ -253,7 +253,7 @@ function RewardDetail(props){
             </div>
             <div className="clearfix">
                 <div className="panel-body">
-                    <a className="float-right btn btn-default" href={routeAdmin.reward.path} label="Back to overview" data-ui-loader="">
+                    <a className="float-end btn btn-default" href={routeAdmin.reward.path} label="Back to overview" data-ui-loader="">
                         <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
                 </div>
             </div>
@@ -437,7 +437,7 @@ function RewardDetail(props){
                                             <img style={{width:"160px",height:"auto"}}  src={file}    alt="" onError={addDefaultSrc} />
 
                                             <br/>
-                                            <span className='badge badge-primary' id="upload-name" name="upload-name">{items.reward_image===""? "images": items.reward_image}</span>
+                                            <span className='badge bg-primary' id="upload-name" name="upload-name">{items.reward_image===""? "images": items.reward_image}</span>
                                                         
                                             <div className="help-block"></div>
                                         </div>

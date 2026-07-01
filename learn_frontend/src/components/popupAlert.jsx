@@ -61,7 +61,7 @@ export function Alert(){
             onExited={()=>closeModal()}
         >
             <Modal.Header style={{border:0}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
                     <img src={`${env.assets}img/close-btn-blue.png`}/>
                 </button>                
             </Modal.Header>
@@ -290,7 +290,7 @@ export function PopupShareArticle(){
                 }
             </style>
             <Modal.Header>
-                <button type="button" className="close quiz-btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn-blue.png`}/></button>
+                <button type="button" className="btn-close quiz-btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn-blue.png`}/></button>
             </Modal.Header>
             <Modal.Body>
                 <div className="tab-content" >
@@ -636,7 +636,7 @@ export function PopupQuiz(){
                 }
             </style>
             <Modal.Header>
-                <button type="button" className="close quiz-btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn-blue.png`}/></button>
+                <button type="button" className="btn-close quiz-btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn-blue.png`}/></button>
             </Modal.Header>
             <Modal.Body>
                 <div className="tab-content" >
@@ -784,7 +784,7 @@ export function PopupSubmitIdea(){
             className={"popup-submit-idea"}
         >
             <Modal.Header className={"popup-submit-idea"}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" onClick={()=>setModalShow(false)}><img src={`${env.assets}img/close-btn.png`}/></button>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>setModalShow(false)}><img src={`${env.assets}img/close-btn.png`}/></button>
             </Modal.Header>
             <Modal.Body>
                 <div className="tab-content" >
@@ -885,7 +885,7 @@ export function PopupRedeem(){
             dialogClassName={'dialog-popup-reedem'}
         >
             <Modal.Header className={"popup-reedem"}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()} style={{top:"17px !important"}}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()} style={{top:"17px !important"}}>
                     <img src={`${env.assets}img/close-btn.png`} /></button>
                 <br/>
                 <img src={`${env.assets}img/redeem-popup.png`} style={{maxWidth:'100%',position:'absolute', top:0, left:0}}></img>
@@ -959,7 +959,7 @@ export function PopupSubscribe(){
             onExited={()=>closeModal()}
         >
             <Modal.Header className={"popup-subscribe"}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn.png`}/></button>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn.png`}/></button>
             </Modal.Header>
             <Modal.Body>
                 <div className="tab-content" >
@@ -1048,7 +1048,7 @@ export function PopupRegisterCourse(){
             className={"popup-areyousure"}
         >
             <Modal.Header className={"popup-areyousure"} style={{borderBottom:'none'}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn-blue.png`}/></button>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn-blue.png`}/></button>
                 <br/>
             </Modal.Header>
             <Modal.Body>
@@ -1272,7 +1272,7 @@ export function PopupSaveAgreeTraining(){
             onExited={()=>closeModal()}
         >
             <Modal.Header style={{border:0}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
                     <img src={`${env.assets}img/close-btn-blue.png`}/>
                 </button>                
             </Modal.Header>
@@ -1343,7 +1343,7 @@ export function PopupChangeStatusForSupervisor(){
             onExited={()=>closeModal()}
         >
             <Modal.Header style={{border:0}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
                     <img src={`${env.assets}img/close-btn-blue.png`}/>
                 </button>                
             </Modal.Header>
@@ -1529,7 +1529,7 @@ export function PopupNetworkSubmit(){
             onExited={()=>closeModal()}
         >
             <Modal.Header style={{border:0}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
                     <img src={`${env.assets}img/close-btn-blue.png`}/>
                 </button>                
             </Modal.Header>
@@ -1783,7 +1783,7 @@ export function PopupPreferredTopic(){
             onExited={()=>closeModal()}
         >
             <Modal.Header style={{border:0}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
                     <img src={`${env.assets}img/close-btn-blue.png`}/>
                 </button>                
             </Modal.Header>
@@ -1896,7 +1896,7 @@ export function PopupFaq(){
             onEnter={()=>showFaq()}
         >
             <Modal.Header style={{border:0}}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" style={{margin:'-0.2rem -1rem -1rem auto'}} onClick={()=>closeModal()}>
                     <img src={`${env.assets}img/close-btn-blue.png`}/>
                 </button>                
             </Modal.Header>
@@ -2016,7 +2016,7 @@ export function PopupProfileRedeemPoints(){
             dialogClassName={'dialog-popup-reedem'}
         >
             <Modal.Header className={"popup-reedem"}>
-                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()} style={{top:"17px !important"}}>
+                <button type="button" className="btn-close" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()} style={{top:"17px !important"}}>
                     <img src={`${env.assets}img/close-btn.png`} /></button>
                 <br/>
                 <img src={`${env.assets}img/redeem-popup.png`} style={{maxWidth:'100%',position:'absolute', top:0, left:0}}></img>
@@ -2107,19 +2107,19 @@ export function PopupFinishSetLearningPlan(){
                     <div className="text-center pb-3">
                         {global.modalProp.data?
                         <div className="d-flex flex-row flex-wrap justify-content-center">
-                            <div className="btn-choose-step result-step m-1 pr-3 pl-3 pt-2 pb-2">
+                            <div className="btn-choose-step result-step m-1 pe-3 ps-3 pt-2 pb-2">
                                 { global.modalProp.data[0].title_menu }
                             </div>
                             <div className="arrow-step m-1 p-2">
                                 <i className="fa fa-chevron-right " aria-hidden="true" ></i>
                             </div>
-                            <div className="btn-choose-step result-step m-1 pr-3 pl-3 pt-2 pb-2">
+                            <div className="btn-choose-step result-step m-1 pe-3 ps-3 pt-2 pb-2">
                                 { lang=='ENG' ? global.modalProp.data[1].title_eng : global.modalProp.data[1].title_ind}
                             </div>
                             <div className="arrow-step m-1 p-2">
                                 <i className="fa fa-chevron-right " aria-hidden="true" ></i>
                             </div>
-                            <div className="btn-choose-step result-step m-1 pr-3 pl-3 pt-2 pb-2">
+                            <div className="btn-choose-step result-step m-1 pe-3 ps-3 pt-2 pb-2">
                                 { lang=='ENG' ? global.modalProp.data[2].title :  global.modalProp.data[2].title_ind}
                             </div>
                         </div>
@@ -2129,9 +2129,9 @@ export function PopupFinishSetLearningPlan(){
                         <div dangerouslySetInnerHTML={{__html:defaultLang.lang.confirmLearningPlan}}/>
                     </div>
                     <div className="d-flex flex-row text-uppercase justify-content-center pt-5">
-                        <div className="pr-5 btn-confirm" onClick={()=>confirmPlan()}>{defaultLang.lang.yes}</div>
-                        <div className="pr-3 pl-3">&nbsp;</div>
-                        <div className="pl-5 btn-confirm" onClick={()=>closeModal()}>{defaultLang.lang.no}</div>
+                        <div className="pe-5 btn-confirm" onClick={()=>confirmPlan()}>{defaultLang.lang.yes}</div>
+                        <div className="pe-3 ps-3">&nbsp;</div>
+                        <div className="ps-5 btn-confirm" onClick={()=>closeModal()}>{defaultLang.lang.no}</div>
                     </div>
 
                 </div>
@@ -2286,7 +2286,7 @@ export function PopupSff(){
         >
             <Modal.Header className='popup-header-sff pb-0 pt-0'>
                 <img src={`${env.assets}img/Artboard 3.png`} width={150}></img>
-                <button type="button" className="close mt-1" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn.png`}/></button>
+                <button type="button" className="btn-close mt-1" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn.png`}/></button>
             </Modal.Header>
             <Modal.Body className={"popup-body-finish-learning-plan m-3"}>
                 <LoadingData loading={loading} type={'popup'}/>
@@ -2299,8 +2299,8 @@ export function PopupSff(){
                     </div>
                     <div className="d-flex flex-row text-uppercase justify-content-center pt-5 pb-2">
                         <div className="btn-confirm" onClick={()=>window.location.href=state.content_hyperlink_url}>{defaultLang.lang.moreInfo}</div>
-                        <div className="pr-3 pl-3">&nbsp;</div>
-                        <div className="pl-5 btn-confirm" onClick={()=>registerSff()}>{defaultLang.lang.registerNow}</div>
+                        <div className="pe-3 ps-3">&nbsp;</div>
+                        <div className="ps-5 btn-confirm" onClick={()=>registerSff()}>{defaultLang.lang.registerNow}</div>
                     </div>
                 </div>
             </Modal.Body>
@@ -2430,7 +2430,7 @@ export function PopupWorkShop(){
         >
             <Modal.Header className='popup-header-sff pb-0 pt-0'>
                 {/* <img src={`${env.assets}img/Artboard 3.png`} width={150}></img> */}
-                <button type="button" className="close mt-1" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn.png`}/></button>
+                <button type="button" className="btn-close mt-1" data-dismiss="modal" aria-hidden="true" onClick={()=>closeModal()}><img src={`${env.assets}img/close-btn.png`}/></button>
             </Modal.Header>
             <Modal.Body className={"popup-body-finish-learning-plan m-3"}>
                 <LoadingData loading={loading} type={'popup'}/>
@@ -2444,7 +2444,7 @@ export function PopupWorkShop(){
                     <div className="d-flex flex-row text-uppercase justify-content-center pt-5 pb-2">
                         {
                             renderButton.map((v,idx)=>
-                                <div key={idx} className="btn-confirm pr-4 pl-4" onClick={v.click}>{v.desc}</div>
+                                <div key={idx} className="btn-confirm pe-4 ps-4" onClick={v.click}>{v.desc}</div>
                             )
                         }
                     </div>
@@ -2587,9 +2587,9 @@ export function PopupChooseTypeLearningPlan(){
                         <div dangerouslySetInnerHTML={{__html:defaultLang.lang.txtPopupChooseTypeLearningPlan}}/>
                     </div>
                     <div className="d-flex flex-row text-uppercase justify-content-center pt-5">
-                        <div className="pr-5 btn-confirm" onClick={()=>chooseType(defaultLang.lang.txtPresetLearningPlan)}>{defaultLang.lang.txtPresetLearningPlan}</div>
-                        <div className="pr-3 pl-3">&nbsp;</div>
-                        <div className="pl-5 btn-confirm" onClick={()=>chooseType(defaultLang.lang.txtCustomLearningPlan)}>{defaultLang.lang.txtCustomLearningPlan}</div>
+                        <div className="pe-5 btn-confirm" onClick={()=>chooseType(defaultLang.lang.txtPresetLearningPlan)}>{defaultLang.lang.txtPresetLearningPlan}</div>
+                        <div className="pe-3 ps-3">&nbsp;</div>
+                        <div className="ps-5 btn-confirm" onClick={()=>chooseType(defaultLang.lang.txtCustomLearningPlan)}>{defaultLang.lang.txtCustomLearningPlan}</div>
                     </div>
 
                 </div>
@@ -2845,7 +2845,7 @@ export function PopupFormCustomLearningPlan(){
                                         {listTypeNModuleData.map((v,idx)=>
                                             typeNModuleComponent(v,idx)
                                         )}
-                                        <div className="button-add col-sm-8 p-0 pt-1 text-right">
+                                        <div className="button-add col-sm-8 p-0 pt-1 text-end">
                                             <button type="button" className="btn btn-primary" onClick={()=>addTemporaryModule()}>
                                                 {txtLang.formButtonAdd}
                                             </button>
@@ -2861,7 +2861,7 @@ export function PopupFormCustomLearningPlan(){
                                 <div>{state.listSelectedModule.length} MODULES</div>
                             </div>
                         </div>
-                        <div className="pr-2 overflow-auto">
+                        <div className="pe-2 overflow-auto">
                                 {state.listSelectedModule.length > 0 ?
                                     renderListModule()
                                 :
@@ -2874,7 +2874,7 @@ export function PopupFormCustomLearningPlan(){
                             </button>
                         </div> */}
                         {state.listSelectedModule.length > 0 ?
-                            <div className="text-right pt-2">
+                            <div className="text-end pt-2">
                                 <button type="button" className="btn btn-primary btn-sm btn-choose-step button-finish" onClick={()=>submitCustomLP()}>
                                     {defaultLang.lang.chooseTheseModuleText}
                                 </button>

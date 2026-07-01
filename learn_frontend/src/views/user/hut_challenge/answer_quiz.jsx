@@ -472,7 +472,7 @@ function AnswerQuiz(props) {
                     <a href={routeAll.routesUser.HUTChallenge.path} >
                       <p className="text-blue">
 
-                        <img src={env.assets + "landingpage/assets/images/hut/arrow-left.svg"} className="ml-2" />
+                        <img src={env.assets + "landingpage/assets/images/hut/arrow-left.svg"} className="ms-2" />
                         {t('textBack')}
                       </p>
                     </a>
@@ -725,7 +725,7 @@ function AnswerQuiz(props) {
                                                 onChange={handleChange.bind(this)}
                                                 required="required"
                                               />
-                                              <label className="form-check-label ml-4 mt-1 text-content-label-input" for={"answer_" + answerList.id}>
+                                              <label className="form-check-label ms-4 mt-1 text-content-label-input" for={"answer_" + answerList.id}>
                                                 {
                                                   state.selectLanguageQuestion == 'eng' ?
 
@@ -859,13 +859,13 @@ function AnswerQuiz(props) {
                                             <label className={
                                               answerList.correct == 1
                                                 ?
-                                                "form-check-label ml-4 mt-1  text-content-label-input-green"
+                                                "form-check-label ms-4 mt-1  text-content-label-input-green"
                                                 :
                                                 answerList.id == answerList.answer_id_by_user
                                                   ?
-                                                  "form-check-label ml-4 mt-1 text-content-label-input-red"
+                                                  "form-check-label ms-4 mt-1 text-content-label-input-red"
                                                   :
-                                                  "form-check-label ml-4 mt-1 text-content-label-input"
+                                                  "form-check-label ms-4 mt-1 text-content-label-input"
                                             }>
                                               {
                                                 state.selectLanguageQuestion == 'eng' ?
