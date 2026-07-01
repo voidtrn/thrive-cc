@@ -4,8 +4,10 @@ import routeAll from '../../helpers/route';
 import{  Modal } from 'react-bootstrap';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import {Alert} from '../../components/popupAlert';
+import { useLocation } from 'react-router-dom';
 
 function Home(props){
+    const location = useLocation()
     const showFeedback = securityData.Security_ShowUserFeedback()
     const theme = securityData.Security_getTheme()
     const assets = env.assets
@@ -28,7 +30,7 @@ function Home(props){
     const showPopupRating = async () => {
         if(securityData.Security_getPlatformId()){
             const data = {
-                id: new URLSearchParams(props.location.search).get('rating'),
+                id: new URLSearchParams(location.search).get('rating'),
                 user_id: securityData.Security_UserId(),
                 platform_id: securityData.Security_getPlatformId()
             }
@@ -50,7 +52,7 @@ function Home(props){
 
     useEffect(()=>{
         showPopupRating()
-    },[props.location.search])
+    },[location.search])
 
     const funcListFeedBack = async (type)=>{
         const param = {

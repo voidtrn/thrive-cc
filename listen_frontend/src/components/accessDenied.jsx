@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { securityData } from '../helpers/globalHelper';
+import { useLocation } from 'react-router-dom';
 const theme = securityData.Security_getTheme()
 function AccessDenied(props){
+    const location = useLocation()
     useEffect(()=>{
-      if(props.location.data != undefined){
-        if(!props.location.data.accessPlatform){
+      if(location.state != undefined){
+        if(!location.state.accessPlatform){
           alert("YOU DONT HAVE ACCESS TO THIS PAGE");
         }
       }else{

@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import routeAll from '../../helpers/route';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 function UsersDetail(props){
+    const location = useLocation()
     const history = useNavigate()
     const routeAdmin = routeAll.routesAdmin
-    const nameType = new URLSearchParams(props.location.search).get('type')
+    const nameType = new URLSearchParams(location.search).get('type')
 
     const [items, setItems] = useState([])
     const [editData, setEditData] = useState(false)
@@ -14,7 +15,7 @@ function UsersDetail(props){
 
     const getDetail= useCallback(async() =>{
         const data = {
-            md5ID: new URLSearchParams(props.location.search).get('data')
+            md5ID: new URLSearchParams(location.search).get('data')
         }
         if(data.md5ID!== null){
             setEditData(true)
@@ -25,7 +26,7 @@ function UsersDetail(props){
                 alert(response);
             }
         }
-    },[props.location.search])
+    },[location.search])
 
     const getUserId = useCallback(() => {
         var dataUser = axiosLibrary.getUserInfo();

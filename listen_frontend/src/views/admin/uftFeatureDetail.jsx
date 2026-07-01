@@ -1,16 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import { env, securityData } from '../../helpers/globalHelper';
 import routeAll from '../../helpers/route';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 function UftFeatureDetail(props){
+    const location = useLocation()
     const history = useNavigate()
     const routeAdmin = routeAll.routesAdmin
     const file_path = env.userDocument
-    const fileInput = React.createRef()
+    const fileInput = useRef(null)
     const reader = new FileReader()
-    const nameType = new URLSearchParams(props.location.search).get('type')
+    const nameType = new URLSearchParams(location.search).get('type')
 
     const [editData, setEditData] = useState(false)
     const [deleteData, setDeleteData] = useState(false)
@@ -26,7 +27,7 @@ function UftFeatureDetail(props){
 
     const getDetail= useCallback(async() =>{
         const data = {
-            md5ID: new URLSearchParams(props.location.search).get('data')
+            md5ID: new URLSearchParams(location.search).get('data')
         }
         if(data.md5ID!== null){
             setEditData(true)
@@ -39,7 +40,7 @@ function UftFeatureDetail(props){
                 alert(response);
             }
         }
-    },[file_path,props.location.search])
+    },[file_path,location.search])
 
     const getUserId = useCallback(() => {
         var dataUser = axiosLibrary.getUserInfo();

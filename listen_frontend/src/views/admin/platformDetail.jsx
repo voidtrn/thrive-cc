@@ -1,21 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 import makeAnimated from 'react-select/animated';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import { env } from '../../helpers/globalHelper';
 import routeAll from '../../helpers/route';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 function PlatformDetail(props){
+    const location = useLocation()
     const history = useNavigate()
     const animatedComponents = makeAnimated();
     const routeAdmin = routeAll.routesAdmin
     const config = axiosLibrary.getAuthHeader();
     const file_path = env.userDocument
-    const fileInput = React.createRef()
+    const fileInput = useRef(null)
     const reader = new FileReader()
-    const nameType = new URLSearchParams(props.location.search).get('type')
+    const nameType = new URLSearchParams(location.search).get('type')
 
     const [editData, setEditData] = useState(false)
     const [deleteData, setDeleteData] = useState(false)
@@ -97,7 +98,7 @@ function PlatformDetail(props){
     const getPlatformDtl=useCallback(async()=>{
         //get data for edit in here
         const data = {
-            md5ID: new URLSearchParams(props.location.search).get('data')
+            md5ID: new URLSearchParams(location.search).get('data')
         }
         if(data.md5ID!== null){
             setEditData(true)
@@ -151,7 +152,7 @@ function PlatformDetail(props){
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[file_path,props.location.search])
+    },[file_path,location.search])
 
     const getAllCountry= useCallback(async () =>{
         let responseJson = await axiosLibrary.getData("dialoguePlatform/GetAllCountry",config);

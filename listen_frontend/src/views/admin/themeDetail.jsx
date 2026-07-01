@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import routeAll from '../../helpers/route';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import Pagination from 'react-js-pagination';
 import { env, securityData } from '../../helpers/globalHelper';
 
 function fnBuildLabelName(sourcetext)
 {
+    const location = useLocation()
     var arr = sourcetext.split('_');
     var str_rtn = "";
     for(var x = 0; x < arr.length; x++){
@@ -37,9 +38,9 @@ function ThemeDetail(props){
     const [cancelDelete, setCancelDelete] = useState(false)
     const [srcImage, setSrcImage] = useState([])
     const routeAdmin = routeAll.routesAdmin
-    const nameType = new URLSearchParams(props.location.search).get('type')
+    const nameType = new URLSearchParams(location.search).get('type')
     const assets = env.assets
-    const fileInput = React.createRef()
+    const fileInput = useRef(null)
     const reader = new FileReader()
     const platform_id = securityData.Security_getPlatformId()
     const user_id = securityData.Security_UserId()
@@ -65,7 +66,7 @@ function ThemeDetail(props){
 
     const getDetail = async () => {
         const data = {
-            md5ID: new URLSearchParams(props.location.search).get('data')
+            md5ID: new URLSearchParams(location.search).get('data')
         }
         if(data.md5ID!== null){
             setEditData(true)

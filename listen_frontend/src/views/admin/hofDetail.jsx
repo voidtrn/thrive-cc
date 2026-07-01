@@ -3,14 +3,15 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import routeAll from '../../helpers/route';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { securityData } from '../../helpers/globalHelper';
 
 function HofDetail(props){
+    const location = useLocation()
     const history = useNavigate()
     const animatedComponents = makeAnimated();
     const routeAdmin = routeAll.routesAdmin
-    const nameType = new URLSearchParams(props.location.search).get('type')
+    const nameType = new URLSearchParams(location.search).get('type')
 
     const [editData, setEditData] = useState(false)
     const [deleteData, setDeleteData] = useState(false)
@@ -49,7 +50,7 @@ function HofDetail(props){
 
     const getDetail= async() =>{
         const data = {
-            md5ID: new URLSearchParams(props.location.search).get('data')
+            md5ID: new URLSearchParams(location.search).get('data')
         }
         if(data.md5ID!== null){
             setEditData(true)

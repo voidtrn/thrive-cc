@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import { env, securityData } from '../../helpers/globalHelper';
 import routeAll from '../../helpers/route';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 function UftConfigDetail(props){
+    const location = useLocation()
     const history = useNavigate()
     const routeAdmin = routeAll.routesAdmin
     const file_path = env.userDocument
@@ -21,7 +22,7 @@ function UftConfigDetail(props){
 
     const getDetail= useCallback(async() =>{
         const data = {
-            md5ID: new URLSearchParams(props.location.search).get('data'),
+            md5ID: new URLSearchParams(location.search).get('data'),
             platform_id: platform_id
         }
         if(data.platform_id !== null){
@@ -34,7 +35,7 @@ function UftConfigDetail(props){
                 alert(response);
             }
         }
-    },[file_path,props.location.search])
+    },[file_path,location.search])
 
     const getUserId = useCallback(() => {
         var dataUser = axiosLibrary.getUserInfo();

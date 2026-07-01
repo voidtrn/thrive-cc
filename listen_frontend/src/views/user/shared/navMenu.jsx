@@ -49,14 +49,17 @@ function NavMenu(props){
         }
     }
 
-    useEffect( async ()=>{
-        if(securityData.Security_getPlatformId())
-        {
-            let responseJson = await axiosLibrary.postData('dialogueTheme/SelectDataByPlatform',{platform_id:securityData.Security_getPlatformId(),listTheme:1});
-            if(responseJson.status===200){
-                setList_theme(responseJson.data.data)
+    useEffect(()=>{
+        const fetchTheme = async () => {
+            if(securityData.Security_getPlatformId())
+            {
+                let responseJson = await axiosLibrary.postData('dialogueTheme/SelectDataByPlatform',{platform_id:securityData.Security_getPlatformId(),listTheme:1});
+                if(responseJson.status===200){
+                    setList_theme(responseJson.data.data)
+                }
             }
         }
+        fetchTheme()
     },[securityData.Security_getPlatformId()])
     
     const renderNav = ()=>{
