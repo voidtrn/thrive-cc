@@ -23,6 +23,17 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/root/.local/bin/rtk hook claude"
+          }
+        ]
+      }
     ]
   }
 }
