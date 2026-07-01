@@ -464,7 +464,7 @@ function Learning(props){
                                                     <Rating 
                                                         size={20} 
                                                         fillColor={'#000000'} 
-                                                        ratingValue={state.step2? state.step2.rating? state.step2.rating * 20 : 0 : 50} 
+                                                        initialValue={state.step2? state.step2.rating? state.step2.rating : 0 : 2.5}
                                                         readonly={true}
                                                         style={{marginTop: "-5%"}}
                                                     />
@@ -610,7 +610,7 @@ function Learning(props){
                                                                 size={12} 
                                                                 fillColor={'#ee881e'}
                                                                 emptyColor={'#c67331'}  
-                                                                ratingValue={value.val_rating * 20} 
+                                                                initialValue={value.val_rating}
                                                                 readonly={true}
                                                                 style={{marginTop: "-5%"}}
                                                             />,
