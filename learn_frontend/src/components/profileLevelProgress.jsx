@@ -100,7 +100,7 @@ export function LevelProgress(){
                     //     </div>
                     // </div>
         //         </div>
-        //         <div className="pt-2 pb-2 pl-4 ml-2 pr-2  w-100">
+        //         <div className="pt-2 pb-2 ps-4 ms-2 pe-2  w-100">
         //             {renderPaddingTop}
         //             <div className='row align-items-center'>
         //                 <div className={`${classNameImage}`} style={{background:`url(${srcImage}) transparent no-repeat center`}}>
@@ -122,17 +122,17 @@ export function LevelProgress(){
         return(
             <div key={idx} className="d-flex flex-column" >
                 <div className='d-flex flex-row align-items-center flex-shrink-1'>
-                    <div className='pr-4 flex-shrink-1 checklist-img pt-4 pb-4'><img src={srcIconCheck}/></div>
+                    <div className='pe-4 flex-shrink-1 checklist-img pt-4 pb-4'><img src={srcIconCheck}/></div>
                     <div className='img-level'>
                         <div className={`col-sm-12 ${classNameImage}`} style={{background:`url(${srcImage}) transparent round`}}>
                             <Element className="target-scroll" name={`element-${v.id}`}/>
                             <img src={srcIconDownload} onClick={()=>downloadImage({src:srcImageDownload,file_name:v.level_image})}/>
                         </div>
                     </div>
-                    <div className='pl-4 title-group-per-level'>{title}</div>
+                    <div className='ps-4 title-group-per-level'>{title}</div>
                 </div>
                 <div className='d-flex flex-row flex-shrink-1'>
-                    <div className='pr-4 flex-shrink-1'>
+                    <div className='pe-4 flex-shrink-1'>
                         <div className="vertical-progress-bar">
                             <div className="vertical-progress-bar-track">
                                 <div className="vertical-progress-bar-inner" style={{height:heightStyleProgress}}/>

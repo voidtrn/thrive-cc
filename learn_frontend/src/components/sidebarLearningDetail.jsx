@@ -286,13 +286,13 @@ export function SidebarLearningDetail(props){
     const renderHeader = ()=>{
         return(
         <div className="d-flex flex-row align-items-center p-5" style={cssTarget(state.loading)}>
-            <div className="pr-3 sidebar-learning-detail-image-header">
+            <div className="pe-3 sidebar-learning-detail-image-header">
                 <Image 
                     src={userDocument + "category/"+ state.skillsDataUsers.category_image} title={state.skillsDataUsers.category_image}
                     onError={(e)=>e.target.src="https://via.placeholder.com/300x190"}
                 />
             </div>
-            <div className="title-offcanvas pr-4">
+            <div className="title-offcanvas pe-4">
                 <div className="d-flex flex-column">
                     <div>
                         <h5 className='m-0 mb-1'>{lang==='ENG'?state.skillsDataUsers.title:state.skillsDataUsers.title_ind}</h5>
@@ -312,7 +312,7 @@ export function SidebarLearningDetail(props){
                     </div>
                 </div>
             </div>
-            <div className="ml-auto align-self-start">
+            <div className="ms-auto align-self-start">
                 <CloseButton onClick={()=>handleClose()} variant="white" />
             </div>
         </div>
@@ -353,7 +353,7 @@ export function SidebarLearningDetail(props){
     const renderBody = ()=>{
         return(
             state.dataModule ?
-            <div className={`col-sm-12 ${isMobile?`pr-3 pl-3`:`pr-5 pl-5`} pt-4 pb-4`} >
+            <div className={`col-sm-12 ${isMobile?`pe-3 ps-3`:`pe-5 ps-5`} pt-4 pb-4`} >
                 <LoadingData loading={state.loading}/>
                 <div className="d-flex flex-row justify-content-between detail-list-skill-header" style={cssTarget(state.loading)}>
                     <div>{state.dataModule.length} MODULES</div>
@@ -388,13 +388,13 @@ export function SidebarLearningDetail(props){
                                 {/* <div className="card-horizontal">
                                     <Card.Img className={`img-square-wrapper`} src={userDocument +v.content_image} />
                                     <Card.Body className="card-body-step-3-skill">
-                                        <div className="d-flex flex-row pb-3 pr-2">
+                                        <div className="d-flex flex-row pb-3 pe-2">
                                             <div>
                                                 <Card.Text className={`module-type-of-content text-uppercase`}>{lang==='ENG'?v.content_type_title_eng:v.content_type_title_ind}</Card.Text>
                                             </div>
-                                            <div className="ml-auto"> 
+                                            <div className="ms-auto"> 
                                                 <Card.Text className={`module-type-of-content font-italic`}>
-                                                    <div className="text-right module-optional">{renderOptionalDescription(v)}</div>
+                                                    <div className="text-end module-optional">{renderOptionalDescription(v)}</div>
                                                 </Card.Text>
                                             </div>
                                         </div>
@@ -433,7 +433,7 @@ export function SidebarLearningDetail(props){
                 </linearGradient>
                 </defs>
             </svg>
-            <Offcanvas.Header className="p-0 mr-0 ml-0 d-block">
+            <Offcanvas.Header className="p-0 me-0 ms-0 d-block">
                 <div className={`d-flex flex-column sidebar-learning-detail-header ${changeColor(state.skillsDataUsers.progress_lp,state.skillsDataUsers.date_modified).border}`}>
                     {renderHeader()}
                 </div>

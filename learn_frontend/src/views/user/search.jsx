@@ -506,7 +506,7 @@ function SearchArticle(props){
                                         }
 
                                         <div className="panel-heading" style={{paddingTop:'30px'}}>Refine by</div>
-                                        <div className="list-group pl-2" >
+                                        <div className="list-group ps-2" >
                                             {state.rsSidebarCategory4List.map((v,idx)=>
                                                 <Form.Check
                                                     type={'checkbox'}

@@ -461,7 +461,7 @@ function AnswerQuiz3(props) {
                     <a href={routeAll.routesUser.HUTChallenge.path} >
                       <p className="text-blue">
 
-                        <img src={env.assets + "landingpage/assets/images/hut/arrow-left.svg"} className="ml-2" />
+                        <img src={env.assets + "landingpage/assets/images/hut/arrow-left.svg"} className="ms-2" />
                         {t('textBack')}
                       </p>
                     </a>

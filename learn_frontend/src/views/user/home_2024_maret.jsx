@@ -387,7 +387,7 @@ function home(){
                                                     <div className="banner_slide_content">
                                                         <div className="container subscribe">
                                                             <div className="row">
-                                                                <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                                <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                                     <div className="banner_content text_white">
                                                                         <h2 className="animation test-animation-up fadeInDown" data-animation="fadeInDown" data-animation-delay="1s"
                                                                         dangerouslySetInnerHTML={{ __html:securityData.Security_lang() == "ENG" ? slider.headline : slider.headline_ind}}
@@ -420,7 +420,7 @@ function home(){
                                                 style={{background: "url('"+file_path+"slider/"+slider.slider_video+"')", backgroundSize: "cover"}}
                                             >
                                                 <div className="row m-0">
-                                                    <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                    <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                         
                                                         <div className="slider-content text_white">
                                                             <Fade opposite={true}>
@@ -501,7 +501,7 @@ function home(){
                             <div className='d-flex flex-row align-items-center'>
                                 <div id='sff-content-title' className='font-white home-slider-title'><b>{defaultLang.lang.skillsForFuture} &gt;</b>
                                 </div>
-                                <div className='ml-auto'>
+                                <div className='ms-auto'>
                                     <a className="see-all-button" href={routeAll.routesUser.viewcourse.path}>{defaultLang.lang.seeAll}</a>
                                 </div>
                             </div>

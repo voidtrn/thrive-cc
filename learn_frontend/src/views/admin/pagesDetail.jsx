@@ -89,7 +89,7 @@ function PagesDetail(props){
             </div>
             <div className="clearfix">
                 <div className="panel-body">
-                    <a className="float-right btn btn-default" href={routeAdmin.pages.path} label="Back to overview" data-ui-loader="">
+                    <a className="float-end btn btn-default" href={routeAdmin.pages.path} label="Back to overview" data-ui-loader="">
                         <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
                 </div>
             </div>

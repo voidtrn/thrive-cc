@@ -431,11 +431,11 @@ function Movement(props){
             <div className="row m-0">
                 <div id="movement-parties-1" className="col-sm-4">
                     <div className='movement-parties-container-1'>
-                        <div id="mov-parties-sub-div" className=" text-left">
+                        <div id="mov-parties-sub-div" className=" text-start">
                             <h5 id="movement-parties-subtitle-text" className="text-white" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementPartiesSubTitle}}>
                             </h5>
                         </div> 
-                        <div id="mov-parties-title-div" className="text-left">
+                        <div id="mov-parties-title-div" className="text-start">
                             <h1 id="movement-parties-title-text" className="text-white" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementPartiesTitle}}>
                             </h1>
                         </div> 
@@ -542,13 +542,13 @@ function Movement(props){
 
                 <div id="learning-collapse-area" className="col-md-12 collapse" >
                     <div className="row p-5">
-                        <div className="pr-4 movement-learn-master-leftbar col-sm-3">
+                        <div className="pe-4 movement-learn-master-leftbar col-sm-3">
                             {dataLearning.map((v,idx)=>
-                                <div key={idx} className={`movement-learning-leftbar ${idx===tempMovementLearning && `movement-learning-leftbar-active`} pr-4 pl-4 pt-3 pb-3 m-2`} onClick={()=>changeMovementLearning(idx)} onMouseEnter={()=>changeMovementLearning(idx)}>
+                                <div key={idx} className={`movement-learning-leftbar ${idx===tempMovementLearning && `movement-learning-leftbar-active`} pe-4 ps-4 pt-3 pb-3 m-2`} onClick={()=>changeMovementLearning(idx)} onMouseEnter={()=>changeMovementLearning(idx)}>
                                     <div className="d-flex flex-row align-items-center">
                                         <div>{v.data}</div>
                                         {idx===tempMovementLearning?
-                                        <div className="pl-3 span-desc-move">
+                                        <div className="ps-3 span-desc-move">
                                             <div dangerouslySetInnerHTML={{__html: v.desc_leftbar}}/>
                                         </div>
                                         :
@@ -558,7 +558,7 @@ function Movement(props){
                                 </div>
                             )}
                         </div>
-                        <div className="pl-4 movement-learning-rightbar col-sm-9 pt-3">
+                        <div className="ps-4 movement-learning-rightbar col-sm-9 pt-3">
                             {dataLearning.filter((_,idx)=>idx===movementLearning).map((v,idx)=>
                                 <div className={`d-flex flex-column`} key={idx}>
                                     <div className="pt-2 movement-learn-title-rightbar" style={{opacity:opacity}}><div dangerouslySetInnerHTML={{__html: v.title_rightbar}}/></div>
@@ -584,13 +584,13 @@ function Movement(props){
             <div id="movement-support-learn-row-1" className="row m-0">
                 <div className="col-md-12 p-0">
                     <div className=" row m-0">
-                        <div id="support-learn-title" className='col-md-2 pr-5 pl-5'>
+                        <div id="support-learn-title" className='col-md-2 pe-5 ps-5'>
                             <span className='text-color-purple' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementLearnSupportSubText}}>
                             </span>
                             <h1 className="text-white" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementLearnSupportTitleText}}>
                             </h1>
                         </div>
-                        <div id="support-learn-slider" className='col-md-10 pr-0'>
+                        <div id="support-learn-slider" className='col-md-10 pe-0'>
                             <Slider {...settings}>
                                 {
                                 learnSupportList.map(
@@ -618,7 +618,7 @@ function Movement(props){
                 <div className="col-md-12 p-0">
                     <div className=" row m-0 mb-5">
                         {activePlatform.hyperlinkUrl?
-                            <div id="support-learn-button-access" className='col-md-2 pr-5 pl-5'>
+                            <div id="support-learn-button-access" className='col-md-2 pe-5 ps-5'>
                                 <div className="p-3">
                                     <button id='access-now-btn' className='text-white' onClick={()=>window.open(activePlatform.hyperlinkUrl,'_blank')}>{defaultLang.lang.movementLearnSupportAccessBtnText}</button>
                                 </div>
@@ -629,7 +629,7 @@ function Movement(props){
                         
                         <div id="support-learn-explanation" className='col-md-10'>
                             <div className="row m-0 mb-5">
-                                <div className="col-md-7 pt-3 pr-5">
+                                <div className="col-md-7 pt-3 pe-5">
                                     <div className='mb-3'>
                                         <span className='text-color-purple font-weight-bold' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementLearnSupportAbout}}>
                                         </span>
@@ -639,7 +639,7 @@ function Movement(props){
                                 </div>
                                 <div className="col-md-5 pt-3">
                                     <div className="row m-0">
-                                        <div className="col-md-6 p-0 pr-5">
+                                        <div className="col-md-6 p-0 pe-5">
                                             <div className='mb-3'>
                                                 <span className='text-color-purple font-weight-bold' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementLearnSupportTarget}}>
                                                 </span>
@@ -648,7 +648,7 @@ function Movement(props){
                                             <p className='text-white' dangerouslySetInnerHTML={{ __html: activePlatform.participant }}>
                                             </p>
                                         </div>
-                                        <div className="col-md-6 p-0 pr-5">
+                                        <div className="col-md-6 p-0 pe-5">
                                             <div className='mb-3'>
                                                 <span className='text-color-purple font-weight-bold' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementLearnSupportFormat}}>
                                                 </span>
@@ -662,7 +662,7 @@ function Movement(props){
                             </div>
 
                             <div className="row m-0">
-                                <div id="programe-benefits" className="col-md-7 pt-3 pr-5">
+                                <div id="programe-benefits" className="col-md-7 pt-3 pe-5">
                                     <div className='mb-3'>
                                         <span className='text-color-purple font-weight-bold' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementLearnSupportBenefits}}>
                                         </span>
@@ -676,7 +676,7 @@ function Movement(props){
                                         {
                                         activePlatformFlag1.map(
                                             (loopData, i) =>
-                                                <div className="col-md-6 p-0 pr-5" key={i}>
+                                                <div className="col-md-6 p-0 pe-5" key={i}>
                                                     <img className="icon-platform-movement-support mb-2" src={env.assets + loopData[2]} alt={`icon-platform1-${i}`}/>
                                                     <p className='text-white' dangerouslySetInnerHTML={{ __html: loopData[1] }}>
                                                     </p>
@@ -688,7 +688,7 @@ function Movement(props){
                                         {
                                         activePlatformFlag2.map(
                                             (loopData, i) =>
-                                                <div className="col-md-6 p-0 pr-5" key={i}>
+                                                <div className="col-md-6 p-0 pe-5" key={i}>
                                                     <img className="icon-platform-movement-support mb-2" src={env.assets + loopData[2]} alt={`icon-platform1-${i}`}/>
                                                     <p className='text-white' dangerouslySetInnerHTML={{ __html: loopData[1] }}>
                                                     </p>
@@ -711,13 +711,13 @@ function Movement(props){
                         <div className='col-md-12 p-0'>
                             <div className='row m-0'>
                                 <div className='col-md-4 p-0'>
-                                    <div id="comp-management-title" className='pl-5'>
+                                    <div id="comp-management-title" className='ps-5'>
                                         <div>
                                             <span className='text-color-purple' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementCompManageSubTitle}}>
                                             </span>
                                         </div>
                                         <div className=' pt-2'>
-                                            <h1 className="text-black float-left mr-4" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementCompManageTitle}}>
+                                            <h1 className="text-black float-start me-4" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementCompManageTitle}}>
                                             </h1>
                                             <button id='dowload-comp-manage-btn' className='text-color-purple' onClick={()=>downloadFullDetailsPage()}>
                                                 {defaultLang.lang.movementCompManageDownloadBtn}
@@ -727,7 +727,7 @@ function Movement(props){
                                     </div>
                                 </div>
                                 <div className='col-md-2 offset-md-5 p-0'>
-                                    <div className='pl-5 pt-2'>
+                                    <div className='ps-5 pt-2'>
                                         {
                                             !collapsed?
                                             <button id='back-comp-manage-btn' className='text-color-purple' onClick={CloseAllcircle}>
@@ -751,14 +751,14 @@ function Movement(props){
                         </div>
                         
                     </div> */}
-                    <div id='comp-manage-title-row' className="d-flex flex-row m-0 pl-5">
-                        <div id="comp-management-title" className='pl-5'>
+                    <div id='comp-manage-title-row' className="d-flex flex-row m-0 ps-5">
+                        <div id="comp-management-title" className='ps-5'>
                             <div>
                                 <span className='text-color-purple' dangerouslySetInnerHTML={{__html:defaultLang.lang.movementCompManageSubTitle}}>
                                 </span>
                             </div>
                             <div className=' pt-2'>
-                                <h1 className="text-black float-left mr-4" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementCompManageTitle}}>
+                                <h1 className="text-black float-start me-4" dangerouslySetInnerHTML={{__html:defaultLang.lang.movementCompManageTitle}}>
                                 </h1>
                                 <button id='dowload-comp-manage-btn' className='text-color-purple' onClick={()=>downloadFullDetailsPage()}>
                                     {defaultLang.lang.movementCompManageDownloadBtn}
@@ -768,7 +768,7 @@ function Movement(props){
                         </div>
                     </div>
 
-                    <div className='pl-5 pt-2 comp-manage-back-button'>
+                    <div className='ps-5 pt-2 comp-manage-back-button'>
                         {
                             !collapsed?
                             <button id='back-comp-manage-btn' className='text-color-purple' onClick={CloseAllcircle}>
@@ -790,7 +790,7 @@ function Movement(props){
 
                         </div> */}
                         {/* <div className='col-md-4 p-0'> */}
-                            <div className='pl-5 pt-2'>
+                            <div className='ps-5 pt-2'>
                                 {
                                     collapsed?
                                     <div id='comp-manage-help-text'>
@@ -808,7 +808,7 @@ function Movement(props){
 
                     <div className='row m-0 w-100'>
                         <div className='col-md-12'>
-                            <div className='pl-5 pt-2'>
+                            <div className='ps-5 pt-2'>
                                 {
                                     !collapsed?
                                     <div id='comp-manage-learn' className='text-center'>

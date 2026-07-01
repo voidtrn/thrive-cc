@@ -340,7 +340,7 @@ function video(props){
                                                 <div className="banner_slide_content">
                                                     <div className="container subscribe">
                                                         <div className="row">
-                                                            <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                            <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                                 <div className="banner_content text_white">
                                                                     <h2 className="animation" data-animation="fadeInDown" data-animation-delay="1s"
                                                                     dangerouslySetInnerHTML={{ __html:securityData.Security_lang() == "ENG" ? slider.headline : slider.headline_ind}}
@@ -380,7 +380,7 @@ function video(props){
                                             <div className="banner_slide_content" >
                                                 <div className="container subscribe">
                                                     <div className="row">
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                        <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                             <div className="banner_content text_white">
                                                                 <h2 className="animation" data-animation="fadeInDown" data-animation-delay="1s"
                                                                 dangerouslySetInnerHTML={{ __html:securityData.Security_lang() == "ENG" ? slider.headline : slider.headline_ind}}
@@ -454,7 +454,7 @@ function video(props){
                                                 <div className="banner_slide_content">
                                                     <div className="container subscribe">
                                                         <div className="row">
-                                                            <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                            <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                                 <div className="banner_content text_white">
                                                                     <h2 className="animation" data-animation="fadeInDown" data-animation-delay="1s"
                                                                     dangerouslySetInnerHTML={{ __html:securityData.Security_lang() == "ENG" ? slider.headline : slider.headline_ind}}
@@ -502,7 +502,7 @@ function video(props){
                                                     <div className="banner_slide_content">
                                                         <div className="container subscribe">
                                                             <div className="row">
-                                                                <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                                <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                                     <div className="banner_content text_white">
                                                                         <h2 className="animation" data-animation="fadeInDown" data-animation-delay="1s"
                                                                         dangerouslySetInnerHTML={{ __html:securityData.Security_lang() == "ENG" ? slider.headline : slider.headline_ind}}
@@ -542,7 +542,7 @@ function video(props){
                                             <div className="banner_slide_content" >
                                                 <div className="container subscribe">
                                                     <div className="row">
-                                                        <div className="col-lg-12 col-md-12 col-sm-12 text-left">
+                                                        <div className="col-lg-12 col-md-12 col-sm-12 text-start">
                                                             <div className="banner_content text_white">
                                                                 <h2 className="animation" data-animation="fadeInDown" data-animation-delay="1s"
                                                                 dangerouslySetInnerHTML={{ __html:securityData.Security_lang() == "ENG" ? slider.headline : slider.headline_ind}}

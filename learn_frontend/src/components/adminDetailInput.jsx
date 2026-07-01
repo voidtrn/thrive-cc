@@ -118,7 +118,7 @@ function AdminDetailInput(props){
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;{typeof v.inputValue!=='object' ?`Old`:`New`} Image</label><br/>
                             <img style={{width:"160px",height:"auto",margin:"1rem"}}  src={typeof v.inputValue!=='object' ? file_path+v.inputValue :v.srcInput}  onError={addDefaultSrc} />
                             <br/>
-                            <span className='badge badge-primary' id={`${v.inputName}-span`} name={`${v.inputName}-span`}>{typeof v.inputValue!=='object' && v.inputValue}</span>
+                            <span className='badge bg-primary' id={`${v.inputName}-span`} name={`${v.inputName}-span`}>{typeof v.inputValue!=='object' && v.inputValue}</span>
                             <div className="help-block"></div>
                         </div>
                     )

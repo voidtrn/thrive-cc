@@ -362,7 +362,7 @@ function HomeSlider(props){
                                     <img className='card-img-top' src={env.userDocument+"article/"+contentItem.article_preview_image} 
                                     alt={securityData.Security_lang()==='ENG' ? contentItem.title : contentItem.title_ind} />
                                     <div className='card-body'>
-                                        <span className="badge badge-primary content-type-badge">
+                                        <span className="badge bg-primary content-type-badge">
                                             {defaultLang.lang.challengeCard}
                                         </span>
                                         <span className="content-category">{contentItem.category_title}</span><br/>
@@ -399,7 +399,7 @@ function HomeSlider(props){
                                 <div className='card h-100' >
                                     <img className='card-img-top' src={env.userDocument+contentItem.content_image} alt={contentItem.content_title} />
                                     <div className='card-body'>
-                                        <span className="badge badge-primary content-type-badge">{contentItem.content_type_title_eng}</span>
+                                        <span className="badge bg-primary content-type-badge">{contentItem.content_type_title_eng}</span>
                                         <span className="content-category">{contentItem.category_title_eng}</span><br/>
                                         <h4 className='card-title slider-content-title'>{contentItem.content_title_eng}</h4>
                                         <div className='slider-content-description'>

@@ -419,7 +419,7 @@ function ThemeDetail(props){
                         <div className="modal-dialog" style={{maxWidth:typeColorPicker==='clr'?"260px":"500px"}}>
                             <div className="modal-content" >
                                 <div className="modal-header">
-                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                    <button type="button" className="btn-close" data-dismiss="modal">&times;</button>
                                     <h4 className="modal-title">Pick a {typeColorPicker==='clr'? "Color" : "Linear Gradient Color"} </h4>
                                 </div>
                                 <div className="modal-body">

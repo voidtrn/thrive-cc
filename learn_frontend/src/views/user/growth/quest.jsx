@@ -526,7 +526,7 @@ function Quest(props) {
                                             <input type="file" required
                                               name="file_upload" id="file_upload" size="40" accept="image/jpg,image/png,image/jpeg" ref={fileInput} onChange={ajaxFileUploadImage.bind(this)} />
 
-                                            <span className='badge badge-primary' id="upload-name" name="upload-name">{itemQuest.file_upload === "" ? "images" : itemQuest.file_upload}</span>
+                                            <span className='badge bg-primary' id="upload-name" name="upload-name">{itemQuest.file_upload === "" ? "images" : itemQuest.file_upload}</span>
                                           </div>
                                         </div>
                                       </div>

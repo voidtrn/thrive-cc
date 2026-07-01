@@ -276,7 +276,7 @@ function SubCategoryDetail(props){
             </div>
             <div className="clearfix">
                 <div className="panel-body">
-                    <a className="float-right btn btn-default" href={routeAdmin.customPageSubCategory.path} label="Back to overview" data-ui-loader="">
+                    <a className="float-end btn btn-default" href={routeAdmin.customPageSubCategory.path} label="Back to overview" data-ui-loader="">
                         <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
                 </div>
             </div>
@@ -394,14 +394,14 @@ function SubCategoryDetail(props){
                                             <img style={{width:"160px",height:"auto"}}  src={file}    alt="" onError={addDefaultSrc} />
 
                                             <br/>
-                                            <span className='badge badge-primary' id="upload-name" name="upload-name">{items.category_image}</span>
+                                            <span className='badge bg-primary' id="upload-name" name="upload-name">{items.category_image}</span>
                                                         
                                             <div className="help-block"></div>
                                         </div>
                                         
                                         <div className="form-group field-usereditform-email required">
                                             <label className="control-label" htmlFor="usereditform-email">&nbsp;Background Color Card Sub Category<span style={{color:"#ff0404"}}>(*)</span></label>
-                                            <div className="col-sm-6 pl-0">
+                                            <div className="col-sm-6 ps-0">
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control pickerColor"
                                                 name="background_color" value={items.background_color}  readOnly={true}/>
                                             </div>

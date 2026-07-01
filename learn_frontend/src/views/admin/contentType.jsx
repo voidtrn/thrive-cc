@@ -41,7 +41,7 @@ function Table(props){
                         <td>{item.title}</td>
                         <td>{item.table_name}</td>
                         <td style={{width:"100px"}}><span style={ item.flag_active ? {} :{  color:"#ff0707" } }>{item.flag_active ? 'active' :'inactive'}</span></td>
-                        <td style={{textAlign:'center'}}><span className={ item.system_flag ? "badge badge-warning" :"badge badge-success" }><b>{item.system_flag ? 'System' :'Custom'}</b></span></td>
+                        <td style={{textAlign:'center'}}><span className={ item.system_flag ? "badge bg-warning" :"badge bg-success" }><b>{item.system_flag ? 'System' :'Custom'}</b></span></td>
                         <td style={{width:"150px"}}>
                             <a className="btn btn-primary btn-xs tt" onClick={props.edit.bind(this,item.id)} ><i className="fa fa-pencil"></i>&nbsp; edit</a> {" "}
                             { !item.system_flag ?

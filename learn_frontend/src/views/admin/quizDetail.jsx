@@ -244,7 +244,7 @@ function QuizDetail(props){
             </div>
             <div className="clearfix">
                 <div className="panel-body">
-                    <a className="float-right btn btn-default" onClick={handleBackToList} label="Back to list" data-ui-loader="">
+                    <a className="float-end btn btn-default" onClick={handleBackToList} label="Back to list" data-ui-loader="">
                         <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to list</a>
                 </div>
             </div>
