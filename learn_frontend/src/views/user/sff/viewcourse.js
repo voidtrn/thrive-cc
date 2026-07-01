@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from '../../../helpers/useHistory';
 import Slider from 'react-slick';
 import axiosLibrary from '../../../helpers/axiosLibrary';
 import { env, securityData } from '../../../helpers/globalHelper';

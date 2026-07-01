@@ -5,7 +5,7 @@ import makeAnimated from 'react-select/animated';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import { env } from '../../helpers/globalHelper';
 import routeAll from '../../helpers/route';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 import { cssTarget, LoadingAdmin } from '../../components/Loading';
 
 import { Tab, Row, Col, Nav } from 'react-bootstrap';

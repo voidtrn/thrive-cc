@@ -5,7 +5,7 @@ import React, {
 import routeAll from '../../helpers/route';
 import { env, securityData } from '../../helpers/globalHelper';
 import axiosLibrary from '../../helpers/axiosLibrary';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 
 import NavMenu from './shared/navMenu';
 import '../../i18n.js'

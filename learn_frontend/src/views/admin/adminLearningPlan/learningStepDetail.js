@@ -4,7 +4,7 @@ import React, {
     useState
 } from 'react';
 // import Pagination from 'react-js-pagination';
-import {useHistory } from 'react-router';
+import { useHistory } from '../../../helpers/useHistory';
 import axiosLibrary from '../../../helpers/axiosLibrary';
 import { securityData } from '../../../helpers/globalHelper';
 import routeAll from '../../../helpers/route';

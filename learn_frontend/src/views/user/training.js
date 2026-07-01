@@ -7,7 +7,7 @@ import Pagination from 'react-js-pagination';
 import moment from 'moment';
 import GlobalState from '../../helpers/globalState';
 import Style from '../../components/styleTraining';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from '../../helpers/useHistory';
 import routeAll from '../../helpers/route';
 
 const year = (new Date()).getFullYear();

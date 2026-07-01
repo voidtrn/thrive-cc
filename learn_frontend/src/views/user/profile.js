@@ -5,7 +5,7 @@ import defaultLang from '../../helpers/lang';
 import { Modal } from 'react-bootstrap';
 import { cssTarget, LoadingData } from '../../components/Loading';
 import routeAll from '../../helpers/route';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 import GlobalState from '../../helpers/globalState';
 import '../../assets/css/profile.scss';
 import { ProfileMyLearningPlan } from '../../components/profileMyLearning';

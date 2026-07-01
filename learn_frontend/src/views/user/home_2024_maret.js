@@ -4,7 +4,7 @@ import axiosLibrary from '../../helpers/axiosLibrary';
 import defaultLang from '../../helpers/lang';
 // import { cssTarget, LoadingData } from '../../components/Loading';
 // import routeAll from '../../helpers/route';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 import Slider from "react-slick";
 // import HomeSubscribe from './home_subscribe';
 import GlobalState from '../../helpers/globalState';

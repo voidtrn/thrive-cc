@@ -6,7 +6,7 @@ import DataTable from 'react-data-table-component';
 import { LoadingDatatable } from '../../components/Loading';
 import { env } from '../../helpers/globalHelper';
 import routeAll from '../../helpers/route';
-import {useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 
 const routeAdmin = routeAll.routesAdmin
 

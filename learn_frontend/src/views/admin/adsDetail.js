@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axiosLibrary from '../../helpers/axiosLibrary';
 import routeAll from '../../helpers/route';
-import { useHistory } from 'react-router';
+import { useHistory } from '../../helpers/useHistory';
 import { env, securityData } from '../../helpers/globalHelper';
 import { cssTarget, LoadingAdmin } from '../../components/Loading';
 import defaultLang from '../../helpers/lang';
