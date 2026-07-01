@@ -170,7 +170,7 @@ function TrainingReportSchedule(props){
     return(
         <div className="panel-body">
             <form id="search-form" onSubmit={doSearch} method="post" style={{display: "block"}} encType='multipart/form-data' >
-                <div className="form-group field-usereditform-email required">
+                <div className="mb-3 field-usereditform-email required">
                     <label className="control-label" forHtml="usereditform-email">&nbsp;Date <span style={{color:"#ff0404"}}>(*)</span></label>
                     <input type="date" id="start_date" required  style={{width:"150px"}} className="form-control" name="startDateCriteria" 
                         aria-required="true" aria-invalid="false" value={startDateCriteria} onChange={(e) => (setStartDateCriteria(e.target.value))} />
@@ -179,7 +179,7 @@ function TrainingReportSchedule(props){
                         aria-required="true" aria-invalid="false" value={endDateCriteria} onChange={(e) => (setEndDateCriteria(e.target.value))} />
                     <div className="help-block"></div>
                 </div>
-                <div className="form-group field-usereditform-email required">
+                <div className="mb-3 field-usereditform-email required">
                     <button type="submit" className="btn btn-primary" name="btnSubmit" >Search</button>{' '}
                     {searchClicked?
                        <button onClick={handleExport} type="reset" className="btn btn-primary" ><i className="fa fa-file-excel-o"></i>&nbsp;Export XLSX</button>

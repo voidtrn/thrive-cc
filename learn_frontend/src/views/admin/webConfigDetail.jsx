@@ -104,13 +104,13 @@ function WebConfigDetail(props){
                         <Tab eventKey="detail" title={editData ? 'Edit: ' + items._code: 'New Data' }>
                         </Tab>
                     </Tabs>
-                    <div className="form-group field-usereditform-email">
+                    <div className="mb-3 field-usereditform-email">
                         <label className="control-label" htmlFor="usereditform-email">&nbsp;Config </label>
                         <input type="text" id="usereditform-email" style={{width:"80%"}} className="form-control" name="code" value={items._code || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" />
                         <div className="help-block"></div>
                     </div>
 
-                    <div className="form-group field-usereditform-email">
+                    <div className="mb-3 field-usereditform-email">
                         <label className="control-label" htmlFor="usereditform-email">&nbsp;Value </label>
                         <input type="text" id="usereditform-email" style={{width:"100%"}} className="form-control" name="value" value={items.value || ''} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                         <div className="help-block"></div>

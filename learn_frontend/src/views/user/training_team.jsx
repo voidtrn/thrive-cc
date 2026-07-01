@@ -257,7 +257,7 @@ function training_team(props){
             <div id="Leaderboard" className="tab-pane active show">	
                 <div className="content-badges-achieved">	
                     <form method="get" className="form-horizontal">
-                        <div className="form-group">
+                        <div className="mb-3">
                             <div className="col-sm-5">
                                 <select className="form-control select-filter inputSearch" name="status" value={state.selectStatusInput} onChange={(e)=>setState(state=>({...state, selectStatusInput:e.target.value}))}>
                                     <option value="">Semua Status</option>
@@ -267,7 +267,7 @@ function training_team(props){
                             </div>
                         </div>
 
-                        <div className="form-group">
+                        <div className="mb-3">
                             <div className="col-sm-5">
                                 <select className="form-control select-filter inputSearch" name="month" value={state.selectMonthInput} onChange={(e)=>setState(state=>({...state, selectMonthInput:e.target.value}))}>
                                     <option value="">Bulan</option>
@@ -287,7 +287,7 @@ function training_team(props){
                             </div>
                         </div>
                         
-                        <div className="form-group">
+                        <div className="mb-3">
                             <div className="col-sm-5">
                                 <select className="form-control select-filter inputSearch" name="year" value={state.selectYearInput} onChange={(e)=>setState(state=>({...state, selectYearInput:e.target.value}))}>
                                     <option value="">Tahun</option>

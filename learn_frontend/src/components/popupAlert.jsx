@@ -1575,7 +1575,7 @@ export function PopupNetworkSubmit(){
                                         <br/>
                                 <form id="formSubmittedArticle" key={items.id} autocomplete="off"  enctype="multipart/form-data" accept-charset="UTF-8"  method="post">		
                                     <div className="containerArticle">		
-                                        <div className="form-group field-usereditform-email">		
+                                        <div className="mb-3 field-usereditform-email">		
                                             <label className="control-label" for="usereditform-email">&nbsp;Title<span style={{ color: "#ff0404" }}>(*)</span></label>		
                                             <input type="text" id="usereditform-email" style={{ width: "50%" }} className="form-control" name="title" maxlength="50" 
                                             value={items.title} onChange={handleInputChange} aria-required="true" aria-invalid="false" required />		
@@ -1585,12 +1585,12 @@ export function PopupNetworkSubmit(){
                                                 </li>		
                                             </ul>		
                                         </div>		
-                                        <div className="form-group field-usereditform-email">		
+                                        <div className="mb-3 field-usereditform-email">		
                                             <label className="control-label" for="usereditform-email">&nbsp;Short Description<span style={{ color: "#ff0404" }}>(*)</span></label>		
                                             <input type="text" id="usereditform-email" style={{ width: "100%" }}className="form-control" name="description" maxlength="100" 
                                             value={items.description} onChange={handleInputChange} aria-required="true" aria-invalid="false" required />		
                                         </div>		
-                                        <div className="form-group field-usereditform-email">		
+                                        <div className="mb-3 field-usereditform-email">		
                                             <label className="control-label" for="usereditform-email">&nbsp;Document<span style={{ color: "#ff0404" }}>(*)</span></label>		
                                             <input type="file" id="usereditform-email" style={{ width: "100%" }} className="form-control 
                                             fileformSubmittedArticle" name="article_doc" aria-required="true" aria-invalid="false" 

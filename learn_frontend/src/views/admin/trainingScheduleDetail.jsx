@@ -194,42 +194,42 @@ function TrainingScheduleDetail(props){
                             <Tab.Content animation="true">
                                 <Tab.Pane eventKey="#tab-0">
                                     <form id="czfrom" onSubmit={submit} method="post" style={{display: "block"}} encType='multipart/form-data'>
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;Date <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="date" id="schedule_date" style={{width:"150px"}} className="form-control"
                                                 name="schedule_date" value={items.schedule_date} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;Start Time <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="schedule_start_time" style={{width:"150px"}} className="form-control" placeholder="hh:ii"
                                                 name="schedule_start_time" value={items.schedule_start_time} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;End Time <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="schedule_end_time" style={{width:"150px"}} className="form-control" placeholder="hh:ii"
                                                 name="schedule_end_time" value={items.schedule_end_time} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;End Date Registration <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="date" id="registration_end_date" style={{width:"150px"}} className="form-control"
                                                 name="registration_end_date" value={items.registration_end_date} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;Capacity <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="number" id="capacity" style={{width:"150px"}} className="form-control" required
                                                 name="capacity" value={items.capacity} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;Schedule Confirmation <span style={{color:"#ff0404"}}>(*)</span></label>
                                            
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
@@ -243,7 +243,7 @@ function TrainingScheduleDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-username required">
+                                        <div className="mb-3 field-usereditform-username required">
                                             <label className="control-label" htmlFor="usereditform-username">&nbsp;Link Conference <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="hyperlink_url" className="form-control"
                                                 name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />

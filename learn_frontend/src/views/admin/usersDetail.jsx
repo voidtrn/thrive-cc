@@ -144,12 +144,12 @@ function UsersDetail(props){
                                     <Col sm={12}>
                                     <Tab.Content animation="true">
                                         <Tab.Pane eventKey="#tab-0">
-                                            <div className="form-group field-usereditform-email">
+                                            <div className="mb-3 field-usereditform-email">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;IMDL ID </label>
                                                 <input type="text" id="usereditform-email" style={{width:"45%"}} className="form-control" name="id" value={items.id || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" maxLength="50"/>
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-usereditform-username required">
+                                            <div className="mb-3 field-usereditform-username required">
                                                 <label className="control-label" style={{display:"block"}} forHtml="usereditform-username">{'Redeem Points, Tier Points & Level'}</label>
                                                 <p>
                                                     <input type="text" id="usereditform-username" style={{width:"20%",display:"inline-table",textAlign:"right"}} 
@@ -166,17 +166,17 @@ function UsersDetail(props){
                                                     disabled aria-required="true" aria-invalid="false" maxLength="50" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-usereditform-email">
+                                            <div className="mb-3 field-usereditform-email">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Account </label>
                                                 <input type="text" id="usereditform-email" style={{width:"45%"}} className="form-control" name="account" value={items.account || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" maxLength="50" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-usereditform-email">
+                                            <div className="mb-3 field-usereditform-email">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Email </label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" name="email" value={items.email || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" maxLength="250" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-usereditform-email">
+                                            <div className="mb-3 field-usereditform-email">
                                             <label className="control-label">&nbsp;Status Active</label>
                                                 <select id="status_active" style={{width:"150px"}} className="form-control" name="status_active" value={items.status_active || ''} onChange={handleInputChange} disabled={editData ? true : false } >
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -185,7 +185,7 @@ function UsersDetail(props){
                                                 </select>
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-usereditform-email">
+                                            <div className="mb-3 field-usereditform-email">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Category User </label>
                                                 <input type="text" id="usereditform-email" style={{width:"40%"}} className="form-control" name="group_id" value={{
                                                     [0]:'USER',
@@ -196,7 +196,7 @@ function UsersDetail(props){
                                                 }[items.group_id]} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" maxLength="250" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            {/*<div className="form-group field-usereditform-email">
+                                            {/*<div className="mb-3 field-usereditform-email">
                                             <label className="control-label">&nbsp;Status Enable</label>
                                                 <select id="status_active" style={{width:"150px"}} className="form-control" name="status_enable" value={items.status_enable || ''} onChange={handleInputChange}>
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -205,59 +205,59 @@ function UsersDetail(props){
                                                 </select>
                                                 <div className="help-block"></div>
                                             </div>*/}
-                                            {/* <div className="form-group field-usereditform-email">
+                                            {/* <div className="mb-3 field-usereditform-email">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;Start Date </label>
                                                 <input type="date" id="usereditform-email" style={{width:"45%"}} className="form-control" name="validity_start_date" value={items.validity_start_date || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false"  />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-usereditform-email">
+                                            <div className="mb-3 field-usereditform-email">
                                                 <label className="control-label" htmlFor="usereditform-email">&nbsp;End Date </label>
                                                 <input type="date" id="usereditform-email" style={{width:"45%"}} className="form-control" name="validity_end_date" value={items.validity_end_date || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div> */}
                                         </Tab.Pane>
                                         <Tab.Pane eventKey="#tab-1">
-                                            <div className="form-group field-profile-firstname">
+                                            <div className="mb-3 field-profile-firstname">
                                                 <label className="control-label" htmlFor="profile-firstname">Name</label>
                                                 <input type="text" id="profile-firstname" style={{width:"75%"}} className="form-control" name="name" value={items.name || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" aria-invalid="false" maxLength="100" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Title</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="title" value={items.title || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" maxLength="500" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Business Unit</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="business_unit" value={items.business_unit || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" maxLength="500" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Directorate</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="directorate" value={items.directorate || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" maxLength="500" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Division P</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="division_p" value={items.division_p || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" maxLength="500" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Division Q</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="division_q" value={items.division_q || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" maxLength="500" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Department</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="department" value={items.department || ''} onChange={handleInputChange} disabled={editData ? true : false } aria-required="true" maxLength="500" />
                                                 <div className="help-block"></div> 
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">First Login</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="first_login" value={items.awb_first_login || ''} disabled aria-required="true" />
                                                 <div className="help-block"></div>
                                             </div>
-                                            <div className="form-group field-profile-lastname">
+                                            <div className="mb-3 field-profile-lastname">
                                                 <label className="control-label" htmlFor="profile-lastname">Last Login</label>
                                                 <input type="text" id="profile-lastname" style={{width:"75%"}} className="form-control" name="last_login" value={items.awb_last_access || ''} disabled aria-required="true" />
                                                 <div className="help-block"></div>

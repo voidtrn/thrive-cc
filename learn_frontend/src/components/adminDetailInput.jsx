@@ -19,7 +19,7 @@ function AdminDetailInput(props){
             switch (v.inputType.toLowerCase()) {
                 case 'textarea':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <textarea id={v.inputName} style={{width:v.inputWidth,height:v.inputHeight||"200px"}} className="form-control" name={v.inputName} onChange={(e)=>props.changeData(e)} aria-required="true" aria-invalid="false" defaultValue={v.inputValue} required={v.inputRequired} readOnly={v.inputReadOnly}></textarea>
                             <div className="help-block"></div>
@@ -27,7 +27,7 @@ function AdminDetailInput(props){
                     )
                 case 'select':
                     return(
-                        <div className="form-group field-profile-country" key={idx}>
+                        <div className="mb-3 field-profile-country" key={idx}>
                             <label className="control-label" htmlFor="profile-country">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <select id={v.inputName} style={{width:v.inputWidth}} className="form-control" 
                                 value={v.inputValue} onChange={(e)=>props.changeData(e)} name={v.inputName} aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly}>
@@ -40,7 +40,7 @@ function AdminDetailInput(props){
                     )
                 case 'select_search':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             {v.label?<label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>:null}
                             <Select
                                 className="basic-single"
@@ -67,7 +67,7 @@ function AdminDetailInput(props){
                     }
 
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <AsyncSelect
                                 className="basic-single"
@@ -84,7 +84,7 @@ function AdminDetailInput(props){
                     )
                 case 'select_multiple_search':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <Select
                                 className="basic-multi-select"
@@ -102,7 +102,7 @@ function AdminDetailInput(props){
                     )
                 case 'file':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}
                                 <br/> 
                                 <ul className="file-upload-requirement">
@@ -124,7 +124,7 @@ function AdminDetailInput(props){
                     )
                 case 'file_import':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label" forhtml="usereditform-email">&nbsp;Template <span style={{color:"#ff0404"}}>(*)</span>
                                 <br/>  
                                 <ul className="file-upload-requirement">
@@ -148,7 +148,7 @@ function AdminDetailInput(props){
                     )
                 case 'radio-inline':
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label><br/>
                             {v.inputRadioData.map((x,idx_x)=>
                                 <Form.Check 
@@ -167,7 +167,7 @@ function AdminDetailInput(props){
                     )
                 default:
                     return(
-                        <div className="form-group field-usereditform-email required" key={idx}>
+                        <div className="mb-3 field-usereditform-email required" key={idx}>
                             {v.label?<label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>:null}
                             <input type={v.inputType.toLowerCase()} id="usereditform-email" style={{width:v.inputWidth}} className="form-control"
                                 name={v.inputName} defaultValue={v.inputValue} onChange={(e)=>props.changeData(e)} aria-required="true" aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly} />

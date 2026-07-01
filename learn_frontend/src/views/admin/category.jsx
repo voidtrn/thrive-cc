@@ -217,7 +217,7 @@ function Category(props){
 
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
+                                <div className="mb-3">
                                     <label className="control-label">&nbsp;Section - Menu </label>
                                         <select value={menuId} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={handleSectionMenuChange.bind(this)}>
                                         <option value="empty">-select one-</option>

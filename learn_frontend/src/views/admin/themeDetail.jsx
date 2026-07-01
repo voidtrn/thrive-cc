@@ -328,7 +328,7 @@ function ThemeDetail(props){
                             <div className="summary">Showing <b>{offset+1} - {limit*(activePage-1)+limit}</b> of <b>{totalData}</b> records.</div><br/>
 
                             {ColumnsPaginate.map((Col,idx)=>
-                                <div className="form-group field-usereditform-email required" key={idx}>
+                                <div className="mb-3 field-usereditform-email required" key={idx}>
                                     <label className="control-label" htmlFor="usereditform-email">&nbsp;{fnBuildLabelName(Col.Field)} <span style={{color:"#ff0404"}}>(*) </span></label>
                                     {Col.Comment === ""?
                                         Col.Field.includes("status_active")?

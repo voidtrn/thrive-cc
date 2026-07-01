@@ -281,13 +281,9 @@ export function SidebarProfile(props){
             <div className="d-flex flex-row align-items-center" >
                 <div>
                     <div className="input-group add-content-input">
-                        <div className="input-group-prepend">
-                            <button className="btn button-plus btn-outline-secondary border-0" type="button" id="button-plus" onClick={()=>PlusMinusButton('plus')}><i className="fa fa-plus" aria-hidden="true"></i></button>
-                        </div>
+                        <button className="btn button-plus btn-outline-secondary border-0" type="button" id="button-plus" onClick={()=>PlusMinusButton('plus')}><i className="fa fa-plus" aria-hidden="true"></i></button>
                         <input type="text" min="1" max="100" className="form-control border-0 input-content" value={state.valueContentperWeek} aria-label="content/week" aria-describedby="content/week" disabled={true}/>
-                        <div className="input-group-append">
-                            <button className="btn button-minus btn-outline-secondary border-0 " type="button" id="button-minus" onClick={()=>PlusMinusButton('minus')}><i className="fa fa-minus" aria-hidden="true"></i></button>
-                        </div>
+                        <button className="btn button-minus btn-outline-secondary border-0 " type="button" id="button-minus" onClick={()=>PlusMinusButton('minus')}><i className="fa fa-minus" aria-hidden="true"></i></button>
                     </div>
                 </div>
                 <div className="ps-3 content-week">

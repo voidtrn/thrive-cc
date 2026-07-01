@@ -399,7 +399,7 @@ function PlatformDetail(props){
                                         <Col sm={12}>
                                         <Tab.Content animation="true">
                                             <Tab.Pane eventKey="#tab-0">
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label">&nbsp;Platform Name <span style={{color:"#ff0404"}}>(*)</span></label>
                                                     <input type="text" id="name" style={{width:"75%"}} className="form-control" name="name" value={items.name||''} onChange={handleInputChange.bind(this)} required/>
 
@@ -407,7 +407,7 @@ function PlatformDetail(props){
                                                 </div>
 
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Platform Image <span style={{color:"#ff0404"}}>(*) max upload file size : 300 KB, image resolution : (200 px * 200 px)</span></label>
                                                     <input type="file"  
                                                             name="platform_image" id="platform_image" size="40" accept="image/jpg,image/png,image/jpeg,image/gif" ref={fileInput} onChange={ajaxFileUploadImage.bind(this)} required={editData===false?true:false} className="form-control-file"/>
@@ -420,21 +420,21 @@ function PlatformDetail(props){
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label">&nbsp;IMDL <span style={{color:"#ff0404"}}>(*)</span></label>
                                                     <input type="text" id="imdl_param" style={{width:"75%"}} className="form-control" name="imdl_param" value={items.imdl_param||''} onChange={handleInputChange.bind(this)} required/>
 
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                {/* <div className="form-group field-usereditform-email required">
+                                                {/* <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label">&nbsp;Energy Points <span style={{color:"#ff0404"}}>(*)</span></label>
                                                     <input type="number" id="energy_point" style={{width:"75%"}} className="form-control" name="energy_point" value={items.energy_point} onChange={this.handleInputChange} required/>
 
                                                     <div className="help-block"></div>
                                                 </div> */}
 
-                                                <div className="form-group field-profile-country">
+                                                <div className="mb-3 field-profile-country">
                                                     <label className="control-label">&nbsp;Status Active</label>
                                                     <select id="profile-country" style={{width:"150px"}} className="form-control" name="status_active"  value={items.status_active||''} onChange={handleInputChange.bind(this)} required>
                                                         {editData ? null: <option value="">... Select this ...</option> }
@@ -445,43 +445,43 @@ function PlatformDetail(props){
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Country</label>
                                                     <Select  components={animatedComponents} isMulti isLoading={isLoadingCountry} options={optionCountry} className="basic-multi-select" classNamePrefix="select" name="optionCountry" onBlur={optionNull.bind(this)} onChange={(e)=>setOptionSelectedCountry(e)} value={optionSelectedCountry}/>
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Function</label>
                                                     <Select components={animatedComponents} isMulti isLoading={isLoadingFunction} options={optionFunction} className="basic-multi-select" classNamePrefix="select" name="optionFunction" onBlur={optionNull.bind(this)} onChange={(e)=>setOptionSelectedFunction(e)} value={optionSelectedFunction}/>
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Training Report Admin</label>
                                                     <Select components={animatedComponents} isMulti className="basic-multi-select" classNamePrefix="select" name="optionUser" isDisabled={true} onChange={(e)=>setOptionSelectedUsersTrainingReportAdmin(e)} value={optionSelectedUsersTrainingReportAdmin} />
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Training Admin</label>
                                                     <Select components={animatedComponents} isMulti className="basic-multi-select" classNamePrefix="select" name="optionUser" isDisabled={true} onChange={(e)=>setOptionSelectedUsersTrainingAdmin(e)} value={optionSelectedUsersTrainingAdmin} />
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Admin</label>
                                                     <Select components={animatedComponents} isMulti className="basic-multi-select" classNamePrefix="select" name="optionUser" isDisabled={true} onChange={(e)=>setOptionSelectedUsers(e)} value={optionSelectedUsers} />
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Super Admin</label>
                                                     <Select components={animatedComponents} isMulti className="basic-multi-select" classNamePrefix="select" name="optionUserSuper" isDisabled={true} onChange={(e)=>setOptionSelectedUsersSuper(e)} value={optionSelectedUsersSuper} />
                                                     <div className="help-block"></div>
                                                 </div>
 
-                                                <div className="form-group field-usereditform-email required">
+                                                <div className="mb-3 field-usereditform-email required">
                                                     <label className="control-label" >&nbsp;Ad Hoc User</label>
                                                     {/* <Select components={animatedComponents} isMulti isLoading={isLoadingUser} options={optionAdHoc.slice(0,10)} className="basic-multi-select" classNamePrefix="select" name="optionAdHoc" isDisabled={false} onChange={this.fnOptionAdHoc} value={optionSelectedAdHoc}/> */}
                                                     <AsyncSelect

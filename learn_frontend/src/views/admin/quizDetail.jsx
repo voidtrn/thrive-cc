@@ -265,7 +265,7 @@ function QuizDetail(props){
                             <Col sm={12}>
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" forHtml="usereditform-email">&nbsp;Question Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea style={{width:"100%",height:"80px"}} className="form-control" name="question" aria-required="true" 
                                                 value={items.question} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
@@ -277,7 +277,7 @@ function QuizDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" forHtml="usereditform-email">&nbsp;Question Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea style={{width:"100%",height:"80px"}} className="form-control" name="question_ind" aria-required="true" 
                                                 value={items.question_ind} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
@@ -289,14 +289,14 @@ function QuizDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required">
+                                        <div className="mb-3 field-usereditform-email required">
                                             <label className="control-label" forHtml="usereditform-email">&nbsp;Point <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"20%"}} className="form-control" name="point" 
                                                 maxlength="5" value={items.point} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-profile-country">
+                                        <div className="mb-3 field-profile-country">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Question Type</label>
                                             <select id="answer_mode" style={{width:"150px"}} className="form-control" 
                                                 value={items.answer_mode} onChange={handleInputChange.bind(this)} required name="answer_mode" aria-invalid="false">
@@ -309,7 +309,7 @@ function QuizDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required" id="option_a">
+                                        <div className="mb-3 field-usereditform-email required" id="option_a">
                                             <div className="row">
                                                 <div className="col-md-5">
                                                     <label className="control-label" forHtml="usereditform-email">&nbsp;Option A Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
@@ -335,7 +335,7 @@ function QuizDetail(props){
                                             <div className="help-block"></div>
                                         </div>
 
-                                        <div className="form-group field-usereditform-email required" id="option_b">
+                                        <div className="mb-3 field-usereditform-email required" id="option_b">
                                             <div className="row">
                                                 <div className="col-md-5">
                                                     <label className="control-label" forHtml="usereditform-email">&nbsp;Option B Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
@@ -362,7 +362,7 @@ function QuizDetail(props){
                                         </div>
 
                                         {items.answer_mode != '1'?
-                                            <div className="form-group field-usereditform-email required" id="option_c">
+                                            <div className="mb-3 field-usereditform-email required" id="option_c">
                                                 <div className="row">
                                                     <div className="col-md-5">
                                                         <label className="control-label" forHtml="usereditform-email">&nbsp;Option C Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
@@ -391,7 +391,7 @@ function QuizDetail(props){
                                         }
 
                                         {items.answer_mode != '1'?
-                                            <div className="form-group field-usereditform-email required" id="option_d">
+                                            <div className="mb-3 field-usereditform-email required" id="option_d">
                                                 <div className="row">
                                                     <div className="col-md-5">
                                                         <label className="control-label" forHtml="usereditform-email">&nbsp;Option D Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
@@ -420,7 +420,7 @@ function QuizDetail(props){
                                         }
 
                                         {items.answer_mode != '3'?
-                                            <div className="form-group field-profile-country anwser-option">
+                                            <div className="mb-3 field-profile-country anwser-option">
                                                 <label className="control-label" forHtml="profile-country">&nbsp;Answer</label>
                                                 <select id="answer_choice_idx" required style={{width:"150px"}} className="form-control" 
                                                     value={items.answer_choice_idx}  onChange={handleInputChange} name="answer_choice_idx" aria-invalid="false">
@@ -443,7 +443,7 @@ function QuizDetail(props){
                                         :''
                                         }
                                         {items.answer_mode == '1'?
-                                            <div className="form-group field-usereditform-email required " id="answer_summary">
+                                            <div className="mb-3 field-usereditform-email required " id="answer_summary">
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <label className="control-label" forHtml="usereditform-email">&nbsp;Answer Summary Eng <span style={{color:"#ff0404"}}>(*)</span></label>
@@ -461,7 +461,7 @@ function QuizDetail(props){
                                         :''
                                         }
 
-                                        <div className="form-group field-profile-country">
+                                        <div className="mb-3 field-profile-country">
                                             <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">

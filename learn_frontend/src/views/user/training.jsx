@@ -444,14 +444,14 @@ function training(props){
             <div id="Leaderboard" className="tab-pane active show">	
 		        <div className="content-badges-achieved">
                     <form method="get" className="form-horizontal">
-					    <div className="form-group">
+					    <div className="mb-3">
 						    <div className="col-sm-12">
                                 <input type="text" placeholder="Cari Training" name="keyword" value={state.searchInput} onChange={(e)=>setState(state=>({...state, searchInput:e.target.value}))} className="form-control inputSearch"/>
                                 <button type="submit" onClick={()=>setState(state=>({...state, submitSearch:true}))} value="send" className="search_icon2"><i className="ion-ios-search-strong"></i></button>
                             </div>
                         </div>
 
-                        <div className="form-group">
+                        <div className="mb-3">
                             <div className="col-sm-5">
                                 <select className="form-control select-filter inputSearch" name="month" value={state.selectMonthInput} onChange={(e)=>setState(state=>({...state, selectMonthInput:e.target.value}))}>
                                     <option value="">Bulan</option>
@@ -471,7 +471,7 @@ function training(props){
                             </div>
                         </div>
                         
-                        <div className="form-group">
+                        <div className="mb-3">
                             <div className="col-sm-5">
                                 <select className="form-control select-filter inputSearch" name="year" value={state.selectYearInput} onChange={(e)=>setState(state=>({...state, selectYearInput:e.target.value}))}>
                                     <option value="">Tahun</option>

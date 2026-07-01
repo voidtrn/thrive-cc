@@ -193,7 +193,7 @@ function BadgeMember(props){
     return(
         <div className="panel-body">
 
-            <div className="form-group field-usereditform-email required" style={{position:"relative"}}>
+            <div className="mb-3 field-usereditform-email required" style={{position:"relative"}}>
                 <label className="control-label" forHtml="usereditform-email" style={{width: "150px",display:"block"}}>&nbsp;Badge Name</label>
                 <input type="text" id="usereditform-email" style={{width:"300px",display:"inline-block"}} disabled 
                     className="form-control" name="title" value={props.badge_title} aria-required="true" aria-invalid="false" />
@@ -201,8 +201,8 @@ function BadgeMember(props){
                 <div className="help-block"></div>
             </div>
 
-            <div className="form-group field-usereditform-email required" style={{position:"relative"}}>
-                <div className="form-group field-usereditform-email required" >
+            <div className="mb-3 field-usereditform-email required" style={{position:"relative"}}>
+                <div className="mb-3 field-usereditform-email required" >
                 <label className="control-label" forHtml="profile-country" style={{width:"150px"}}>&nbsp;Add User </label> 
                 <div className="row">
                     <div className="col-md-9">

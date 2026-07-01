@@ -156,7 +156,7 @@ function TrainingSubFunction(props){
         <>
             <style>
                 {`
-                    .search-form .form-group {
+                    .search-form .mb-3 {
                         width: 250px;
                         margin-right:auto;
                         margin-top:1rem;
@@ -184,8 +184,8 @@ function TrainingSubFunction(props){
                             <div className="col-md-8">
                                 <div className="pull-right">
                                     <form className="search-form" method="post" onSubmit={handleSearch}>
-                                        <div className="form-group has-feedback">
-                                            <label htmlFor="search" className="sr-only">Search</label>
+                                        <div className="mb-3 has-feedback">
+                                            <label htmlFor="search" className="visually-hidden">Search</label>
                                             <input type="text" className="form-control" name="search" id="search" placeholder="search"/>
                                             <span className="lbl-primary fa fa-search form-control-feedback"></span>
                                         </div>

@@ -611,7 +611,7 @@ function Quest(props) {
                                                         <div className="col-lg-1">
                                                         <input
                                                         type="radio"
-                                                        className="custom-control-input vertical-align-text-top mt-1"
+                                                        className="form-check-input vertical-align-text-top mt-1"
                                                         id={"answer_" + answerList.id}
                                                         name={"question_" + answerList.awb_growth_question_id}
                                                         value={answerList.id}
