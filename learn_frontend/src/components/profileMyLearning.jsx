@@ -399,7 +399,7 @@ export function ProfileMyLearningPlan(props){
                                                             size={13} 
                                                             fillColor={'#ee881e'}
                                                             emptyColor={'#c67331'}  
-                                                            ratingValue={value.val_rating * 20} 
+                                                            initialValue={value.val_rating}
                                                             readonly={true}
                                                             style={{marginTop: "-5%"}}
                                                         />,
@@ -415,7 +415,7 @@ export function ProfileMyLearningPlan(props){
                                                             size={13} 
                                                             fillColor={'#ee881e'}
                                                             emptyColor={'#c67331'}  
-                                                            ratingValue={0} 
+                                                            initialValue={0}
                                                             readonly={true}
                                                             style={{marginTop: "-5%"}}
                                                         />

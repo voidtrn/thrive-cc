@@ -364,7 +364,7 @@ export function SidebarLearningDetail(props){
                                 <Rating 
                                     size={20} 
                                     fillColor={'#000000'} 
-                                    ratingValue={state.skillsDataMaster? state.skillsDataMaster[0].rating? state.skillsDataMaster[0].rating * 20 : 0 : 50} 
+                                    initialValue={state.skillsDataMaster? state.skillsDataMaster[0].rating? state.skillsDataMaster[0].rating : 0 : 2.5}
                                     readonly={true}
                                     style={{marginTop: "-5%"}}
                                 />

@@ -17,7 +17,7 @@
         "file-saver": "^2.0.5",
         "i18next": "^26.3.4",
         "jquery": "^3.6.0",
-        "lc-color-picker": "^1.1.1",
+        "lc-color-picker": "^2.0.0",
         "lodash": "^4.17.21",
         "md5": "^2.3.0",
         "moment": "^2.29.1",
@@ -50,7 +50,7 @@
         "react-select": "^5.10.2",
         "react-semicircle-progressbar": "^1.1.0",
         "react-show-more-text": "^1.5.2",
-        "react-simple-star-rating": "^4.0.5",
+        "react-simple-star-rating": "^5.1.7",
         "react-slick": "^0.31.0",
         "react-spinners": "^0.17.0",
         "react-tag-input": "^6.8.0",
@@ -84,7 +84,7 @@
     "devDependencies": {
         "@vitejs/plugin-react": "^4.7.0",
         "eslint": "^7.32.0",
-        "eslint-plugin-react": "7.28.0",
+        "eslint-plugin-react": "^7.37.5",
         "vite": "^5.4.21"
     }
 }
