@@ -1,4 +1,5 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { runWithAdal } from 'react-adal';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
