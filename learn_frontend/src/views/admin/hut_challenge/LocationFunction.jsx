@@ -1,17 +1,15 @@
 import React, { useCallback, useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from '../../../helpers/useHistory';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 import Pagination from 'react-js-pagination';
 
-import XlsxPopulate from "xlsx-populate";
-import { saveAs } from "file-saver";
 
 import '../../../i18n.js'
 
@@ -42,7 +40,7 @@ function AdminDateChallenge(props) {
       platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbGrowthReport/LeaderboardPoint', credentials);
+    let isi = await axiosLibrary.postData('awbHutZoneLocationFunction/ListData', credentials);
     setTotalData(isi.data.data)
     setLoading(false)
   }, [offset])
@@ -56,10 +54,33 @@ function AdminDateChallenge(props) {
       platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbGrowthReport/LeaderboardPoint', credentials);
+    let isi = await axiosLibrary.postData('awbHutZoneLocationFunction/ListData', credentials);
     setItems(isi.data.data)
     getTotalPage()
   }, [offset, getTotalPage])
+
+  const getDetail = async (param) => {
+    const idParam = param;
+    let responseJson = await axiosLibrary.postData('GetMd5', { id: idParam });
+    const ID = responseJson.data.data;
+    history.push({
+        pathname: routeAdmin.AdminDateChallengeDetail.path,
+        search: "?" + new URLSearchParams({data: ID}).toString()// your data array of objects
+    })
+  }
+
+  const deleteItem = async (id) => {
+    const param = {
+      id: id
+    }
+    let responseJson = await axiosLibrary.postData('awbHutZoneLocationFunction/DeleteData', param);
+    if (responseJson.status === 200) {
+      alert('Data has been deleted')
+      getData()
+    } else {
+      alert(responseJson.status)
+    }
+  }
 
   useEffect(() => {
     getData()
@@ -70,40 +91,6 @@ function AdminDateChallenge(props) {
     setActivePage(pageNumber)
     setOffset(offsetNew)
   }
-
-
-
-  function getSheetData(data, header) {
-    var fields = Object.keys(data[0]);
-    var sheetData = data.map(function (row) {
-        return fields.map(function (fieldName) {
-            return row[fieldName] ? row[fieldName] : "";
-        });
-    });
-    sheetData.unshift(header);
-    return sheetData;
-  }
-
-  const saveAsExcel = () => {
-    var data  = items;
-    var header = ["imdl", "name", "function", "title", "point", "percentage", "last_date_of_work"]
-
-    XlsxPopulate.fromBlankAsync().then(async (workbook) => {
-        const sheet1 = workbook.sheet(0);
-        const sheetData = getSheetData(data, header); 
-        const totalColumns = sheetData[0].length;
-
-        sheet1.cell("A1").value(sheetData);
-        const range = sheet1.usedRange();
-        const endColumn = String.fromCharCode(64 + totalColumns);
-        sheet1.row(1).style("bold", true);
-        sheet1.range("A1:" + endColumn + "1").style("fill", "BFBFBF");
-        range.style("border", true);
-        return workbook.outputAsync().then((res) => {
-            saveAs(res, "Leaderboard - Point.xlsx");
-        });
-    });
-}
 
   const routeAdmin = routeAll.routesAdmin;
 
@@ -116,39 +103,40 @@ function AdminDateChallenge(props) {
         <thead>
           <tr>
             <th>
-              
+              IMDL
             </th>
             <th>
               Name
             </th>
             <th>
+              Zone
+            </th>
+            <th>
+              Location
+            </th>
+            <th>
               Function
             </th>
             <th>
-              Point
-            </th>
-            <th>
-              Percentage (All Quest)
-            </th>
-            <th>
-              Last Date of Work
-            </th>
-            <th>
+              Last Point
             </th>
           </tr>
         </thead>
         <tbody >
 
           {items.map(
-            (item, i) =>
+            (item) =>
               <tr key={item.id}>
-                <td > {++i}.</td>
-                <td > {item.name}</td>
-                <td >{item.group_function}<br/>{item.title}</td>
-                <td >{item.point}</td>
-                <td >{item.percentage}</td>
-                <td >{item.date_created}</td>
-                       
+                <td >{item.imdl}</td>
+                <td >
+                    {item.name}<br/>
+                    {item.account}<br/>
+                    {item.email}<br/>
+                </td>
+                <td >{item.zone}</td>
+                <td >{item.location}</td>
+                <td >{item.function}</td>
+                <td >{item.last_point}</td>
               </tr>
           )}
         </tbody>
@@ -187,19 +175,19 @@ function AdminDateChallenge(props) {
                 <div className="card-header ">
                   <div className="row d-flex ">
                     <span className="text-blue">
-                      Leaderboard - Point 
+                      Zone, Location & Function  - Admin
                     </span>
                   </div>
                 </div>
                 <div className="card-body ">
                   <div className="table-responsive">
                     <div className="pull-right">
-                      <button onClick={saveAsExcel} id="btnExport" name="btnExport" value="export" className="btn btn-primary btn-sm tt"><i className="fa fa-file-excel-o"></i>&nbsp;Export </button>   
+                      <a href={routeAdmin.AdminLocationFunctionImport.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Import Data </a>
                     </div>
 
                     <div id="h182093w0" className="grid-view mt-4">
                       <div className="summary">Showing <b>{offset + 1} - {limit * (activePage - 1) + items.length}</b> of <b>{totalData}</b> records.</div>
-                      <Table items={items} file_path={file_path} loading={loading} />
+                      <Table items={items} file_path={file_path} edit={getDetail} deleteItem={deleteItem} loading={loading} />
                     </div>
                     {totalData > limit ?
                       <div style={{ display: "flex", justifyContent: "center" }}>

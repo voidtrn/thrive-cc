@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from '../../../helpers/useHistory';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 import Pagination from 'react-js-pagination';
 
 
@@ -17,12 +17,11 @@ import { useTranslation } from "react-i18next";
 
 
 
-function AdminGrowthQuest(props) {
+function AdminDateChallenge(props) {
 
   const history = useHistory()
 
   const [items, setItems] = useState([])
-  const [items2, setItems2] = useState([])
   const [offset, setOffset] = useState(0)
   const [totalData, setTotalData] = useState(0)
   const [activePage, setActivePage] = useState(1)
@@ -30,56 +29,34 @@ function AdminGrowthQuest(props) {
   const platform_id = securityData.Security_getPlatformId()
   const file_path = env.userDocument;
 
-  const pageRangeDisplayed = 10000
-  const limit = 10000
-  const [listQuarter, setListQuarter] = useState([])
+  const pageRangeDisplayed = 25
+  const limit = 50
 
-
-  
-    const getQuarterList = useCallback(async () => {
-        const credentials = {
-            limit: limit,
-            offset: offset,
-            category: "",
-            platform_id: securityData.Security_getPlatformId()
-        };
-        // alert(categoryId)
-        let isi = await axiosLibrary.postData('awbGrowthQuarter/ListData', credentials);
-        setListQuarter(isi.data.data)
-        // setLoading(false)
-    })
-
-
-
-    
-
-  const getTotalPage = useCallback(async (quarterid = null) => {
+  const getTotalPage = useCallback(async () => {
     const credentials = {
       limit: limit,
       offset: offset,
       category: "COUNT",
-      platform_id: platform_id,
-      quarterId: quarterid
+      platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbGrowthQuest/ListData', credentials);
+    let isi = await axiosLibrary.postData('awbHutDateChallenge/ListData', credentials);
     setTotalData(isi.data.data)
     setLoading(false)
   }, [offset])
 
-  const getData = useCallback(async (quarterid = null) => {
+  const getData = useCallback(async () => {
     setLoading(true)
     const credentials = {
       limit: limit,
       offset: offset,
       category: "",
-      platform_id: platform_id,
-      quarterId: quarterid
+      platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbGrowthQuest/ListData', credentials);
+    let isi = await axiosLibrary.postData('awbHutDateChallenge/ListData', credentials);
     setItems(isi.data.data)
-    getTotalPage(quarterid)
+    getTotalPage()
   }, [offset, getTotalPage])
 
   const getDetail = async (param) => {
@@ -87,7 +64,7 @@ function AdminGrowthQuest(props) {
     let responseJson = await axiosLibrary.postData('GetMd5', { id: idParam });
     const ID = responseJson.data.data;
     history.push({
-        pathname: routeAdmin.AdminGrowthQuestDetail.path,
+        pathname: routeAdmin.AdminDateChallengeDetail.path,
         search: "?" + new URLSearchParams({data: ID}).toString()// your data array of objects
     })
   }
@@ -96,7 +73,7 @@ function AdminGrowthQuest(props) {
     const param = {
       id: id
     }
-    let responseJson = await axiosLibrary.postData('awbGrowthQuest/DeleteData', param);
+    let responseJson = await axiosLibrary.postData('awbHutDateChallenge/DeleteData', param);
     if (responseJson.status === 200) {
       alert('Data has been deleted')
       getData()
@@ -107,28 +84,12 @@ function AdminGrowthQuest(props) {
 
   useEffect(() => {
     getData()
-    getQuarterList()
   }, [getData])
 
   const handlePageChange = (pageNumber) => {
     var offsetNew = (pageNumber - 1) * limit;
     setActivePage(pageNumber)
     setOffset(offsetNew)
-  }
-
-  const search = useCallback(async () => {
-    getData(items2.selectOrder)
-  })
-
-  const handleInputChange = (event) => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const key = target.name;
-
-    var stateCopy = Object.assign({}, items2);
-    stateCopy[key] = value;
-
-    setItems2(stateCopy)
   }
 
   const routeAdmin = routeAll.routesAdmin;
@@ -142,19 +103,16 @@ function AdminGrowthQuest(props) {
         <thead>
           <tr>
             <th>
-              Quarter Name
+              Date
             </th>
             <th>
-              Quest Number
+              Challenge Type
             </th>
             <th>
-              Quest
+              Title
             </th>
             <th>
-              Start - End Date
-            </th>
-            <th>
-              Status Active
+              Short Description
             </th>
             <th>
             </th>
@@ -165,26 +123,38 @@ function AdminGrowthQuest(props) {
           {items.map(
             (item) =>
               <tr key={item.id}>
+                <td >{item.date}</td>
                 <td >
-                    {item.quarterName}<br/>
+                  <span style={ 
+                      item.challenge_type === 0 ? {} : 
+                        item.challenge_type === 1 ? { color:"#0d6efd" } : 
+                        item.challenge_type === 2 ? { color:"#0d6efd" } : 
+                          item.challenge_type === 3 ? { color:"green" , fontWeight:"bold"} : 
+                          {  color:"red" } }
+                  >
+                    {
+                      item.challenge_type === 0 ? 
+                        'Daily Challenge' : 
+                          item.challenge_type === 1 ? 
+                            'Additional Challenge' : 
+                              item.challenge_type === 2 ? 
+                                'Weekly Challenge' : 
+                                  item.challenge_type === 3 ? 
+                                  'Final Challenge' : 
+                                  'Final Additional  Challenge' 
+
+                              
+                              }
+                  </span>
+
                 </td>
-                <td >
-                    {item.number}<br/>
-                </td>
-                <td >
-                    {item.title_eng}<br/>
-                    {item.title}
-                </td>
-                <td >{item.start_date} <br/> {item.end_date}</td>
-                <td>
-                  <span style={ item.status_active ? {} :{  color:"#ff0707" } }>{item.status_active === 1 ? 'Active': 'Inactive'}</span>{item.default_flag===1 ? <div>( Default )</div> :null}
-                </td>
+                <td >{item.title_challenge}</td>
+                <td >{item.description_challenge}</td>
                 <td align="right">
                   <a className="btn btn-warning btn-sm tt text-end" onClick={props.edit.bind(this, item.id)} >
-                    <i className="fa fa-edit"></i>&nbsp; Edit 
+                    <i className="fa fa-pencil"></i>&nbsp; edit
                   </a>
                 </td>
-                       
               </tr>
           )}
         </tbody>
@@ -223,39 +193,16 @@ function AdminGrowthQuest(props) {
                 <div className="card-header ">
                   <div className="row d-flex ">
                     <span className="text-blue">
-                      Quest - Admin
+                      Challenge Date  - Admin
                     </span>
                   </div>
                 </div>
                 <div className="card-body ">
-
-                  
-                    <div className="pull-right  mb-3">
-                      <a href={routeAdmin.AdminGrowthQuestDetail.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Quest </a>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-sm-8">
-                            <select value={items2.selectOrder} 
-                                onChange={handleInputChange.bind(this)} id="selectOrder" name="selectOrder" style={{ width: "100%" }} className="form-control">
-                                <option value="">-select stage-</option>
-                                {listQuarter.map(
-                                    (itemQuarter) =>
-                                        <option key={itemQuarter.id} value={itemQuarter.id}>
-                                            {itemQuarter.name}
-                                        </option>
-                                )
-                                }
-                            </select>
-                        </div>
-                        <div className="col-sm-4">
-                          <div className='btn btn-success' onClick={() => search()}>Search</div>
-                        </div>
-                    </div>
-
-
-
                   <div className="table-responsive">
+                    <div className="pull-right">
+                      <a href={routeAdmin.AdminDateChallengeDetail.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Challenge Date </a>
+                    </div>
+
                     <div id="h182093w0" className="grid-view mt-4">
                       <div className="summary">Showing <b>{offset + 1} - {limit * (activePage - 1) + items.length}</b> of <b>{totalData}</b> records.</div>
                       <Table items={items} file_path={file_path} edit={getDetail} deleteItem={deleteItem} loading={loading} />
@@ -286,4 +233,4 @@ function AdminGrowthQuest(props) {
   );
 }
 
-export default AdminGrowthQuest;
+export default AdminDateChallenge;

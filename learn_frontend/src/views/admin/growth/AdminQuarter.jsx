@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from '../../../helpers/useHistory';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 import Pagination from 'react-js-pagination';
 
 
@@ -40,7 +40,7 @@ function AdminDateChallenge(props) {
       platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbHutZoneLocationFunction/ListData', credentials);
+    let isi = await axiosLibrary.postData('awbGrowthQuarter/ListData', credentials);
     setTotalData(isi.data.data)
     setLoading(false)
   }, [offset])
@@ -54,7 +54,7 @@ function AdminDateChallenge(props) {
       platform_id: platform_id
     };
 
-    let isi = await axiosLibrary.postData('awbHutZoneLocationFunction/ListData', credentials);
+    let isi = await axiosLibrary.postData('awbGrowthQuarter/ListData', credentials);
     setItems(isi.data.data)
     getTotalPage()
   }, [offset, getTotalPage])
@@ -64,7 +64,7 @@ function AdminDateChallenge(props) {
     let responseJson = await axiosLibrary.postData('GetMd5', { id: idParam });
     const ID = responseJson.data.data;
     history.push({
-        pathname: routeAdmin.AdminDateChallengeDetail.path,
+        pathname: routeAdmin.AdminGrowthQuarterDetail.path,
         search: "?" + new URLSearchParams({data: ID}).toString()// your data array of objects
     })
   }
@@ -73,7 +73,7 @@ function AdminDateChallenge(props) {
     const param = {
       id: id
     }
-    let responseJson = await axiosLibrary.postData('awbHutZoneLocationFunction/DeleteData', param);
+    let responseJson = await axiosLibrary.postData('awbGrowthQuarter/DeleteData', param);
     if (responseJson.status === 200) {
       alert('Data has been deleted')
       getData()
@@ -103,22 +103,21 @@ function AdminDateChallenge(props) {
         <thead>
           <tr>
             <th>
-              IMDL
-            </th>
-            <th>
               Name
             </th>
             <th>
-              Zone
+              Order Number
             </th>
             <th>
-              Location
+              Start Date
             </th>
             <th>
-              Function
+              End Date
             </th>
             <th>
-              Last Point
+              Status Active
+            </th>
+            <th>
             </th>
           </tr>
         </thead>
@@ -127,16 +126,21 @@ function AdminDateChallenge(props) {
           {items.map(
             (item) =>
               <tr key={item.id}>
-                <td >{item.imdl}</td>
                 <td >
                     {item.name}<br/>
-                    {item.account}<br/>
-                    {item.email}<br/>
                 </td>
-                <td >{item.zone}</td>
-                <td >{item.location}</td>
-                <td >{item.function}</td>
-                <td >{item.last_point}</td>
+                <td >{item.order_number}</td>
+                <td >{item.start_date}</td>
+                <td >{item.end_date}</td>
+                <td>
+                  <span style={ item.status_active ? {} :{  color:"#ff0707" } }>{item.status_active === 1 ? 'Active': 'Inactive'}</span>{item.default_flag===1 ? <div>( Default )</div> :null}
+                </td>
+                <td align="right">
+                  <a className="btn btn-warning btn-sm tt text-end" onClick={props.edit.bind(this, item.id)} >
+                    <i className="fa fa-edit"></i>&nbsp; Edit 
+                  </a>
+                </td>
+                       
               </tr>
           )}
         </tbody>
@@ -175,14 +179,14 @@ function AdminDateChallenge(props) {
                 <div className="card-header ">
                   <div className="row d-flex ">
                     <span className="text-blue">
-                      Zone, Location & Function  - Admin
+                      Stage - Admin
                     </span>
                   </div>
                 </div>
                 <div className="card-body ">
                   <div className="table-responsive">
                     <div className="pull-right">
-                      <a href={routeAdmin.AdminLocationFunctionImport.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Import Data </a>
+                    <a href={routeAdmin.AdminGrowthQuarterDetail.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Stage </a>
                     </div>
 
                     <div id="h182093w0" className="grid-view mt-4">

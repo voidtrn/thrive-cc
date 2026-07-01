@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useHistory } from '../../../helpers/useHistory';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 import Pagination from 'react-js-pagination';
 
 

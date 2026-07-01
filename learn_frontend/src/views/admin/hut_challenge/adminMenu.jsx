@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef, createRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 import axiosLibrary from '../../../helpers/axiosLibrary.js';
 import defaultLang from '../../../helpers/lang.js';
 // import { isMobile, isDesktop } from 'react-device-detect';
-import NavMenu from '../../admin/shared/navMenu.js';
+import NavMenu from '../../admin/shared/navMenu.jsx';
 
 
 import '../../../i18n.js'

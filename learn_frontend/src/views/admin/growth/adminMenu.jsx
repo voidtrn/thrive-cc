@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, createRef } from 'react';
-import routeAll from '../../../helpers/route.js';
+import routeAll from '../../../helpers/route.jsx';
 import { env, securityData } from '../../../helpers/globalHelper.js';
 
 

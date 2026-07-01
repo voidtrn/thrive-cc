@@ -4,8 +4,8 @@ import routeAll from '../../../helpers/route';
 import { useHistory } from '../../../helpers/useHistory';
 import { env, securityData } from '../../../helpers/globalHelper';
 import { cssTarget, LoadingAdmin } from '../../../components/Loading';
-import NavMenu from '../shared/navMenu.js';
-import SideBarMenuAdmin from './adminMenu.js';
+import NavMenu from '../shared/navMenu.jsx';
+import SideBarMenuAdmin from './adminMenu.jsx';
 
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 
@@ -18,7 +18,7 @@ function AdminGrowthQuestionDetail(props) {
     var Columns = "";
     const [items, setItems] = useState({ 
         id: null,
-        question_type: 3,
+        question_type: 1,
         awb_growth_quest_id: "",
         question_order: "",
         question: "",
@@ -134,9 +134,8 @@ function AdminGrowthQuestionDetail(props) {
                 if(items.id !=undefined || items.id !=null){
                     fd.append("id", items.id);           
                     fd.append("awb_growth_quest_id", items.awb_growth_quest_id);
-                    fd.append("question_type", items.question_type);
-                    fd.append("min_character_answer", 0);
 
+                    fd.append("question_type", items.question_type);
                     fd.append("question_order", items.question_order);
                     fd.append("question", items.question);
                     fd.append("question_eng", items.question_eng);
@@ -144,8 +143,22 @@ function AdminGrowthQuestionDetail(props) {
                     fd.append("correct_answer_eng", items.correct_answer_eng);
                     fd.append("correct_answer_old", itemsDetail.correct_answer);
                     fd.append("correct_answer_old_eng", itemsDetail.correct_answer_eng);
+                    fd.append("answer_1", items.answer_1);
+                    fd.append("answer_1_eng", items.answer_1_eng);
+                    fd.append("answer_1_old", itemsDetail.answer_1);
+                    fd.append("answer_1_old_eng", itemsDetail.answer_1_eng);
+                    fd.append("answer_2", items.answer_2);
+                    fd.append("answer_2_eng", items.answer_2_eng);
+                    fd.append("answer_2_old", itemsDetail.answer_2);
+                    fd.append("answer_2_old_eng", itemsDetail.answer_2_eng);
+                    fd.append("answer_3", items.answer_3);
+                    fd.append("answer_3_eng", items.answer_3_eng);
+                    fd.append("answer_3_old", itemsDetail.answer_3);
+                    fd.append("answer_3_old_eng", itemsDetail.answer_3_eng);
                     fd.append("correct_point", items.correct_point);
                     fd.append("user_created", user_id);
+                    
+                    fd.append("min_character_answer", 0);
         
                     let responseJson = await axiosLibrary.postData("awbGrowthQuestion/UpdateData", fd);
                 
@@ -163,16 +176,22 @@ function AdminGrowthQuestionDetail(props) {
                     fd.append("question_order", items.question_order);
                     fd.append("correct_point", items.correct_point);
     
-                    fd.append("min_character_answer", 0);
                     fd.append("question", items.question);
                     fd.append("question_eng", items.question_eng);
     
                     fd.append("correct_answer", items.correct_answer);
                     fd.append("correct_answer_eng", items.correct_answer_eng);
+                    fd.append("answer_1", items.answer_1);
+                    fd.append("answer_1_eng", items.answer_1_eng);
+                    fd.append("answer_2", items.answer_2);
+                    fd.append("answer_2_eng", items.answer_2_eng);
+                    fd.append("answer_3", items.answer_3);
+                    fd.append("answer_3_eng", items.answer_3_eng);
     
                     
                     fd.append("status_active", items.status_active);
 
+                    fd.append("min_character_answer", 0);
                     fd.append("user_created", user_id);
                     let responseJson = await axiosLibrary.postData("awbGrowthQuestion/InsertData", fd);
                     if (responseJson.status === 200) {
@@ -309,7 +328,7 @@ function AdminGrowthQuestionDetail(props) {
                                 <div className="card-header ">
                                     <div className="row d-flex ">
                                         <span className="text-blue">
-                                            Quest (Text with Answer) - Admin
+                                            Quest (Multiple Choice) - Admin
                                         </span>
                                     </div>
                                 </div>
@@ -318,8 +337,8 @@ function AdminGrowthQuestionDetail(props) {
                                     
 
                                     <form id="czfrom" onSubmit={validateImage} method="post" style={{ display: "block" }} encType='multipart/form-data'>
-                                       
                                     <input type="hidden" name="question_type" id="inputEmail3"   value={items.question_type}  />
+                                    
                                     <input type="hidden" name="id" id="inputEmail3"   value={items.id}  />
 
                                         <div className="row mb-3">
@@ -374,7 +393,36 @@ function AdminGrowthQuestionDetail(props) {
                                                 <input type="text"   placeholder="English" required className="form-control mt-2" name="correct_answer_eng" id="inputEmail3"  onChange={handleInputChange}  value={items.correct_answer_eng}  />
                                             </div>
                                         </div>
-                                        
+                                        <div className="row mb-3">
+                                            <label for="inputEmail3" className="col-sm-3 col-form-label">Another Answer 1</label>
+                                            <div className="col-sm-9">
+                                                <input type="text" required className="form-control" name="answer_1"  placeholder="Bahasa Indonesia" value={items.answer_1}  id="inputEmail3"  onChange={handleInputChange} />
+                                            </div>
+                                            <label for="inputEmail3" className="col-sm-3 col-form-label"></label>
+                                            <div className="col-sm-9">
+                                                <input type="text"  placeholder="English" required className="form-control mt-2" name="answer_1_eng" value={items.answer_1_eng}  id="inputEmail3"  onChange={handleInputChange} />
+                                            </div>
+                                        </div>
+                                        <div className="row mb-3">
+                                            <label for="inputEmail3" className="col-sm-3 col-form-label">Another Answer 2</label>
+                                            <div className="col-sm-9">
+                                                <input type="text"  className="form-control" name="answer_2" placeholder="Bahasa Indonesia" value={items.answer_2}  id="inputEmail3"  onChange={handleInputChange} />
+                                            </div>                                            
+                                            <label for="inputEmail3" className="col-sm-3 col-form-label"></label>
+                                            <div className="col-sm-9">
+                                                <input type="text"  placeholder="English"  className="form-control mt-2" name="answer_2_eng" value={items.answer_2_eng}  id="inputEmail3"  onChange={handleInputChange} />
+                                            </div>
+                                        </div>
+                                        <div className="row mb-3">
+                                            <label for="inputEmail3" className="col-sm-3 col-form-label">Another Answer 3</label>
+                                            <div className="col-sm-9">
+                                                <input type="text" placeholder="Bahasa Indonesia"   className="form-control" name="answer_3" value={items.answer_3} id="inputEmail3" onChange={handleInputChange} />
+                                            </div>
+                                            <label for="inputEmail3" className="col-sm-3 col-form-label"></label>
+                                            <div className="col-sm-9">
+                                                <input type="text"  placeholder="English"  className="form-control mt-2" name="answer_3_eng" value={items.answer_3_eng} id="inputEmail3" onChange={handleInputChange} />
+                                            </div>
+                                        </div>
                                         <div className="row mb-3">
                                             <label for="inputEmail3" className="col-sm-2 col-form-label">Status Active</label>
                                             <div className="col-sm-5">
