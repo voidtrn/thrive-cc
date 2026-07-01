@@ -37,7 +37,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { RenderCourseList } from './sff/viewcourseDetail';
-import { ConsoleView, isMobile } from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 import _ from 'lodash';
 

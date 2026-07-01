@@ -3,7 +3,6 @@ import { css } from "@emotion/react";
 import BeatLoader from "react-spinners/BeatLoader";
 import { env, securityData } from '../helpers/globalHelper';
 import { isMobile } from 'react-device-detect';
-import { Alignment } from 'react-data-table-component';
 
 const override = css`
   display: block;
