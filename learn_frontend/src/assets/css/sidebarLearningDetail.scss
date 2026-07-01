@@ -1,0 +1,189 @@
+.offcanvas{
+    box-shadow: -5px 9px 20px 0px rgb(0 0 0 / 25%);
+    .sidebar-learning-detail-header{
+        background-color: #000;
+        color: #fff;
+        border-bottom: 10px solid #d60000;
+        h5{
+            color: #fff;
+        }
+        .title-offcanvas{
+            flex: 0 0 279px;
+        }
+        .subtitle-offcanvas{
+            color: #fff;
+            font-weight: 300;
+            font-size: 70%;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        .sidebar-learning-detail-image-header{
+            flex: 0 0 170px;
+            img{
+                border-radius: 1rem;
+            }
+        }
+        
+    }
+
+    .sidebar-learning-detail-body{
+        background-color: #f7f4ff  !important;
+        .check-read{
+            position: absolute;
+            top: 40%;
+            left: -3%;
+            width:30px;
+        }
+        .card-step-3-skill {
+            font-size: 100% !important;
+            border-radius: .75rem !important;
+            margin: 10% 0% 10% 0% !important;
+        }
+        .card-body-step-3-skill {
+            padding: .75rem !important;
+        }
+        .detail-list-skill-header {
+            font-weight: 600 !important;
+            color: #000000 !important;
+            margin: 4% 0% !important;
+        }
+        .vertical-line-step-3-skill-header {
+            color: #888888 !important;
+        }
+        .card-module-step-3 {
+            border-radius: 1rem !important;
+            border: unset !important;
+            background-color: #413a67 !important;
+            margin: 3% 0% !important;
+            color: #fff !important;
+            cursor: pointer;
+        }
+        .module-type-of-content {
+            color: #8078d0;
+            font-weight: 900;
+            font-size: 65% !important;
+            letter-spacing: .5pt !important;
+            .module-workshop-capacity{
+                color:#e27171 !important;
+                letter-spacing: normal !important;
+                font-weight:bold;
+            }
+            .module-optional{
+                color:#e27171 !important;
+                letter-spacing: normal !important;
+                font-weight:normal;
+            }
+        }
+        
+        .module-title {
+            font-size: 85% !important;
+            padding: 1% 0% 0% 0% !important;
+        }
+        .module-description {
+            font-size: 70% !important;
+            padding: 1% 0% 2% 0% !important;
+        }
+        .card-horizontal {
+            display: flex !important;
+            flex: 1 1 auto !important;
+        }
+        .img-square-wrapper {
+            border-radius: 1rem !important;
+            border: unset !important;
+            width: 30% !important;
+            object-fit: cover !important;
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        .sidebar-learning-detail-header .sidebar-learning-detail-image-header{
+            min-width: auto;
+        }
+	}
+}
+.modal-backdrop {
+	backdrop-filter: blur(5px) !important;
+	background-color: #00000003 !important;
+}
+.modal-backdrop.show {
+	opacity: 1  !important;
+}
+.popup-dialog-finish-learning-plan {
+	max-width: max-content !important;
+}
+.popup-content-finish-learning-plan {
+	box-shadow: 7px 7px 13px 0px rgb(0 0 0 / 25%) !important;
+	-webkit-box-shadow: 7px 7px 13px 0px rgb(0 0 0 / 25%) !important;
+	-moz-box-shadow: 7px 7px 13px 0px rgb(0 0 0 / 25%) !important;
+	opacity: 1  !important;
+	transition-duration: 0.3s !important;
+	border-radius: 1rem !important;
+}
+
+.popup-blur{
+    filter: blur(5px);
+}
+
+.addon-popup-content-sff{
+    max-width: 600px;
+    .popup-body-finish-learning-plan {
+        min-height: auto !important;
+        font-weight: 600 !important;
+        color: #42386a !important;
+    }
+    .btn-confirm{
+        font-family: 'poppinsmedium';
+        &:hover{
+            font-style: italic !important;
+            text-decoration: underline !important;
+            cursor: pointer !important;
+    
+        }
+    }
+    .popup-header-sff{
+        background-color: #42386a;
+        border-top-left-radius: 1rem !important;
+        border-top-right-radius: 1rem !important;
+        min-height: 70px;
+    }
+    .button-start-learn {
+        padding: 2% 15% !important;
+        margin: 3% 0% !important;
+    }
+    .btn-choose-step {
+        border-radius: .5rem !important;
+        background-color: #8173df !important;
+        border: 0 !important;
+        font-weight: 600 !important;
+        &:hover {
+            border-radius: .5rem !important;
+            background-color: #8273df80 !important;
+            border: 0 !important;
+        }
+        i {
+            margin-left: unset !important;
+            vertical-align: unset !important;
+        }
+        filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4)) !important;
+    }
+    .popup-desc-sff{
+        color: #6c6d70;
+        font-size: 75%;
+        font-style: italic;
+    }
+    .popup-righside{
+        font-family: 'poppinsmedium';
+        font-size: 90%;
+    }
+    .popup-title-rightside{
+        color: #8173df;
+    }
+    .popup-desc-rightside{
+        color:#000;
+        padding: 5px 0px 0px 0px;
+    }
+    .icon-popup-sff{
+        width:30px;
+    }
+}

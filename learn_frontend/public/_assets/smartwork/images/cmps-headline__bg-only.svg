@@ -1,0 +1,68 @@
+<svg width="1440" height="640" viewBox="0 0 1440 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1440" height="640" fill="#FF1526"/>
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="640">
+<rect width="1440" height="640" fill="#FF1526"/>
+</mask>
+<g mask="url(#mask0)">
+<rect width="1441" height="640" fill="url(#paint0_angular)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 564L60.0417 573.73C120.083 583.923 240.167 603.846 360.25 617.282C480.333 630.718 600.417 637.205 720.5 627.475C840.583 617.282 960.667 590.409 1080.75 577.436C1200.83 564 1320.92 564 1380.96 564H1441V684H1380.96C1320.92 684 1200.83 684 1080.75 684C960.667 684 840.583 684 720.5 684C600.417 684 480.333 684 360.25 684C240.167 684 120.083 684 60.0417 684H0V564Z" fill="#F2F8F7"/>
+</g>
+<g opacity="0.2">
+<circle cx="1177" cy="260" r="4" transform="rotate(-90 1177 260)" fill="white"/>
+<circle cx="1177" cy="292" r="4" transform="rotate(-90 1177 292)" fill="white"/>
+<circle cx="1177" cy="228" r="4" transform="rotate(-90 1177 228)" fill="white"/>
+<circle cx="1177" cy="244" r="4" transform="rotate(-90 1177 244)" fill="white"/>
+<circle cx="1177" cy="276" r="4" transform="rotate(-90 1177 276)" fill="white"/>
+<circle cx="1177" cy="212" r="4" transform="rotate(-90 1177 212)" fill="white"/>
+<circle cx="1209" cy="260" r="4" transform="rotate(-90 1209 260)" fill="white"/>
+<circle cx="1209" cy="292" r="4" transform="rotate(-90 1209 292)" fill="white"/>
+<circle cx="1209" cy="228" r="4" transform="rotate(-90 1209 228)" fill="white"/>
+<circle cx="1209" cy="244" r="4" transform="rotate(-90 1209 244)" fill="white"/>
+<circle cx="1209" cy="276" r="4" transform="rotate(-90 1209 276)" fill="white"/>
+<circle cx="1209" cy="212" r="4" transform="rotate(-90 1209 212)" fill="white"/>
+<circle cx="1193" cy="260" r="4" transform="rotate(-90 1193 260)" fill="white"/>
+<circle cx="1193" cy="292" r="4" transform="rotate(-90 1193 292)" fill="white"/>
+<circle cx="1193" cy="228" r="4" transform="rotate(-90 1193 228)" fill="white"/>
+<circle cx="1193" cy="244" r="4" transform="rotate(-90 1193 244)" fill="white"/>
+<circle cx="1193" cy="276" r="4" transform="rotate(-90 1193 276)" fill="white"/>
+<circle cx="1193" cy="212" r="4" transform="rotate(-90 1193 212)" fill="white"/>
+<circle cx="1225" cy="260" r="4" transform="rotate(-90 1225 260)" fill="white"/>
+<circle cx="1225" cy="292" r="4" transform="rotate(-90 1225 292)" fill="white"/>
+<circle cx="1225" cy="228" r="4" transform="rotate(-90 1225 228)" fill="white"/>
+<circle cx="1225" cy="244" r="4" transform="rotate(-90 1225 244)" fill="white"/>
+<circle cx="1225" cy="276" r="4" transform="rotate(-90 1225 276)" fill="white"/>
+<circle cx="1225" cy="212" r="4" transform="rotate(-90 1225 212)" fill="white"/>
+</g>
+<g opacity="0.2">
+<circle cx="217" cy="172" r="4" transform="rotate(-90 217 172)" fill="white"/>
+<circle cx="217" cy="204" r="4" transform="rotate(-90 217 204)" fill="white"/>
+<circle cx="217" cy="140" r="4" transform="rotate(-90 217 140)" fill="white"/>
+<circle cx="217" cy="156" r="4" transform="rotate(-90 217 156)" fill="white"/>
+<circle cx="217" cy="188" r="4" transform="rotate(-90 217 188)" fill="white"/>
+<circle cx="217" cy="124" r="4" transform="rotate(-90 217 124)" fill="white"/>
+<circle cx="249" cy="172" r="4" transform="rotate(-90 249 172)" fill="white"/>
+<circle cx="249" cy="204" r="4" transform="rotate(-90 249 204)" fill="white"/>
+<circle cx="249" cy="140" r="4" transform="rotate(-90 249 140)" fill="white"/>
+<circle cx="249" cy="156" r="4" transform="rotate(-90 249 156)" fill="white"/>
+<circle cx="249" cy="188" r="4" transform="rotate(-90 249 188)" fill="white"/>
+<circle cx="249" cy="124" r="4" transform="rotate(-90 249 124)" fill="white"/>
+<circle cx="233" cy="172" r="4" transform="rotate(-90 233 172)" fill="white"/>
+<circle cx="233" cy="204" r="4" transform="rotate(-90 233 204)" fill="white"/>
+<circle cx="233" cy="140" r="4" transform="rotate(-90 233 140)" fill="white"/>
+<circle cx="233" cy="156" r="4" transform="rotate(-90 233 156)" fill="white"/>
+<circle cx="233" cy="188" r="4" transform="rotate(-90 233 188)" fill="white"/>
+<circle cx="233" cy="124" r="4" transform="rotate(-90 233 124)" fill="white"/>
+<circle cx="265" cy="172" r="4" transform="rotate(-90 265 172)" fill="white"/>
+<circle cx="265" cy="204" r="4" transform="rotate(-90 265 204)" fill="white"/>
+<circle cx="265" cy="140" r="4" transform="rotate(-90 265 140)" fill="white"/>
+<circle cx="265" cy="156" r="4" transform="rotate(-90 265 156)" fill="white"/>
+<circle cx="265" cy="188" r="4" transform="rotate(-90 265 188)" fill="white"/>
+<circle cx="265" cy="124" r="4" transform="rotate(-90 265 124)" fill="white"/>
+</g>
+<defs>
+<radialGradient id="paint0_angular" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720.5 320) rotate(90) scale(320 720.5)">
+<stop stop-color="#40C1AC"/>
+<stop offset="1" stop-color="#299E97"/>
+</radialGradient>
+</defs>
+</svg>

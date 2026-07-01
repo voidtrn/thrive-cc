@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'Averta for TBWA Extrathin';
+    src: url('AvertaforTBWA-Extrathin.woff2') format('woff2'),
+        url('AvertaforTBWA-Extrathin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Light.woff2') format('woff2'),
+        url('AvertaforTBWA-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Regular.woff2') format('woff2'),
+        url('AvertaforTBWA-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Black.woff2') format('woff2'),
+        url('AvertaforTBWA-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Semibold.woff2') format('woff2'),
+        url('AvertaforTBWA-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Bold.woff2') format('woff2'),
+        url('AvertaforTBWA-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Extrabold.woff2') format('woff2'),
+        url('AvertaforTBWA-Extrabold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta for TBWA';
+    src: url('AvertaforTBWA-Thin.woff2') format('woff2'),
+        url('AvertaforTBWA-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+

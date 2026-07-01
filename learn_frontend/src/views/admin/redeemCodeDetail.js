@@ -1,0 +1,264 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import axiosLibrary from '../../helpers/axiosLibrary';
+import routeAll from '../../helpers/route';
+import { useHistory } from 'react-router';
+import { securityData } from '../../helpers/globalHelper';
+import { cssTarget, LoadingAdmin } from '../../components/Loading';
+
+import { Tab, Row, Col, Nav } from 'react-bootstrap';
+
+function RedeemCodeDetail(props){
+    
+    const history = useHistory()
+    // const [Columns, setColumns] = useState([])
+    var Columns= "";
+    const [items, setItems] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    const [editData, setEditData] = useState(false)
+    const [deleteData, setDeleteData] = useState(false)
+    const [cancelDelete, setCancelDelete] = useState(false)
+    
+    const routeAdmin = routeAll.routesAdmin
+    
+    const platform_id = securityData.Security_getPlatformId()
+    const user_id = securityData.Security_UserId()
+    // const user_account = securityData.Security_UserAccount()
+
+    const getDetail= useCallback(async() =>{
+        const data = {
+            md5ID: new URLSearchParams(props.location.search).get('data')
+        }
+        if(data.md5ID!== null){
+            setEditData(true)
+            let response = await axiosLibrary.postData('awbRedeemCode/SelectData',data);
+            if(response.status === 200){
+                setItems(response.data.data)
+                setLoading(false)
+            }else{
+                alert(response);
+                setLoading(false)
+            }
+        }else{
+            setDefaultValue()
+            setLoading(false)
+        }
+    },[props.location.search])
+
+    const DeleteConfirm=  async ()=>{
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm("Are you sure to delete this data?")) 
+        {
+            setDeleteData(true)
+            setCancelDelete(false)
+        } 
+        else
+        {
+            setCancelDelete(true)
+        } 
+    }
+
+    const formSubmitValidation=(e)=>{
+        e.preventDefault();
+        var errorValidation = false
+        if(items.qty_redeem_quota < items.total_claim){
+            setItems(items =>({...items, 
+                qty_redeem_quota:items.total_claim,
+            }))
+            errorValidation=true
+            alert("redeem quota must be greater than or equal to total redeem claim");
+        }else{
+            if(items.code.length !== 6){
+                errorValidation=true
+                alert("redeem code must be 6 characters with alphanumeric");
+            }
+        }
+        if(!errorValidation){
+            submit()
+        }
+        
+    }
+
+    const submit= async () =>{
+        // e.preventDefault();
+        if(!cancelDelete){
+            if(!deleteData){
+                const fd = new FormData();
+                
+                fd.append("code", items.code);
+                fd.append("points", items.points);
+                fd.append("qty_redeem_quota", items.qty_redeem_quota);
+                fd.append("flag_active", items.flag_active);
+
+                fd.append("user_modified", user_id);
+                fd.append("platform_id", platform_id);
+
+                if(editData){
+                    //for edit data
+                    fd.append("id", items.id);
+                    let responseJson = await axiosLibrary.postData("awbRedeemCode/UpdateData", fd);
+                    if(responseJson.status === 200){
+                        alert("DATA HAS BEEN UPDATED");
+                        history.push(routeAdmin.redeemCode.path)
+                    }else{
+                        alert(responseJson);
+                    }
+                } else {
+                    //for insert data
+                    fd.append("user_created", user_id);
+                    let responseJson = await axiosLibrary.postData("awbRedeemCode/InsertData", fd);
+                    if(responseJson.status === 200){
+                        alert("DATA HAS BEEN CREATED");
+                        history.push(routeAdmin.redeemCode.path)
+                    }else{
+                        alert(responseJson);
+                    }
+                }
+            } else {
+                //for delete data
+                const parameter = {
+                    id:items.id
+                }
+                let responseJson = await axiosLibrary.postData("awbRedeemCode/DeleteData", parameter);
+                if(responseJson.status === 200){
+                    alert("DATA HAS BEEN DELETED");
+                    history.push(routeAdmin.redeemCode.path)
+                }else{
+                    alert(responseJson);
+                }
+            }
+        }
+    }
+
+    const handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const key = target.name;
+
+        var stateCopy = Object.assign({}, items);
+        stateCopy[key] = value;
+
+        setItems(stateCopy)
+    }
+
+    useEffect(()=>{
+        getDetail()
+    },[Columns])
+
+    const generateRandomCode = (length) => {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    const setDefaultValue = () => {
+        var randomCode = generateRandomCode(6)
+        setItems(items =>({...items, 
+                            points:0,
+                            qty_redeem_quota:1,
+                            flag_active:1,
+                            total_claim:0,
+                            code:randomCode
+                        }))
+    }
+
+    return( 
+        <div className="col-md-9">
+        <div className="panel panel-default">
+            <div className="panel-heading">
+                <strong>{props.pageName}</strong>  
+            </div>
+            <div className="clearfix">
+                <div className="panel-body">
+                    <a className="float-right btn btn-default" href={routeAdmin.redeemCode.path} label="Back to overview" data-ui-loader="">
+                        <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
+                </div>
+            </div>
+            <LoadingAdmin loading={loading}/> 
+            <div className="panel-body" style={cssTarget(loading)}>
+            {/* <div className="panel-body"> */}
+                <form id="czfrom" onSubmit={formSubmitValidation} method="post" style={{display: "block"}} encType='multipart/form-data'>
+                   
+                    <Tab.Container id="profile-tabs" defaultActiveKey="#tab-0">
+                        <Row className="clearfix">
+                            <Col sm={12}>
+                                <Nav variant="tabs" className="tab-menu tab-header">
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="#tab-0">{editData ? 'Edit : '+items.code: 'New Data' }</Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </Col>
+                            <Col sm={12}>
+                                <Tab.Content animation="true">
+                                    <Tab.Pane eventKey="#tab-0">
+                                        <div className="form-group field-usereditform-email required">
+                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Code <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <input type="text" id="code" style={{width:"100px"}} maxLength="6" className="form-control" disabled={editData?true:false}
+                                                name="code" value={items.code} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
+                                            <div className="help-block">&nbsp;the code must be 6 characters with alphanumeric</div>
+                                        </div>
+
+                                        <div className="form-group field-usereditform-email required">
+                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Points <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <input type="text" id="usereditform-email" style={{width:"100px"}} className="form-control" maxLength="10" disabled={items.last_date_redeem?true:false}
+                                                name="points" value={items.points} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
+                                            <div className="help-block"></div>
+                                        </div>
+
+                                        <div className="form-group field-usereditform-email required">
+                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Redeem Quota <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <input type="text" id="qty_redeem_quota" style={{width:"100px"}} className="form-control" maxLength="10" 
+                                                name="qty_redeem_quota" value={items.qty_redeem_quota} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
+                                            <div className="help-block"></div>
+                                        </div>
+
+                                        <div className="form-group field-profile-country">
+                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <select id="profile-country" style={{width:"150px"}} className="form-control" 
+                                                value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
+                                                {editData ? null: <option value="">... Select this ...</option> }
+                                                <option value="1">active</option>
+                                                <option value="0"> inactive</option>
+                                            </select>
+
+                                            <div className="help-block"></div>
+                                        </div>
+
+                                        <div className="form-group field-usereditform-email required">
+                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Total Redeem Claim </label>
+                                            <input type="text" id="total_claim" style={{width:"200px"}} className="form-control" disabled
+                                                name="total_claim" value={items.total_claim} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
+                                            {/* <input type="hidden" id="hdnTotalRedeemClaim" value={items.total_claim} /> */}
+                                            <div className="help-block"></div>
+                                        </div>
+
+                                        <div className="form-group field-usereditform-email required">
+                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Last Redeem Claim </label>
+                                            <input type="text" id="last_date_redeem" style={{width:"200px"}} className="form-control" disabled
+                                                name="last_date_redeem" value={items.last_date_redeem} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
+                                            <div className="help-block"></div>
+                                        </div>
+
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
+
+                    {/* <input type="hidden" name="hdnkey" value={items._code||''}/>     */}
+                    <button type="submit" className="btn btn-primary" name="btnSubmit" value="save">Save</button>&nbsp;
+                    {(editData===false ? null : <button className="btn btn-danger" name="btnDelete" onClick={DeleteConfirm.bind(this)} value="delete">Delete</button> )}       
+
+                </form>
+                
+        </div>
+        </div>
+    </div>
+    )
+}
+
+export default RedeemCodeDetail;

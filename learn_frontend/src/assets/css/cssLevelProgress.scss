@@ -1,0 +1,429 @@
+$primary-ddpurple:#4C4681;
+$primary-dddpurple: #413A68;
+$secondary_black100:#000000;
+$primary_white:#FFFFFF;
+$primary-lpurple:#DDDDF5;
+$primary-llpurple:#C5C3EA;
+$primary-lllpurple:#9F9DE5;
+$primary-llllpurple:#8078D5;
+$primary-ddddpurple:#312B47;
+$primary-popblue:#1039CE;
+$secondary_black10: #D2D2D2;
+$secondary_POPbluenew:#034AFF;
+$secondary_orange:#E28E0C;
+$secondary_lightred:#E77171;
+
+$height_frame_image:86.45px;
+$height_frame_not_active:43.22px;
+$width_progress: 25px;
+
+$margin_leaderboard_2_3:-8%;
+
+.global-total-point{
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    color: $primary_white;
+    background: $primary-lllpurple;
+    border-radius: 20px;
+    // padding: 0px 2rem;
+    position: relative;
+}
+.global-level-user{
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 10px;
+    letter-spacing: 0.03em;
+}
+
+.content-level-progress{
+    font-family: 'Poppins';
+    font-style: normal;
+    line-height: 30px;
+
+    .header-title-level-progress{
+        font-weight: 500;
+        font-size: 18px;
+        /* or 222% */
+        letter-spacing: 0.03em;
+        color: $primary-dddpurple;
+    }
+}
+
+.content-inner-level-progress{
+    overflow-y: auto;
+    height: 1282px;
+    padding-top: 20px;
+    .flex-column:last-child{
+        height: 100%
+    }
+}
+
+.levelProgress{
+    padding-right: 30px;
+    .padding-top{
+        height:calc(calc($height_frame_image/2) - 16px);
+    }
+    .checklist-img{
+        img{
+            width:$width_progress;
+        }
+    }
+    .vertical-progress-bar{
+        height: 100%;
+        width:$width_progress;
+        // padding-bottom: 34px;
+        // padding-top:20px;
+        display: flex;
+        justify-content: center;
+        
+        .vertical-progress-bar-track{
+            background: $secondary_black10;
+            border-radius: 10px;
+            height: 100%;
+            overflow: hidden;
+            width: 40%;
+            .vertical-progress-bar-inner{
+                background-color: $primary-llllpurple;
+                border-radius: 10px;
+            }
+        }
+    }
+    .img-level{
+
+        .frame-image{
+            background-size: cover;
+            border-radius: 50px;
+            height: $height_frame_image;
+            width: 193.92px;
+            .target-scroll{
+                padding: 0;
+                cursor: pointer;
+                position: absolute;
+                right: 15px;
+                top: -25px;
+            }
+            img{
+                padding: 0;
+                cursor: pointer;
+                position: absolute;
+                right: 15px;
+                top: -13px;
+            }
+        }
+        .frame-image-not-active{
+            height:$height_frame_not_active;
+            width: 96.96px;
+        }
+    }
+
+    .title-group-per-level{
+        font-weight: 400;
+        font-size: 14px;
+
+        color: $secondary_black100;
+        .title-per-level{
+            font-weight: 700;
+            font-size: 18px;
+            color: $primary-llllpurple;
+
+        }
+    }
+    .description-per-level{
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 20px;
+        /* or 167% */
+        letter-spacing: 0.03em;
+        /* secondary_black100 */
+        color: $secondary_black100;
+        b{
+            font-weight: 700;
+        }
+        .card-green-card{
+            /* secondary_POPbluenew */
+
+            border: 1px solid $secondary_POPbluenew !important;
+            border-radius: 31px 31px 20px 20px !important;
+            .card-header-green-card{
+                /* secondary_POPbluenew */
+                background: $secondary_POPbluenew !important;
+                border-radius: 31px;
+                font-weight: 600;
+                font-size: 14px;
+                color: #fff !important;
+                padding: .75rem 2rem;
+            }
+            .card-body-green-card{
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+                /* or 167% */
+
+                letter-spacing: 0.03em;
+
+                /* secondary_POPbluenew */
+                color: $secondary_POPbluenew !important;
+                padding: 1.25rem 2rem;
+                b{
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
+
+.content-leaderboard{
+    background: $primary-lllpurple;
+    .popup-leaderboard{
+        border: 0;
+        background: $primary-ddddpurple;
+        border-radius: 30px;
+        position: absolute;
+        z-index: 10;
+        width: 118%;
+        left: -9%;
+        top: 100%;
+        .buttonExit{
+            position: absolute;
+            right: 26px;
+            cursor: pointer;
+            width: 15px;
+        }
+        .group-popup{
+            // display: flex;
+            // flex-direction: column;
+            // align-items: flex-start;
+            // padding: 1% 1%;
+            // gap: 3px;
+            .lbl{
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 20px;
+                letter-spacing: 0.03em;
+                color: $primary-lllpurple;
+                // flex: none;
+                // order: 0;
+                // flex-grow: 0;
+            }
+            .val{
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 20px;
+                color: $primary_white;
+                // flex: none;
+                // order: 1;
+                // flex-grow: 0;
+            }
+        }
+    }
+    .popup-leaderboard-active{
+        left: 0;
+        width: 100%;
+    }
+    .popup-leaderboard-123{
+        width: 95%;
+        left: unset;
+        bottom: unset;
+        top: unset;    
+    }
+    .leaderboard-1-2-3{
+        .group-leaderboard{
+            background: $primary-lllpurple;
+            width: 100%;
+            padding-bottom: 1.5rem;
+        }
+        .leaderboard-2, .leaderboard-3{
+            .totalPoint{
+                background: $primary-popblue;
+            }
+            .nameUser{
+                width: 108%;
+                z-index: 1;
+            }
+        }
+        .leaderboard-1{
+            .group-leaderboard{
+                background: #9F9DE5;
+                width: 100%;
+                padding-bottom: 3rem;
+            }
+        }
+        .leaderboard-2{
+            .profilePhotos{
+                span{
+                    background:$secondary_lightred;
+                }
+            }
+            .nameUser{
+                margin-right: $margin_leaderboard_2_3;
+            }
+        }
+        .leaderboard-3{
+            .profilePhotos{
+                span{
+                    background:$primary-llllpurple;
+                }
+            }
+            .nameUser{
+                margin-left: $margin_leaderboard_2_3;
+            }
+        }
+        .crown{
+            text-align: center;
+            img{
+                width: 80%;
+            }
+        }
+        .profilePhotos{
+            position: relative;
+            img{
+                border-radius: 50%;
+                width: 70px;
+            }
+            span{
+                position: absolute;
+                background:$secondary_POPbluenew;
+                border-radius: 50%;
+                font-weight: 600;
+                font-size: 10px;
+                line-height: 25px;
+                width: 25px;
+                height: 25px;
+                text-align: center;
+                color: $primary_white;
+                bottom: 6px;
+                left: 6px;
+            }
+        }
+        .nameUser{
+            font-weight: 400;
+            font-size: 14px;
+            /* identical to box height, or 143% */
+            text-align: center;
+            color: $secondary_black100;
+            width: 100%;
+            background-color:$primary-lpurple;
+            border-radius: 49%;
+            margin-top: -18px;
+        }
+        .levelUser{
+            @extend .global-level-user;
+            color: $primary-lpurple;
+        }
+        .totalPoint{
+            @extend .global-total-point;
+            padding: 0px 2rem;
+            img{
+                position: absolute;
+                right: -14px;
+                cursor:pointer;
+            }
+        }
+        .first-place{
+            background: $secondary_orange;
+        }
+    }
+    .list-another-leaderboard{
+        background:$primary-lpurple;
+        border-radius:50px 50px 0px 0px;
+        .list-group{
+            background:transparent;
+            border:0;
+            .list-group-item{
+                &:hover,&:focus{
+                    z-index: auto !important;
+                }
+                background:transparent;
+                border:0;
+                border-bottom: 1px solid $primary_white;
+                margin: 0px 40px;
+                padding: .75rem 0rem;
+                font-weight: 500;
+                font-size: 16px;
+                letter-spacing: 0.03em;
+                color: $secondary_black100;
+                .row{
+                    margin: 0;
+                }
+                .iterator{
+                    padding: 0;
+                    text-align: center;
+                }
+                .profilePicture{
+                    padding: 0;
+                    text-align: center;
+                    img{
+                        border-radius: 50%;
+                        width: 80%;
+                    }
+                }
+                
+                .nameUser{
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: 0.03em;
+                    color: $secondary_black100;
+                }
+                .buttonNext{
+                    padding: 0;
+                    img{
+                        cursor: pointer;
+                    }
+                }
+                .levelUser{
+                    @extend .global-level-user;
+                    padding-top:7px;
+                    color: $primary-ddpurple;
+                }
+                .totalPoint{
+                    @extend .global-total-point;
+                }
+            }
+            .list-group-item:last-child{
+                border:0;
+            }
+            > .active{
+                background:$primary-llllpurple;
+                border-radius:50px;
+                border:0;
+                margin: 0;
+                padding: .75rem 40px;
+                color: $primary_white;
+                .nameUser{
+                    color: $primary_white;
+                }
+                .levelUser{
+                    @extend .global-level-user;
+                    padding-top:7px;
+                    color: $primary-llpurple;
+
+                }
+            }
+            .page-item{
+                margin: 0px -1px;
+                a{
+                    height: 20px !important;
+                    width: 20px !important;
+                    line-height: 20px !important;
+                    border-radius: 50% !important;
+                    font-size: 11px !important;
+                    color:$primary-ddpurple;
+                }
+                .page-link:hover{
+                    background-color: $primary-ddpurple;
+                    border-color: $primary-ddpurple;
+                    color:$primary_white;
+                }
+            }
+            .page-item.active{
+                .page-link{
+                    background-color: $primary-ddpurple;
+                    border-color: $primary-ddpurple;
+                    color:$primary_white;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+.button__bar {
+    display: inline-block;
+    vertical-align: middle;
+    margin: auto;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.3);
+    width: 100%;
+    text-align: center;
+  }
+  
+  .button__bar li {
+    list-style: none;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 3px;
+    padding: 0;
+  }
+  
+  .button__bar li button {
+    border: none;
+    background: black;
+    color: transparent;
+    cursor: pointer;
+    display: block;
+    height: 15px;
+    width: 45px;
+    border-radius: 2px;
+  }
+  
+  .button__bar li.slick-active button {
+    background-color: blue;
+  }
+  
+  .button__bar li button:hover,
+  .button__bar li button:focus {
+    background: red;
+    outline: 0;
+  }
+  
+  .slick-slide img {
+    border: 5px solid #fff;
+    display: block;
+    margin: auto;
+  }
+
+  .semicircle-container{
+    margin:5px;
+
+  }
+
+ 

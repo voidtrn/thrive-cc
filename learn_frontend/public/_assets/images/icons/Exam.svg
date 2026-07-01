@@ -1,0 +1,17 @@
+<svg width="39" height="40" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="39" height="40" rx="12" fill="url(#paint0_linear)"/>
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="39" height="40">
+<rect width="39" height="40" rx="12" fill="#F38224"/>
+</mask>
+<g mask="url(#mask0)">
+<ellipse cx="8.77481" cy="9" rx="15.6" ry="16" fill="white" fill-opacity="0.2"/>
+<ellipse cx="26.3252" cy="27" rx="4.875" ry="5" fill="white" fill-opacity="0.2"/>
+</g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27.7649 11.9826C27.9476 12.0225 28.1188 12.1053 28.2651 12.2245C28.4138 12.3389 28.5351 12.4867 28.6196 12.6565C28.7041 12.8264 28.7496 13.0138 28.7526 13.2045V24.8845C28.7545 25.1636 28.6654 25.4354 28.4993 25.6565C28.3332 25.8776 28.0997 26.0353 27.8361 26.1045L20.4651 28.0445V13.7745L27.2121 11.9945C27.393 11.9468 27.5822 11.9427 27.7649 11.9826ZM11.7487 11.9945L18.5152 13.7745V28.0445L11.1637 26.0945C10.9016 26.0257 10.6694 25.8695 10.5035 25.6504C10.3375 25.4313 10.2474 25.1619 10.2472 24.8845V13.2245C10.2449 13.0321 10.2859 12.8418 10.3671 12.6683C10.4483 12.4949 10.5674 12.343 10.7152 12.2245C10.8602 12.1103 11.0281 12.0304 11.2068 11.9906C11.3855 11.9509 11.5705 11.9522 11.7487 11.9945Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear" x1="0" y1="0" x2="39.9872" y2="38.9875" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFCA06"/>
+<stop offset="1" stop-color="#F38224"/>
+</linearGradient>
+</defs>
+</svg>

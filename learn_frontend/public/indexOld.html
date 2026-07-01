@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="%PUBLIC_URL%/" />
+  <meta name="Thrive-AWB" content="#Adawaktunyabelajar" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>Thrive – AWB</title>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+  <!-- Favicon Icon -->
+  <link rel="shortcut icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.png">
+
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossOrigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato%3A400%2C700" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C700" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+
+  <link rel="stylesheet" href="%PUBLIC_URL%/_assets/landingpage/css/styles.css" />
+    
+  <script src="%PUBLIC_URL%/_assets/js/jquery-3.6.0.min.js"></script>
+  <script src="%PUBLIC_URL%/_assets/js/jquery-ui.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="%PUBLIC_URL%/_assets/landingpage/js/scripts.js"></script>
+
+  <script>
+    $( document ).ready(function() {
+      $("#btn-visit-1").hide();
+      $("#btn-visit-2").hide();
+      $("#btn-visit-3").hide();
+      $("#btn-visit-4").hide();
+    
+      $(".our-learning-solutions-1").hover(
+        function () {
+          $("#btn-visit-1").show("drop", { direction: "up" }, 300);
+          $('#image-learning-solution-1').animate({ height: '+=5px', width: '+=5px' });
+        }, function () {
+          $("#btn-visit-1").hide("drop", { direction: "down" }, 300);
+          $('#image-learning-solution-1').animate({ height: '-=5px', width: '-=5px' });
+        }
+      );
+      $(".our-learning-solutions-2").hover(
+        function () {
+          $("#btn-visit-2").show("drop", { direction: "up" }, 300);
+          $('#image-learning-solution-2').animate({ height: '+=5px', width: '+=5px' });
+        }, function () {
+          $("#btn-visit-2").hide("drop", { direction: "down" }, 300);
+          $('#image-learning-solution-2').animate({ height: '-=5px', width: '-=5px' });
+        }
+      );
+      $(".our-learning-solutions-3").hover(
+        function () {
+          $("#btn-visit-3").show("drop", { direction: "up" }, 300);
+          $('#image-learning-solution-3').animate({ height: '+=5px', width: '+=5px' });
+        }, function () {
+          $("#btn-visit-3").hide("drop", { direction: "down" }, 300);
+          $('#image-learning-solution-3').animate({ height: '-=5px', width: '-=5px' });
+        }
+      );
+      $(".our-learning-solutions-4").hover(
+        function () {
+          $("#btn-visit-4").show("drop", { direction: "up" }, 300);
+          $('#image-learning-solution-4').animate({ height: '+=5px', width: '+=5px' });
+    
+        }, function () {
+          $("#btn-visit-4").hide("drop", { direction: "down" }, 300);
+          $('#image-learning-solution-4').animate({ height: '-=5px', width: '-=5px' });
+        }
+      );
+    });
+    </script>
+</head>
+
+<body id="page-top">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+</body>
+
+</html>
