@@ -19,7 +19,7 @@
     "react-color": "^2.19.3",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
-    "react-helmet": "^6.1.0",
+    "react-helmet-async": "^2.0.5",
     "react-i18next": "^17.0.8",
     "react-infinite-scroller": "^1.2.6",
     "react-js-pagination": "^3.0.3",

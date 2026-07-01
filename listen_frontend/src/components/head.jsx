@@ -1,7 +1,7 @@
 import React, { 
     // useState 
   } from 'react';
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 import { env } from '../helpers/globalHelper';
 import routeAll from '../helpers/route';
 

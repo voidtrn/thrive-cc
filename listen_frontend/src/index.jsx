@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { HelmetProvider } from 'react-helmet-async';
 import { runWithAdal } from 'react-adal';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -31,9 +32,11 @@ if ((window === window.parent) && window === window.top && !authContext.isCallba
             <LoadingPage loading={true}/>)
         }).finally(()=>{
           root.render(
-            <BrowserRouter basename ={baseUrl}>
-              <App cachedUser={authContext.getCachedUser()} adminLevel={securityData.Security_IsAdmin()}/>
-            </BrowserRouter>
+            <HelmetProvider>
+              <BrowserRouter basename ={baseUrl}>
+                <App cachedUser={authContext.getCachedUser()} adminLevel={securityData.Security_IsAdmin()}/>
+              </BrowserRouter>
+            </HelmetProvider>
           );
           registerServiceWorker();
         })
