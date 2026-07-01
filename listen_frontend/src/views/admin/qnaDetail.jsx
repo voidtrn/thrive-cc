@@ -164,7 +164,7 @@ function QnaDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueQna/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.qna.path)
+                            history(routeAdmin.qna.path)
                         }else{
                             alert(responseJson);
                         }
@@ -174,7 +174,7 @@ function QnaDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueQna/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.qna.path)
+                            history(routeAdmin.qna.path)
                         }else{
                             alert(responseJson);
                         }
@@ -187,7 +187,7 @@ function QnaDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueQna/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.qna.path)
+                        history(routeAdmin.qna.path)
                     }else{
                         alert(responseJson);
                     }

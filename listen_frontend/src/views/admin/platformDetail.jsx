@@ -314,7 +314,7 @@ function PlatformDetail(props){
                     let responseJson = await axiosLibrary.postData("dialoguePlatform/UpdateData", fd);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN UPDATED");
-                        history.push(routeAdmin.platform.path)
+                        history(routeAdmin.platform.path)
                     }else{
                         alert(responseJson);
                     }
@@ -324,7 +324,7 @@ function PlatformDetail(props){
                     let responseJson = await axiosLibrary.postData("dialoguePlatform/InsertData", fd);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN CREATED");
-                        history.push(routeAdmin.platform.path)
+                        history(routeAdmin.platform.path)
                     }else{
                         alert(responseJson);
                     }
@@ -337,7 +337,7 @@ function PlatformDetail(props){
                 let responseJson = await axiosLibrary.postData("dialoguePlatform/DeleteData", parameter);
                 if(responseJson.status === 200){
                     alert("DATA HAS BEEN DELETED");
-                    history.push(routeAdmin.platform.path)
+                    history(routeAdmin.platform.path)
                 }else{
                     alert(responseJson);
                 }

@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import { env, securityData } from '../helpers/globalHelper';
 import axiosLibrary from '../helpers/axiosLibrary';
 import routeAll from '../helpers/route';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function SampleNextArrow(props) {
     const { className, style, onClick } = props;
@@ -23,7 +23,7 @@ function SampleNextArrow(props) {
   }
 
 function PopupPlatform(props){
-    const history = useHistory();
+    const history = useNavigate();
     const [modalShow, setModalShow] = useState(false)
     const canClose = props.canClose || false
     const [infinite, setInfinite] = useState(true)
@@ -97,10 +97,7 @@ function PopupPlatform(props){
             }
 
             if(responseJson.data.data2 == 0){
-                history.push({
-                    pathname: routeAll.routesComponent.accessDenied.path,
-                    data: {accessPlatform: false}// your data array of objects
-                })
+                history(routeAll.routesComponent.accessDenied.path, { state: {accessPlatform: false} })
                 // window.location.href=routeAll.routesComponent.accessDenied.path
             }
             

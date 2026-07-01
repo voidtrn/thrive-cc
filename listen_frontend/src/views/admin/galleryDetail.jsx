@@ -160,7 +160,7 @@ function GalleryDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueGallery/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.gallery.path)
+                            history(routeAdmin.gallery.path)
                         }else{
                             alert(responseJson);
                         }
@@ -170,7 +170,7 @@ function GalleryDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueGallery/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.gallery.path)
+                            history(routeAdmin.gallery.path)
                         }else{
                             alert(responseJson);
                         }
@@ -183,7 +183,7 @@ function GalleryDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueGallery/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.gallery.path)
+                        history(routeAdmin.gallery.path)
                     }else{
                         alert(responseJson);
                     }

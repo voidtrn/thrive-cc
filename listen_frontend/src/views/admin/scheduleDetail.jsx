@@ -164,7 +164,7 @@ function ScheduleDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueSchedule/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.schedule.path)
+                            history(routeAdmin.schedule.path)
                         }else{
                             alert(responseJson);
                         }
@@ -174,7 +174,7 @@ function ScheduleDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueSchedule/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.schedule.path)
+                            history(routeAdmin.schedule.path)
                         }else{
                             alert(responseJson);
                         }
@@ -187,7 +187,7 @@ function ScheduleDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueSchedule/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.schedule.path)
+                        history(routeAdmin.schedule.path)
                     }else{
                         alert(responseJson);
                     }

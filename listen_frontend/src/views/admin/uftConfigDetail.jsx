@@ -90,7 +90,7 @@ function UftConfigDetail(props){
                         let responseJson = await axiosLibrary.postData("uftConfig/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.uftConfigDetail.path)
+                            history(routeAdmin.uftConfigDetail.path)
                         }else{
                             alert(responseJson);
                         }
@@ -100,7 +100,7 @@ function UftConfigDetail(props){
                         let responseJson = await axiosLibrary.postData("uftConfig/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.uftConfigDetail.path)
+                            history(routeAdmin.uftConfigDetail.path)
                         }else{
                             alert(responseJson);
                         }
@@ -113,7 +113,7 @@ function UftConfigDetail(props){
                     let responseJson = await axiosLibrary.postData("uftConfig/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.uftConfigDetail.path)
+                        history(routeAdmin.uftConfigDetail.path)
                     }else{
                         alert(responseJson);
                     }

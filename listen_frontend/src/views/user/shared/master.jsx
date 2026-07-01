@@ -17,7 +17,7 @@ function Layout(props){
 
     if(Object.values(routeAll.routesUser).findIndex(list => list.path === location.pathname) < 0){
         return(
-            <Navigate to={routeAll.routesComponent.notFound.path} exact/>
+            <Navigate to={routeAll.routesComponent.notFound.path}/>
         )
     }else{
         return(

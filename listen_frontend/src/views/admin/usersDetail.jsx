@@ -73,7 +73,7 @@ function UsersDetail(props){
                 let responseJson = await axiosLibrary.postData("dialogueUser/UpdateData", fd);
                 if(responseJson.status === 200){
                     alert("DATA HAS BEEN UPDATED");
-                    history.push(routeAdmin.users.path)
+                    history(routeAdmin.users.path)
                 }else{
                     alert(responseJson);
                 }
@@ -83,7 +83,7 @@ function UsersDetail(props){
                 let responseJson = await axiosLibrary.postData("dialogueUser/InsertData", fd);
                 if(responseJson.status === 200){
                     alert("DATA HAS BEEN CREATED");
-                    history.push(routeAdmin.users.path)
+                    history(routeAdmin.users.path)
                 }else{
                     alert(responseJson);
                 }

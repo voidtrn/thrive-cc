@@ -174,7 +174,7 @@ function SliderDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueSlider/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.slider.path)
+                            history(routeAdmin.slider.path)
                         }else{
                             alert(responseJson);
                         }
@@ -184,7 +184,7 @@ function SliderDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueSlider/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.slider.path)
+                            history(routeAdmin.slider.path)
                         }else{
                             alert(responseJson);
                         }
@@ -197,7 +197,7 @@ function SliderDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueSlider/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.slider.path)
+                        history(routeAdmin.slider.path)
                     }else{
                         alert(responseJson);
                     }

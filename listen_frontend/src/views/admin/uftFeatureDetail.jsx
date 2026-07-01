@@ -173,7 +173,7 @@ function UftFeatureDetail(props){
                         let responseJson = await axiosLibrary.postData("uftFeature/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.uftFeature.path)
+                            history(routeAdmin.uftFeature.path)
                         }else{
                             alert(responseJson);
                         }
@@ -183,7 +183,7 @@ function UftFeatureDetail(props){
                         let responseJson = await axiosLibrary.postData("uftFeature/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.uftFeature.path)
+                            history(routeAdmin.uftFeature.path)
                         }else{
                             alert(responseJson);
                         }
@@ -196,7 +196,7 @@ function UftFeatureDetail(props){
                     let responseJson = await axiosLibrary.postData("uftFeature/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.uftFeature.path)
+                        history(routeAdmin.uftFeature.path)
                     }else{
                         alert(responseJson);
                     }

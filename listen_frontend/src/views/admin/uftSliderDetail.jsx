@@ -173,7 +173,7 @@ function UftSliderDetail(props){
                         let responseJson = await axiosLibrary.postData("uftSlider/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.uftSlider.path)
+                            history(routeAdmin.uftSlider.path)
                         }else{
                             alert(responseJson);
                         }
@@ -183,7 +183,7 @@ function UftSliderDetail(props){
                         let responseJson = await axiosLibrary.postData("uftSlider/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.uftSlider.path)
+                            history(routeAdmin.uftSlider.path)
                         }else{
                             alert(responseJson);
                         }
@@ -196,7 +196,7 @@ function UftSliderDetail(props){
                     let responseJson = await axiosLibrary.postData("uftSlider/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.uftSlider.path)
+                        history(routeAdmin.uftSlider.path)
                     }else{
                         alert(responseJson);
                     }

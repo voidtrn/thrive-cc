@@ -14,7 +14,7 @@ function LayoutAdmin(props){
 
     if(Object.values(routeAllAdmin).findIndex(list => list.path === location.pathname) < 0){
         return(
-            <Navigate to={routeAll.routesComponent.notFound.path} exact/>
+            <Navigate to={routeAll.routesComponent.notFound.path}/>
         )
     }else{
         if(Object.values(routeAllAdmin).find(list => list.path === location.pathname).adminLevel <= props.adminLevel){
@@ -53,7 +53,7 @@ function LayoutAdmin(props){
             );
         }else{
             return(
-                <Navigate to={routeAll.routesComponent.accessDenied.path} exact/>
+                <Navigate to={routeAll.routesComponent.accessDenied.path}/>
             )
         }
     }

@@ -143,7 +143,7 @@ function HofDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueUserHof/UpdateData", fd);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN UPDATED");
-                        history.push(routeAdmin.hof.path)
+                        history(routeAdmin.hof.path)
                     }else{
                         alert(responseJson);
                     }
@@ -153,7 +153,7 @@ function HofDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueUserHof/InsertData", fd);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN CREATED");
-                        history.push(routeAdmin.hof.path)
+                        history(routeAdmin.hof.path)
                     }else{
                         alert(responseJson);
                     }
@@ -166,7 +166,7 @@ function HofDetail(props){
                 let responseJson = await axiosLibrary.postData("dialogueUserHof/DeleteData", parameter);
                 if(responseJson.status === 200){
                     alert("DATA HAS BEEN DELETED");
-                    history.push(routeAdmin.hof.path)
+                    history(routeAdmin.hof.path)
                 }else{
                     alert(responseJson);
                 }

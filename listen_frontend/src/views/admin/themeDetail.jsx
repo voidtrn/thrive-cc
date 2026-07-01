@@ -162,7 +162,7 @@ function ThemeDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueTheme/UpdateData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN UPDATED");
-                            history.push(routeAdmin.theme.path)
+                            history(routeAdmin.theme.path)
                         }else{
                             alert(responseJson);
                         }
@@ -172,7 +172,7 @@ function ThemeDetail(props){
                         let responseJson = await axiosLibrary.postData("dialogueTheme/InsertData", fd);
                         if(responseJson.status === 200){
                             alert("DATA HAS BEEN CREATED");
-                            history.push(routeAdmin.theme.path)
+                            history(routeAdmin.theme.path)
                         }else{
                             alert(responseJson);
                         }
@@ -185,7 +185,7 @@ function ThemeDetail(props){
                     let responseJson = await axiosLibrary.postData("dialogueTheme/DeleteData", parameter);
                     if(responseJson.status === 200){
                         alert("DATA HAS BEEN DELETED");
-                        history.push(routeAdmin.theme.path)
+                        history(routeAdmin.theme.path)
                     }else{
                         alert(responseJson);
                     }
@@ -269,7 +269,7 @@ function ThemeDetail(props){
             let isi = await axiosLibrary.postData('dialogueTheme/ListData',credentials);
             if(isi.data.data >=2){
                 alert("you have reached the maximum limit in creating the theme, maximum limit: 2")
-                history.push(routeAdmin.theme.path)
+                history(routeAdmin.theme.path)
             }
         }
     }

@@ -99,7 +99,7 @@ function FeedbackList(props){
         const idParam = param;
         let responseJson = await axiosLibrary.postData('GetMd5',{id:idParam});
         const ID =responseJson.data.data; 
-        history.push({
+        history({
             pathname: routeAdmin.feedbackListDetail.path,
             search: "?" + new URLSearchParams({data: ID}).toString()+"&"+new URLSearchParams({type: props.name}).toString()// your data array of objects
         })
