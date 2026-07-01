@@ -251,7 +251,7 @@ function SliderCategory(props){
             <div className="row">
                 <div className="col-md-6">
                     <div className="mb-3">
-                        <label className="control-label">&nbsp;Section - Menu - Category </label>
+                        <label className="form-label">&nbsp;Section - Menu - Category </label>
                         <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={handleSectionMenuChange.bind(this)}>
                         <option value="null">-select one-</option>
                         {listSectionMenu.map(

@@ -188,7 +188,7 @@ function TrainingReportTrainingDetail(props){
             <div className="panel-body" style={cssTarget(loading)}>
                 {/* <form id="search-form" onSubmit={exportToExcel} method="post" style={{display: "block"}} encType='multipart/form-data' > */}
                     <div className="mb-3 field-usereditform-email required">
-                        <label className="control-label" style={{textDecoration:"underline"}} forHtml="usereditform-email">
+                        <label className="form-label" style={{textDecoration:"underline"}} forHtml="usereditform-email">
                             {trainingData.name}
                         </label>
                     </div>

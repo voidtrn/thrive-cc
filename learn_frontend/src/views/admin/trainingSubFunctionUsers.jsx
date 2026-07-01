@@ -167,8 +167,8 @@ function TrainingSubFunction(props){
                                 <strong>Users in Sub Function Training</strong> 
                             </div>
                             <div className="col-md-8">
-                                <div className="pull-right">
-                                <span style={{marginRight:"5px",marginLeft:"5px"}}  onClick={toExcel.bind(this, '', 'users')} className="pull-right btn btn-success btn-sm tt" >
+                                <div className="float-end">
+                                <span style={{marginRight:"5px",marginLeft:"5px"}}  onClick={toExcel.bind(this, '', 'users')} className="float-end btn btn-success btn-sm tt" >
                                     <i className="fa fa-file-excel-o" ></i> New from Excel
                                 </span>                             
                                 </div>
@@ -178,9 +178,9 @@ function TrainingSubFunction(props){
                             <div className="col-md-4">
                             </div>
                             <div className="col-md-8">
-                                <div className="pull-right">
+                                <div className="float-end">
                                     <form className="search-form" method="post" onSubmit={handleSearch}>
-                                        <div className="mb-3 has-feedback">
+                                        <div className="mb-3">
                                             <label htmlFor="search" className="visually-hidden">Search</label>
                                             <input type="text" className="form-control" name="search" id="search" placeholder="search"/>
                                             <span className="lbl-primary fa fa-search form-control-feedback"></span>

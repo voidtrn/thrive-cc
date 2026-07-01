@@ -276,8 +276,8 @@ function Article(props){
                             <strong>{props.pageName}</strong> 
                         </div>
                         <div className="col-md-4">
-                            <div className="pull-right">
-                                <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.articleDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                            <div className="float-end">
+                                <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.articleDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                             </div>
                         </div>
                     
@@ -308,7 +308,7 @@ function Article(props){
                                             <div className="row">
                                                 <div className="col-md-4">
                                                     <div className="mb-3">
-                                                        <label className="control-label">&nbsp;Section - Menu </label>
+                                                        <label className="form-label">&nbsp;Section - Menu </label>
                                                         <select value={menuIdFilter} style={{width:"100%"}} className="form-control filter-data" 
                                                             id="menu_id" name="menu_id" onKeyPress={handleKeypress} onChange={handleSearchInputChange}>
                                                             <option value="">-select all-</option>
@@ -326,7 +326,7 @@ function Article(props){
 
                                                 <div className="col-md-3">
                                                     <div className="mb-3">
-                                                            <label className="control-label">&nbsp;Sort By </label>
+                                                            <label className="form-label">&nbsp;Sort By </label>
                                                                 <select value={sortByFilter} style={{width:"100%"}} 
                                                                     onChange={handleSearchInputChange} onKeyPress={handleKeypress}
                                                                     className="form-control filter-data"  id="sort_by" name="sort_by" >
@@ -340,7 +340,7 @@ function Article(props){
 
                                                 <div className="col-md-3">
                                                     <div className="mb-3">
-                                                        <label className="control-label">&nbsp;Search by keyword </label>
+                                                        <label className="form-label">&nbsp;Search by keyword </label>
                                                         <input type="text" style={{width:"100%"}} className="form-control filter-data" placeholder="search article"
                                                             name="keyword" value={keywordFilter} onKeyPress={handleKeypress} onChange={handleSearchInputChange} />
                                                         <div className="help-block"></div>
@@ -349,7 +349,7 @@ function Article(props){
 
                                                 <div className="col-md-1">
                                                     <div className="mb-3">
-                                                        <label className="control-label">&nbsp;</label>
+                                                        <label className="form-label">&nbsp;</label>
                                                         <div  style={{display:"inline-flex",position:"relative",top:"5px",right:"15px"}}>
                                                             <button type="submit" id="btnReset" className="btn btn-outline btn-sm btn-danger" onClick={resetButton}><i className="fa fa-refresh"></i>&nbsp;reset</button>&nbsp;
                                                             <button type="submit" id="btnFilter" className="btn btn-outline btn-sm btn-warning" 

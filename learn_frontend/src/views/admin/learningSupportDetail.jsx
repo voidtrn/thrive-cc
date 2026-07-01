@@ -291,28 +291,28 @@ function LearningSupportDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Title </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Title </label>
                                             <input type="text" id="usereditform-username" style={{width:"80%"}} className="form-control"
                                                 name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email ">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control sort_index" placeholder="http://www.google.co.id"
                                                 name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;About this programme Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;About this programme Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea id="about_eng" name="about_eng" rows="3" style={{width:"100%"}} className="form-control" required
                                                 maxLength="1000" value={items.about_eng} onChange={handleInputChange}></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;About this programme Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;About this programme Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea id="about_ind" name="about_ind" rows="3" style={{width:"100%"}} className="form-control" required
                                                 maxLength="1000" value={items.about_ind} onChange={handleInputChange}></textarea>
                                             <div className="help-block"></div>
@@ -322,7 +322,7 @@ function LearningSupportDetail(props){
                                             <div className='row'>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" htmlFor="usereditform-email">&nbsp;Target Participant Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                        <label className="form-label" htmlFor="usereditform-email">&nbsp;Target Participant Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                         <textarea id="participant_eng" name="participant_eng" rows="2" style={{width:"100%"}} className="form-control" required
                                                             maxLength="100" value={items.participant_eng} onChange={handleInputChange}></textarea>
                                                         <div className="help-block"></div>
@@ -330,7 +330,7 @@ function LearningSupportDetail(props){
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" htmlFor="usereditform-email">&nbsp;Target Participant Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                        <label className="form-label" htmlFor="usereditform-email">&nbsp;Target Participant Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                         <textarea id="participant_ind" name="participant_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                             maxLength="100" value={items.participant_ind} onChange={handleInputChange}></textarea>
                                                         <div className="help-block"></div>
@@ -343,7 +343,7 @@ function LearningSupportDetail(props){
                                             <div className='row'>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-username required">
-                                                        <label className="control-label" htmlFor="usereditform-username">&nbsp;Format Eng </label>
+                                                        <label className="form-label" htmlFor="usereditform-username">&nbsp;Format Eng </label>
                                                         <textarea id="format_eng" name="format_eng" rows="2" style={{width:"100%"}} className="form-control" required
                                                             maxLength="100" value={items.format_eng} onChange={handleInputChange}></textarea>
                                                         <div className="help-block"></div>
@@ -351,7 +351,7 @@ function LearningSupportDetail(props){
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-username required">
-                                                        <label className="control-label" htmlFor="usereditform-username">&nbsp;Format Ind </label>
+                                                        <label className="form-label" htmlFor="usereditform-username">&nbsp;Format Ind </label>
                                                         <textarea id="format_ind" name="format_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                             maxLength="100" value={items.format_ind} onChange={handleInputChange}></textarea>
                                                         <div className="help-block"></div>
@@ -362,14 +362,14 @@ function LearningSupportDetail(props){
                                        
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Benefits Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Benefits Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea id="benefits_eng" name="benefits_eng" rows="4" style={{width:"100%"}} className="form-control" required
                                                 maxLength="2000" value={items.benefits_eng} onChange={handleInputChange}></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Benefits Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Benefits Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea id="benefits_ind" name="benefits_ind" rows="4" style={{width:"100%"}} className="form-control" required
                                                 maxLength="2000" value={items.benefits_ind} onChange={handleInputChange}></textarea>
                                             <div className="help-block"></div>
@@ -381,13 +381,13 @@ function LearningSupportDetail(props){
                                                     <input type="checkbox" name="no_registration_flag" value="1" 
                                                         checked={items.no_registration_flag? true:false} onChange={handleInputChange}
                                                         />
-                                                    <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Registration</label>
+                                                    <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Registration</label>
                                                 </legend>
 
                                                 <div className='row'>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Registration Descr Eng </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Registration Descr Eng </label>
                                                             <textarea id="registration_eng" name="registration_eng" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.registration_eng} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -395,7 +395,7 @@ function LearningSupportDetail(props){
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Registration Descr Ind </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Registration Descr Ind </label>
                                                             <textarea id="registration_ind" name="registration_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.registration_ind} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -412,13 +412,13 @@ function LearningSupportDetail(props){
                                                     <input type="checkbox" name="free_flag" value="1" 
                                                         checked={items.free_flag? true:false} onChange={handleInputChange}
                                                     />
-                                                    <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Price</label>
+                                                    <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Price</label>
                                                 </legend>
 
                                                 <div className='row'>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Price Descr Eng </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Price Descr Eng </label>
                                                             <textarea id="price_eng" name="price_eng" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.price_eng} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -426,7 +426,7 @@ function LearningSupportDetail(props){
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Price Descr Ind </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Price Descr Ind </label>
                                                             <textarea id="price_ind" name="price_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.price_ind} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -443,13 +443,13 @@ function LearningSupportDetail(props){
                                                     <input type="checkbox" name="self_learn_flag" value="1" 
                                                         checked={items.self_learn_flag? true:false} onChange={handleInputChange}
                                                     />
-                                                    <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Duration</label>
+                                                    <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Duration</label>
                                                 </legend>
 
                                                 <div className='row'>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Duration Descr Eng </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Duration Descr Eng </label>
                                                             <textarea id="duration_eng" name="duration_eng" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.duration_eng} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -457,7 +457,7 @@ function LearningSupportDetail(props){
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Duration Descr Ind </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Duration Descr Ind </label>
                                                             <textarea id="duration_ind" name="duration_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.duration_ind} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -474,13 +474,13 @@ function LearningSupportDetail(props){
                                                     <input type="checkbox" name="no_pre_work_flag" value="1" 
                                                         checked={items.no_pre_work_flag? true:false} onChange={handleInputChange}
                                                     />
-                                                    <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Pre-work</label>
+                                                    <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;Show Pre-work</label>
                                                 </legend>
 
                                                 <div className='row'>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Pre-Work Descr Eng </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Pre-Work Descr Eng </label>
                                                             <textarea id="pre_work_eng" name="pre_work_eng" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.pre_work_eng} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -488,7 +488,7 @@ function LearningSupportDetail(props){
                                                     </div>
                                                     <div className="col-md-6">
                                                         <div className="mb-3 field-usereditform-username required">
-                                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Work Descr Ind </label>
+                                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Work Descr Ind </label>
                                                             <textarea id="pre_work_ind" name="pre_work_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                                 maxLength="100" value={items.pre_work_ind} onChange={handleInputChange}></textarea>
                                                             <div className="help-block"></div>
@@ -502,7 +502,7 @@ function LearningSupportDetail(props){
                                         <br/>
                                         <div className="mb-3">
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Logo <span style={{color:"#ff0404"}}>(*) </span>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Logo <span style={{color:"#ff0404"}}>(*) </span>
                                                     <br/> 
                                                     <ul className="file-upload-requirement">
                                                         <li>
@@ -532,7 +532,7 @@ function LearningSupportDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

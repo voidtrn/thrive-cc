@@ -856,8 +856,8 @@ function NavMenu(props) {
                                 </div>
 
                                 <div className='row'>
-                                    <div className="pull-right" style={{ paddingBottom: '0px' }}>
-                                        <span className='pull-right backExplore' style={{ cursor: 'pointer' }} onClick={() => setdropdown(!dropdown)} >
+                                    <div className="float-end" style={{ paddingBottom: '0px' }}>
+                                        <span className='float-end backExplore' style={{ cursor: 'pointer' }} onClick={() => setdropdown(!dropdown)} >
                                             <i className="fa fa-chevron-left"></i>&nbsp;back
                                         </span>
                                     </div>

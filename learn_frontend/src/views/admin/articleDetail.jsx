@@ -525,7 +525,7 @@ function ArticleDetail(props){
                                     <Tab.Pane eventKey="#tab-0">
                                         <form id="czfrom" onSubmit={validateImage} method="post" style={{display: "block"}} encType='multipart/form-data'>
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Menu - Category <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Menu - Category <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 
                                                 <select value={items.category_id}
                                                     onChange={handleInputChange.bind(this)} id="category_id" name="category_id" style={{width:"100%"}} className="form-control">
@@ -542,7 +542,7 @@ function ArticleDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Refine By (Category 4)</label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Refine By (Category 4)</label>
                                                 <input type="text" id="usereditform-email" style={{width:"500px"}} className="form-control" name="category_4" 
                                                     onChange={handleInputChange.bind(this)} maxLength="100" value={items.category_4} aria-required="true" aria-invalid="false" />
                                                 <ul className="file-upload-requirement">
@@ -554,7 +554,7 @@ function ArticleDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"350px"}} className="form-control" name="title"
                                                     onChange={handleInputChange.bind(this)} maxLength="50" value={items.title} aria-required="true" aria-invalid="false" />
                                                 <ul className="file-upload-requirement">
@@ -566,7 +566,7 @@ function ArticleDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"350px"}} className="form-control" name="title_ind" 
                                                     onChange={handleInputChange.bind(this)} maxLength="50" value={items.title_ind} aria-required="true" aria-invalid="false" />
                                                 <ul className="file-upload-requirement">
@@ -578,21 +578,21 @@ function ArticleDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                     onChange={handleInputChange.bind(this)} name="description" maxLength="100" value={items.description} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" name="description_ind" 
                                                     onChange={handleInputChange.bind(this)} maxLength="100" value={items.description_ind} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                     onChange={handleInputChange.bind(this)} name="hyperlink_url" value={items.hyperlink_url} aria-required="true" aria-invalid="false" />
 
@@ -600,7 +600,7 @@ function ArticleDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Article ID <span style={{color:"#ff0404"}}>{editData? '' : '(*)'}</span></label>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Article ID <span style={{color:"#ff0404"}}>{editData? '' : '(*)'}</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"20%"}}  className="form-control" 
                                                     onChange={handleInputChange.bind(this)} name="article_id" value={items.article_id} aria-required="true" aria-invalid="false" />
 
@@ -608,7 +608,7 @@ function ArticleDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Type </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Type </label>
                                                 
                                                     <select value={items.content_type_id} required
                                                         onChange={handleInputChange.bind(this)} id="content_type_id" name="content_type_id" style={{width:"300px"}} className="form-control">
@@ -626,7 +626,7 @@ function ArticleDetail(props){
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
                                                             <br/> 
                                                             <ul className="file-upload-requirement">
                                                                 <li>
@@ -659,7 +659,7 @@ function ArticleDetail(props){
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Article Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Article Preview <span style={{color:"#ff0404"}}>(*) </span>
                                                             <br/> 
                                                             <ul className="file-upload-requirement">
                                                                 <li>
@@ -695,7 +695,7 @@ function ArticleDetail(props){
                                             <div className="row" style={{position: "relative"}}>
                                                 <div className="col-md-6" >
                                                     <div className="mb-3 field-usereditform-email required" >
-                                                        <label className="control-label" forHtml="profile-country">&nbsp;Share to Spesific User </label> <span onClick={clearSpecificUser} className="btn btn-danger btn-xs">clear all users</span>
+                                                        <label className="form-label" forHtml="profile-country">&nbsp;Share to Spesific User </label> <span onClick={clearSpecificUser} className="btn btn-danger btn-xs">clear all users</span>
                                                         {/* <select id="initiate_participant" name="initiate_participant[]"  multiple data-placeholder="Choose Employee Name" className="chosen-select form-control" style={{width:"75%"}}></select> */}
                                                         <AsyncSelect
                                                             closeMenuOnSelect={false}
@@ -712,7 +712,7 @@ function ArticleDetail(props){
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" forHtml="tags">&nbsp;Tags</label>
+                                                        <label className="form-label" forHtml="tags">&nbsp;Tags</label>
                                                         <textarea id="tags" style={{width:"100%",height:"100px"}} className="form-control" name="tags" 
                                                             onChange={handleInputChange.bind(this)} aria-required="true" aria-invalid="false" value={items.tags}></textarea>
 
@@ -720,7 +720,7 @@ function ArticleDetail(props){
                                                     </div>
                                                         
                                                     <div className="mb-3 field-profile-country">
-                                                        <label className="control-label" forHtml="profile-country">&nbsp;Status Active</label>
+                                                        <label className="form-label" forHtml="profile-country">&nbsp;Status Active</label>
                                                         <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                             value={items.flag_active} onChange={handleInputChange} required name="flag_active" aria-invalid="false">
                                                             {editData ? null: <option value="">... Select this ...</option> }
@@ -735,7 +735,7 @@ function ArticleDetail(props){
                                             </div>
                                             <hr/>
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="profile-country">&nbsp;Copy Article Link</label><br/>
+                                                <label className="form-label" forHtml="profile-country">&nbsp;Copy Article Link</label><br/>
                                                 <input type="text" id="txtarticleLink" style={{width:"85%",display:"unset"}} className="form-control"  
                                                     name="txtarticleLink" value={hostname+routeAll.routeViewAll.article.path + '?cate='+md5CategoryId + '&articleId=' +md5ArticleId} 
                                                     aria-required="true" aria-invalid="false"  ref={(ref) => articleLink = ref} />

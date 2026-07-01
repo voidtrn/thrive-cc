@@ -231,11 +231,11 @@ function emailSubscribe(props){
                         <div className="col-sm-7">
                             <div className="filter">
                                 <div className="search-form">
-                                    <div className="mb-3 has-feedback">
+                                    <div className="mb-3">
                                         <label htmlFor="search" className="visually-hidden">Date</label>
                                         <input autoComplete="off" type="date" id="access_date_to" className="form-control datepicker access_date_to" placeholder="access end date"  name="access_date_to" value={endDate} onChange={(e)=>setEndDate(e.target.value)}/>
                                     </div>
-                                    <div className="mb-3 has-feedback">
+                                    <div className="mb-3">
                                         <label htmlFor="search" className="visually-hidden">Date</label>
                                         <input autoComplete="off" type="date" id="access_date_from" className="form-control datepicker access_date_from" placeholder="access start date"  name="access_date_from" value={startDate} onChange={(e)=>setStartDate(e.target.value)}/>
                                     </div>
@@ -245,7 +245,7 @@ function emailSubscribe(props){
                         <div className="col-sm-2">
                             <div style={{position: "relative",top:"5px"}}>
                                 <button onClick={()=>handleReset()} type="reset" className="btn btn-primary btn-sm" >reset</button>
-                                <button type="submit" id="btnSearch" name="btnSearch" value="filter" style={{margin:"0px 10px"}} className="btn btn-primary btn-sm pull-right">filter</button>
+                                <button type="submit" id="btnSearch" name="btnSearch" value="filter" style={{margin:"0px 10px"}} className="btn btn-primary btn-sm float-end">filter</button>
                             </div>
                         </div>
                     </div>

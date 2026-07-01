@@ -238,56 +238,56 @@ function EventDetail(props){
                                     <Tab.Pane eventKey="#tab-0">
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Event Title Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Event Title Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                 name="event_title" aria-required="true" aria-invalid="false" value={items.event_title} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Event Title Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Event Title Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                 name="event_title_ind" aria-required="true" aria-invalid="false" value={items.event_title_ind} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Event Date Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Event Date Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                 name="event_date" aria-required="true" aria-invalid="false" value={items.event_date} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Event Date Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Event Date Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                 name="event_date_ind" aria-required="true" aria-invalid="false" value={items.event_date_ind} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Event Status Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Event Status Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                 name="event_status" aria-required="true" aria-invalid="false" value={items.event_status} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Event Status Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Event Status Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" 
                                                 name="event_status_ind" aria-required="true" aria-invalid="false" value={items.event_status_ind} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;URL </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;URL </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" placeholder="http://www.google.co.id"
                                                 name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Preview Image <span style={{color:"#ff0404"}}>(*) </span>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Preview Image <span style={{color:"#ff0404"}}>(*) </span>
                                                 <br/> 
                                                 <ul className="file-upload-requirement">
                                                     <li>
@@ -317,7 +317,7 @@ function EventDetail(props){
                                         </div>
                                         
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

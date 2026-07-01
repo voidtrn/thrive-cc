@@ -198,7 +198,7 @@ function LearningMainFocusDetail(props){
                 case 'textarea':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <textarea id={v.inputName} style={{width:v.inputWidth,height:"200px"}} className="form-control" name={v.inputName} onChange={handleInputChange.bind(this)} aria-required="true" aria-invalid="false" value={v.inputValue} required={v.inputRequired} readOnly={v.inputReadOnly}></textarea>
                             <div className="help-block"></div>
                         </div>
@@ -206,7 +206,7 @@ function LearningMainFocusDetail(props){
                 case 'select':
                     return(
                         <div className="mb-3 field-profile-country" key={idx}>
-                            <label className="control-label" htmlFor="profile-country">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label" htmlFor="profile-country">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <select id={v.inputName} style={{width:v.inputWidth}} className="form-control" 
                                 value={v.inputValue} onChange={handleInputChange} name={v.inputName} aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly}>
                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -219,7 +219,7 @@ function LearningMainFocusDetail(props){
                 case 'select_search':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <Select
                                 className="basic-single"
                                 classNamePrefix="select"
@@ -236,7 +236,7 @@ function LearningMainFocusDetail(props){
                 default:
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <input type={v.inputType.toLowerCase()} id="usereditform-email" style={{width:v.inputWidth}} className="form-control"
                                 name={v.inputName} value={v.inputValue} onChange={handleInputChange} aria-required="true" aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly} />
                             <div className="help-block"></div>

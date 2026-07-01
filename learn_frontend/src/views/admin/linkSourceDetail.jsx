@@ -152,21 +152,21 @@ function LinkSourceDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Code <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Code <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"100px"}} maxLength="10" className="form-control"
                                                 name="code" value={items.code} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Source Name <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Source Name <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="source_name" value={items.source_name} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -178,7 +178,7 @@ function LinkSourceDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Total Hits </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Total Hits </label>
                                             <input type="text" id="usereditform-email" style={{width:"100px"}} className="form-control" disabled
                                                 name="total_hits" value={items.total_hits} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>

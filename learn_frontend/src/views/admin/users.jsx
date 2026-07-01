@@ -149,9 +149,9 @@ function Users(props){
                 <div className="panel-body">
 
                     <div className="table-responsive">
-                        <div className="pull-right">
+                        <div className="float-end">
                             <form className="search-form" method="post" onSubmit={handleSearch}>
-                                <div className="mb-3 has-feedback">
+                                <div className="mb-3">
                                     <label htmlFor="search" className="visually-hidden">Search</label>
                                     <input type="text" className="form-control" name="search" id="search" placeholder="search"/>
                                     <span className="lbl-primary fa fa-search form-control-feedback"></span>

@@ -272,7 +272,7 @@ function WorkshopSharingWorkshopUser(props){
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="mb-3">
-                                                    <label className="control-label">&nbsp;Menu - Category </label>
+                                                    <label className="form-label">&nbsp;Menu - Category </label>
                                                         <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="id_cat" name="id_cat" >
                                                         <option value="null">-select one-</option>
                                                         {listCatMenu.map(
@@ -289,7 +289,7 @@ function WorkshopSharingWorkshopUser(props){
 
                                         <hr/>
                                         <div className="table-responsive">
-                                            <label className="control-label">&nbsp;List User </label>
+                                            <label className="form-label">&nbsp;List User </label>
                                             <div id="h182093w0" className="grid-view">
                                                 <div className="summary">Showing <b>{offset+1} - {limit*(activePage-1)+items.length}</b> of <b>{totalData}</b> records.</div>
                                                     <Table items={items} loading={loading}/>

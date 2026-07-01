@@ -137,7 +137,7 @@ function EventParticipantImportDetail(props){
                                     <Tab.Content animation="true">
                                         <Tab.Pane eventKey="#tab-0">
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" forHtml="usereditform-email">&nbsp;Template <span style={{color:"#ff0404"}}>(*)</span>
+                                                <label className="form-label" forHtml="usereditform-email">&nbsp;Template <span style={{color:"#ff0404"}}>(*)</span>
                                                     <br/>  
                                                     <ul className="file-upload-requirement">
                                                         <li>
@@ -149,7 +149,7 @@ function EventParticipantImportDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Import file <span style={{color:"#ff0404"}}>(*) </span>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Import file <span style={{color:"#ff0404"}}>(*) </span>
                                                     <br/> 
                                                     <ul className="file-upload-requirement">
                                                         <li>

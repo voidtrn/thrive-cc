@@ -20,7 +20,7 @@ function AdminDetailInput(props){
                 case 'textarea':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <textarea id={v.inputName} style={{width:v.inputWidth,height:v.inputHeight||"200px"}} className="form-control" name={v.inputName} onChange={(e)=>props.changeData(e)} aria-required="true" aria-invalid="false" defaultValue={v.inputValue} required={v.inputRequired} readOnly={v.inputReadOnly}></textarea>
                             <div className="help-block"></div>
                         </div>
@@ -28,7 +28,7 @@ function AdminDetailInput(props){
                 case 'select':
                     return(
                         <div className="mb-3 field-profile-country" key={idx}>
-                            <label className="control-label" htmlFor="profile-country">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label" htmlFor="profile-country">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <select id={v.inputName} style={{width:v.inputWidth}} className="form-control" 
                                 value={v.inputValue} onChange={(e)=>props.changeData(e)} name={v.inputName} aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly}>
                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -41,7 +41,7 @@ function AdminDetailInput(props){
                 case 'select_search':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            {v.label?<label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>:null}
+                            {v.label?<label className="form-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>:null}
                             <Select
                                 className="basic-single"
                                 classNamePrefix="select"
@@ -68,7 +68,7 @@ function AdminDetailInput(props){
 
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <AsyncSelect
                                 className="basic-single"
                                 classNamePrefix="select"
@@ -85,7 +85,7 @@ function AdminDetailInput(props){
                 case 'select_multiple_search':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
+                            <label className="form-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>
                             <Select
                                 className="basic-multi-select"
                                 isMulti
@@ -103,7 +103,7 @@ function AdminDetailInput(props){
                 case 'file':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}
                                 <br/> 
                                 <ul className="file-upload-requirement">
                                     {v.inputRuleImage.map((z,idx)=><li key={idx}>{z}</li>)}
@@ -115,7 +115,7 @@ function AdminDetailInput(props){
                                 onChange={(e)=>props.fileUpload(e)} />
                             <br/>
                             <br/>
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;{typeof v.inputValue!=='object' ?`Old`:`New`} Image</label><br/>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;{typeof v.inputValue!=='object' ?`Old`:`New`} Image</label><br/>
                             <img style={{width:"160px",height:"auto",margin:"1rem"}}  src={typeof v.inputValue!=='object' ? file_path+v.inputValue :v.srcInput}  onError={addDefaultSrc} />
                             <br/>
                             <span className='badge bg-primary' id={`${v.inputName}-span`} name={`${v.inputName}-span`}>{typeof v.inputValue!=='object' && v.inputValue}</span>
@@ -125,7 +125,7 @@ function AdminDetailInput(props){
                 case 'file_import':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label" forhtml="usereditform-email">&nbsp;Template <span style={{color:"#ff0404"}}>(*)</span>
+                            <label className="form-label" forhtml="usereditform-email">&nbsp;Template <span style={{color:"#ff0404"}}>(*)</span>
                                 <br/>  
                                 <ul className="file-upload-requirement">
                                     <li>
@@ -134,7 +134,7 @@ function AdminDetailInput(props){
                                 </ul>
                             </label>
                             <br/>
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}
                                 <br/> 
                                 <ul className="file-upload-requirement">
                                     {v.inputRuleImage.map((z,idx)=><li key={idx}>{z}</li>)}
@@ -149,7 +149,7 @@ function AdminDetailInput(props){
                 case 'radio-inline':
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            <label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label><br/>
+                            <label className="form-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label><br/>
                             {v.inputRadioData.map((x,idx_x)=>
                                 <Form.Check 
                                     inline
@@ -168,7 +168,7 @@ function AdminDetailInput(props){
                 default:
                     return(
                         <div className="mb-3 field-usereditform-email required" key={idx}>
-                            {v.label?<label className="control-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>:null}
+                            {v.label?<label className="form-label"> &nbsp;{v.label} {v.inputRequired===true && <span style={{color:"#ff0404"}}>(*)</span>}</label>:null}
                             <input type={v.inputType.toLowerCase()} id="usereditform-email" style={{width:v.inputWidth}} className="form-control"
                                 name={v.inputName} defaultValue={v.inputValue} onChange={(e)=>props.changeData(e)} aria-required="true" aria-invalid="false" required={v.inputRequired} readOnly={v.inputReadOnly} />
                             <div className="help-block"></div>

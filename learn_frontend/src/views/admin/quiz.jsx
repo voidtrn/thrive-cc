@@ -152,9 +152,9 @@ function Quiz(props){
 
     return(        
         <div className="panel-body"> 
-            <div className="pull-right">
+            <div className="float-end">
                 {totalData < 15?
-                    <a className="pull-right btn btn-primary btn-sm tt" onClick={addNew} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                    <a className="float-end btn btn-primary btn-sm tt" onClick={addNew} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                 :
                     <span>max number of questions is 3 questions</span>
                 }

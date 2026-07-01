@@ -148,10 +148,10 @@ function CourseLimit(props) {
                                 <strong>{props.pageName}</strong>
                             </div>
                             <div className="col-md-5">
-                                <div className="pull-right">
-                                    <a style={{ marginRight: "5px", marginLeft: "5px" }} href={routeAdmin.importLimitCourseDetail.path} className="pull-right btn btn-success btn-sm tt" >
+                                <div className="float-end">
+                                    <a style={{ marginRight: "5px", marginLeft: "5px" }} href={routeAdmin.importLimitCourseDetail.path} className="float-end btn btn-success btn-sm tt" >
                                         <i className="fa fa-file-excel-o" ></i> New from Excel</a>
-                                    <a style={{ marginRight: "5px", marginLeft: "5px" }} onClick={handleExport} className="pull-right btn btn-primary btn-sm tt" >
+                                    <a style={{ marginRight: "5px", marginLeft: "5px" }} onClick={handleExport} className="float-end btn btn-primary btn-sm tt" >
                                         <i className="fa fa-file-excel-o" ></i> Export</a>
 
                                 </div>
@@ -161,9 +161,9 @@ function CourseLimit(props) {
                             <div className="col-md-7">
                             </div>
                             <div className="col-md-5">
-                                <div className="pull-right">
+                                <div className="float-end">
                                     <form className="search-form" method="post" onSubmit={handleSearch}>
-                                        <div className="mb-3 has-feedback">
+                                        <div className="mb-3">
                                             <label htmlFor="search" className="visually-hidden">Search</label>
                                             <input type="text" className="form-control" name="search" id="search" placeholder="search" />
                                             <span className="lbl-primary fa fa-search form-control-feedback"></span>

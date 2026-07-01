@@ -266,14 +266,14 @@ function SubCategory(props){
                             </div>
                             <div className="col-md-4">
                                 {key=='#tab-0'?
-                                    <div className="pull-right">
-                                    <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.customPageSubCategoryDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                                    <div className="float-end">
+                                    <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.customPageSubCategoryDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                                     </div>
                                 :''
                                 }
                                 {key=='#tab-2'?
-                                    <div className="pull-right">
-                                    <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.customPageSliderCategoryDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                                    <div className="float-end">
+                                    <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.customPageSliderCategoryDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                                     </div>
                                 :''
                                 }
@@ -311,7 +311,7 @@ function SubCategory(props){
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="mb-3">
-                                                        <label className="control-label">&nbsp;Section - Menu - Category </label>
+                                                        <label className="form-label">&nbsp;Section - Menu - Category </label>
                                                             <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={handleSectionMenuChange.bind(this)}>
                                                             <option value="null">-select one-</option>
                                                             {listSectionMenu.map(

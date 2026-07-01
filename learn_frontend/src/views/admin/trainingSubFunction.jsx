@@ -171,9 +171,9 @@ function TrainingSubFunction(props){
                                 <strong>{props.pageName}</strong> 
                             </div>
                             <div className="col-md-8">
-                                <div className="pull-right">
+                                <div className="float-end">
                                
-                                <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.trainingAdminSubFunctionDetail.path} ><i class="fa fa-plus aria-hidden="></i> Add new</a>  
+                                <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.trainingAdminSubFunctionDetail.path} ><i class="fa fa-plus aria-hidden="></i> Add new</a>  
                                 
                                 </div>
                             </div>
@@ -182,9 +182,9 @@ function TrainingSubFunction(props){
                             <div className="col-md-4">
                             </div>
                             <div className="col-md-8">
-                                <div className="pull-right">
+                                <div className="float-end">
                                     <form className="search-form" method="post" onSubmit={handleSearch}>
-                                        <div className="mb-3 has-feedback">
+                                        <div className="mb-3">
                                             <label htmlFor="search" className="visually-hidden">Search</label>
                                             <input type="text" className="form-control" name="search" id="search" placeholder="search"/>
                                             <span className="lbl-primary fa fa-search form-control-feedback"></span>

@@ -194,7 +194,7 @@ function WorkshopSharingWorkshop(props){
                 <div className="row">
                     <div className="col-md-6">
                         <div className="mb-3">
-                            <label className="control-label">&nbsp;Menu - Category </label>
+                            <label className="form-label">&nbsp;Menu - Category </label>
                                 <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="id_cat" name="id_cat" onChange={handleCatMenuChange.bind(this)}>
                                 <option value="null">-select one-</option>
                                 {listCatMenu.map(
@@ -213,8 +213,8 @@ function WorkshopSharingWorkshop(props){
                 <div className="row">
                     <div className="col-md-12">
                         {showAddBtn?
-                            <div className="pull-right">
-                                <a className="pull-right btn btn-primary btn-sm tt" onClick={addNew} ><i className="fa fa-plus aria-hidden="></i> Add new</a>
+                            <div className="float-end">
+                                <a className="float-end btn btn-primary btn-sm tt" onClick={addNew} ><i className="fa fa-plus aria-hidden="></i> Add new</a>
                             </div>
                         :''
                         }

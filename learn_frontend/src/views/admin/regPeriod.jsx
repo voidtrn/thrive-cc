@@ -171,8 +171,8 @@ function RegPeriod(props){
                                 <strong>{props.pageName}</strong> 
                             </div>
                             <div className="col-md-4">
-                                <div className="pull-right">
-                                    <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.regPeriodDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                                <div className="float-end">
+                                    <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.regPeriodDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                                 </div>
                             </div>
                         </div>
@@ -184,7 +184,7 @@ function RegPeriod(props){
                             
                             <div className="col-md-3">
                                 <div className="mb-3">
-                                        <label className="control-label">&nbsp;Sort By </label>
+                                        <label className="form-label">&nbsp;Sort By </label>
                                             <select value={sortByFilter} style={{width:"100%"}} 
                                                 onChange={handleSearchInputChange} onKeyPress={handleKeypress}
                                                 className="form-control filter-data"  id="sort_by" name="sort_by" >
@@ -199,7 +199,7 @@ function RegPeriod(props){
 
                             <div className="col-md-1">
                                 <div className="mb-3">
-                                    <label className="control-label">&nbsp;</label>
+                                    <label className="form-label">&nbsp;</label>
                                     <div  style={{display:"inline-flex",position:"relative",top:"5px",right:"15px"}}>
                                         <button type="submit" id="btnFilter" className="btn btn-outline btn-sm btn-warning" 
                                             onClick={filterButton}><i className="fa fa-search"></i>&nbsp;filter</button>

@@ -343,56 +343,56 @@ function SliderDetail(props){
                                         <Tab.Pane eventKey="#tab-0">
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Sort Number</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Sort Number</label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control sort_index"
                                                     name="sort_index" value={items.sort_index} onChange={handleInputChange} readOnly required aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Headline Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Headline Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                     name="headline" value={items.headline} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Headline Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Headline Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                     name="headline_ind" value={items.headline_ind} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" maxLength="150"
                                                     name="short_description" value={items.short_description} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" maxLength="150"
                                                     name="short_description_ind" value={items.short_description_ind} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control sort_index" placeholder="http://www.google.co.id"
                                                     name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Article ID <span style={{color:"#ff0404"}}>{editData? '':'(*)'}</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Article ID <span style={{color:"#ff0404"}}>{editData? '':'(*)'}</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"20%"}} className="form-control" 
                                                     name="article_id" value={items.article_id} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
                                             
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) <span style={{color:"#ff0404"}}>(*) </span>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) <span style={{color:"#ff0404"}}>(*) </span>
                                                     <br/> 
                                                     <ul className="file-upload-requirement">
                                                         <li>
@@ -423,7 +423,7 @@ function SliderDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) for Mobile View <span style={{color:"#ff0404"}}>(*) </span>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) for Mobile View <span style={{color:"#ff0404"}}>(*) </span>
                                                     <br/> 
                                                     <ul className="file-upload-requirement">
                                                         <li>
@@ -454,7 +454,7 @@ function SliderDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-profile-country">
-                                                <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                                <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                                 <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                     value={items.flag_active} onChange={changeFlagActive.bind(this)} required name="flag_active" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }

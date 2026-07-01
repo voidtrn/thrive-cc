@@ -196,28 +196,28 @@ function RedeemCodeDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Code <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Code <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="code" style={{width:"100px"}} maxLength="6" className="form-control" disabled={editData?true:false}
                                                 name="code" value={items.code} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block">&nbsp;the code must be 6 characters with alphanumeric</div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Points <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Points <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"100px"}} className="form-control" maxLength="10" disabled={items.last_date_redeem?true:false}
                                                 name="points" value={items.points} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Redeem Quota <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Redeem Quota <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="qty_redeem_quota" style={{width:"100px"}} className="form-control" maxLength="10" 
                                                 name="qty_redeem_quota" value={items.qty_redeem_quota} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -229,7 +229,7 @@ function RedeemCodeDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Total Redeem Claim </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Total Redeem Claim </label>
                                             <input type="text" id="total_claim" style={{width:"200px"}} className="form-control" disabled
                                                 name="total_claim" value={items.total_claim} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             {/* <input type="hidden" id="hdnTotalRedeemClaim" value={items.total_claim} /> */}
@@ -237,7 +237,7 @@ function RedeemCodeDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Last Redeem Claim </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Last Redeem Claim </label>
                                             <input type="text" id="last_date_redeem" style={{width:"200px"}} className="form-control" disabled
                                                 name="last_date_redeem" value={items.last_date_redeem} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>

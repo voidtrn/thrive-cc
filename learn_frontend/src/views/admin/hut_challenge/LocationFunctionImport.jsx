@@ -205,7 +205,7 @@ function LocationFunctionImport(props) {
                                         <div className="row mb-3">
                                             <label for="inputEmail3" className="col-sm-2 col-form-label">Excel File</label>
                                             <div className="col-sm-9">
-                                                <label className="control-label" for="usereditform-email">&nbsp;Import file   <span style={{ color: "#ff0404" }}>(*) </span>
+                                                <label className="form-label" for="usereditform-email">&nbsp;Import file   <span style={{ color: "#ff0404" }}>(*) </span>
                                                     <br />
                                                     <ul className="file-upload-requirement">
                                                         <li>

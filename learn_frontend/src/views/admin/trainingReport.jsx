@@ -211,7 +211,7 @@ function TrainingReport(){
                                                 <div className="panel-body">
                                                     <form id="search-form" onSubmit={doSearch} method="post" style={{display: "block"}} encType='multipart/form-data' >
                                                         <div className="mb-3 field-usereditform-email required">
-                                                            <label className="control-label" forHtml="usereditform-email">&nbsp;Training Name <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                            <label className="form-label" forHtml="usereditform-email">&nbsp;Training Name <span style={{color:"#ff0404"}}>(*)</span></label>
                                                             <input type="text" id="usereditform-email" required  style={{width:"75%"}} className="form-control" name="search" 
                                                                 aria-required="true" aria-invalid="false" value={searchCriteria} onChange={(e) => (setSearchCriteria(e.target.value))} />
 

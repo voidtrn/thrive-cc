@@ -140,9 +140,9 @@ function ImportUserInfo(props){
                     <div className="panel-body">
 
                         <div className="table-responsive">
-                            <div className="pull-right">
+                            <div className="float-end">
                                 <a className="btn btn-warning btn-sm tt" onClick={exportData} style={{marginRight:"10px"}} ><i className="fa fa-file-excel-o aria-hidden"></i> Export - Unmatched User Data</a>  
-                                <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.importUserInfoDetail.path} ><i className="fa fa-plus aria-hidden"></i> Upload</a>  
+                                <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.importUserInfoDetail.path} ><i className="fa fa-plus aria-hidden"></i> Upload</a>  
                             </div>
 
                             <div id="h182093w0" className="grid-view">

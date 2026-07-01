@@ -202,8 +202,8 @@ function TrainingSchedule(props){
                                 <strong>{props.pageName}</strong> 
                             </div>
                             <div className="col-md-4">
-                                <div className="pull-right">  
-                                <a className="pull-right btn btn-primary btn-sm tt" onClick={getDetail.bind(this,'','create')} ><i class="fa fa-plus aria-hidden="></i> Add new</a>  
+                                <div className="float-end">  
+                                <a className="float-end btn btn-primary btn-sm tt" onClick={getDetail.bind(this,'','create')} ><i class="fa fa-plus aria-hidden="></i> Add new</a>  
                                 </div>
                             </div>
                         </div>

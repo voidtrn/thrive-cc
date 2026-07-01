@@ -279,28 +279,28 @@ function SliderSFFDetail(props){
                                         <Tab.Pane eventKey="#tab-0">
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Sequence</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Sequence</label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control sort_index"
                                                     name="seqnum" value={items.seqnum} onChange={handleInputChange} readOnly required aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                     name="title" value={items.title} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" placeholder="http://www.google.co.id"
                                                     name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
                                             
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Image <span style={{color:"#ff0404"}}>(*) </span>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Image <span style={{color:"#ff0404"}}>(*) </span>
                                                     <br/> 
                                                     <ul className="file-upload-requirement">
                                                         <li>
@@ -331,7 +331,7 @@ function SliderSFFDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-profile-country">
-                                                <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                                <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                                 <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                     value={items.flag_active} onChange={changeFlagActive.bind(this)} required name="flag_active" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }

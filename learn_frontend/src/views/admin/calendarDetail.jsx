@@ -158,61 +158,61 @@ function CalendarDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Title En<span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Title En<span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-username" style={{width:"75%"}} className="form-control"
                                                 name="calendar_event" value={items.calendar_event} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Title Ind<span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Title Ind<span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-username" style={{width:"75%"}} className="form-control"
                                                 name="calendar_event_ind" value={items.calendar_event_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Subtitle En</label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Subtitle En</label>
                                             <input type="text" id="usereditform-username" style={{width:"100%"}} className="form-control"
                                                 name="calendar_event_subtitle" value={items.calendar_event_subtitle} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Subtitle Ind</label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Subtitle Ind</label>
                                             <input type="text" id="usereditform-username" style={{width:"100%"}} className="form-control"
                                                 name="calendar_event_subtitle_ind" value={items.calendar_event_subtitle_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Description En</label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Description En</label>
                                             <textarea id="calendar_event_description" style={{width:"100%",height:"200px"}} className="form-control" name="calendar_event_description" onChange={handleInputChange} aria-required="true" aria-invalid="false" value={items.calendar_event_description} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Description Ind</label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Description Ind</label>
                                             <textarea id="calendar_event_description_ind" style={{width:"100%",height:"200px"}} className="form-control" name="calendar_event_description_ind" onChange={handleInputChange} aria-required="true" aria-invalid="false" value={items.calendar_event_description_ind} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Date<span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Date<span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="date" id="calendar_date" style={{width:"20%"}} className="form-control"
                                                 name="calendar_date" value={items.calendar_date} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Event Time</label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Event Time</label>
                                             <input type="text" id="usereditform-username" style={{width:"75%"}} className="form-control"
                                                 name="calendar_date_time" value={items.calendar_date_time} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
