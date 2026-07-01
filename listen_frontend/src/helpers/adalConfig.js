@@ -2,11 +2,11 @@
 import { AuthenticationContext, withAdalLogin } from 'react-adal';
 
 export const adalConfig = {
-    tenant: process.env.REACT_APP_TENANT_ID,
-    clientId: process.env.REACT_APP_CLIENT_ID,
+    tenant: import.meta.env.VITE_TENANT_ID,
+    clientId: import.meta.env.VITE_CLIENT_ID,
     redirectUri: window.location.origin,
     endpoints: {
-        api: process.env.REACT_APP_GRAPH_ROUTE
+        api: import.meta.env.VITE_GRAPH_ROUTE
     },
     postLogoutRedirectUri: window.location.origin,
     cacheLocation: 'localStorage'

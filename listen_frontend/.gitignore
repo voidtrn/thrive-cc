@@ -13,6 +13,7 @@
 
 # production
 /build
+/dist
 /findtime/build
 
 # misc

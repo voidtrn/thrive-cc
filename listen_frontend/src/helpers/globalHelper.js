@@ -253,19 +253,19 @@ class securityData{
 }
 
 const env = {
-    apiBaseUri : process.env.REACT_APP_API_BASE_URL,
-    assets : process.env.REACT_APP_ASSETS,
-    userDocument : process.env.REACT_APP_USER_DOCUMENT,
-    clientId : process.env.REACT_APP_CLIENT_ID,
-    tenantId : process.env.REACT_APP_TENANT_ID,
-    expSession : process.env.REACT_APP_EXP_SESSION,
-    secretId : process.env.REACT_APP_SECRET_ID,
-    rootPath : process.env.REACT_APP_ROOT_TIMETOLISTEN,
-    graphRoute : process.env.REACT_APP_GRAPH_ROUTE,
-    azureWindowLog : process.env.REACT_APP_AZURE_WINDOW_LOG,
-    publicUrl : process.env.PUBLIC_URL,
-    nodeEnv : process.env.NODE_ENV,
-    recognitionUrl : process.env.REACT_APP_RECOGNITION_URL,
+    apiBaseUri : import.meta.env.VITE_API_BASE_URL,
+    assets : import.meta.env.VITE_ASSETS,
+    userDocument : import.meta.env.VITE_USER_DOCUMENT,
+    clientId : import.meta.env.VITE_CLIENT_ID,
+    tenantId : import.meta.env.VITE_TENANT_ID,
+    expSession : import.meta.env.VITE_EXP_SESSION,
+    secretId : import.meta.env.VITE_SECRET_ID,
+    rootPath : import.meta.env.VITE_ROOT_TIMETOLISTEN,
+    graphRoute : import.meta.env.VITE_GRAPH_ROUTE,
+    azureWindowLog : import.meta.env.VITE_AZURE_WINDOW_LOG,
+    publicUrl : import.meta.env.BASE_URL,
+    nodeEnv : import.meta.env.MODE,
+    recognitionUrl : import.meta.env.VITE_RECOGNITION_URL,
 }
 
 const azureConfig = {
