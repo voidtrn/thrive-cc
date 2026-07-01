@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { Image, Offcanvas, CloseButton, Accordion  } from 'react-bootstrap-v-5';
-import { Card, ProgressBar } from 'react-bootstrap';
+import { Image, Offcanvas, CloseButton, Accordion, Card, ProgressBar } from 'react-bootstrap';
 import GlobalState from '../helpers/globalState';
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
