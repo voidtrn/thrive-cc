@@ -17,7 +17,6 @@ import moment from 'moment';
 import '../../../i18n.js'
 
 import { useTranslation } from "react-i18next";
-import { faDatabase, faDeaf, faDharmachakra } from '@fortawesome/free-solid-svg-icons';
 
 
 
