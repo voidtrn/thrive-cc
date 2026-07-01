@@ -251,7 +251,7 @@ function MenuDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Section </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Section </label>
                                             {/* <input disabled name="hdnkey" value={items.section_id}/>    */}
                                             {
                                                 editData?
@@ -273,14 +273,14 @@ function MenuDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input style={{width:"100%",height:"75%"}} className="form-control" required
                                                 name="title" aria-required="true" aria-invalid="false" value={items.title} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
                                                 <br/> 
                                                 <ul className="file-upload-requirement">
                                                     <li>
@@ -310,7 +310,7 @@ function MenuDetail(props){
                                         </div>
                                         
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -322,7 +322,7 @@ function MenuDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Type Page</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Type Page</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_type_page} onChange={handleInputChange.bind(this)} required name="flag_type_page" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -339,7 +339,7 @@ function MenuDetail(props){
 
                                                 <div className="mb-3 field-profile-country">
                                                     <input type="hidden" name="hdnkey" value={items.section_id}></input>
-                                                    <label className="control-label" htmlFor="profile-country">&nbsp;Home Appearance</label>
+                                                    <label className="form-label" htmlFor="profile-country">&nbsp;Home Appearance</label>
                                                     <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                         value={items.set_as_default} onChange={handleInputChange.bind(this)} required name="set_as_default" aria-invalid="false">
                                                         {/* {editData ? null: <option value="">... Select this ...</option> } */}

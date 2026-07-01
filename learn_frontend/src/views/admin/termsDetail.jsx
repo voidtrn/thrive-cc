@@ -155,35 +155,35 @@ function TermsDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Title Eng </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Title Eng </label>
                                             <input type="text" id="usereditform-username" style={{width:"80%"}} className="form-control"
                                                 name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Title Ind </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Title Ind </label>
                                             <input type="text" id="usereditform-username" style={{width:"80%"}} className="form-control"
                                                 name="title_ind" value={items.title_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Eng </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Eng </label>
                                             <textarea style={{width:"100%",height:"75px"}} className="form-control" 
                                                 name="page_content" aria-required="true" aria-invalid="false" value={items.page_content} onChange={handleInputChange} ></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Ind </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Ind </label>
                                             <textarea style={{width:"100%",height:"75px"}} className="form-control" 
                                                 name="page_content_ind" aria-required="true" aria-invalid="false" value={items.page_content_ind} onChange={handleInputChange} ></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

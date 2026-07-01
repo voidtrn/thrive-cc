@@ -176,7 +176,7 @@ function TrainingDetail(props){
                                     <Tab.Content animation="true">
                                         <Tab.Pane eventKey="#tab-0">
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Function </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Sub Function </label>
                                           
                                                     <select value={items.sub_function_id} required
                                                         onChange={handleInputChange.bind(this)} id="sub_function_id" name="sub_function_id" style={{width:"300px"}} className="form-control">
@@ -192,14 +192,14 @@ function TrainingDetail(props){
                                                 <div className="help-block"></div>
                                             </div>
                                             <div className="mb-3 field-usereditform-username required">
-                                                <label className="control-label" htmlFor="usereditform-username">&nbsp;Training Name <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-username">&nbsp;Training Name <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="usereditform-username" style={{width:"75%"}} className="form-control" required
                                                     name="name" value={items.name} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-profile-country">
-                                                <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                                <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                                 <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                     value={items.status_active} onChange={handleInputChange.bind(this)} required name="status_active" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }

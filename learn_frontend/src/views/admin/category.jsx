@@ -205,8 +205,8 @@ function Category(props){
                                 <strong>{props.pageName}</strong> 
                             </div>
                             <div className="col-md-4">
-                                <div className="pull-right">
-                                    <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.categoryDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                                <div className="float-end">
+                                    <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.categoryDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                                 </div>
                             </div>
                         
@@ -218,7 +218,7 @@ function Category(props){
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3">
-                                    <label className="control-label">&nbsp;Section - Menu </label>
+                                    <label className="form-label">&nbsp;Section - Menu </label>
                                         <select value={menuId} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={handleSectionMenuChange.bind(this)}>
                                         <option value="empty">-select one-</option>
                                         {listSectionMenu.map(

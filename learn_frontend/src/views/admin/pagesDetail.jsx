@@ -110,28 +110,28 @@ function PagesDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Page Eng </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Page Eng </label>
                                             <input type="text" id="usereditform-username" style={{width:"80%"}} className="form-control" disabled
                                                 name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Page Ind </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Page Ind </label>
                                             <input type="text" id="usereditform-username" style={{width:"80%"}} className="form-control" disabled
                                                 name="title_ind" value={items.title_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Eng </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Eng </label>
                                             <textarea style={{width:"100%",height:"75px"}} className="form-control" 
                                                 name="page_content" aria-required="true" aria-invalid="false" value={items.page_content} onChange={handleInputChange} ></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Ind </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Ind </label>
                                             <textarea style={{width:"100%",height:"75px"}} className="form-control" 
                                                 name="page_content_ind" aria-required="true" aria-invalid="false" value={items.page_content_ind} onChange={handleInputChange} ></textarea>
                                             <div className="help-block"></div>

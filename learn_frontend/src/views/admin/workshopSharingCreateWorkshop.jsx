@@ -301,7 +301,7 @@ function WorkshopSharingCreateWorkshop(props){
                     <form id="czfrom" onSubmit={validateImage} method="post" style={{display: "block"}} encType='multipart/form-data'>
                                 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
                             
                             <select value={items.category_id} required
                                 onChange={handleInputChange.bind(this)} id="category_id" name="category_id" style={{width:"100%"}} className="form-control">
@@ -319,7 +319,7 @@ function WorkshopSharingCreateWorkshop(props){
                         </div>
 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                             <input type="text" id="usereditform-email" style={{width:"350px"}} className="form-control"
                                 name="title" maxLength="50" value={items.title} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                             <ul className="file-upload-requirement">
@@ -331,7 +331,7 @@ function WorkshopSharingCreateWorkshop(props){
                         </div>
 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                             <input type="text" id="usereditform-email" style={{width:"350px"}} className="form-control"
                                 name="title_ind" maxLength="50" value={items.title_ind} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                             <ul className="file-upload-requirement">
@@ -343,21 +343,21 @@ function WorkshopSharingCreateWorkshop(props){
                         </div>
 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                 name="description" maxLength="100" value={items.description} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                             <div className="help-block"></div>
                         </div>
 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                 name="description_ind" maxLength="100" value={items.description_ind} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                             <div className="help-block"></div>
                         </div>
 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                 name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                             <div className="help-block"></div>
@@ -366,7 +366,7 @@ function WorkshopSharingCreateWorkshop(props){
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3 field-usereditform-email required">
-                                    <label className="control-label" htmlFor="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                    <label className="form-label" htmlFor="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
                                         <br/> 
                                         <ul className="file-upload-requirement-no">
                                             <li>
@@ -399,7 +399,7 @@ function WorkshopSharingCreateWorkshop(props){
                             </div>
                             <div className="col-md-6">
                                 <div className="mb-3 field-usereditform-email required">
-                                    <label className="control-label" htmlFor="usereditform-email">&nbsp;Article Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                    <label className="form-label" htmlFor="usereditform-email">&nbsp;Article Preview <span style={{color:"#ff0404"}}>(*) </span>
                                         <br/> 
                                         <ul className="file-upload-requirement-no">
                                             <li>
@@ -432,14 +432,14 @@ function WorkshopSharingCreateWorkshop(props){
                         </div>
 
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Capacity User <span style={{color:"#ff0404"}}>(*)</span></label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Capacity User <span style={{color:"#ff0404"}}>(*)</span></label>
                             <input type="number" id="capacity" style={{width:"350px"}} className="form-control"
                                 name="capacity" maxLength="50" value={items.capacity} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                             <div className="help-block"></div>
                         </div>
 
                         <div className="mb-3 field-profile-country">
-                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                             <select id="profile-country" style={{width:"200px"}} className="form-control" 
                                 value={items.flag_active} onChange={handleInputChange} required name="flag_active" aria-invalid="false">
                                 {editData ? null: <option value="">... Select this ...</option> }

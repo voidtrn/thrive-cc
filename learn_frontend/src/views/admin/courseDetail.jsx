@@ -441,7 +441,7 @@ function CourseDetail(props){
                                     <Tab.Content animation="true">
                                         <Tab.Pane eventKey="#tab-0">
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
                                                 
                                                 <select value={items.category_id} required
                                                     onChange={handleInputChange.bind(this)} id="category_id" name="category_id" style={{width:"100%"}} className="form-control">
@@ -459,7 +459,7 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Title Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="title" style={{width:"50%"}} className="form-control"
                                                     name="title" maxLength="100" value={items.title} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                                                 <ul className="file-upload-requirement">
@@ -471,7 +471,7 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Title Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="title_ind" style={{width:"50%"}} className="form-control"
                                                     name="title_ind" maxLength="100" value={items.title_ind} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                                                 <ul className="file-upload-requirement">
@@ -483,42 +483,42 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Description Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <textarea id="descr" name="description" rows="2" style={{width:"100%"}} className="form-control" required
                                                     maxLength="255" value={items.description} onChange={handleInputChange}></textarea>
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Description Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <textarea id="descr_ind" name="description_ind" rows="2" style={{width:"100%"}} className="form-control" required
                                                     maxLength="255" value={items.description_ind} onChange={handleInputChange}></textarea>
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Provider <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Provider <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="provider" style={{width:"50%"}} className="form-control"
                                                     name="provider" maxLength="50" value={items.provider} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;URL <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="hyperlink_url" style={{width:"75%"}} className="form-control"
                                                     name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} required aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Article ID <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Article ID <span style={{color:"#ff0404"}}>(*)</span></label>
                                                 <input type="text" id="article_id" style={{width:"75%"}} className="form-control"
                                                     name="article_id" value={items.article_id} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 field-profile-country">
-                                                <label className="control-label" htmlFor="profile-country">&nbsp;Type</label>
+                                                <label className="form-label" htmlFor="profile-country">&nbsp;Type</label>
                                                 <select id="profile-country" style={{width:"25%"}} className="form-control" 
                                                     value={items.course_type} onChange={handleInputChange.bind(this)} required name="course_type" aria-invalid="false">
                                                     <option value="0">#AWB Online Content</option>
@@ -532,7 +532,7 @@ function CourseDetail(props){
 
                                             {items.course_type!=='0' && items.course_type!==0?
                                                 <div className="mb-3 field-usereditform-email required" id="form-price">
-                                                    <label className="control-label" htmlFor="usereditform-email">&nbsp;Price</label>
+                                                    <label className="form-label" htmlFor="usereditform-email">&nbsp;Price</label>
                                                     <br/>
                                                     <select id="price_type" style={{width:"20%",display:"inline"}} className="form-control" 
                                                         value={items.price_type} onChange={handleInputChange.bind(this)} name="price_type" aria-invalid="false">
@@ -551,7 +551,7 @@ function CourseDetail(props){
                                             }
                                             
                                             <div className="mb-3 field-usereditform-email">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Estimate Completion</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Estimate Completion</label>
                                                 <input type="hidden" id="duration_amt" style={{width:"50%"}} className="form-control"
                                                     name="duration_amt" value={items.duration_amt} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                                 <durationPicker.durationPickerUI durationArray={durationArray} onChange={(e)=>durPickerChange(e)}/>
@@ -559,7 +559,7 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Start Date and End Date</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Start Date and End Date</label>
                                                 <br/>
                                                 <input type="date" id="enroll_from" style={{width:"25%", display:"inline"}} className="form-control"
                                                     name="enroll_from" value={items.enroll_from} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
@@ -570,13 +570,13 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Registration Close Date</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Registration Close Date</label>
                                                 <input type="date" id="close_date" style={{width:"25%"}} className="form-control"
                                                     name="close_date" value={items.close_date} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required" >
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Minimum Salary Group</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Minimum Salary Group</label>
                                                 <select id="group_grade" style={{width:"25%"}} className="form-control" required
                                                     value={items.group_grade} onChange={handleInputChange.bind(this)} name="group_grade" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }
@@ -587,7 +587,7 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required" >
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Minimum Year of Service</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Minimum Year of Service</label>
                                                 <select id="group_yos" style={{width:"25%"}} className="form-control" required
                                                     value={items.group_yos} onChange={handleInputChange.bind(this)} name="group_yos" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }
@@ -598,7 +598,7 @@ function CourseDetail(props){
                                             </div>
 
                                             <div className="mb-3 field-usereditform-email required" >
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Language Availability</label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Language Availability</label>
                                                 <select id="language_avail" style={{width:"25%"}} className="form-control" required
                                                     value={items.language_avail} onChange={handleInputChange.bind(this)} name="language_avail" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }
@@ -610,7 +610,7 @@ function CourseDetail(props){
                                             </div>
 
                                             {/* <div className="mb-3 field-usereditform-email">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Type </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Type </label>
                                                 
                                                     <select value={items.content_type_id} required
                                                         onChange={handleInputChange.bind(this)} id="content_type_id" name="content_type_id" style={{width:"300px"}} className="form-control">
@@ -626,7 +626,7 @@ function CourseDetail(props){
                                             </div> */}
 
                                             <div className="mb-3 field-profile-country">
-                                                <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                                <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                                 <select id="profile-country" style={{width:"200px"}} className="form-control" 
                                                     value={items.flag_active} onChange={handleInputChange} required name="flag_active" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }
@@ -640,7 +640,7 @@ function CourseDetail(props){
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" htmlFor="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                                        <label className="form-label" htmlFor="usereditform-email">&nbsp;Home Preview <span style={{color:"#ff0404"}}>(*) </span>
                                                             <br/> 
                                                             <ul className="file-upload-requirement">
                                                                 <li>
@@ -673,7 +673,7 @@ function CourseDetail(props){
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" htmlFor="usereditform-email">&nbsp;Course Preview <span style={{color:"#ff0404"}}>(*) </span>
+                                                        <label className="form-label" htmlFor="usereditform-email">&nbsp;Course Preview <span style={{color:"#ff0404"}}>(*) </span>
                                                             <br/> 
                                                             <ul className="file-upload-requirement">
                                                                 <li>

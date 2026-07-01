@@ -312,7 +312,7 @@ function ThemeDetail(props){
             </div>
             <div className="clearfix">
                 <div className="panel-body">
-                    <a className="pull-right btn btn-default" href={routeAdmin.theme.path} label="Back to overview" data-ui-loader="">
+                    <a className="float-end btn btn-default" href={routeAdmin.theme.path} label="Back to overview" data-ui-loader="">
                         <i className="fa fa-arrow-left" aria-hidden="true"></i> Back to overview</a>
                 </div>
             </div>
@@ -329,7 +329,7 @@ function ThemeDetail(props){
 
                             {ColumnsPaginate.map((Col,idx)=>
                                 <div className="mb-3 field-usereditform-email required" key={idx}>
-                                    <label className="control-label" htmlFor="usereditform-email">&nbsp;{fnBuildLabelName(Col.Field)} <span style={{color:"#ff0404"}}>(*) </span></label>
+                                    <label className="form-label" htmlFor="usereditform-email">&nbsp;{fnBuildLabelName(Col.Field)} <span style={{color:"#ff0404"}}>(*) </span></label>
                                     {Col.Comment === ""?
                                         Col.Field.includes("status_active")?
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" name="status_active"  value={items.status_active||''} onChange={handleInputChange.bind(this)} required={true}>

@@ -141,8 +141,8 @@ function Ads(props){
                     <div className="panel-body">
 
                         <div className="table-responsive">
-                            <div className="pull-left">
-                                <a className="pull-left btn btn-primary btn-sm tt" href={routeAdmin.adsDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                            <div className="float-start">
+                                <a className="float-start btn btn-primary btn-sm tt" href={routeAdmin.adsDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                             </div>
 
                             <div id="h182093w0" className="grid-view">

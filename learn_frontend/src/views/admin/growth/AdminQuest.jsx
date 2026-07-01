@@ -230,8 +230,8 @@ function AdminGrowthQuest(props) {
                 <div className="card-body ">
 
                   
-                    <div className="pull-right  mb-3">
-                      <a href={routeAdmin.AdminGrowthQuestDetail.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Quest </a>
+                    <div className="float-end  mb-3">
+                      <a href={routeAdmin.AdminGrowthQuestDetail.path}  className="float-end btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Quest </a>
                     </div>
 
                     <div className="row mb-3">

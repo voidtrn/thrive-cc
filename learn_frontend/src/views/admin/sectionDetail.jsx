@@ -110,21 +110,21 @@ function SectionDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Section </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Section </label>
                                             <input type="text" id="usereditform-email" style={{width:"300px"}} className="form-control" disabled
                                                 name="_code" value={items._code} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input style={{width:"100%",height:"75%"}} className="form-control"
                                                 name="title" aria-required="true" aria-invalid="false" value={items.title} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {/* {editData ? null: <option value="">... Select this ...</option> } */}
@@ -136,7 +136,7 @@ function SectionDetail(props){
                                         </div>
                                         
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Navbar Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Navbar Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.navbar_active} onChange={handleInputChange.bind(this)} required name="navbar_active" aria-invalid="false">
                                                 {/* {editData ? null: <option value="">... Select this ...</option> } */}

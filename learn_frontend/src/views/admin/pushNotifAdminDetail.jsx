@@ -168,28 +168,28 @@ function PushNotifAdminDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Notif Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Notif Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea style={{width:"100%",height:"75px"}} className="form-control"  disabled={items.flag_posted===1?true:false}
                                                 name="title" aria-required="true" aria-invalid="false" value={items.title} onChange={handleInputChange} required></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Notif Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Notif Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea style={{width:"100%",height:"75px"}} className="form-control" disabled={items.flag_posted===1?true:false}
                                                 name="title_ind" aria-required="true" aria-invalid="false" value={items.title_ind} onChange={handleInputChange} required></textarea>
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;URL </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;URL </label>
                                             <input type="text" id="hyperlink_url" style={{width:"75%"}} className="form-control" disabled={items.flag_posted===1?true:false}
                                                 name="hyperlink_url" value={items.hyperlink_url} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Posted</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Posted</label>
                                             <select id="profile-country" style={{width:"200px"}} className="form-control" disabled
                                                 value={items.flag_posted} onChange={handleInputChange} required name="flag_posted" aria-invalid="false">
                                                 {editData ? null: <option value="">new</option> }
@@ -201,7 +201,7 @@ function PushNotifAdminDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"200px"}} className="form-control"  disabled={items.flag_posted===1?true:false}
                                                 value={items.flag_active} onChange={handleInputChange} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

@@ -194,7 +194,7 @@ function BadgeMember(props){
         <div className="panel-body">
 
             <div className="mb-3 field-usereditform-email required" style={{position:"relative"}}>
-                <label className="control-label" forHtml="usereditform-email" style={{width: "150px",display:"block"}}>&nbsp;Badge Name</label>
+                <label className="form-label" forHtml="usereditform-email" style={{width: "150px",display:"block"}}>&nbsp;Badge Name</label>
                 <input type="text" id="usereditform-email" style={{width:"300px",display:"inline-block"}} disabled 
                     className="form-control" name="title" value={props.badge_title} aria-required="true" aria-invalid="false" />
                 <img style={{width:"85px",height:"auto",position:"absolute",top:"0px"}}  src={props.image_file} alt="" />
@@ -203,7 +203,7 @@ function BadgeMember(props){
 
             <div className="mb-3 field-usereditform-email required" style={{position:"relative"}}>
                 <div className="mb-3 field-usereditform-email required" >
-                <label className="control-label" forHtml="profile-country" style={{width:"150px"}}>&nbsp;Add User </label> 
+                <label className="form-label" forHtml="profile-country" style={{width:"150px"}}>&nbsp;Add User </label> 
                 <div className="row">
                     <div className="col-md-9">
                         <AsyncSelect

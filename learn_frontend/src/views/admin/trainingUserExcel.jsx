@@ -162,15 +162,15 @@ function TrainingUserExcel(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                     <div className="mb-3 field-profile-country">
-                                        <label className="control-label" forHtml="profile-country">&nbsp;Schedule Date : </label>
+                                        <label className="form-label" forHtml="profile-country">&nbsp;Schedule Date : </label>
                                     
-                                        <label className="control-label" forHtml="profile-country">{scheduleData.schedule_date +' '+scheduleData.schedule_start_time+ ' - '+scheduleData.schedule_end_time}</label>
+                                        <label className="form-label" forHtml="profile-country">{scheduleData.schedule_date +' '+scheduleData.schedule_start_time+ ' - '+scheduleData.schedule_end_time}</label>
 
                                         <div className="help-block"></div>
                                     </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;File Excel </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;File Excel </label>
                                             <br/>
                                             <input type="file"  
                                                 name="file_name" id="file_name" size="40" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"

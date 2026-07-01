@@ -253,8 +253,8 @@ function TrainingScheduleUser(props){
                                 <strong>{props.pageName}</strong> 
                             </div>
                             <div className="col-md-4">
-                                <div className="pull-right">  
-                                <a className="pull-right btn btn-success btn-sm tt" onClick={importExcel.bind(this)} ><i class="fa fa-file-excel-o aria-hidden"></i>&nbsp; New from Excel</a>  
+                                <div className="float-end">  
+                                <a className="float-end btn btn-success btn-sm tt" onClick={importExcel.bind(this)} ><i class="fa fa-file-excel-o aria-hidden"></i>&nbsp; New from Excel</a>  
                                 </div>
                             </div>
                         </div>

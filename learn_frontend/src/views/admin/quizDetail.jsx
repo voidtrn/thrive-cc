@@ -266,7 +266,7 @@ function QuizDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" forHtml="usereditform-email">&nbsp;Question Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" forHtml="usereditform-email">&nbsp;Question Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea style={{width:"100%",height:"80px"}} className="form-control" name="question" aria-required="true" 
                                                 value={items.question} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                             <ul className="file-upload-requirement">
@@ -278,7 +278,7 @@ function QuizDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" forHtml="usereditform-email">&nbsp;Question Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" forHtml="usereditform-email">&nbsp;Question Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <textarea style={{width:"100%",height:"80px"}} className="form-control" name="question_ind" aria-required="true" 
                                                 value={items.question_ind} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                             <ul className="file-upload-requirement">
@@ -290,14 +290,14 @@ function QuizDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" forHtml="usereditform-email">&nbsp;Point <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" forHtml="usereditform-email">&nbsp;Point <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"20%"}} className="form-control" name="point" 
                                                 maxlength="5" value={items.point} onChange={handleInputChange} aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Question Type</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Question Type</label>
                                             <select id="answer_mode" style={{width:"150px"}} className="form-control" 
                                                 value={items.answer_mode} onChange={handleInputChange.bind(this)} required name="answer_mode" aria-invalid="false">
                                                 {/* {editData ? null: <option value="">... Select this ...</option> } */}
@@ -312,12 +312,12 @@ function QuizDetail(props){
                                         <div className="mb-3 field-usereditform-email required" id="option_a">
                                             <div className="row">
                                                 <div className="col-md-5">
-                                                    <label className="control-label" forHtml="usereditform-email">&nbsp;Option A Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                    <label className="form-label" forHtml="usereditform-email">&nbsp;Option A Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                     <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_1" aria-required="true" 
                                                         value={items.choice_1} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                 </div>
                                                 <div className="col-md-5">
-                                                    <label className="control-label" forHtml="usereditform-email">&nbsp;Option A Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                    <label className="form-label" forHtml="usereditform-email">&nbsp;Option A Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                     <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_1_ind" aria-required="true" 
                                                         value={items.choice_1_ind} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                 </div>
@@ -326,7 +326,7 @@ function QuizDetail(props){
                                                         <p style={{position:"relative",top:"15px"}}>
                                                             <input type="checkbox" name="cbx_choice[]" value="A" checked={checkedBox.checkedA}
                                                                 onChange={handleCheckboxMode3.bind(this)} />
-                                                            <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
+                                                            <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
                                                         </p>
                                                     </div>
                                                 :''
@@ -338,12 +338,12 @@ function QuizDetail(props){
                                         <div className="mb-3 field-usereditform-email required" id="option_b">
                                             <div className="row">
                                                 <div className="col-md-5">
-                                                    <label className="control-label" forHtml="usereditform-email">&nbsp;Option B Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                    <label className="form-label" forHtml="usereditform-email">&nbsp;Option B Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                     <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_2" aria-required="true" 
                                                         value={items.choice_2} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                 </div>
                                                 <div className="col-md-5">
-                                                    <label className="control-label" forHtml="usereditform-email">&nbsp;Option B Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                    <label className="form-label" forHtml="usereditform-email">&nbsp;Option B Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                     <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_2_ind" aria-required="true" 
                                                         value={items.choice_2_ind} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                 </div>
@@ -352,7 +352,7 @@ function QuizDetail(props){
                                                         <p style={{position:"relative",top:"15px"}}>
                                                             <input type="checkbox" name="cbx_choice[]" value="B" checked={checkedBox.checkedB}
                                                                 onChange={handleCheckboxMode3.bind(this)}/>
-                                                            <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
+                                                            <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
                                                         </p>
                                                     </div>
                                                 :''
@@ -365,12 +365,12 @@ function QuizDetail(props){
                                             <div className="mb-3 field-usereditform-email required" id="option_c">
                                                 <div className="row">
                                                     <div className="col-md-5">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Option C Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Option C Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                         <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_3" aria-required="true" 
                                                             value={items.choice_3} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                     </div>
                                                     <div className="col-md-5">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Option C Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Option C Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                         <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_3_ind" aria-required="true" 
                                                             value={items.choice_3_ind} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                     </div>
@@ -379,7 +379,7 @@ function QuizDetail(props){
                                                             <p style={{position:"relative",top:"15px"}}>
                                                                 <input type="checkbox" name="cbx_choice[]" value="C" checked={checkedBox.checkedC}
                                                                 onChange={handleCheckboxMode3.bind(this)}/>
-                                                                <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
+                                                                <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
                                                             </p>
                                                         </div>
                                                     :''
@@ -394,12 +394,12 @@ function QuizDetail(props){
                                             <div className="mb-3 field-usereditform-email required" id="option_d">
                                                 <div className="row">
                                                     <div className="col-md-5">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Option D Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Option D Eng <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                         <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_4" aria-required="true" 
                                                             value={items.choice_4} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                     </div>
                                                     <div className="col-md-5">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Option D Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Option D Ind <span style={{color:"#ff0404"}}>(*<small>max 1000 of chars</small>)</span></label>
                                                         <textarea style={{width:"100%",height:"85px"}} className="form-control" name="choice_4_ind" aria-required="true" 
                                                             value={items.choice_4_ind} onChange={handleInputChange} maxLength="1000" aria-invalid="false"></textarea>
                                                     </div>
@@ -408,7 +408,7 @@ function QuizDetail(props){
                                                         <p style={{position:"relative",top:"15px"}}>
                                                             <input type="checkbox" name="cbx_choice[]" value="D" checked={checkedBox.checkedD}
                                                                 onChange={handleCheckboxMode3.bind(this)}/>
-                                                            <label className="control-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
+                                                            <label className="form-label" style={{display:"inline",fontWeight:"normal"}} forHtml="usereditform-email">&nbsp;tick for the correct answer</label>
                                                         </p>
                                                     </div>
                                                     :''
@@ -421,7 +421,7 @@ function QuizDetail(props){
 
                                         {items.answer_mode != '3'?
                                             <div className="mb-3 field-profile-country anwser-option">
-                                                <label className="control-label" forHtml="profile-country">&nbsp;Answer</label>
+                                                <label className="form-label" forHtml="profile-country">&nbsp;Answer</label>
                                                 <select id="answer_choice_idx" required style={{width:"150px"}} className="form-control" 
                                                     value={items.answer_choice_idx}  onChange={handleInputChange} name="answer_choice_idx" aria-invalid="false">
                                                     {editData ? null: <option value="">... Select this ...</option> }
@@ -446,12 +446,12 @@ function QuizDetail(props){
                                             <div className="mb-3 field-usereditform-email required " id="answer_summary">
                                                 <div className="row">
                                                     <div className="col-md-6">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Answer Summary Eng <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Answer Summary Eng <span style={{color:"#ff0404"}}>(*)</span></label>
                                                         <textarea id="answer_summary" style={{width:"100%",height:"100px"}} className="form-control" name="answer_summary" 
                                                             value={items.answer_summary} onChange={handleInputChange} aria-required="true" aria-invalid="false"></textarea>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <label className="control-label" forHtml="usereditform-email">&nbsp;Answer Summary Ind <span style={{color:"#ff0404"}}>(*)</span></label>
+                                                        <label className="form-label" forHtml="usereditform-email">&nbsp;Answer Summary Ind <span style={{color:"#ff0404"}}>(*)</span></label>
                                                         <textarea id="answer_summary_ind" style={{width:"100%",height:"100px"}} className="form-control" name="answer_summary_ind" 
                                                             value={items.answer_summary_ind} onChange={handleInputChange} aria-required="true" aria-invalid="false"></textarea>
                                                     </div>
@@ -462,7 +462,7 @@ function QuizDetail(props){
                                         }
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

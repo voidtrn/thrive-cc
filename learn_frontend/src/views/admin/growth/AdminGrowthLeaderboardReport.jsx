@@ -193,7 +193,7 @@ function AdminDateChallenge(props) {
                 </div>
                 <div className="card-body ">
                   <div className="table-responsive">
-                    <div className="pull-right">
+                    <div className="float-end">
                       <button onClick={saveAsExcel} id="btnExport" name="btnExport" value="export" className="btn btn-primary btn-sm tt"><i className="fa fa-file-excel-o"></i>&nbsp;Export </button>   
                     </div>
 

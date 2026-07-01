@@ -201,13 +201,13 @@ function LearningKeyBehavior(props){
                 <div className="panel-body">
 
                     <div className="table-responsive">
-                        <div className="pull-right">
-                            <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.learningKeyBehaviorDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                        <div className="float-end">
+                            <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.learningKeyBehaviorDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                         </div>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3">
-                                    <label className="control-label">&nbsp;Main Focus</label>
+                                    <label className="form-label">&nbsp;Main Focus</label>
                                     <select defaultValue={idMainFocus} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={(e)=>{setIdMainFocus(e.target.value);setActivePage(1)}}>
                                     <option value="">-select one-</option>
                                     {mainFocusData.map(

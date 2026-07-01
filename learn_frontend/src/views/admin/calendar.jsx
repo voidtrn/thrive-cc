@@ -153,8 +153,8 @@ function CalendarHoliday(props){
                     </div>
                     <div className="panel-body">
                         <div className="clearfix">
-                            <div className="pull-right">
-                                <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.calendarDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                            <div className="float-end">
+                                <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.calendarDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                             </div>
                         </div> 
                         <br/>

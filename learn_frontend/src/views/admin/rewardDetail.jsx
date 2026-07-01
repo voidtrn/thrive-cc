@@ -276,56 +276,56 @@ function RewardDetail(props){
                                     <Tab.Pane eventKey="#tab-0">
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Reward Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Reward Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" required
                                                 name="title" aria-required="true" aria-invalid="false" value={items.title} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Reward Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Reward Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" required
                                                 name="title_ind" aria-required="true" aria-invalid="false" value={items.title_ind} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description Eng <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" required
                                                 name="short_descr" aria-required="true" aria-invalid="false" value={items.short_descr} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description Ind <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" required
                                                 name="short_descr_ind" aria-required="true" aria-invalid="false" value={items.short_descr_ind} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Qty Stock <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Qty Stock <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"25%"}} className="form-control" required
                                                 name="qty_stock" aria-required="true" aria-invalid="false" value={items.qty_stock} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Claim point <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Claim point <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"25%"}} className="form-control" required
                                                 name="claim_point" aria-required="true" aria-invalid="false" value={items.claim_point} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Promo point </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Promo point </label>
                                             <input type="text" id="usereditform-email" style={{width:"25%"}} className="form-control"
                                                 name="promo_point" aria-required="true" aria-invalid="false" value={items.promo_point} onChange={handleInputChange} />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Minimum Claim Level <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Minimum Claim Level <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <select id="profile-country" style={{width:"300px"}} className="form-control" 
                                                 value={items.minimum_claim_level} onChange={handleInputChange.bind(this)} required name="minimum_claim_level" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -342,7 +342,7 @@ function RewardDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Minimum Loginstreak <span style={{color:"#ff0404"}}>(*)</span> 
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Minimum Loginstreak <span style={{color:"#ff0404"}}>(*)</span> 
                                             <br/> 
                                                 <ul className="file-upload-requirement">
                                                     <li>
@@ -365,7 +365,7 @@ function RewardDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Minimum Total Content <span style={{color:"#ff0404"}}>(*)</span> 
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Minimum Total Content <span style={{color:"#ff0404"}}>(*)</span> 
                                             <br/> 
                                                 <ul className="file-upload-requirement">
                                                     <li>
@@ -382,7 +382,7 @@ function RewardDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Allow More Than 1 Claim?</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Allow More Than 1 Claim?</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_claim} onChange={handleInputChange.bind(this)} required name="flag_claim" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -394,7 +394,7 @@ function RewardDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Function <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Function <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <select id="profile-country" style={{width:"300px"}} className="form-control" 
                                                 value={items.directorate} onChange={handleInputChange.bind(this)} required name="directorate" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }
@@ -412,7 +412,7 @@ function RewardDetail(props){
                                         </div>
                                         
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Preview Image <span style={{color:"#ff0404"}}>(*) </span>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Preview Image <span style={{color:"#ff0404"}}>(*) </span>
                                                 <br/> 
                                                 <ul className="file-upload-requirement">
                                                     <li>
@@ -443,7 +443,7 @@ function RewardDetail(props){
                                         </div>
                                         
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

@@ -297,7 +297,7 @@ function SubCategoryDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Section - Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Section - Menu - Category <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             {/* <input disabled name="hdnkey" value={items.section_id}/>    */}
                                             {
                                                 editData?
@@ -325,35 +325,35 @@ function SubCategoryDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category Title EN <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Sub Category Title EN <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category Title ID <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Sub Category Title ID <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="title_ind" value={items.title_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category Description EN <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Sub Category Description EN <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="description" value={items.description} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category Description ID <span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Sub Category Description ID <span style={{color:"#ff0404"}}>(*)</span></label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="description_ind" value={items.description_ind} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Action Type</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Action Type</label>
                                             <div style={{display: 'flex'}}>
                                                 <select id="profile-country" style={{width:"20%", marginRight:"2%"}} className="form-control" 
                                                     value={items.action_type} onChange={handleInputChange.bind(this)} required name="action_type" aria-invalid="false">
@@ -369,7 +369,7 @@ function SubCategoryDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) <span style={{color:"#ff0404"}}>(*) </span>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;File Media (image / video) <span style={{color:"#ff0404"}}>(*) </span>
                                                 <br/> 
                                                 <ul className="file-upload-requirement">
                                                     <li>
@@ -400,7 +400,7 @@ function SubCategoryDetail(props){
                                         </div>
                                         
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Background Color Card Sub Category<span style={{color:"#ff0404"}}>(*)</span></label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Background Color Card Sub Category<span style={{color:"#ff0404"}}>(*)</span></label>
                                             <div className="col-sm-6 ps-0">
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control pickerColor"
                                                 name="background_color" value={items.background_color}  readOnly={true}/>
@@ -409,7 +409,7 @@ function SubCategoryDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email" hidden={true}>
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Styling (CSS Code)</label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Styling (CSS Code)</label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control"
                                                 name="custom_style" value={items.custom_style} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
@@ -420,7 +420,7 @@ function SubCategoryDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

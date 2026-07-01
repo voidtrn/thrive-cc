@@ -156,7 +156,7 @@ function SubmittedArticleDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Title <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"350px"}} maxLength="50" className="form-control"
                                                 name="title" value={items.title} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <ul className="file-upload-requirement">
@@ -167,14 +167,14 @@ function SubmittedArticleDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Short Description <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Short Description <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" maxLength="100"
                                                 name="description" value={items.description} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Submitter </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Submitter </label>
                                             <input type="text" id="usereditform-email" style={{width:"75%"}} className="form-control" maxLength="100" disabled
                                                 name="name_created" value={items.name_created} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <input type="hidden"  name="user_created" value={items.user_created}></input>
@@ -182,7 +182,7 @@ function SubmittedArticleDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Document </label><br/>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Document </label><br/>
                                             <input type="text" id="download" style={{width:"75%",display:"inline"}} className="form-control" disabled
                                                 name="article_doc" value={items.article_doc} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <span>&nbsp;</span>
@@ -192,7 +192,7 @@ function SubmittedArticleDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.status} onChange={handleInputChange.bind(this)} required name="status" aria-invalid="false">
                                                 <option value="1">submitted</option>
@@ -205,7 +205,7 @@ function SubmittedArticleDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Date Submitted Article </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Date Submitted Article </label>
                                             <input type="text" id="sub_article" style={{width:"75%"}} className="form-control" disabled
                                                 name="date_created" value={items.date_created} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>

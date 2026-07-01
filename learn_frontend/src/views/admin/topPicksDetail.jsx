@@ -266,7 +266,7 @@ function TopPicksDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Content Type <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Content Type <span style={{color:"#ff0404"}}>(*)</span> </label>
                                             {/* <input disabled name="hdnkey" value={items.section_id}/>    */}
                                             {
                                                 editData?
@@ -290,7 +290,7 @@ function TopPicksDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required" >
-                                            <label className="control-label" forHtml="profile-country">Content </label>
+                                            <label className="form-label" forHtml="profile-country">Content </label>
                                             {/* <select id="initiate_participant" name="initiate_participant[]"  multiple data-placeholder="Choose Employee Name" className="chosen-select form-control" style={{width:"75%"}}></select> */}
                                             <AsyncSelect
                                                 closeMenuOnSelect={true}
@@ -307,7 +307,7 @@ function TopPicksDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-profile-country">
-                                            <label className="control-label" htmlFor="profile-country">&nbsp;Status Active</label>
+                                            <label className="form-label" htmlFor="profile-country">&nbsp;Status Active</label>
                                             <select id="profile-country" style={{width:"150px"}} className="form-control" 
                                                 value={items.flag_active} onChange={handleInputChange.bind(this)} required name="flag_active" aria-invalid="false">
                                                 {editData ? null: <option value="">... Select this ...</option> }

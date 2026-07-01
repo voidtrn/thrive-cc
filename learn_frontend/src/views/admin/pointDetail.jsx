@@ -240,7 +240,7 @@ function PointDetail(props){
                                 <Tab.Content animation="true">
                                     <Tab.Pane eventKey="#tab-0">
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;IMDL ID </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;IMDL ID </label>
                                             <input type="text" id="usereditform-username" style={{width:"45%"}} className="form-control" maxLength="50"
                                                 disabled= {editData ? true: false}
                                                 name="id" value={items.id} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
@@ -248,7 +248,7 @@ function PointDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" htmlFor="usereditform-username">&nbsp;Account </label>
+                                            <label className="form-label" htmlFor="usereditform-username">&nbsp;Account </label>
                                             <input type="text" id="usereditform-username" style={{width:"45%"}} className="form-control" maxLength="50"
                                                 disabled={items.flag_temporary===0? true: false} required={items.flag_temporary!==0?true:false}
                                                 name="account" value={items.account} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
@@ -256,7 +256,7 @@ function PointDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Email </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Email </label>
                                             <input type="text" id="usereditform-username" style={{width:"75%"}} className="form-control" maxLength="250"
                                                 disabled={items.flag_temporary===0? true: false} required={items.flag_temporary!==0?true:false}
                                                 name="email" value={items.email} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
@@ -264,14 +264,14 @@ function PointDetail(props){
                                         </div>
 
                                         <div className="mb-3 field-usereditform-email required">
-                                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Status Active </label>
+                                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Status Active </label>
                                             <input type="text" id="usereditform-username" style={{width:"75%"}} className="form-control" disabled maxLength="2"
                                                 name="status_active" value={items.status_active===1?'active':'inactive'} onChange={handleInputChange}  aria-required="true" aria-invalid="false" />
                                             <div className="help-block"></div>
                                         </div>
 
                                         <div className="mb-3 field-usereditform-username required">
-                                            <label className="control-label" style={{display: "block"}} forHtml="usereditform-username">Current Redeem Points, Level Points & Level</label>
+                                            <label className="form-label" style={{display: "block"}} forHtml="usereditform-username">Current Redeem Points, Level Points & Level</label>
                                             <input type="text" id="usereditform-username" style={{width:"20%",display:"inline-table",textAlign:"right"}} className="form-control" 
                                                 name="id" placeholder="redeem points" value={items.redeem_point? items.redeem_point:'0'} disabled aria-required="true" aria-invalid="false" maxLength="50" />{' '}
                                             <input type="text" id="usereditform-username" style={{width:"20%",display:"inline-table",textAlign:"right"}} className="form-control" name="id" 
@@ -284,7 +284,7 @@ function PointDetail(props){
                                         <h4>Point Adjustment</h4>
                                         <form id="adjustPointFrm" onSubmit={submitAdjustPoint} method="post" style={{display: "block"}} encType='multipart/form-data'>
                                             <div className="mb-3 usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Adjustment Type </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Adjustment Type </label>
                                                 <select id="adjustDirection" name="adjustDirection" className="form-control" value={adjustDirection}
                                                     onChange={e => {setAdjustDirection(e.target.value);}} style={{width:"100px",position:"relative",top:"2px"}}>
                                                     <option value="add">add</option>
@@ -294,14 +294,14 @@ function PointDetail(props){
                                             </div>
 
                                             <div className="mb-3 usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Point </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Point </label>
                                                 <input type="number" id="addPoint" name="addPoint" className="form-control" maxLength="5" value={addPoint}
                                                     onChange={e => {setAddPoint(e.target.value);}} style={{width:"70px",position:"relative",top:"2px"}} />
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Notes </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Notes </label>
                                                 <input type="text" id="adjustNotes" name="adjustNotes" className="form-control" maxLength="200" value={adjustNotes}
                                                     onChange={e => {setAdjustNotes(e.target.value);}} style={{width:"45%"}} placeholder="point adjustment notes" aria-required="true" aria-invalid="false"/>
                                                 <div className="help-block"></div>
@@ -322,21 +322,21 @@ function PointDetail(props){
                                         <hr style={{border:"1px dashed #ededed"}} />
                                         <form id="submitContentFrm" onSubmit={validateContentSubmission} method="post" style={{display: "block"}} encType='multipart/form-data'>
                                             <div className="mb-3 usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Title </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Title </label>
                                                 <input type="text" id="contentTitle" name="contentTitle" className="form-control" maxLength="200" value={contentTitle}
                                                     onChange={e => {setContentTitle(e.target.value);}} style={{width:"80%"}} placeholder="content title" aria-required="true" aria-invalid="false"/>
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Date <span style={{color:"#ff0404"}}>(*)</span> </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Date <span style={{color:"#ff0404"}}>(*)</span> </label>
                                                 <input type="date" id="contentDate" name="contentDate" className="form-control datepicker" value={contentDate}
                                                     onChange={e => {setContentDate(e.target.value);}} style={{width:"150px"}} placeholder="date"/>
                                                 <div className="help-block"></div>
                                             </div>
 
                                             <div className="mb-3 usereditform-email required">
-                                                <label className="control-label" htmlFor="usereditform-email">&nbsp;Description </label>
+                                                <label className="form-label" htmlFor="usereditform-email">&nbsp;Description </label>
                                                 <textarea type="text" id="contentDescription" maxLength="500" style={{width:"75%",height:"100px"}} className="form-control" 
                                                     name="contentDescription" placeholder="content description" aria-required="true" aria-invalid="false" value={contentDescription}
                                                     onChange={e => {setContentDescription(e.target.value);}}></textarea>   

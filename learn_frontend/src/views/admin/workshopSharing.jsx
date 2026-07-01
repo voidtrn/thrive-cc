@@ -207,7 +207,7 @@ function WorkshopSharing(props){
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="mb-3">
-                                                        <label className="control-label">&nbsp;Menu - Category </label>
+                                                        <label className="form-label">&nbsp;Menu - Category </label>
                                                             <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="id_cat" name="id_cat" onChange={handleCatMenuChange.bind(this)}>
                                                             <option value="null">-select one-</option>
                                                             {listCatMenu.map(
@@ -226,7 +226,7 @@ function WorkshopSharing(props){
                                             {displayText?
                                                 <div>
                                                     <div className="mb-3 field-usereditform-email required">
-                                                        <label className="control-label" htmlFor="usereditform-email">&nbsp;Text Info </label>
+                                                        <label className="form-label" htmlFor="usereditform-email">&nbsp;Text Info </label>
                                                         <textarea style={{width:"100%",height:"250px"}} className="form-control" rows='10' cols='50'
                                                             name="text_info" aria-required="true" aria-invalid="false" value={textInfo.text_info?textInfo.text_info:''} onChange={handleInputChange} ></textarea>
                                                         <div className="help-block"></div>

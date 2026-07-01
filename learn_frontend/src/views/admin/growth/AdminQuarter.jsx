@@ -185,8 +185,8 @@ function AdminDateChallenge(props) {
                 </div>
                 <div className="card-body ">
                   <div className="table-responsive">
-                    <div className="pull-right">
-                    <a href={routeAdmin.AdminGrowthQuarterDetail.path}  className="pull-right btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Stage </a>
+                    <div className="float-end">
+                    <a href={routeAdmin.AdminGrowthQuarterDetail.path}  className="float-end btn btn-primary btn-sm tt" ><i className="fa fa-plus aria-hidden"></i> Add Stage </a>
                     </div>
 
                     <div id="h182093w0" className="grid-view mt-4">

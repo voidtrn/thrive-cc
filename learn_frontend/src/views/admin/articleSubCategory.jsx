@@ -257,7 +257,7 @@ function ArticleSubCategory(props){
             <div className="row">
                 <div className="col-md-6">
                     <div className="mb-3">
-                        <label className="control-label">&nbsp;Section - Menu - Category </label>
+                        <label className="form-label">&nbsp;Section - Menu - Category </label>
                         <select value={categoryId} style={{width:"100%"}} className="form-control filter-data" id="cat" name="cat" onChange={handleSectionMenuChange.bind(this)}>
                         <option value="null">-select one-</option>
                         {listSectionMenu.map(
@@ -278,7 +278,7 @@ function ArticleSubCategory(props){
                 <div className="row">
                     <div className="col-md-4">
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Sub Category (Lvl 4) </label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Sub Category (Lvl 4) </label>
                             <select value={subCategoryId} style={{width:"100%"}} className="form-control filter-data" id="id_sub_cat" name="id_sub_cat" onChange={handleSearchInputChange.bind(this)}>
                                 <option value="">All</option>
                                 {listSubCategory.map(
@@ -295,7 +295,7 @@ function ArticleSubCategory(props){
 
                     <div className="col-md-3">
                         <div className="mb-3 field-usereditform-email required">
-                            <label className="control-label" htmlFor="usereditform-email">&nbsp;Title of Article </label>
+                            <label className="form-label" htmlFor="usereditform-email">&nbsp;Title of Article </label>
                             <input type="text" id="usereditform-email" style={{width:"100%"}} className="form-control"
                                 name="title" value={categoryTitle} onChange={handleSearchInputChange.bind(this)} aria-required="true" aria-invalid="false" />
                             <div className="help-block"></div>
@@ -304,7 +304,7 @@ function ArticleSubCategory(props){
 
                     <div className="col-md-1">
                         <div className="mb-3">
-                            <label className="control-label">&nbsp;</label>
+                            <label className="form-label">&nbsp;</label>
                             <div  style={{display:"inline-flex",position:"relative",top:"5px",right:"15px"}}>
                                 <button type="button" id="btnFilter" className="btn btn-outline btn-sm btn-danger" onClick={resetButton}><i className="fa fa-refresh"></i>&nbsp;reset</button>&nbsp;
                                 <button type="submit" id="btnFilter" className="btn btn-outline btn-sm btn-warning" onClick={filterButton}><i className="fa fa-search"></i>&nbsp;filter</button>
@@ -361,7 +361,7 @@ function ArticleSubCategory(props){
 						<div className="row">
 							<div className="col-md-12">
 								<div className="mb-3">
-									<label className="control-label">&nbsp;Sub Category (Lvl 4) </label>
+									<label className="form-label">&nbsp;Sub Category (Lvl 4) </label>
 									<select value={subCategoryIdEdit} style={{width:"100%"}} className="form-control filter-data" id="sub_category_id" name="sub_category_id" onChange={handleSearchInputChange.bind(this)}>
                                         <option value="">-select one-</option>
                                         {listSubCategory.map(

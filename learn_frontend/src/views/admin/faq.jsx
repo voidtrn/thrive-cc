@@ -176,8 +176,8 @@ function Faq(props){
                     <div className="panel-body">
 
                         <div className="table-responsive">
-                            <div className="pull-right">
-                                <a className="pull-right btn btn-primary btn-sm tt" href={routeAdmin.faqDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
+                            <div className="float-end">
+                                <a className="float-end btn btn-primary btn-sm tt" href={routeAdmin.faqDetail.path} ><i className="fa fa-plus aria-hidden="></i> Add new</a>  
                             </div>
 
                             <div id="h182093w0" className="grid-view">
