@@ -1,0 +1,144 @@
+.navbar-brand > img {
+    display: block;
+    top: -10px;
+    position: relative;
+}
+
+.menu {
+    background-color: #ffffff;
+    background-repeat: round;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    margin-top: -2px;
+    border-style: solid;
+    border-width: 3px;
+    -webkit-border-image: -webkit-linear-gradient( left, rgba(211, 29, 133) 1%, rgba(245, 130, 32) 50%, rgba(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+    -moz-border-image: -moz-linear-gradient( left, rgba(211, 29, 133) 1%, rgba(245, 130, 32) 50%, rgba(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+    -o-border-image: -o-linear-gradient( left, rgba(211, 29, 133) 1%, rgba(245, 130, 32) 50%, rgba(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+    border-image: linear-gradient( to left, rgb(211, 29, 133) 1%, rgb(245, 130, 32) 50%, rgb(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+}
+
+div#layout-content {
+    padding: 10px 0 10px;
+    background: #fff;
+}
+
+body{
+  background: #fff;
+}
+
+#header{
+  min-height: 50px;
+}
+
+.menu{
+  background-color: #ffffff;
+  background-repeat: round;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  margin-top: -2px;
+
+    border-style: solid;
+    border-width: 3px;
+    -webkit-border-image: -webkit-linear-gradient( left, rgba(211, 29, 133) 1%, rgba(245, 130, 32) 50%, rgba(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+    -moz-border-image: -moz-linear-gradient( left, rgba(211, 29, 133) 1%, rgba(245, 130, 32) 50%, rgba(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+    -o-border-image: -o-linear-gradient( left, rgba(211, 29, 133) 1%, rgba(245, 130, 32) 50%, rgba(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+    border-image: linear-gradient( to left, rgb(211, 29, 133) 1%, rgb(245, 130, 32) 50%, rgb(211, 29, 133) 100% ) 0 0 100% 0/0 0 3px 0 stretch;
+}
+
+.menu form{
+  margin: 12px 0;
+}
+
+.menu form .form-group{
+  position:relative;
+}
+
+.menu form .form-group i.icon{
+  position: absolute;
+  left: 15px;
+  top: 3px;
+  color: #fff;
+}
+
+.menu form .form-group input.form-control{
+  background: rgba(255,255,255, 0.6);
+  border: 0;
+  box-shadow: none;
+  min-width: 235px;
+  color: #8f1c4f;
+  height: 28px;
+  border-radius: 5px;
+  font-size: 13px;
+  padding-left: 30px;
+}
+
+.menu ul.main-menu li a{
+  line-height: 26px;
+}
+
+.menu ul.main-menu li.dropdown a{
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.menu ul.main-menu li.dropdown a:hover, .menu ul.main-menu li.dropdown a:active, .menu ul.main-menu li.dropdown a:focus{
+  color: #ffcb05;
+  background: none;
+}
+
+.menu ul.main-menu li.open a, .menu ul.main-menu li.open a:active, .menu ul.main-menu li.open a:focus{
+  background: transparent;
+  color: #ffcb05;
+}
+
+.menu ul.main-menu li ul.dropdown-menu{
+  background: #ed6a37;
+  box-shadow: none;
+  border: 0;
+  padding: 0;
+
+  background: rgba(245,130,32,1);
+  background: -moz-linear-gradient(left, rgba(245,130,32,1) 0%, rgba(228,80,83,1) 50%, rgba(211,29,133,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(245,130,32,1)), color-stop(50%, rgba(228,80,83,1)), color-stop(100%, rgba(211,29,133,1)));
+  background: -webkit-linear-gradient(left, rgba(245,130,32,1) 0%, rgba(228,80,83,1) 50%, rgba(211,29,133,1) 100%);
+  background: -o-linear-gradient(left, rgba(245,130,32,1) 0%, rgba(228,80,83,1) 50%, rgba(211,29,133,1) 100%);
+  background: -ms-linear-gradient(left, rgba(245,130,32,1) 0%, rgba(228,80,83,1) 50%, rgba(211,29,133,1) 100%);
+  background: linear-gradient(to right, rgba(245,130,32,1) 0%, rgba(228,80,83,1) 50%, rgba(211,29,133,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f58220', endColorstr='#d31d85', GradientType=1 );
+}
+
+.img-menu{
+  height: 40px;
+  margin: 0 7px;
+}
+
+.menu ul.main-menu li ul.dropdown-menu li{
+  list-style: none;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255, 0.1)
+}
+
+.menu ul.main-menu li ul.dropdown-menu li a, .menu ul.main-menu li.open ul.dropdown-menu li a{
+  color: #fff;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.menu ul.main-menu li ul.dropdown-menu li a:hover, .menu ul.main-menu li.open ul.dropdown-menu li a:hover{
+  color: #e6e6e6;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form{
+  border: 0;
+}
+
+.navbar-nav > li > a {
+    padding: 15px 10px !important;
+}
+.lang-mobile{
+display: none;
+}

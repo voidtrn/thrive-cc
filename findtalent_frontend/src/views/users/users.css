@@ -1,0 +1,96 @@
+
+.feature-menu {
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    max-width: 300px;
+}
+a#back-to-menu img {
+    width: 50px;
+    margin: 100px;    
+}
+
+@media (max-width: 768px){ 
+    span.module-title {
+        position: relative !important;
+    }
+}
+
+.score-board{
+    position:relative;
+}
+
+.score-board-input{
+    position: relative;
+    float: right;
+    top: -10px;
+    left: 25px;
+}
+.score-board-input table.tbl-rate {
+    top: 45px;
+    left: 80px;
+}
+.control-label {
+    position: relative;
+    top: -10px;
+}
+.score-board-input input#btnSubmit {
+    width: 220px;
+    margin-left: 40px;
+    /* padding: 5px; */
+    font-size: 13px;
+    position: relative;
+    top: -10px;
+}
+
+
+.radio.tbl-all-employee label::before {
+    margin-left: 10px;background-color: #3c81e8;
+}
+.radio.tbl-your-rating label::before {
+    margin-left: 10px;background-color: #FFEB3B;
+}
+.radio.tbl-function-rating label::before {
+    margin-left: 10px;background-color: #f44336;
+}
+
+.radio.cell-all-employee label::before,.radio.cell-all-employee label::after {
+    background-color: #3c81e8;
+}
+
+.radio.cell-your-rating label::before,.radio.cell-your-rating label::after {
+    background-color: #FFEB3B;
+}
+
+
+.radio.cell-function-rating label::before,.radio.cell-function-rating label::after {
+    background-color: #f44336;
+  
+}
+.radio label::before {
+    border: 2px solid #fff;
+}
+
+.radio input[type="radio"]:disabled + label {
+    opacity: 1;
+}
+
+
+.score-caption{
+    /* position: absolute; */
+    /* display: block; */
+    font-size: 18px;
+    text-align: center;
+    margin: 0;
+}
+
+.table > tbody > tr > td{
+    padding: 20px 8px 0;
+    /* line-height: 1.42857143; */
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+.react-slideshow-container .default-nav {
+    display: none;
+}

@@ -1,0 +1,32 @@
+.search-form .form-group {
+    float: right !important;
+    width: 250px;
+    height: 35px;
+    font-size:11px;
+    margin-right: 30px;
+    background-color: #f7f7f7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+}
+.search-form .form-group input.form-control {
+    padding-right: 20px;
+    border: 0 none;
+    background: transparent;
+    box-shadow: none;
+    display:block;
+}
+.search-form .form-group span.form-control-feedback {
+    position: absolute;
+    top: -1px;
+    right: -2px;
+    z-index: 2;
+    display: block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    color: #3596e0;
+    left: initial;
+    font-size: 11px;
+}

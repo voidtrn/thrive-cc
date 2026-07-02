@@ -1,0 +1,75 @@
+.search-form .form-group {
+float: right !important;
+width: 450px;
+height: 35px;
+font-size:11px;
+margin-right: 30px;
+background-color: #f7f7f7;
+box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+border-radius: 25px;
+border: 1px solid #ccc;
+}
+.search-form .form-group input.form-control {
+padding-right: 20px;
+border: 0 none;
+background: transparent;
+box-shadow: none;
+display:block;
+}
+
+
+.search-form .form-group span.form-control-feedback {
+position: absolute;
+top: -1px;
+right: -2px;
+z-index: 2;
+display: block;
+width: 34px;
+height: 34px;
+line-height: 34px;
+text-align: center;
+color: #3596e0;
+left: initial;
+font-size: 11px;
+}
+.grid-view table td {
+    vertical-align: text-top !important;
+}
+
+.grid-view img {
+    max-width: 100%;
+    width: inherit;
+    height: inherit;
+}
+
+
+span.inline-user-link {
+    background: #efe9ec;
+    padding: 1px 0px 1px;
+    font-weight: bolder;
+    border-radius: 4px;
+    position: relative;
+    margin: 0 1px 0 1px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+span.inline-user-hashtag {
+    background: #ffe9ca;
+    padding: 1px 0px 1px;
+    border-radius: 4px;
+    position: relative;
+    margin: 0 1px 0 1px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+span.inline-user-signature {
+    background: #ffd8e9;
+    padding: 1px 0px 1px;
+    border-radius: 4px;
+    position: relative;
+    margin: 0 1px 0 1px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}

@@ -1,0 +1,25 @@
+
+.lang-menu{
+    margin: 20px -70px 0 20px;
+    /*display:block;
+    position:relative;
+    float:right;
+    margin:-45px 70px 0 0;*/
+}
+.lang-menu a{
+    color: #000;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+}
+.lang-menu a.active{
+    font-weight: bold;
+}
+
+.lang-mobile{
+    position: absolute;
+    right: 80px;
+    top: -7px;
+    color: #000;
+}
