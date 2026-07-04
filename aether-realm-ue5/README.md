@@ -10,7 +10,7 @@ elemental combat, 1 region ±1km², World Partition streaming.
 | Phase | Isi | Status |
 |---|---|---|
 | **1. Foundation** | Project structure, World Partition, framework classes, Enhanced Input | ✅ kode selesai — lihat [Docs/PHASE1_SETUP.md](Docs/PHASE1_SETUP.md) untuk langkah editor |
-| 2. Character & Combat | Movement, glide/swim, combat, elemental system | ⏳ |
+| **2. Character & Rendering** | CharacterBase + stats + GAS hook, custom movement (sprint/glide), lock-on, camera system, AnimInstance; cel-shading recipes | ✅ kode selesai — lihat [Docs/PHASE2_SETUP.md](Docs/PHASE2_SETUP.md) |
 | 3. World & Progression | Waypoints, collectibles, enemies, dungeon | ⏳ |
 | 4. UI & Polish | HUD, menus, wish system, cel-shading pass | ⏳ |
 

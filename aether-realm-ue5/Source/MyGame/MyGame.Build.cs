@@ -18,7 +18,8 @@ public class MyGame : ModuleRules
 			"GameplayTasks",
 			"UMG",
 			"Niagara",
-			"NetCore"
+			"NetCore",
+			"AnimGraphRuntime"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
