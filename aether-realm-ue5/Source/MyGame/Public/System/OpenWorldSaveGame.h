@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "System/WishTypes.h"
 #include "OpenWorldSaveGame.generated.h"
 
 /** State satu karakter di party. */
@@ -75,6 +76,16 @@ public:
 	UPROPERTY() int32 Mora = 0;
 	UPROPERTY() int32 AdventureRank = 1;
 	UPROPERTY() int32 ARExperience = 0;
+
+	// --- Wish / gacha ---
+	UPROPERTY() int32 AcquaintFates = 0;
+	UPROPERTY() int32 IntertwinedFates = 0;
+	UPROPERTY() int32 Starglitter = 0;
+	UPROPERTY() int32 Stardust = 0;
+	UPROPERTY() TArray<FName> OwnedWishItems;
+	UPROPERTY() TMap<EBannerType, FBannerPityState> WishPityStates;
+	UPROPERTY() FString StardustExchangeMonth;
+	UPROPERTY() int32 StardustExchangedThisMonth = 0;
 
 	// --- Misc ---
 	UPROPERTY() float PlayTimeSeconds = 0.f;

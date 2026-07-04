@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "System/OpenWorldSaveGame.h"
+#include "System/WishTypes.h"
 #include "OpenWorldGameInstance.generated.h"
 
 /**
@@ -63,6 +64,34 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Currency")
 	int32 Mora = 0;
+
+	// --- Wish / gacha (spec 5C) ---
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	int32 AcquaintFates = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	int32 IntertwinedFates = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	int32 Starglitter = 0;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	int32 Stardust = 0;
+
+	/** Karakter/senjata yang sudah dimiliki (deteksi duplicate). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	TSet<FName> OwnedWishItems;
+
+	/** Pity per tipe banner (carry over antar banner tipe sama). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	TMap<EBannerType, FBannerPityState> WishPityStates;
+
+	/** Limit tukar stardust→fate 5/bulan. */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	FString StardustExchangeMonth;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	int32 StardustExchangedThisMonth = 0;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Rank")
 	int32 AdventureRank = 1;

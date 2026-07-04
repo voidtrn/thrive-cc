@@ -57,6 +57,15 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 	Save->AdventureRank = AdventureRank;
 	Save->ARExperience = ARExperience;
 
+	Save->AcquaintFates = AcquaintFates;
+	Save->IntertwinedFates = IntertwinedFates;
+	Save->Starglitter = Starglitter;
+	Save->Stardust = Stardust;
+	Save->OwnedWishItems = OwnedWishItems.Array();
+	Save->WishPityStates = WishPityStates;
+	Save->StardustExchangeMonth = StardustExchangeMonth;
+	Save->StardustExchangedThisMonth = StardustExchangedThisMonth;
+
 	Save->PlayTimeSeconds = GetTotalPlayTimeSeconds();
 	Save->StaminaCapBonus = StaminaCapBonus;
 	Save->GameSettings = GameSettings;
@@ -111,6 +120,15 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 	Mora = Save->Mora;
 	AdventureRank = Save->AdventureRank;
 	ARExperience = Save->ARExperience;
+
+	AcquaintFates = Save->AcquaintFates;
+	IntertwinedFates = Save->IntertwinedFates;
+	Starglitter = Save->Starglitter;
+	Stardust = Save->Stardust;
+	OwnedWishItems = TSet<FName>(Save->OwnedWishItems);
+	WishPityStates = Save->WishPityStates;
+	StardustExchangeMonth = Save->StardustExchangeMonth;
+	StardustExchangedThisMonth = Save->StardustExchangedThisMonth;
 
 	LoadedPlayTimeSeconds = Save->PlayTimeSeconds;
 	SessionStartTime = FPlatformTime::Seconds();
