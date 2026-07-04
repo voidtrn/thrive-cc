@@ -14,7 +14,8 @@ elemental combat, 1 region ±1km², World Partition streaming.
 | **3. Combat System** | Combo/charged/plunge/dodge, abilities E+Q, elemental reactions (full matrix), enemy AI, damage numbers | ✅ kode selesai — lihat [Docs/PHASE3_SETUP.md](Docs/PHASE3_SETUP.md) |
 | **4. Open World Systems** | Climbing/glide/swim + stamina penuh, waypoint, statue, day/night, weather, chest, oculi, save system | ✅ kode selesai — lihat [Docs/PHASE4_SETUP.md](Docs/PHASE4_SETUP.md) |
 | **5. Gacha / Wish** | Banner (4 tipe), pity + 50/50 + epitomized path, currency (primogems/fates/starglitter/stardust) | ✅ kode selesai — lihat [Docs/PHASE5_SETUP.md](Docs/PHASE5_SETUP.md) |
-| 6. UI & Polish | HUD, menus, party swap, minimap | ⏳ |
+| **6. Quest & Dialogue** | Quest engine (4 tipe + daily commission + AR), dialogue tree (choices, conditions, actions) | ✅ kode selesai — lihat [Docs/PHASE6_SETUP.md](Docs/PHASE6_SETUP.md) |
+| 7. UI & Polish | HUD, menus, party swap, minimap | ⏳ |
 
 ## Struktur
 

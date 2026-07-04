@@ -51,6 +51,9 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 	Save->UnlockedWaypoints = UnlockedWaypoints.Array();
 	Save->CompletedQuests = CompletedQuests.Array();
 	Save->QuestProgress = QuestProgress;
+	Save->ActiveQuestStates = ActiveQuestStates;
+	Save->DailyCommissionDate = DailyCommissionDate;
+	Save->DailyCommissionQuests = DailyCommissionQuests;
 
 	Save->Primogems = Primogems;
 	Save->Mora = Mora;
@@ -115,6 +118,9 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 	UnlockedWaypoints = TSet<FName>(Save->UnlockedWaypoints);
 	CompletedQuests = TSet<FName>(Save->CompletedQuests);
 	QuestProgress = Save->QuestProgress;
+	ActiveQuestStates = Save->ActiveQuestStates;
+	DailyCommissionDate = Save->DailyCommissionDate;
+	DailyCommissionQuests = Save->DailyCommissionQuests;
 
 	Primogems = Save->Primogems;
 	Mora = Save->Mora;

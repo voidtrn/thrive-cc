@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "System/WishTypes.h"
+#include "System/QuestTypes.h"
 #include "OpenWorldSaveGame.generated.h"
 
 /** State satu karakter di party. */
@@ -70,6 +71,9 @@ public:
 	UPROPERTY() TArray<FName> UnlockedWaypoints;
 	UPROPERTY() TArray<FName> CompletedQuests;
 	UPROPERTY() TMap<FName, int32> QuestProgress;
+	UPROPERTY() TMap<FName, FActiveQuestState> ActiveQuestStates;
+	UPROPERTY() FString DailyCommissionDate;
+	UPROPERTY() TArray<FName> DailyCommissionQuests;
 
 	// --- Currency & rank ---
 	UPROPERTY() int32 Primogems = 0;

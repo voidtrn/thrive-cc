@@ -4,6 +4,7 @@
 #include "Engine/GameInstance.h"
 #include "System/OpenWorldSaveGame.h"
 #include "System/WishTypes.h"
+#include "System/QuestTypes.h"
 #include "OpenWorldGameInstance.generated.h"
 
 /**
@@ -54,6 +55,17 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Quest")
 	TMap<FName, int32> QuestProgress;
+
+	/** Quest aktif: step index + count sekarang. */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Quest")
+	TMap<FName, FActiveQuestState> ActiveQuestStates;
+
+	/** Daily commission hari ini (reset otomatis via QuestManager). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Quest")
+	FString DailyCommissionDate;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Quest")
+	TArray<FName> DailyCommissionQuests;
 
 	// --- Inventory & currency ---
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Inventory")
