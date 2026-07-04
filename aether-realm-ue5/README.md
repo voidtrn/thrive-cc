@@ -12,7 +12,8 @@ elemental combat, 1 region ±1km², World Partition streaming.
 | **1. Foundation** | Project structure, World Partition, framework classes, Enhanced Input | ✅ kode selesai — lihat [Docs/PHASE1_SETUP.md](Docs/PHASE1_SETUP.md) untuk langkah editor |
 | **2. Character & Rendering** | CharacterBase + stats + GAS hook, custom movement (sprint/glide), lock-on, camera system, AnimInstance; cel-shading recipes | ✅ kode selesai — lihat [Docs/PHASE2_SETUP.md](Docs/PHASE2_SETUP.md) |
 | **3. Combat System** | Combo/charged/plunge/dodge, abilities E+Q, elemental reactions (full matrix), enemy AI, damage numbers | ✅ kode selesai — lihat [Docs/PHASE3_SETUP.md](Docs/PHASE3_SETUP.md) |
-| 4. UI & Polish | HUD, menus, wish system, cel-shading pass | ⏳ |
+| **4. Open World Systems** | Climbing/glide/swim + stamina penuh, waypoint, statue, day/night, weather, chest, oculi, save system | ✅ kode selesai — lihat [Docs/PHASE4_SETUP.md](Docs/PHASE4_SETUP.md) |
+| 5. UI & Polish | HUD, menus, party swap, wish system, minimap | ⏳ |
 
 ## Struktur
 

@@ -121,9 +121,42 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
 	float StaminaRegenPerSecond = 25.f;
 
-	/** Jeda regen setelah stamina terpakai (detik). */
+	/** Jeda regen setelah stamina terpakai (detik). Spec: 0.5. */
 	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
-	float StaminaRegenDelay = 1.f;
+	float StaminaRegenDelay = 0.5f;
+
+	// --- Drain kontinu per detik (spec 4A) ---
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float SprintStaminaPerSecond = 15.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float ClimbStaminaPerSecond = 15.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float SprintClimbStaminaPerSecond = 25.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float GlideStaminaPerSecond = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float SwimStaminaPerSecond = 15.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float JumpClimbStaminaCost = 25.f;
+
+	/** HP drain per detik saat drowning (persen MaxHP). Spec: 10%. */
+	UPROPERTY(EditDefaultsOnly, Category = "Stats|Stamina")
+	float DrowningHPPercentPerSecond = 0.1f;
+
+	/** Jump climb: 25 stamina instant + boost 200. */
+	UFUNCTION(BlueprintCallable, Category = "Movement|Climb")
+	bool TryJumpClimb();
+
+	/** Wind current aktif — glide naik tanpa stamina (di-set AWindCurrent). */
+	void SetInWindCurrent(bool bInWind) { bInWindCurrent = bInWind; }
+
+	UFUNCTION(BlueprintPure, Category = "Movement|Glide")
+	bool IsInWindCurrent() const { return bInWindCurrent; }
 
 	// ---------- Camera (2C) ----------
 	/** Scroll wheel zoom. Positive = zoom in. */
@@ -201,6 +234,7 @@ private:
 	float TargetZoom = 400.f;
 	bool bAimMode = false;
 	bool bFrozen = false;
+	bool bInWindCurrent = false;
 	float LastStaminaUseTime = -999.f;
 
 	void TickCamera(float DeltaSeconds);

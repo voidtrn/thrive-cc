@@ -1,6 +1,7 @@
 #include "Character/CharacterBase.h"
 #include "Character/OpenWorldMovementComponent.h"
 #include "Character/LockOnComponent.h"
+#include "System/OpenWorldGameInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "AbilitySystemComponent.h"
@@ -45,6 +46,15 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Stamina cap dari upgrade Statue of The Seven (persistent, max 240)
+	if (const UOpenWorldGameInstance* GI = GetGameInstance<UOpenWorldGameInstance>())
+	{
+		if (IsPlayerControlled())
+		{
+			MaxStamina = FMath::Min(240.f, 100.f + GI->StaminaCapBonus);
+		}
+	}
 
 	CurrentHP = MaxHP;
 	CurrentStamina = MaxStamina;
@@ -155,6 +165,68 @@ bool ACharacterBase::ConsumeStamina(float Amount)
 
 void ACharacterBase::TickStamina(float DeltaSeconds)
 {
+	UOpenWorldMovementComponent* Move = GetOpenWorldMovement();
+	if (!Move)
+	{
+		return;
+	}
+
+	// --- Drain kontinu (spec 4A) ---
+	float DrainPerSecond = 0.f;
+
+	if (Move->IsClimbing())
+	{
+		DrainPerSecond = (Move->IsSprinting() ? SprintClimbStaminaPerSecond : ClimbStaminaPerSecond)
+			* Move->GetClimbSurfaceCostMultiplier();
+	}
+	else if (Move->IsGliding())
+	{
+		// Wind current: naik gratis
+		DrainPerSecond = bInWindCurrent ? 0.f : GlideStaminaPerSecond;
+	}
+	else if (Move->IsSwimming())
+	{
+		DrainPerSecond = SwimStaminaPerSecond;
+	}
+	else if (Move->IsSprinting() && GetVelocity().SizeSquared() > 100.f)
+	{
+		DrainPerSecond = SprintStaminaPerSecond;
+	}
+
+	if (DrainPerSecond > 0.f)
+	{
+		CurrentStamina = FMath::Max(0.f, CurrentStamina - DrainPerSecond * DeltaSeconds);
+		LastStaminaUseTime = GetWorld()->GetTimeSeconds();
+
+		if (CurrentStamina <= 0.f)
+		{
+			if (Move->IsClimbing())
+			{
+				Move->StopClimbing(); // slide down — AnimBP handle slide anim via falling
+			}
+			else if (Move->IsGliding())
+			{
+				Move->StopGliding();
+			}
+			else if (Move->IsSprinting())
+			{
+				Move->SetSprinting(false);
+			}
+			else if (Move->IsSwimming())
+			{
+				// Drowning: HP drain 10% MaxHP per detik
+				CurrentHP = FMath::Max(0.f, CurrentHP - MaxHP * DrowningHPPercentPerSecond * DeltaSeconds);
+				OnHealthChanged.Broadcast(CurrentHP, MaxHP);
+				if (!IsAlive())
+				{
+					HandleDeath();
+				}
+			}
+		}
+		return;
+	}
+
+	// --- Regen ---
 	if (CurrentStamina >= MaxStamina)
 	{
 		return;
@@ -164,14 +236,22 @@ void ACharacterBase::TickStamina(float DeltaSeconds)
 		return;
 	}
 
-	// Sprint & glide menahan regen (dan Phase 2 BP-nya yang men-drain per detik).
-	const UOpenWorldMovementComponent* Move = GetOpenWorldMovement();
-	if (Move && (Move->IsSprinting() || Move->IsGliding()))
-	{
-		return;
-	}
-
 	CurrentStamina = FMath::Min(MaxStamina, CurrentStamina + StaminaRegenPerSecond * DeltaSeconds);
+}
+
+bool ACharacterBase::TryJumpClimb()
+{
+	UOpenWorldMovementComponent* Move = GetOpenWorldMovement();
+	if (!Move || !Move->IsClimbing())
+	{
+		return false;
+	}
+	if (!ConsumeStamina(JumpClimbStaminaCost))
+	{
+		return false;
+	}
+	Move->JumpClimb();
+	return true;
 }
 
 // ---------- Camera ----------
