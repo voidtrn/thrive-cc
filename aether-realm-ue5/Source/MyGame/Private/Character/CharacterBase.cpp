@@ -112,6 +112,27 @@ void ACharacterBase::Heal(float Amount)
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
 }
 
+void ACharacterBase::SetFrozen(bool bNewFrozen)
+{
+	if (bFrozen == bNewFrozen)
+	{
+		return;
+	}
+	bFrozen = bNewFrozen;
+
+	if (UCharacterMovementComponent* Move = GetCharacterMovement())
+	{
+		if (bFrozen)
+		{
+			Move->DisableMovement();
+		}
+		else
+		{
+			Move->SetMovementMode(MOVE_Walking);
+		}
+	}
+}
+
 void ACharacterBase::HandleDeath()
 {
 	UE_LOG(LogAetherRealm, Log, TEXT("%s died"), *CharacterID.ToString());

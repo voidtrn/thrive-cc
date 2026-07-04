@@ -19,7 +19,9 @@ public class MyGame : ModuleRules
 			"UMG",
 			"Niagara",
 			"NetCore",
-			"AnimGraphRuntime"
+			"AnimGraphRuntime",
+			"AIModule",
+			"NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]

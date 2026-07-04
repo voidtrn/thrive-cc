@@ -97,6 +97,16 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Stats")
 	bool IsAlive() const { return CurrentHP > 0.f; }
 
+	/** RES terhadap elemen. Enemy override dari DataTable. Default 10%. */
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	virtual float GetResistance(EElement DamageElement) const { return 0.1f; }
+
+	/** Frozen state — di-set ElementalReactionSubsystem. */
+	UFUNCTION(BlueprintPure, Category = "Combat")
+	bool IsFrozen() const { return bFrozen; }
+
+	void SetFrozen(bool bNewFrozen);
+
 	UPROPERTY(BlueprintAssignable, Category = "Stats")
 	FOnHealthChanged OnHealthChanged;
 
@@ -190,6 +200,7 @@ protected:
 private:
 	float TargetZoom = 400.f;
 	bool bAimMode = false;
+	bool bFrozen = false;
 	float LastStaminaUseTime = -999.f;
 
 	void TickCamera(float DeltaSeconds);
