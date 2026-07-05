@@ -5,6 +5,7 @@
 #include "System/OpenWorldSaveGame.h"
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
+#include "UI/InventoryTypes.h"
 #include "OpenWorldGameInstance.generated.h"
 
 /**
@@ -104,6 +105,23 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
 	int32 StardustExchangedThisMonth = 0;
+
+	/** Riwayat pull — retensi 6 bulan (di-prune saat save). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Wish")
+	TArray<FWishHistoryEntry> WishHistory;
+
+	// --- UI / map (spec 7B-7C) ---
+	/** Pin custom map (max 99). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Map")
+	TArray<FMapPin> MapPins;
+
+	/** Artifact yang dimiliki (equip via field EquippedCharacter). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Inventory")
+	TArray<FArtifactInstance> OwnedArtifacts;
+
+	/** Tambah pin. False kalau sudah 99. */
+	UFUNCTION(BlueprintCallable, Category = "Persistent|Map")
+	bool AddMapPin(const FMapPin& Pin);
 
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Rank")
 	int32 AdventureRank = 1;

@@ -4,6 +4,7 @@
 #include "GameFramework/SaveGame.h"
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
+#include "UI/InventoryTypes.h"
 #include "OpenWorldSaveGame.generated.h"
 
 /** State satu karakter di party. */
@@ -90,6 +91,11 @@ public:
 	UPROPERTY() TMap<EBannerType, FBannerPityState> WishPityStates;
 	UPROPERTY() FString StardustExchangeMonth;
 	UPROPERTY() int32 StardustExchangedThisMonth = 0;
+	UPROPERTY() TArray<FWishHistoryEntry> WishHistory;
+
+	// --- UI / map ---
+	UPROPERTY() TArray<FMapPin> MapPins;
+	UPROPERTY() TArray<FArtifactInstance> OwnedArtifacts;
 
 	// --- Misc ---
 	UPROPERTY() float PlayTimeSeconds = 0.f;

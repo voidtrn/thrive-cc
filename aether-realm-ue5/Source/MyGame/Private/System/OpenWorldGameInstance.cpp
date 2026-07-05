@@ -69,6 +69,14 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 	Save->StardustExchangeMonth = StardustExchangeMonth;
 	Save->StardustExchangedThisMonth = StardustExchangedThisMonth;
 
+	// Prune history > 6 bulan lalu simpan
+	const FDateTime Cutoff = FDateTime::UtcNow() - FTimespan::FromDays(183);
+	WishHistory.RemoveAll([&](const FWishHistoryEntry& E) { return E.Timestamp < Cutoff; });
+	Save->WishHistory = WishHistory;
+
+	Save->MapPins = MapPins;
+	Save->OwnedArtifacts = OwnedArtifacts;
+
 	Save->PlayTimeSeconds = GetTotalPlayTimeSeconds();
 	Save->StaminaCapBonus = StaminaCapBonus;
 	Save->GameSettings = GameSettings;
@@ -135,6 +143,10 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 	WishPityStates = Save->WishPityStates;
 	StardustExchangeMonth = Save->StardustExchangeMonth;
 	StardustExchangedThisMonth = Save->StardustExchangedThisMonth;
+	WishHistory = Save->WishHistory;
+
+	MapPins = Save->MapPins;
+	OwnedArtifacts = Save->OwnedArtifacts;
 
 	LoadedPlayTimeSeconds = Save->PlayTimeSeconds;
 	SessionStartTime = FPlatformTime::Seconds();
@@ -148,4 +160,14 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 void UOpenWorldGameInstance::AutoSave()
 {
 	SaveToSlot(TEXT("Slot0"));
+}
+
+bool UOpenWorldGameInstance::AddMapPin(const FMapPin& Pin)
+{
+	if (MapPins.Num() >= 99)
+	{
+		return false;
+	}
+	MapPins.Add(Pin);
+	return true;
 }

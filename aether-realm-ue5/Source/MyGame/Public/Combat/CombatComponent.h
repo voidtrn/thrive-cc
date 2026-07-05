@@ -104,6 +104,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Combat|Ability")
 	bool TryElementalBurst();
 
+	UFUNCTION(BlueprintPure, Category = "Combat|Ability")
+	UAbilityBase* GetElementalSkillAbility() const { return ElementalSkill; }
+
+	UFUNCTION(BlueprintPure, Category = "Combat|Ability")
+	UAbilityBase* GetElementalBurstAbility() const { return ElementalBurst; }
+
 	// ---------- Energy ----------
 	/** Particle masuk: on-field penuh, off-field 60% (via party system Phase 4). */
 	UFUNCTION(BlueprintCallable, Category = "Combat|Energy")

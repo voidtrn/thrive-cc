@@ -124,6 +124,14 @@ TArray<FWishResult> UWishSystem::Pull(const FBannerData& Banner, int32 Count)
 		FWishResult Result = RollSingle(Banner, Pity);
 		ApplyOwnershipRewards(Result);
 		Results.Add(Result);
+
+		// Wish history (retensi 6 bulan, di-prune saat save)
+		FWishHistoryEntry Entry;
+		Entry.ItemId = Result.ItemId;
+		Entry.Rarity = Result.Rarity;
+		Entry.BannerType = Banner.BannerType;
+		Entry.Timestamp = FDateTime::UtcNow();
+		GI->WishHistory.Add(Entry);
 	}
 
 	GI->AutoSave();
