@@ -34,6 +34,19 @@ project open world action RPG (`aether-realm-ue5` di repo ini).
 | [13](13-optimasi-packaging.md) | Optimasi & Packaging | Profiling, LOD, build .exe |
 | [14](14-capstone-aether-realm.md) | 🏆 Capstone | Menjelajah & memodifikasi project aether-realm-ue5 |
 
+### 🎯 Track Praktik: [Proyek Mini "Genshin-ku"](proyek-mini/README.md)
+
+Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
+
+| Bagian | Hasil |
+|---|---|
+| [07 Rapikan Karakter Anime](proyek-mini/07-rapikan-karakter-anime.md) | Physics rambut/rok VRoid, Mixamo, posisi mesh |
+| [08 Sprint](proyek-mini/08-sprint.md) | Shift = lari |
+| [09 Stamina](proyek-mini/09-stamina.md) | Drain/regen + bar HUD |
+| [10 Gliding](proyek-mini/10-gliding.md) | Terbang ala Genshin |
+| [11 Chest](proyek-mini/11-chest-interaksi.md) | Interaksi tekan F |
+| [12 Oculi](proyek-mini/12-oculi-collectible.md) | Collectible + counter + reward |
+
 ## Prasyarat
 
 - PC: GTX 1060/RX 580 ke atas, RAM 16GB, SSD 150GB kosong
