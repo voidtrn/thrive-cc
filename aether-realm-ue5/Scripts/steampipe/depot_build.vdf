@@ -1,0 +1,16 @@
+"DepotBuild"
+{
+	"DepotID" "481"
+
+	"FileMapping"
+	{
+		// Seluruh hasil archive UAT
+		"LocalPath" "*"
+		"DepotPath" "."
+		"Recursive" "1"
+	}
+
+	// Jangan upload file debug/log
+	"FileExclusion" "*.pdb"
+	"FileExclusion" "*.log"
+}

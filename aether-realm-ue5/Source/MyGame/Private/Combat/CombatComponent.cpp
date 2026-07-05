@@ -376,9 +376,37 @@ FDamageResult UCombatComponent::DealDamage(ACharacterBase* Victim, const FAttack
 
 	GainEnergyParticles(Params.EnergyParticles);
 	SpawnDamageNumber(Victim->GetActorLocation() + FVector(0, 0, 80.f), Result);
+	ApplyHitStop();
 	OnDamageDealt.Broadcast(Victim, Result);
 
 	return Result;
+}
+
+void UCombatComponent::ApplyHitStop()
+{
+	if (HitStopSeconds <= 0.f)
+	{
+		return;
+	}
+
+	// Jangan tumpang tindih dengan slow-mo burst yang sedang jalan
+	if (UGameplayStatics::GetGlobalTimeDilation(this) < 1.f)
+	{
+		return;
+	}
+
+	UGameplayStatics::SetGlobalTimeDilation(this, HitStopDilation);
+
+	FTimerHandle Handle;
+	// Timer terpengaruh dilation → durasi real = HitStopSeconds
+	GetWorld()->GetTimerManager().SetTimer(Handle,
+		[WeakThis = TWeakObjectPtr<UCombatComponent>(this)]()
+		{
+			if (WeakThis.IsValid())
+			{
+				UGameplayStatics::SetGlobalTimeDilation(WeakThis.Get(), 1.f);
+			}
+		}, HitStopSeconds * HitStopDilation, false);
 }
 
 TArray<FHitResult> UCombatComponent::DoHitTrace(const FComboHitConfig& Config) const

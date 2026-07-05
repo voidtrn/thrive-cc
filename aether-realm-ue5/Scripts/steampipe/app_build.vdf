@@ -1,0 +1,19 @@
+"AppBuild"
+{
+	// GANTI dengan App ID production dari Steamworks
+	"AppID" "480"
+	"Desc" "Aether Realm build"
+
+	// Branch: kosong = default (perlu set live manual di Steamworks),
+	// "beta" = langsung ke branch beta
+	"SetLive" ""
+
+	"ContentRoot" "..\..\Build\Steam\Windows"
+	"BuildOutput" "..\..\Build\SteamPipeLogs"
+
+	"Depots"
+	{
+		// Depot utama (binary + content). AppID+1 konvensi Steamworks.
+		"481" "depot_build.vdf"
+	}
+}

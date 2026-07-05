@@ -10,7 +10,8 @@ enum class EWeatherType : uint8
 	Clear,
 	Cloudy,
 	Rain,
-	Storm,
+	Thunderstorm,
+	Fog,
 	Snow
 };
 
