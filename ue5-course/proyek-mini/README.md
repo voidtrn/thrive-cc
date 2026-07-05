@@ -30,6 +30,11 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [19](19-party-swap.md) | Party Swap | Ganti karakter 1-4 + state per karakter |
 | [20](20-minimap.md) | Minimap | Scene capture bulat berputar + marker |
 | [21](21-polish-qol.md) | Polish & QoL | Hit stop, shake, vignette, auto-save, settings |
+| [22](22-boss-fight.md) | Boss Fight | Multi-phase, telegraph, health gate |
+| [23](23-inventory-ui.md) | Inventory UI | Grid, detail, sortir, filter |
+| [24](24-weapon-artifact.md) | Weapon & Artifact | Stat system, equip, upgrade |
+| [25](25-dialog-bercabang.md) | Dialog Bercabang | Branching + typewriter + kondisi |
+| [26](26-isi-pulau-lengkap.md) | 🏆 Isi Pulau Lengkap | 5 quest + 3 enemy + boss = game utuh |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.

@@ -55,6 +55,11 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [19 Party Swap](proyek-mini/19-party-swap.md) | Ganti karakter 1-4 |
 | [20 Minimap](proyek-mini/20-minimap.md) | Minimap bulat + marker |
 | [21 Polish](proyek-mini/21-polish-qol.md) | Hit stop, shake, save, settings |
+| [22 Boss Fight](proyek-mini/22-boss-fight.md) | Multi-phase + telegraph |
+| [23 Inventory](proyek-mini/23-inventory-ui.md) | Grid + detail + filter |
+| [24 Weapon/Artifact](proyek-mini/24-weapon-artifact.md) | Stat system |
+| [25 Dialog Bercabang](proyek-mini/25-dialog-bercabang.md) | Branching + typewriter |
+| [26 Isi Pulau](proyek-mini/26-isi-pulau-lengkap.md) | 🏆 Rakit jadi game utuh |
 
 ## Prasyarat
 
