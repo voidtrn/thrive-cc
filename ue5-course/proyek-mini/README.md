@@ -35,6 +35,8 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [24](24-weapon-artifact.md) | Weapon & Artifact | Stat system, equip, upgrade |
 | [25](25-dialog-bercabang.md) | Dialog Bercabang | Branching + typewriter + kondisi |
 | [26](26-isi-pulau-lengkap.md) | 🏆 Isi Pulau Lengkap | 5 quest + 3 enemy + boss = game utuh |
+| [27](27-domain-dungeon.md) | Domain/Dungeon *(opsional)* | Arena gelombang + timer + reward |
+| [28](28-cooking-shop.md) | Cooking & Shop *(opsional)* | Buff, masak, ekonomi merchant |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.

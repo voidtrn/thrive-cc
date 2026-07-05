@@ -60,6 +60,8 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [24 Weapon/Artifact](proyek-mini/24-weapon-artifact.md) | Stat system |
 | [25 Dialog Bercabang](proyek-mini/25-dialog-bercabang.md) | Branching + typewriter |
 | [26 Isi Pulau](proyek-mini/26-isi-pulau-lengkap.md) | 🏆 Rakit jadi game utuh |
+| [27 Domain](proyek-mini/27-domain-dungeon.md) | Arena gelombang *(opsional)* |
+| [28 Cooking/Shop](proyek-mini/28-cooking-shop.md) | Buff + ekonomi *(opsional)* |
 
 ## Prasyarat
 
