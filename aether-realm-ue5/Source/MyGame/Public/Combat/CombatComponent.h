@@ -198,6 +198,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Config|UI")
 	TSubclassOf<class UDamageNumberWidget> DamageNumberWidgetClass;
 
+	// ---------- Config: polish ----------
+	/** Hit stop: game freeze singkat saat hit connect (0 = off). */
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Polish")
+	float HitStopSeconds = 0.05f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Config|Polish")
+	float HitStopDilation = 0.1f;
+
 private:
 	UPROPERTY()
 	TObjectPtr<ACharacterBase> OwnerChar;
@@ -221,5 +229,6 @@ private:
 
 	void StartComboAttack(int32 Index);
 	void SpawnDamageNumber(const FVector& Location, const FDamageResult& Result);
+	void ApplyHitStop();
 	TArray<FHitResult> DoHitTrace(const FComboHitConfig& Config) const;
 };
