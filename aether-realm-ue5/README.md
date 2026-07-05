@@ -21,7 +21,10 @@ elemental combat, 1 region ±1km², World Partition streaming.
 | **Art A. Karakter** | Pipeline VRoid→Blender→UE5, spec 3 karakter (Kagari/Yukine/Shiden), enemy specs | 📋 [Docs/ART_A_CHARACTERS.md](Docs/ART_A_CHARACTERS.md) |
 | **Art B. VFX** | Niagara specs 7 elemen + environment + combat polish (hit stop ✅ C++) | 📋 [Docs/ART_B_VFX.md](Docs/ART_B_VFX.md) |
 | **Art C. Audio** | Footstep system ✅ C++, music manager ✅ C++, SFX/musik/VO specs | 📋 [Docs/ART_C_AUDIO.md](Docs/ART_C_AUDIO.md) |
-| **Art D. Environment** | Style guide, palette 3 region, landscape auto-material | 📋 [Docs/ART_D_ENVIRONMENT.md](Docs/ART_D_ENVIRONMENT.md) |
+| **Art D. Environment** | Style guide, palette, landscape blending, foliage, lighting & post | 📋 [Docs/ART_D_ENVIRONMENT.md](Docs/ART_D_ENVIRONMENT.md) |
+| **Art E. Animasi** | Sumber + retarget pipeline, anim list lengkap, polish (motion warping ✅) | 📋 [Docs/ART_E_ANIMATION.md](Docs/ART_E_ANIMATION.md) |
+| **Art F. UI Art** | Style guide, UI tween framework ✅ C++, character screen 3D | 📋 [Docs/ART_F_UI.md](Docs/ART_F_UI.md) |
+| **Art G+H. Workflow** | Tool stack, naming conventions, final polish checklist | 📋 [Docs/ART_G_WORKFLOW.md](Docs/ART_G_WORKFLOW.md) |
 
 ## Struktur
 
