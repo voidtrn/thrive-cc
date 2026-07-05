@@ -46,6 +46,10 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [10 Gliding](proyek-mini/10-gliding.md) | Terbang ala Genshin |
 | [11 Chest](proyek-mini/11-chest-interaksi.md) | Interaksi tekan F |
 | [12 Oculi](proyek-mini/12-oculi-collectible.md) | Collectible + counter + reward |
+| [13 Combat](proyek-mini/13-combat-serangan.md) | Combo 3-hit dengan buffer |
+| [14 Damage](proyek-mini/14-damage-system.md) | Interface + floating numbers |
+| [15 Enemy](proyek-mini/15-enemy-sederhana.md) | AI state machine + NavMesh |
+| [16 Skill](proyek-mini/16-skill-element.md) | Pyro slash AOE + cooldown |
 
 ## Prasyarat
 

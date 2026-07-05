@@ -21,6 +21,10 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [10](10-gliding.md) | Gliding | Terbang ala Genshin! |
 | [11](11-chest-interaksi.md) | Interaksi Chest | Tekan F buka harta |
 | [12](12-oculi-collectible.md) | Oculi Collectible | Kumpulkan orb + counter |
+| [13](13-combat-serangan.md) | Combat: Combo 3-Hit | Klik = serang, buffer combo |
+| [14](14-damage-system.md) | Damage System | Interface + floating numbers |
+| [15](15-enemy-sederhana.md) | Enemy AI | Patroli-kejar-serang-mati (state machine) |
+| [16](16-skill-element.md) | Skill Element (E) | Pyro slash AOE + cooldown HUD |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.
