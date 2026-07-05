@@ -25,6 +25,11 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [14](14-damage-system.md) | Damage System | Interface + floating numbers |
 | [15](15-enemy-sederhana.md) | Enemy AI | Patroli-kejar-serang-mati (state machine) |
 | [16](16-skill-element.md) | Skill Element (E) | Pyro slash AOE + cooldown HUD |
+| [17](17-quest-system.md) | Quest System | Data Asset + manager + NPC giver |
+| [18](18-objective-marker.md) | Objective Marker | Penunjuk lokasi + jarak |
+| [19](19-party-swap.md) | Party Swap | Ganti karakter 1-4 + state per karakter |
+| [20](20-minimap.md) | Minimap | Scene capture bulat berputar + marker |
+| [21](21-polish-qol.md) | Polish & QoL | Hit stop, shake, vignette, auto-save, settings |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.

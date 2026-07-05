@@ -50,6 +50,11 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [14 Damage](proyek-mini/14-damage-system.md) | Interface + floating numbers |
 | [15 Enemy](proyek-mini/15-enemy-sederhana.md) | AI state machine + NavMesh |
 | [16 Skill](proyek-mini/16-skill-element.md) | Pyro slash AOE + cooldown |
+| [17 Quest](proyek-mini/17-quest-system.md) | Quest system + NPC giver |
+| [18 Marker](proyek-mini/18-objective-marker.md) | Penunjuk quest + jarak |
+| [19 Party Swap](proyek-mini/19-party-swap.md) | Ganti karakter 1-4 |
+| [20 Minimap](proyek-mini/20-minimap.md) | Minimap bulat + marker |
+| [21 Polish](proyek-mini/21-polish-qol.md) | Hit stop, shake, save, settings |
 
 ## Prasyarat
 
