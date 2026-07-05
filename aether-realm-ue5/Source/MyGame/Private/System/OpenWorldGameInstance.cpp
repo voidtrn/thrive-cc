@@ -76,6 +76,9 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 
 	Save->MapPins = MapPins;
 	Save->OwnedArtifacts = OwnedArtifacts;
+	Save->OwnedWeapons = OwnedWeapons;
+	Save->CharacterTalents = CharacterTalents;
+	Save->CharacterConstellations = CharacterConstellations;
 
 	Save->PlayTimeSeconds = GetTotalPlayTimeSeconds();
 	Save->StaminaCapBonus = StaminaCapBonus;
@@ -147,6 +150,9 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 
 	MapPins = Save->MapPins;
 	OwnedArtifacts = Save->OwnedArtifacts;
+	OwnedWeapons = Save->OwnedWeapons;
+	CharacterTalents = Save->CharacterTalents;
+	CharacterConstellations = Save->CharacterConstellations;
 
 	LoadedPlayTimeSeconds = Save->PlayTimeSeconds;
 	SessionStartTime = FPlatformTime::Seconds();

@@ -4,6 +4,7 @@
 #include "GameFramework/SaveGame.h"
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
+#include "System/WeaponTypes.h"
 #include "UI/InventoryTypes.h"
 #include "OpenWorldSaveGame.generated.h"
 
@@ -96,6 +97,11 @@ public:
 	// --- UI / map ---
 	UPROPERTY() TArray<FMapPin> MapPins;
 	UPROPERTY() TArray<FArtifactInstance> OwnedArtifacts;
+
+	// --- Progression ---
+	UPROPERTY() TArray<FWeaponInstance> OwnedWeapons;
+	UPROPERTY() TMap<FName, FTalentLevels> CharacterTalents;
+	UPROPERTY() TMap<FName, int32> CharacterConstellations;
 
 	// --- Misc ---
 	UPROPERTY() float PlayTimeSeconds = 0.f;

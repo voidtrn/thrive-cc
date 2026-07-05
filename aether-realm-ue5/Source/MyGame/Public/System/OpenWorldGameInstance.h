@@ -5,6 +5,7 @@
 #include "System/OpenWorldSaveGame.h"
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
+#include "System/WeaponTypes.h"
 #include "UI/InventoryTypes.h"
 #include "OpenWorldGameInstance.generated.h"
 
@@ -118,6 +119,18 @@ public:
 	/** Artifact yang dimiliki (equip via field EquippedCharacter). */
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Inventory")
 	TArray<FArtifactInstance> OwnedArtifacts;
+
+	/** Senjata yang dimiliki (equip via field EquippedCharacter). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Inventory")
+	TArray<FWeaponInstance> OwnedWeapons;
+
+	/** Level talent per karakter (key = CharacterID). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Progression")
+	TMap<FName, FTalentLevels> CharacterTalents;
+
+	/** Constellation per karakter (0-6). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Progression")
+	TMap<FName, int32> CharacterConstellations;
 
 	/** Tambah pin. False kalau sudah 99. */
 	UFUNCTION(BlueprintCallable, Category = "Persistent|Map")
