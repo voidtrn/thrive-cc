@@ -16,6 +16,8 @@ elemental combat, 1 region ±1km², World Partition streaming.
 | **5. Gacha / Wish** | Banner (4 tipe), pity + 50/50 + epitomized path, currency (primogems/fates/starglitter/stardust) | ✅ kode selesai — lihat [Docs/PHASE5_SETUP.md](Docs/PHASE5_SETUP.md) |
 | **6. Quest & Dialogue** | Quest engine (4 tipe + daily commission + AR), dialogue tree (choices, conditions, actions) | ✅ kode selesai — lihat [Docs/PHASE6_SETUP.md](Docs/PHASE6_SETUP.md) |
 | **7. UI/Menu System** | HUD data binding, party swap system, minimap capture, inventory/artifact types, map pins, wish history, resonance | ✅ kode selesai — lihat [Docs/PHASE7_SETUP.md](Docs/PHASE7_SETUP.md) |
+| **8. Steam & Release** | OSS Steam, achievements, rich presence, co-op replication, build + SteamPipe scripts | ✅ kode selesai — lihat [Docs/PHASE8_RELEASE.md](Docs/PHASE8_RELEASE.md) |
+| **9. Production** | Timeline 14 bulan, optimization budgets, scope rules | 📋 [Docs/PHASE9_PRODUCTION.md](Docs/PHASE9_PRODUCTION.md) |
 
 ## Struktur
 

@@ -31,6 +31,7 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// ---------- Identity ----------
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Identity")
@@ -46,7 +47,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats", meta = (ClampMin = 1))
 	float MaxHP = 1000.f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	/** Replicated — co-op: guest melihat HP enemy/host character sinkron. */
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentHP = 1000.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
@@ -75,7 +77,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	float EnergyRecharge = 1.f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentEnergy = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")

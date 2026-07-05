@@ -6,6 +6,7 @@
 AOculusCollectible::AOculusCollectible()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true; // co-op: destroy tersinkron ke semua client
 
 	PickupRadius = CreateDefaultSubobject<USphereComponent>(TEXT("PickupRadius"));
 	SetRootComponent(PickupRadius);
@@ -44,8 +45,9 @@ void AOculusCollectible::Tick(float DeltaSeconds)
 void AOculusCollectible::OnPickupOverlap(UPrimitiveComponent*, AActor* OtherActor,
 	UPrimitiveComponent*, int32, bool, const FHitResult&)
 {
+	// Server-authoritative: hanya server yang proses collect (destroy replikasi otomatis)
 	const APawn* Pawn = Cast<APawn>(OtherActor);
-	if (!Pawn || !Pawn->IsPlayerControlled())
+	if (!HasAuthority() || !Pawn || !Pawn->IsPlayerControlled())
 	{
 		return;
 	}

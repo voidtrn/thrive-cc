@@ -2,11 +2,19 @@
 #include "Character/EnemyBase.h"
 #include "System/OpenWorldGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "MyGame.h"
 
 AChest::AChest()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = true; // co-op: chest state synced dari host
+}
+
+void AChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AChest, State);
 }
 
 void AChest::BeginPlay()
@@ -30,6 +38,13 @@ void AChest::BeginPlay()
 
 bool AChest::TryOpen(APlayerController* Player)
 {
+	// Client guest: forward ke server (server-authoritative)
+	if (!HasAuthority())
+	{
+		Server_TryOpen(Player);
+		return true;
+	}
+
 	if (State == EChestState::Locked)
 	{
 		// Auto-unlock kalau semua enemy sekitar mati
@@ -49,8 +64,18 @@ bool AChest::TryOpen(APlayerController* Player)
 	}
 
 	State = EChestState::Opening;
-	OnOpeningStarted(); // BP: play animasi → FinishOpening()
+	Multicast_PlayOpenEffect(); // animasi + VFX di semua client
 	return true;
+}
+
+void AChest::Server_TryOpen_Implementation(APlayerController* Player)
+{
+	TryOpen(Player);
+}
+
+void AChest::Multicast_PlayOpenEffect_Implementation()
+{
+	OnOpeningStarted(); // BP: play animasi → FinishOpening() (loot server-only)
 }
 
 void AChest::UnlockChest()
@@ -63,7 +88,8 @@ void AChest::UnlockChest()
 
 void AChest::FinishOpening()
 {
-	if (State != EChestState::Opening)
+	// Loot & state final hanya di server (client cukup animasi via multicast)
+	if (!HasAuthority() || State != EChestState::Opening)
 	{
 		return;
 	}

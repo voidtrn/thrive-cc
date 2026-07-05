@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "AbilitySystemComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "MyGame.h"
 
 ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
@@ -13,6 +14,10 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 		ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	// Co-op ready: character direplikasi (single-player = listen server implisit)
+	bReplicates = true;
+	SetReplicateMovement(true);
 
 	bUseControllerRotationYaw = false; // orient to movement, kamera bebas orbit
 
@@ -69,6 +74,13 @@ void ACharacterBase::BeginPlay()
 UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystem;
+}
+
+void ACharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACharacterBase, CurrentHP);
+	DOREPLIFETIME(ACharacterBase, CurrentEnergy);
 }
 
 UOpenWorldMovementComponent* ACharacterBase::GetOpenWorldMovement() const

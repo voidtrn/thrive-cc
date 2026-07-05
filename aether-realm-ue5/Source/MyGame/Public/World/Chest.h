@@ -37,9 +37,22 @@ class MYGAME_API AChest : public AActor
 public:
 	AChest();
 
-	/** Interact (F). Return false kalau masih locked / sudah terbuka. */
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	/**
+	 * Interact (F). Return false kalau masih locked / sudah terbuka.
+	 * Client → auto-forward ke server (server-authoritative, co-op safe).
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Chest")
 	bool TryOpen(APlayerController* Player);
+
+	/** Server RPC — dipanggil otomatis dari TryOpen di client. */
+	UFUNCTION(Server, Reliable)
+	void Server_TryOpen(APlayerController* Player);
+
+	/** VFX/SFX buka chest di semua client. */
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayOpenEffect();
 
 	/** BP puzzle memanggil ini untuk buka kunci. */
 	UFUNCTION(BlueprintCallable, Category = "Chest")
@@ -84,6 +97,8 @@ protected:
 	TMap<FName, int32> BonusLoot;
 
 private:
+	/** Replicated — guest lihat state chest host (synced world state). */
+	UPROPERTY(Replicated)
 	EChestState State = EChestState::Closed;
 
 	int32 RollPrimogems() const;

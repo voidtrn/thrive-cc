@@ -21,7 +21,9 @@ public class MyGame : ModuleRules
 			"NetCore",
 			"AnimGraphRuntime",
 			"AIModule",
-			"NavigationSystem"
+			"NavigationSystem",
+			"OnlineSubsystem",
+			"OnlineSubsystemUtils"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
