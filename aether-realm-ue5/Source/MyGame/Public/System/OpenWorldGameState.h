@@ -36,6 +36,13 @@ public:
 	UFUNCTION(BlueprintPure, Category = "OpenWorld|Time")
 	float GetWorldTimeHours() const { return WorldTimeHours; }
 
+	/** Server-only. Set jam dunia (debug / skip time). */
+	UFUNCTION(BlueprintCallable, Category = "OpenWorld|Time")
+	void SetWorldTimeHours(float NewHours)
+	{
+		if (HasAuthority()) { WorldTimeHours = FMath::Fmod(FMath::Max(0.f, NewHours), 24.f); }
+	}
+
 	UFUNCTION(BlueprintPure, Category = "OpenWorld|Weather")
 	EWeatherType GetCurrentWeather() const { return CurrentWeather; }
 

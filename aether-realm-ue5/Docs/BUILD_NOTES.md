@@ -48,6 +48,28 @@ ModelingTools, OnlineSubsystem(+Steam), MotionWarping.
 (Set bonus artifact 2/4-piece: SUDAH diimplementasi via `ApplySetBonuses` +
 `DT_ArtifactSets` — lihat PHASE10.)
 
+## Cheat / Debug Console Commands
+
+`UOpenWorldCheatManager` (set otomatis di PlayerController; **tidak ada di
+Shipping**). Tekan `` ` `` (tilde) saat Play → ketik:
+
+| Command | Guna |
+|---|---|
+| `AddPrimogems 1600` / `AddMora 100000` | tambah currency |
+| `AddFates 10 10` | +10 acquaint, +10 intertwined |
+| `GiveItem Oculus_Anemo 5` | tambah item ke inventory |
+| `HealFull` / `FillEnergy` | pulihkan HP+stamina / energy |
+| `SetCharLevel 90` | set level karakter aktif |
+| `AddConstellation 6` | naikkan constellation |
+| `GodMode` | toggle kebal damage |
+| `KillNearbyEnemies 2000` | bunuh musuh radius |
+| `UnlockAllWaypoints` | buka semua waypoint |
+| `SetWorldTime 18` | set jam dunia (test day/night) |
+| `SetWeatherCheat 3` | 0=Clear 1=Cloudy 2=Rain 3=Storm 4=Fog 5=Snow |
+| `SaveNow` / `LoadNow` | save/load slot 0 |
+
+Mempercepat testing tiap sistem tanpa grinding.
+
 ## Automation Tests
 
 `Source/MyGame/Private/Tests/` — unit test formula murni (guard

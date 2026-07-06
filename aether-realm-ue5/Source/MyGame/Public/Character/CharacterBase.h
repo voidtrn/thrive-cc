@@ -109,6 +109,13 @@ public:
 
 	void SetFrozen(bool bNewFrozen);
 
+	/** Kebal damage (cheat/i-frame burst). */
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void SetInvulnerable(bool bNew) { bInvulnerable = bNew; }
+
+	UFUNCTION(BlueprintPure, Category = "Combat")
+	bool IsInvulnerable() const { return bInvulnerable; }
+
 	UPROPERTY(BlueprintAssignable, Category = "Stats")
 	FOnHealthChanged OnHealthChanged;
 
@@ -236,6 +243,7 @@ private:
 	float TargetZoom = 400.f;
 	bool bAimMode = false;
 	bool bFrozen = false;
+	bool bInvulnerable = false;
 	bool bInWindCurrent = false;
 	float LastStaminaUseTime = -999.f;
 

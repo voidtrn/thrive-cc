@@ -1,7 +1,14 @@
 #include "System/OpenWorldPlayerController.h"
+#include "System/OpenWorldCheatManager.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "MyGame.h"
+
+AOpenWorldPlayerController::AOpenWorldPlayerController()
+{
+	// Cheat console commands (otomatis tidak dibuat di Shipping)
+	CheatClass = UOpenWorldCheatManager::StaticClass();
+}
 
 void AOpenWorldPlayerController::BeginPlay()
 {

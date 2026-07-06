@@ -99,7 +99,7 @@ void ACharacterBase::Tick(float DeltaSeconds)
 
 void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReaction Reaction)
 {
-	if (!IsAlive() || Amount <= 0.f)
+	if (!IsAlive() || Amount <= 0.f || bInvulnerable)
 	{
 		return;
 	}

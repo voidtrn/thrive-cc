@@ -33,6 +33,8 @@ class MYGAME_API AOpenWorldPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	AOpenWorldPlayerController();
+
 	/** Ganti mode input. Idempotent — panggil berulang aman. */
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void SetInputContextMode(EInputContextMode NewMode);
