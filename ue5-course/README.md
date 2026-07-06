@@ -67,6 +67,10 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [31 Co-op](proyek-mini/31-coop-multiplayer.md) | Multiplayer *(advanced)* |
 | [32 Battle Pass](proyek-mini/32-battle-pass.md) | Level BP + misi |
 | [33 Polish & Juice](proyek-mini/33-polish-juice.md) | Efek visual & feel |
+| [34 Cutscene](proyek-mini/34-cutscene.md) | Level Sequencer |
+| [35 Controller](proyek-mini/35-controller-support.md) | Gamepad + UI nav |
+| [36 Localization](proyek-mini/36-localization.md) | Multi-bahasa |
+| [37 Steam Deck](proyek-mini/37-steam-deck.md) | Optimasi handheld |
 
 ## Prasyarat
 

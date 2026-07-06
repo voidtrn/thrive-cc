@@ -42,6 +42,10 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [31](31-coop-multiplayer.md) | Co-op Multiplayer *(advanced)* | Session, replikasi, aturan co-op |
 | [32](32-battle-pass.md) | Battle Pass *(lanjutan)* | Level BP, misi daily/weekly, reward |
 | [33](33-polish-juice.md) | Polish & Juice *(lanjutan)* | Loading, glow, screen fx, particle, sound |
+| [34](34-cutscene.md) | Cutscene *(lanjutan)* | Level Sequencer, trigger, skip, dialog |
+| [35](35-controller-support.md) | Controller Support *(lanjutan)* | Gamepad, navigasi UI, button prompt |
+| [36](36-localization.md) | Localization *(lanjutan)* | String Table + Dashboard, multi-bahasa |
+| [37](37-steam-deck.md) | Steam Deck *(lanjutan)* | Scalability, UI scaling, input handheld |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.
