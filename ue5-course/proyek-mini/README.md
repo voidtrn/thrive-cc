@@ -46,6 +46,12 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [35](35-controller-support.md) | Controller Support *(lanjutan)* | Gamepad, navigasi UI, button prompt |
 | [36](36-localization.md) | Localization *(lanjutan)* | String Table + Dashboard, multi-bahasa |
 | [37](37-steam-deck.md) | Steam Deck *(lanjutan)* | Scalability, UI scaling, input handheld |
+| [38](38-character-detail.md) | Character Detail *(super polish)* | Secondary motion, wetness, foot IK, wajah |
+| [39](39-audio-nextlevel.md) | Audio Next-Level *(super polish)* | Music layering, spatial, ambient |
+| [40](40-living-world.md) | Living World *(super polish)* | Foliage, cuaca, AI cerdas, persistence |
+| [41](41-systems-depth.md) | Systems Depth *(super polish)* | Crafting, photo mode, housing, event |
+| [42](42-liveservice-tech.md) | Live Service & Tech *(super polish)* | IAP, accessibility, anti-cheat, analytics |
+| [43](43-postlaunch-roadmap.md) | Post-Launch Roadmap *(perencanaan)* | Region baru, endgame, scope reality |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.

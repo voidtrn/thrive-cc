@@ -71,6 +71,7 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [35 Controller](proyek-mini/35-controller-support.md) | Gamepad + UI nav |
 | [36 Localization](proyek-mini/36-localization.md) | Multi-bahasa |
 | [37 Steam Deck](proyek-mini/37-steam-deck.md) | Optimasi handheld |
+| [38-43 Super Polish](proyek-mini/38-character-detail.md) | Character detail, audio, living world, crafting/photo, accessibility, roadmap |
 
 ## Prasyarat
 
