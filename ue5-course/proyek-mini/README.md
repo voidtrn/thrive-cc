@@ -37,6 +37,11 @@ demi langkah. Cocok dikerjakan setelah (atau bareng) Modul 01-08 course utama.
 | [26](26-isi-pulau-lengkap.md) | 🏆 Isi Pulau Lengkap | 5 quest + 3 enemy + boss = game utuh |
 | [27](27-domain-dungeon.md) | Domain/Dungeon *(opsional)* | Arena gelombang + timer + reward |
 | [28](28-cooking-shop.md) | Cooking & Shop *(opsional)* | Buff, masak, ekonomi merchant |
+| [29](29-elemental-reaction.md) | Elemental Reaction *(lanjutan)* | 16 reaksi, ICD, gauge, VFX/SFX |
+| [30](30-dungeon-multiroom.md) | Dungeon Multi-Room *(lanjutan)* | Ruang berantai + timer + rating ★ |
+| [31](31-coop-multiplayer.md) | Co-op Multiplayer *(advanced)* | Session, replikasi, aturan co-op |
+| [32](32-battle-pass.md) | Battle Pass *(lanjutan)* | Level BP, misi daily/weekly, reward |
+| [33](33-polish-juice.md) | Polish & Juice *(lanjutan)* | Loading, glow, screen fx, particle, sound |
 
 Tiap bagian selesai = **Play test dulu** sebelum lanjut. Rusak di bagian N,
 jangan lanjut ke N+1.

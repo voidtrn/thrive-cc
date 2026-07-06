@@ -62,6 +62,11 @@ Bangun mini open world 100% Blueprint — kerjakan bareng modul 01-08:
 | [26 Isi Pulau](proyek-mini/26-isi-pulau-lengkap.md) | 🏆 Rakit jadi game utuh |
 | [27 Domain](proyek-mini/27-domain-dungeon.md) | Arena gelombang *(opsional)* |
 | [28 Cooking/Shop](proyek-mini/28-cooking-shop.md) | Buff + ekonomi *(opsional)* |
+| [29 Elemental Reaction](proyek-mini/29-elemental-reaction.md) | 16 reaksi + ICD + VFX |
+| [30 Dungeon Multi-Room](proyek-mini/30-dungeon-multiroom.md) | Ruang berantai + rating |
+| [31 Co-op](proyek-mini/31-coop-multiplayer.md) | Multiplayer *(advanced)* |
+| [32 Battle Pass](proyek-mini/32-battle-pass.md) | Level BP + misi |
+| [33 Polish & Juice](proyek-mini/33-polish-juice.md) | Efek visual & feel |
 
 ## Prasyarat
 
