@@ -1,4 +1,5 @@
 #include "Combat/CharacterProgressionComponent.h"
+#include "Combat/BuffComponent.h"
 #include "Character/CharacterBase.h"
 #include "Engine/DataTable.h"
 #include "MyGame.h"
@@ -121,6 +122,13 @@ void UCharacterProgressionComponent::Recalculate()
 	OwnerChar->CritRate = CachedStats.CritRate;
 	OwnerChar->CritDMG = CachedStats.CritDMG;
 	OwnerChar->EnergyRecharge = CachedStats.EnergyRecharge;
+
+	// Buff aktif ter-hapus oleh penulisan stat di atas — pasang ulang
+	// (kalau tidak, stat jatuh di bawah base saat buff expire)
+	if (UBuffComponent* Buff = OwnerChar->FindComponentByClass<UBuffComponent>())
+	{
+		Buff->ReapplyActiveBuffs();
+	}
 
 	// Jaga CurrentHP tidak melebihi MaxHP baru
 	OwnerChar->CurrentHP = FMath::Min(OwnerChar->CurrentHP, OwnerChar->MaxHP);

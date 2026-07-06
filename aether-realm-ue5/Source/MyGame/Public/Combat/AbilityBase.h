@@ -63,6 +63,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Ability|Burst")
 	float BurstIFrameDuration = 1.5f;
 
+	/** Instanced UObject: resolve world via outer (component → actor) supaya
+	 *  GetWorld()/timer/GetTimeSeconds reliable (default UObject bisa null). */
+	virtual UWorld* GetWorld() const override;
+
 	// --- Runtime ---
 	UFUNCTION(BlueprintPure, Category = "Ability")
 	bool IsOnCooldown() const;

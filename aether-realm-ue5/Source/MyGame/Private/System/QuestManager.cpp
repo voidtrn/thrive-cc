@@ -35,7 +35,7 @@ void UQuestManager::RegisterQuests(const TArray<UQuestDataAsset*>& Quests)
 bool UQuestManager::CanStartQuest(FName QuestID) const
 {
 	const UOpenWorldGameInstance* GI = GetOWGameInstance();
-	const TObjectPtr<UQuestDataAsset> const* QuestPtr = RegisteredQuests.Find(QuestID);
+	const TObjectPtr<UQuestDataAsset>* QuestPtr = RegisteredQuests.Find(QuestID);
 	if (!GI || !QuestPtr || IsQuestActive(QuestID) || IsQuestCompleted(QuestID))
 	{
 		return false;
@@ -224,7 +224,7 @@ TArray<UQuestDataAsset*> UQuestManager::GetActiveQuests() const
 	{
 		for (const auto& Pair : GI->ActiveQuestStates)
 		{
-			if (const TObjectPtr<UQuestDataAsset> const* Quest = RegisteredQuests.Find(Pair.Key))
+			if (const TObjectPtr<UQuestDataAsset>* Quest = RegisteredQuests.Find(Pair.Key))
 			{
 				Result.Add(*Quest);
 			}
@@ -247,7 +247,7 @@ FActiveQuestState UQuestManager::GetQuestState(FName QuestID) const
 
 bool UQuestManager::GetCurrentStep(FName QuestID, FQuestStep& OutStep) const
 {
-	const TObjectPtr<UQuestDataAsset> const* QuestPtr = RegisteredQuests.Find(QuestID);
+	const TObjectPtr<UQuestDataAsset>* QuestPtr = RegisteredQuests.Find(QuestID);
 	if (!QuestPtr)
 	{
 		return false;

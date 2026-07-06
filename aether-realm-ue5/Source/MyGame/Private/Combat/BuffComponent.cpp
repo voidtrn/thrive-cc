@@ -63,6 +63,16 @@ void UBuffComponent::RemoveBuff(FName BuffId)
 	OnBuffsChanged.Broadcast(ActiveBuffs);
 }
 
+void UBuffComponent::ReapplyActiveBuffs()
+{
+	// Recalculate (progression) menulis ulang stat base+gear tanpa buff.
+	// Tambahkan lagi delta buff aktif — timer tidak diubah.
+	for (const FActiveBuff& Buff : ActiveBuffs)
+	{
+		ApplyDelta(Buff.Stat, Buff.Delta, +1.f);
+	}
+}
+
 void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
 {

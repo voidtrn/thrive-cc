@@ -49,6 +49,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Buff")
 	void RemoveBuff(FName BuffId);
 
+	/** Re-apply delta semua buff aktif ke stat karakter. Dipanggil
+	 *  ProgressionComponent setelah Recalculate menimpa stat base+gear. */
+	UFUNCTION(BlueprintCallable, Category = "Buff")
+	void ReapplyActiveBuffs();
+
 	UFUNCTION(BlueprintPure, Category = "Buff")
 	const TArray<FActiveBuff>& GetActiveBuffs() const { return ActiveBuffs; }
 

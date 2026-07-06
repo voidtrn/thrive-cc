@@ -1,6 +1,22 @@
 #include "Combat/AbilityBase.h"
 #include "Character/CharacterBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
+
+UWorld* UAbilityBase::GetWorld() const
+{
+	// CDO (editor default object) tidak punya world
+	if (HasAllFlags(RF_ClassDefaultObject))
+	{
+		return nullptr;
+	}
+	// Outer = CombatComponent → world actor
+	if (const UObject* Outer = GetOuter())
+	{
+		return Outer->GetWorld();
+	}
+	return nullptr;
+}
 
 bool UAbilityBase::IsOnCooldown() const
 {
