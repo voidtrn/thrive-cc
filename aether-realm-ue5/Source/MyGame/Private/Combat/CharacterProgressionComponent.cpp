@@ -54,6 +54,52 @@ void UCharacterProgressionComponent::AccumulateStat(
 	}
 }
 
+void UCharacterProgressionComponent::ApplySetBonuses(FDerivedStats& Flat, FDerivedStats& Percent)
+{
+	ActiveSetEffects.Reset();
+	if (!ArtifactSetTable)
+	{
+		return;
+	}
+
+	// Hitung jumlah piece per SetId
+	TMap<FName, int32> SetCounts;
+	for (const FArtifactInstance& Art : EquippedArtifacts)
+	{
+		if (!Art.SetId.IsNone())
+		{
+			SetCounts.FindOrAdd(Art.SetId)++;
+		}
+	}
+
+	for (const auto& Pair : SetCounts)
+	{
+		const FArtifactSetRow* Row = ArtifactSetTable->FindRow<FArtifactSetRow>(Pair.Key, TEXT("SetBonus"));
+		if (!Row)
+		{
+			continue;
+		}
+
+		// 2-piece
+		if (Pair.Value >= 2 && Row->TwoPieceBonus.Value != 0.f)
+		{
+			AccumulateStat(Row->TwoPieceBonus.Stat, Row->TwoPieceBonus.Value, Flat, Percent);
+		}
+		// 4-piece: stat + efek spesial
+		if (Pair.Value >= 4)
+		{
+			if (Row->FourPieceStatBonus.Value != 0.f)
+			{
+				AccumulateStat(Row->FourPieceStatBonus.Stat, Row->FourPieceStatBonus.Value, Flat, Percent);
+			}
+			if (!Row->FourPieceEffectId.IsNone())
+			{
+				ActiveSetEffects.Add(Row->FourPieceEffectId);
+			}
+		}
+	}
+}
+
 void UCharacterProgressionComponent::Recalculate()
 {
 	if (!OwnerChar)
@@ -102,6 +148,9 @@ void UCharacterProgressionComponent::Recalculate()
 			AccumulateStat(Sub.Stat, Sub.Value, Flat, Percent);
 		}
 	}
+
+	// --- Set bonus 2/4-piece ---
+	ApplySetBonuses(Flat, Percent);
 
 	// --- Gabung sesuai rumus Genshin ---
 	CachedStats.MaxHP = BaseHP * (1.f + Percent.MaxHP) + Flat.MaxHP;

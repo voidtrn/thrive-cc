@@ -66,6 +66,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Progression")
 	int32 GetConstellation() const { return ConstellationLevel; }
 
+	/** 4-piece effect ID yang aktif (dibaca gameplay untuk efek set). */
+	UFUNCTION(BlueprintPure, Category = "Progression")
+	const TArray<FName>& GetActiveSetEffects() const { return ActiveSetEffects; }
+
 	UFUNCTION(BlueprintCallable, Category = "Progression")
 	void SetConstellation(int32 NewLevel);
 
@@ -88,6 +92,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Progression|Data")
 	TObjectPtr<UDataTable> WeaponTable;
 
+	/** DT_ArtifactSets (FArtifactSetRow). Row name = SetId. */
+	UPROPERTY(EditDefaultsOnly, Category = "Progression|Data")
+	TObjectPtr<UDataTable> ArtifactSetTable;
+
 	/** Base stat karakter di level 1 (sebelum gear). */
 	UPROPERTY(EditDefaultsOnly, Category = "Progression|Base")
 	float BaseHPLevel1 = 800.f;
@@ -108,7 +116,9 @@ private:
 
 	int32 ConstellationLevel = 0;
 	FDerivedStats CachedStats;
+	TArray<FName> ActiveSetEffects;
 
 	void AccumulateStat(EArtifactStat Stat, float Value, FDerivedStats& Flat, FDerivedStats& Percent) const;
+	void ApplySetBonuses(FDerivedStats& Flat, FDerivedStats& Percent);
 	float LevelScale(int32 Level) const;
 };

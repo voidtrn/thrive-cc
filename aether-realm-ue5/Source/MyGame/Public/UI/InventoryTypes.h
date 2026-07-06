@@ -126,6 +126,42 @@ struct FArtifactInstance
 	FName EquippedCharacter;
 };
 
+/** Bonus 1 stat (dipakai artifact set 2/4-piece). */
+USTRUCT(BlueprintType)
+struct FStatBonus
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EArtifactStat Stat = EArtifactStat::ATKPercent;
+
+	/** Persen dalam 0-1 untuk stat %, flat untuk lainnya. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float Value = 0.f;
+};
+
+/** Row DT_ArtifactSets — bonus 2-piece & 4-piece per set. */
+USTRUCT(BlueprintType)
+struct FArtifactSetRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FText SetName;
+
+	/** Bonus aktif saat >= 2 piece set ini terpasang. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FStatBonus TwoPieceBonus;
+
+	/** Bonus stat 4-piece (kalau 4pc-nya berupa stat sederhana). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FStatBonus FourPieceStatBonus;
+
+	/** ID efek 4-piece spesial (dibaca gameplay; kosong = cuma stat). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName FourPieceEffectId;
+};
+
 /** Pin custom di map (player place, max 99). */
 USTRUCT(BlueprintType)
 struct FMapPin

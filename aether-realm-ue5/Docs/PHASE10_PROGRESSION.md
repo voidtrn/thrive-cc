@@ -82,7 +82,10 @@ Otomatis ikut save: `OwnedWeapons`, `OwnedArtifacts` (Phase 7),
 
 - [ ] DT_Weapons berisi 3+ senjata, equip mengubah ATK karakter
 - [ ] 5 artifact ter-equip → HP/Crit/dst berubah sesuai main+substat
-- [ ] Set bonus 2/4-piece (tambah di Recalculate kalau perlu — hook SetId)
+- [x] Set bonus 2/4-piece — sudah C++ (`ApplySetBonuses`). Buat
+  `DT_ArtifactSets` (Row **ArtifactSetRow**: TwoPieceBonus, FourPieceStatBonus,
+  FourPieceEffectId), assign ke `ArtifactSetTable`. 4-piece effect ID dibaca
+  gameplay via `GetActiveSetEffects()`
 - [ ] Talent lvl naik → damage skill naik
 - [ ] Constellation dari duplikat karakter, efek C1-C6 aktif
 - [ ] Semua persist setelah save/load

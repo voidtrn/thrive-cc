@@ -43,9 +43,21 @@ ModelingTools, OnlineSubsystem(+Steam), MotionWarping.
 3. **Damage number `WidgetComponent->GetWidget()`** bisa null 1 frame
    setelah spawn (di-guard, tidak crash). Kalau angka tidak muncul, panggil
    `InitWidget()` sebelum GetWidget.
-4. **Set bonus artifact 2/4-piece** belum dihitung di Recalculate — hook
-   `SetId` tersedia, tambahkan logic saat butuh.
-5. **IAP Steam** butuh backend server (ISteamMicroTxn) — di luar scope client.
+4. **IAP Steam** butuh backend server (ISteamMicroTxn) — di luar scope client.
+
+(Set bonus artifact 2/4-piece: SUDAH diimplementasi via `ApplySetBonuses` +
+`DT_ArtifactSets` — lihat PHASE10.)
+
+## Automation Tests
+
+`Source/MyGame/Private/Tests/` — unit test formula murni (guard
+`WITH_AUTOMATION_TESTS`, aktif di build editor/development):
+- `DamageCalculatorTest.cpp` — DefReduction, ResMultiplier, EM bonus
+- `WishSystemTest.cpp` — fate cost (beginner diskon), fate type per banner
+
+Jalankan: Editor → **Tools → Session Frontend → Automation** → filter
+`AetherRealm` → Start Tests. Ini memvalidasi math tanpa perlu main game —
+berguna untuk memastikan formula benar setelah edit.
 
 ## Urutan build pertama
 
