@@ -72,6 +72,16 @@ enum class EHitTraceShape : uint8
 	Box
 };
 
+/** Sumber talent untuk skala damage (level talent → multiplier). */
+UENUM(BlueprintType)
+enum class ETalentSource : uint8
+{
+	None,           // tidak diskala talent
+	NormalAttack,
+	ElementalSkill,
+	ElementalBurst
+};
+
 /** Parameter satu serangan — dikirim ke CombatComponent::DealDamage. */
 USTRUCT(BlueprintType)
 struct FAttackParams
@@ -106,6 +116,10 @@ struct FAttackParams
 	/** Energy particle yang di-generate saat hit. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 EnergyParticles = 0;
+
+	/** Talent yang menyekala serangan ini (skill lvl 6 = 1.5× base). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ETalentSource TalentSource = ETalentSource::None;
 };
 
 /** Hasil kalkulasi damage. */

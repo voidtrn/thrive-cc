@@ -1,10 +1,12 @@
 #include "Combat/CombatComponent.h"
 #include "Combat/AbilityBase.h"
+#include "Combat/CharacterProgressionComponent.h"
 #include "Combat/DamageCalculator.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Character/CharacterBase.h"
 #include "Character/OpenWorldMovementComponent.h"
 #include "UI/DamageNumberWidget.h"
+#include "System/OpenWorldGameInstance.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -108,6 +110,7 @@ void UCombatComponent::PerformComboHit()
 	Params.ICDTag = TEXT("NormalAttack");
 	Params.EnergyParticles = 1; // spec: 1 particle per normal hit
 	Params.bBluntHit = OwnerChar->WeaponType == EWeaponType::Claymore;
+	Params.TalentSource = ETalentSource::NormalAttack;
 
 	for (const FHitResult& Hit : DoHitTrace(Config))
 	{
@@ -183,6 +186,7 @@ void UCombatComponent::ReleaseCharged()
 	Params.ICDTag = TEXT("ChargedAttack");
 	Params.EnergyParticles = 1;
 	Params.HitReaction = EHitReaction::Medium;
+	Params.TalentSource = ETalentSource::NormalAttack; // charged scale ikut talent Normal
 
 	FComboHitConfig ChargedTrace;
 	ChargedTrace.TraceShape = EHitTraceShape::Sphere;
@@ -241,6 +245,7 @@ void UCombatComponent::OnPlungeLand()
 	Params.EnergyParticles = 1;
 	Params.HitReaction = EHitReaction::Heavy;
 	Params.bBluntHit = true; // plunge selalu blunt (shatter frozen)
+	Params.TalentSource = ETalentSource::NormalAttack; // plunge scale ikut talent Normal
 
 	// AOE landing
 	TArray<AActor*> Enemies;
@@ -328,8 +333,18 @@ void UCombatComponent::GainEnergyParticles(int32 Particles)
 	const float Energy = Particles * 2.f * OwnerChar->EnergyRecharge;
 	OwnerChar->CurrentEnergy = FMath::Min(OwnerChar->MaxEnergy, OwnerChar->CurrentEnergy + Energy);
 
-	// Off-field 60%: Phase 4 saat party swap aktif — iterate party dari
-	// PlayerState, anggota non-aktif dapat Energy * 0.6.
+	// Off-field 60% — anggota party non-aktif (disimpan di GameInstance).
+	if (UOpenWorldGameInstance* GI = OwnerChar->GetGameInstance<UOpenWorldGameInstance>())
+	{
+		for (FCharacterSaveData& Data : GI->PartyCharacterData)
+		{
+			if (Data.CharacterId != OwnerChar->CharacterID)
+			{
+				// MaxEnergy per karakter belum tersimpan; clamp longgar (cap saat swap in)
+				Data.CurrentEnergy += Energy * 0.6f;
+			}
+		}
+	}
 }
 
 // ---------- Damage pipeline ----------
@@ -360,11 +375,30 @@ FDamageResult UCombatComponent::DealDamage(ACharacterBase* Victim, const FAttack
 			Params.Element, Params.GaugeUnits, Params.ICDTag, Params.bBluntHit);
 	}
 
+	// Skala talent: level talent (1-10) → multiplier (lvl 1 = 1.0×, tiap lvl +10%).
+	float EffectiveSkillMult = Params.SkillMultiplier;
+	if (Params.TalentSource != ETalentSource::None)
+	{
+		if (UCharacterProgressionComponent* Progression = OwnerChar->FindComponentByClass<UCharacterProgressionComponent>())
+		{
+			const FTalentLevels& Talents = Progression->GetTalents();
+			int32 TalentLevel = 1;
+			switch (Params.TalentSource)
+			{
+			case ETalentSource::NormalAttack:  TalentLevel = Talents.NormalAttack;  break;
+			case ETalentSource::ElementalSkill: TalentLevel = Talents.ElementalSkill; break;
+			case ETalentSource::ElementalBurst: TalentLevel = Talents.ElementalBurst; break;
+			default: break;
+			}
+			EffectiveSkillMult *= Progression->GetTalentMultiplier(TalentLevel);
+		}
+	}
+
 	// Formula final
 	bool bCrit = false;
 	const float Damage = UDamageCalculator::CalculateDamage(
 		OwnerChar, Victim,
-		Params.SkillMultiplier, Params.FlatDamage, Params.Element,
+		EffectiveSkillMult, Params.FlatDamage, Params.Element,
 		Reaction.AmpMultiplier, Reaction.FlatBonus, bCrit);
 
 	Victim->ApplyDamage(Damage, Params.Element, Params.HitReaction);

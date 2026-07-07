@@ -76,6 +76,17 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Enemy")
 	const FEnemyStatsRow& GetStats() const { return CachedStats; }
 
+	/**
+	 * Serang target (biasanya player) — apply elemen enemy + damage.
+	 * Panggil dari anim notify serangan BP enemy. Elemen dari `Element`
+	 * (Pyro slime = Pyro → bisa memicu reaksi di player).
+	 * @param DamageMultiplier  persen dari ATK enemy (1.0 = 100%)
+	 * @param GaugeUnits        unit elemen (0 = serangan fisik murni)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Enemy|Combat")
+	void AttackTarget(ACharacterBase* Target, float DamageMultiplier = 1.f,
+		float GaugeUnits = 1.f, EHitReaction Reaction = EHitReaction::Light);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandleDeath() override;

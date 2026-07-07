@@ -187,7 +187,8 @@ void UPartyManagerComponent::RestoreCharacterState(ACharacterBase* Character, FN
 	{
 		Character->CurrentHP = FMath::Min(Data->CurrentHP, Character->MaxHP);
 	}
-	Character->CurrentEnergy = Data->CurrentEnergy;
+	// Clamp: off-field energy (60% gain) bisa melebihi MaxEnergy karakter
+	Character->CurrentEnergy = FMath::Min(Data->CurrentEnergy, Character->MaxEnergy);
 	Character->Level = Data->Level;
 	Character->Ascension = Data->Ascension;
 }

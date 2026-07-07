@@ -24,23 +24,20 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
 
 ## 🚧 GAP — perlu DIKEMBANGKAN (prioritas)
 
-### P1 — kelihatan cepat kalau dimainkan
+### P1 — SUDAH DIKERJAKAN ✅ (pass ini)
 
-1. **Enemy tidak bisa apply elemen ke player.** Enemy attack (di BP) cuma
-   damage fisik. Pyro slime tidak bisa "membakar" player, tidak ada reaksi
-   dari sisi musuh. → Enemy butuh `UCombatComponent` (atau helper) yang
-   panggil `ApplyElement` saat menyerang. Sekarang reaksi cuma satu arah
-   (player → enemy).
+1. ~~**Enemy tidak bisa apply elemen ke player.**~~ → `AEnemyBase::AttackTarget()`
+   (header+cpp) apply `Element` enemy via `ApplyElement` sebelum damage.
+   Reaksi sekarang dua arah (player↔enemy). Anim notify BP enemy panggil ini.
 
-2. **Talent multiplier tidak otomatis ke damage.** `GetTalentMultiplier`
-   ada tapi tidak ada di jalur `DealDamage`. → BP ability BISA baca &
-   kalikan manual saat `DealDamage` (jadi bukan blocker), tapi belum
-   otomatis. Rekomendasi: tambah field `TalentType` di `FAttackParams` →
-   CombatComponent kali otomatis.
+2. ~~**Talent multiplier tidak otomatis ke damage.**~~ → `ETalentSource` +
+   `FAttackParams::TalentSource`. `DealDamage` baca `GetTalents()` dari
+   `UCharacterProgressionComponent`, kali `GetTalentMultiplier(level)` otomatis.
+   Normal/Charged/Plunge di-set `NormalAttack`; skill/burst BP set sendiri.
 
-3. **Off-field energy 60% belum jalan.** `GainEnergyParticles` cuma isi
-   karakter aktif. Party anggota lain tidak dapat 60% energy (mekanik
-   Genshin). → loop `PartyCharacterData` saat gain energy.
+3. ~~**Off-field energy 60% belum jalan.**~~ → `GainEnergyParticles` loop
+   `PartyCharacterData`, non-aktif dapat `Energy * 0.6`. `RestoreCharacterState`
+   clamp ke `MaxEnergy` saat swap-in.
 
 ### P2 — depth, bisa nyusul
 
@@ -112,12 +109,12 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
 | Source file | 96 |
 | Setup/review docs | 20 |
 | Automation test | 2 file (5 test) |
-| Gap fungsional fixed pass ini | 3 |
-| Gap tersisa (P1-P3) | 9 (terdaftar di atas) |
+| Gap fungsional fixed | 3 + P1 (3) |
+| Gap tersisa (P2-P3) | 6 (terdaftar di atas) |
 
 ## Rekomendasi urutan garap berikutnya
 
 1. **First-compile** di UE (fix error kecil) — sebelum apa pun
-2. **P1 gap** (enemy elemen, talent auto, off-field energy) — kelihatan cepat
+2. ~~**P1 gap** (enemy elemen, talent auto, off-field energy)~~ ✅ selesai
 3. **First region playable** (course Bagian 26 flow) pakai cheat manager buat test
 4. P2/P3 saat scaling konten

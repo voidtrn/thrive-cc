@@ -1,4 +1,6 @@
 #include "Character/EnemyBase.h"
+#include "Combat/ElementalReactionSubsystem.h"
+#include "Combat/DamageCalculator.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "MyGame.h"
@@ -60,6 +62,35 @@ float AEnemyBase::GetResistance(EElement DamageElement) const
 		return *Res;
 	}
 	return 0.1f; // default 10%
+}
+
+void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
+	float GaugeUnits, EHitReaction Reaction)
+{
+	if (!Target || !Target->IsAlive())
+	{
+		return;
+	}
+
+	// Apply elemen enemy dulu (bisa memicu reaksi di player), lalu damage.
+	float ReactionMult = 1.f;
+	float FlatReaction = 0.f;
+	if (Element != EElement::None && GaugeUnits > 0.f)
+	{
+		if (UElementalReactionSubsystem* Reactions = GetWorld()->GetSubsystem<UElementalReactionSubsystem>())
+		{
+			const FReactionResult R = Reactions->ApplyElement(
+				Target, this, Element, GaugeUnits, TEXT("EnemyAttack"), /*bBlunt=*/false);
+			ReactionMult = R.AmpMultiplier;
+			FlatReaction = R.FlatBonus;
+		}
+	}
+
+	bool bCrit = false;
+	const float Damage = UDamageCalculator::CalculateDamage(
+		this, Target, DamageMultiplier, 0.f, Element, ReactionMult, FlatReaction, bCrit);
+
+	Target->ApplyDamage(Damage, Element, Reaction);
 }
 
 void AEnemyBase::HandleDeath()
