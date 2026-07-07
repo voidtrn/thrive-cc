@@ -1,6 +1,7 @@
 #include "Character/CharacterBase.h"
 #include "Character/OpenWorldMovementComponent.h"
 #include "Character/LockOnComponent.h"
+#include "Combat/ShieldComponent.h"
 #include "System/OpenWorldGameInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -162,8 +163,14 @@ void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReact
 		return;
 	}
 
-	// Phase 3: formula DEF, resistance per elemen, elemental reaction di sini.
-	CurrentHP = FMath::Max(0.f, CurrentHP - Amount);
+	// Shield serap dulu (elemental shield 2.5× vs elemen cocok).
+	float ToHP = Amount;
+	if (UShieldComponent* Shield = FindComponentByClass<UShieldComponent>())
+	{
+		ToHP = Shield->AbsorbDamage(Amount, DamageElement);
+	}
+
+	CurrentHP = FMath::Max(0.f, CurrentHP - ToHP);
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
 
 	if (UAnimMontage* const* Montage = HitReactionMontages.Find(Reaction))

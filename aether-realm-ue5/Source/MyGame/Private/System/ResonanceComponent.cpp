@@ -3,6 +3,7 @@
 #include "System/PartyManagerComponent.h"
 #include "System/CharacterRegistry.h"
 #include "Combat/CharacterProgressionComponent.h"
+#include "Combat/ShieldComponent.h"
 #include "Character/CharacterBase.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/DataTable.h"
@@ -111,6 +112,12 @@ void UResonanceComponent::ApplyToCharacter(ACharacterBase* Character)
 
 	Character->StaminaCostMultiplier = StaminaMult;
 	Character->FlatRESBonus = RESBonus;
+
+	// Enduring Rock: shield strength bonus ke shield component.
+	if (UShieldComponent* Shield = Character->FindComponentByClass<UShieldComponent>())
+	{
+		Shield->ExtraShieldStrength = HasResonance(EElementalResonance::EnduringRock) ? 0.15f : 0.f;
+	}
 
 	if (UCharacterProgressionComponent* Prog = Character->FindComponentByClass<UCharacterProgressionComponent>())
 	{
