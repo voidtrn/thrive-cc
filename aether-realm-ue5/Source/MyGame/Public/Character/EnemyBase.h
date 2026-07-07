@@ -68,7 +68,7 @@ class MYGAME_API AEnemyBase : public ACharacterBase
 public:
 	AEnemyBase(const FObjectInitializer& ObjectInitializer);
 
-	virtual float GetResistance(EElement DamageElement) const override;
+	virtual float GetBaseResistance(EElement DamageElement) const override;
 
 	UFUNCTION(BlueprintPure, Category = "Enemy")
 	EEnemyType GetEnemyType() const { return EnemyType; }

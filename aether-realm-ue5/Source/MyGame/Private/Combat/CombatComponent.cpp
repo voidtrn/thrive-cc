@@ -312,12 +312,22 @@ bool UCombatComponent::CheckPerfectDodge()
 
 bool UCombatComponent::TryElementalSkill()
 {
-	return ElementalSkill && ElementalSkill->Activate(OwnerChar);
+	if (ElementalSkill && ElementalSkill->Activate(OwnerChar))
+	{
+		OnElementalSkillUsed.Broadcast(); // hook set 4pc / constellation
+		return true;
+	}
+	return false;
 }
 
 bool UCombatComponent::TryElementalBurst()
 {
-	return ElementalBurst && ElementalBurst->Activate(OwnerChar);
+	if (ElementalBurst && ElementalBurst->Activate(OwnerChar))
+	{
+		OnElementalBurstUsed.Broadcast();
+		return true;
+	}
+	return false;
 }
 
 // ---------- Energy ----------

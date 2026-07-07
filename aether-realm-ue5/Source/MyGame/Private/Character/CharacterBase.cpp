@@ -93,6 +93,63 @@ void ACharacterBase::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	TickCamera(DeltaSeconds);
 	TickStamina(DeltaSeconds);
+
+	// Bersihkan RES shred yang kadaluarsa (cegah array tumbuh tanpa batas).
+	if (ActiveResShreds.Num() > 0)
+	{
+		const double Now = GetWorld()->GetTimeSeconds();
+		ActiveResShreds.RemoveAll([Now](const FActiveResShred& S) { return S.ExpiryTime <= Now; });
+	}
+}
+
+// ---------- Stats: DMG bonus & RES ----------
+
+float ACharacterBase::GetDMGBonus(EElement DamageElement) const
+{
+	// Physical (None) tidak dapat elemental DMG bonus.
+	if (DamageElement == EElement::None)
+	{
+		return PhysicalDMGBonus;
+	}
+	float Bonus = ElementalDMGBonus; // universal (mis. sumber generic)
+	if (const float* PerElem = DMGBonusPerElement.Find(DamageElement))
+	{
+		Bonus += *PerElem;
+	}
+	return Bonus;
+}
+
+void ACharacterBase::ApplyResShred(EElement ResElement, float Amount, float Duration)
+{
+	if (Amount <= 0.f || Duration <= 0.f)
+	{
+		return;
+	}
+	FActiveResShred Shred;
+	Shred.Element = ResElement;
+	Shred.Amount = Amount;
+	Shred.ExpiryTime = GetWorld()->GetTimeSeconds() + Duration;
+	ActiveResShreds.Add(Shred);
+}
+
+float ACharacterBase::GetResShred(EElement DamageElement) const
+{
+	const double Now = GetWorld()->GetTimeSeconds();
+	float Total = 0.f;
+	for (const FActiveResShred& S : ActiveResShreds)
+	{
+		if (S.Element == DamageElement && S.ExpiryTime > Now)
+		{
+			Total += S.Amount;
+		}
+	}
+	return Total;
+}
+
+float ACharacterBase::GetResistance(EElement DamageElement) const
+{
+	// RES efektif bisa negatif (shred > base) → ResMultiplier handle (RES<0 → /4).
+	return GetBaseResistance(DamageElement) - GetResShred(DamageElement);
 }
 
 // ---------- Damage & health ----------

@@ -35,6 +35,9 @@ struct FComboHitConfig
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDamageDealt, AActor*, Victim, FDamageResult, Result);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPerfectDodge);
+/** Skill/Burst dipakai — hook untuk set 4-piece & constellation (BP subscribe). */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElementalSkillUsed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElementalBurstUsed);
 
 /**
  * Combat per karakter: combo, charged, plunge, dodge, energy.
@@ -125,6 +128,14 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Combat")
 	FOnPerfectDodge OnPerfectDodge;
+
+	/** Broadcast saat skill sukses aktif — set 4pc (mis. Noblesse) & constellation. */
+	UPROPERTY(BlueprintAssignable, Category = "Combat")
+	FOnElementalSkillUsed OnElementalSkillUsed;
+
+	/** Broadcast saat burst sukses aktif. */
+	UPROPERTY(BlueprintAssignable, Category = "Combat")
+	FOnElementalBurstUsed OnElementalBurstUsed;
 
 protected:
 	virtual void BeginPlay() override;

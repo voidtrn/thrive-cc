@@ -293,7 +293,8 @@ FReactionResult UElementalReactionSubsystem::ResolveReaction(
 			{
 				DoTransformativeDamage(Instigator, Loc, SuperconductRadius, EElement::Cryo, 0.5f,
 					EReactionType::Superconduct);
-				// Phase 4: debuff -40% Physical RES 12s — butuh debuff system, hook via delegate dulu.
+				// Superconduct: -40% Physical RES (Element::None) 12s pada target.
+				Target->ApplyResShred(EElement::None, 0.4f, 12.f);
 				ConsumeAura(Target, Pair.Aura, Units);
 				Broadcast(EReactionType::Superconduct);
 				return Result;

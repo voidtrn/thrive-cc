@@ -49,7 +49,7 @@ void AEnemyBase::LoadStatsFromTable()
 	Level = Row->Level;
 }
 
-float AEnemyBase::GetResistance(EElement DamageElement) const
+float AEnemyBase::GetBaseResistance(EElement DamageElement) const
 {
 	// Slime: immune elemen sendiri
 	if (CachedStats.InnateElement != EElement::None && DamageElement == CachedStats.InnateElement)

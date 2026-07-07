@@ -39,20 +39,24 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
    `PartyCharacterData`, non-aktif dapat `Energy * 0.6`. `RestoreCharacterState`
    clamp ke `MaxEnergy` saat swap-in.
 
-### P2 — depth, bisa nyusul
+### P2 — SUDAH DIKERJAKAN ✅ (pass ini)
 
-4. **Set 4-piece effect & Constellation: hook ada, gameplay belum baca.**
-   `GetActiveSetEffects()` & `GetConstellation()` di-expose, tapi tidak ada
-   C++ yang bertindak atasnya. By design BP ability yang cek (mis. C2 →
-   +1 skill charge). Perlu ditulis per karakter/set saat bikin kontennya.
+4. ~~**Set 4-piece & Constellation: gameplay belum baca hook.**~~ → Delegate
+   event ditambah: `OnElementalSkillUsed` / `OnElementalBurstUsed` di
+   `UCombatComponent` (broadcast saat skill/burst sukses), plus
+   `OnReactionTriggered` (sudah ada) + `OnDamageDealt`. BP set/constellation
+   subscribe event ini. Angka per-set tetap di BP/data (arsitektur benar).
 
-5. **Superconduct -40% Physical RES debuff belum ada.** Reaksi jalan +
-   damage, tapi efek debuff RES-nya tidak. → butuh sistem debuff bertimer
-   di CharacterBase (mirip BuffComponent tapi negatif + per-element RES).
+5. ~~**Superconduct −40% Physical RES debuff.**~~ → Sistem RES-shred bertimer
+   di `CharacterBase` (`ApplyResShred`/`GetResShred`, auto-expire di Tick).
+   Superconduct panggil `ApplyResShred(None, 0.4, 12s)`. `GetResistance`
+   sekarang = `GetBaseResistance − shred` (enemy override jadi
+   `GetBaseResistance`). RES bisa negatif → `ResMultiplier` handle.
 
-6. **Elemental DMG bonus tidak per-elemen.** `ElementalDMGBonus` sekarang
-   flat semua elemen. Genshin: bonus per elemen (Pyro DMG% ≠ Cryo DMG%). →
-   ganti jadi `TMap<EElement, float>` kalau mau akurat.
+6. ~~**Elemental DMG bonus tidak per-elemen.**~~ → `DMGBonusPerElement`
+   (`TMap<EElement,float>`) + `PhysicalDMGBonus` di `CharacterBase`.
+   `GetDMGBonus(Element)` dipakai damage formula. **Bonus fix:** physical hit
+   (`None`) tak lagi salah dapat elemental bonus (dulu bug).
 
 ### P3 — konten, saat scaling
 
@@ -109,12 +113,13 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
 | Source file | 96 |
 | Setup/review docs | 20 |
 | Automation test | 2 file (5 test) |
-| Gap fungsional fixed | 3 + P1 (3) |
-| Gap tersisa (P2-P3) | 6 (terdaftar di atas) |
+| Gap fungsional fixed | 3 + P1 (3) + P2 (3) |
+| Gap tersisa (P3) | 3 (ascension/talent/artifact leveling) |
 
 ## Rekomendasi urutan garap berikutnya
 
 1. **First-compile** di UE (fix error kecil) — sebelum apa pun
 2. ~~**P1 gap** (enemy elemen, talent auto, off-field energy)~~ ✅ selesai
-3. **First region playable** (course Bagian 26 flow) pakai cheat manager buat test
-4. P2/P3 saat scaling konten
+3. ~~**P2 gap** (set/const hook, superconduct shred, per-elemen DMG)~~ ✅ selesai
+4. **First region playable** (course Bagian 26 flow) pakai cheat manager buat test
+5. **P3** (ascension/talent/artifact leveling material) saat scaling konten

@@ -85,6 +85,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	float HealingBonus = 0.f;
 
+	/** DMG bonus per elemen (goblet Pyro DMG%, dst). 0.15 = +15% khusus elemen itu. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	TMap<EElement, float> DMGBonusPerElement;
+
+	/** Physical DMG bonus (0.15 = +15%). Terpisah dari elemental. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	float PhysicalDMGBonus = 0.f;
+
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentEnergy = 0.f;
 
@@ -107,9 +115,22 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Stats")
 	bool IsAlive() const { return CurrentHP > 0.f; }
 
-	/** RES terhadap elemen. Enemy override dari DataTable. Default 10%. */
+	/** Total DMG bonus untuk elemen ini (universal ElementalDMGBonus + per-elemen;
+	 *  physical hit [Element::None] pakai PhysicalDMGBonus, bukan elemental). */
 	UFUNCTION(BlueprintPure, Category = "Stats")
-	virtual float GetResistance(EElement DamageElement) const { return 0.1f; }
+	float GetDMGBonus(EElement DamageElement) const;
+
+	/** RES dasar terhadap elemen. Enemy override dari DataTable. Default 10%. */
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	virtual float GetBaseResistance(EElement DamageElement) const { return 0.1f; }
+
+	/** RES efektif = base − shred aktif (superconduct dsb). Dipakai damage formula. */
+	UFUNCTION(BlueprintPure, Category = "Stats")
+	float GetResistance(EElement DamageElement) const;
+
+	/** Kurangi RES elemen selama Duration detik. Superconduct: None −40% 12s. */
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void ApplyResShred(EElement ResElement, float Amount, float Duration);
 
 	/** Frozen state — di-set ElementalReactionSubsystem. */
 	UFUNCTION(BlueprintPure, Category = "Combat")
@@ -254,6 +275,18 @@ private:
 	bool bInvulnerable = false;
 	bool bInWindCurrent = false;
 	float LastStaminaUseTime = -999.f;
+
+	/** RES shred aktif dengan waktu kadaluarsa (world time). */
+	struct FActiveResShred
+	{
+		EElement Element = EElement::None;
+		float Amount = 0.f;
+		double ExpiryTime = 0.0;
+	};
+	TArray<FActiveResShred> ActiveResShreds;
+
+	/** Total shred elemen ini dari semua entri yang belum kadaluarsa. */
+	float GetResShred(EElement DamageElement) const;
 
 	void TickCamera(float DeltaSeconds);
 	void TickStamina(float DeltaSeconds);
