@@ -19,6 +19,13 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
   buff dari komposisi elemen. 8 resonance: stat (ATK%/HP%/EM/RES/stamina) folded
   ke progression + CharacterBase; kondisional (crit vs frozen, shield, EC energy)
   via query. Auto-refresh di `OnPossess`. Detail: `RESONANCE_SYSTEM.md`.
+- **Shield system** (`UShieldComponent` di CharacterBase) — absorb damage sebelum
+  HP, elemental shield 2.5× vs elemen cocok, stack + expire. `ApplyDamage` route
+  lewat `AbsorbDamage`. Enduring Rock resonance feed `ExtraShieldStrength`.
+- **Artifact 4pc gameplay** (`UArtifactSetEffectComponent`) — Noblesse (burst→ATK),
+  Crimson Witch (skill→Pyro DMG stack), Instructor (reaksi→EM), + crystallize→shield
+  core. Pakai delegate `OnElementalBurstUsed`/`OnElementalSkillUsed`/`OnReactionTriggered`.
+  Komponen BP-added (seperti Combat/Buff/Progression).
 
 ## 🔧 FIXED pass ini (3 gap fungsional)
 
