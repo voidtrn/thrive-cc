@@ -2,6 +2,8 @@
 #include "System/OpenWorldGameInstance.h"
 #include "System/OpenWorldGameState.h"
 #include "System/LevelingComponent.h"
+#include "System/ResonanceComponent.h"
+#include "System/OpenWorldPlayerController.h"
 #include "Character/CharacterBase.h"
 #include "Character/EnemyBase.h"
 #include "World/Waypoint.h"
@@ -86,6 +88,23 @@ void UOpenWorldCheatManager::LevelTalent(int32 TalentIndex)
 		const ETalentSource Talent = static_cast<ETalentSource>(FMath::Clamp(TalentIndex, 1, 3));
 		const ELevelingResult R = Lvl->LevelUpTalent(C->CharacterID, Talent);
 		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] LevelTalent %d, result %d"), TalentIndex, (int32)R);
+	}
+}
+
+void UOpenWorldCheatManager::ShowResonance()
+{
+	const AOpenWorldPlayerController* PC = Cast<AOpenWorldPlayerController>(GetOuterAPlayerController());
+	if (!PC || !PC->GetResonance())
+	{
+		return;
+	}
+	UResonanceComponent* Res = PC->GetResonance();
+	Res->RefreshResonances();
+	const TArray<EElementalResonance>& Active = Res->GetActiveResonances();
+	UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] Active resonances: %d"), Active.Num());
+	for (const EElementalResonance R : Active)
+	{
+		UE_LOG(LogAetherRealm, Log, TEXT("  - Resonance %d"), (int32)R);
 	}
 }
 

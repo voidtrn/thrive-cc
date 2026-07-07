@@ -7,6 +7,7 @@
 class UInputMappingContext;
 class UInputConfig;
 class ULevelingComponent;
+class UResonanceComponent;
 
 /** Mode input aktif. Menentukan IMC mana yang terpasang. */
 UENUM(BlueprintType)
@@ -49,8 +50,14 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Progression")
 	ULevelingComponent* GetLeveling() const { return Leveling; }
 
+	UFUNCTION(BlueprintPure, Category = "Progression")
+	UResonanceComponent* GetResonance() const { return Resonance; }
+
 protected:
 	virtual void BeginPlay() override;
+
+	/** Setiap possess (spawn awal & party swap) → refresh resonance ke pawn baru. */
+	virtual void OnPossess(APawn* InPawn) override;
 
 	/** Data asset pusat referensi semua Input Action (DA_InputConfig). */
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -74,6 +81,10 @@ protected:
 	/** Sistem leveling (konsumsi material ascension/talent/artifact). */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Progression")
 	TObjectPtr<ULevelingComponent> Leveling;
+
+	/** Elemental resonance party-wide. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Progression")
+	TObjectPtr<UResonanceComponent> Resonance;
 
 private:
 	EInputContextMode CurrentMode = EInputContextMode::Default;

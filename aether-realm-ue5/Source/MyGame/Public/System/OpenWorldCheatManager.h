@@ -40,6 +40,9 @@ public:
 	/** Naikkan talent aktif 1 level. TalentIndex: 1=Normal 2=Skill 3=Burst. */
 	UFUNCTION(Exec) void LevelTalent(int32 TalentIndex);
 
+	/** Log resonance party aktif + refresh efeknya. */
+	UFUNCTION(Exec) void ShowResonance();
+
 	/** Kebal damage (toggle). */
 	UFUNCTION(Exec) void GodMode();
 

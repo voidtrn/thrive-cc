@@ -152,6 +152,11 @@ void UCharacterProgressionComponent::Recalculate()
 	// --- Set bonus 2/4-piece ---
 	ApplySetBonuses(Flat, Percent);
 
+	// --- Resonance (party-wide, di-set ResonanceComponent) ---
+	Percent.ATK += ResonanceATKPercent;
+	Percent.MaxHP += ResonanceHPPercent;
+	Flat.ElementalMastery += ResonanceEMFlat;
+
 	// --- Gabung sesuai rumus Genshin ---
 	CachedStats.MaxHP = BaseHP * (1.f + Percent.MaxHP) + Flat.MaxHP;
 	CachedStats.ATK = (BaseCharATK + WeaponBaseATK) * (1.f + Percent.ATK) + Flat.ATK;

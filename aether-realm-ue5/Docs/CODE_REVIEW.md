@@ -13,6 +13,13 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
 - **Formula damage/gacha** — ada automation test, kebukti benar
 - **Audit sebelumnya** — 3 bug compile/logic sudah fixed (BUILD_NOTES)
 
+## 🆕 Sistem BARU (post-audit)
+
+- **Elemental Resonance** (`UResonanceComponent` di PlayerController) — party-wide
+  buff dari komposisi elemen. 8 resonance: stat (ATK%/HP%/EM/RES/stamina) folded
+  ke progression + CharacterBase; kondisional (crit vs frozen, shield, EC energy)
+  via query. Auto-refresh di `OnPossess`. Detail: `RESONANCE_SYSTEM.md`.
+
 ## 🔧 FIXED pass ini (3 gap fungsional)
 
 | Gap | Dampak sebelum | Fix |
@@ -116,9 +123,9 @@ Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
 
 | | Jumlah |
 |---|---|
-| C++ class | 45 |
-| Source file | 98 |
-| Setup/review docs | 20 |
+| C++ class | 46 |
+| Source file | 100 |
+| Setup/review docs | 21 |
 | Automation test | 2 file (5 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |

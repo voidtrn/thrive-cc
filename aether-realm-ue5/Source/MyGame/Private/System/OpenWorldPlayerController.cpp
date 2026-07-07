@@ -1,6 +1,7 @@
 #include "System/OpenWorldPlayerController.h"
 #include "System/OpenWorldCheatManager.h"
 #include "System/LevelingComponent.h"
+#include "System/ResonanceComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "MyGame.h"
@@ -10,8 +11,20 @@ AOpenWorldPlayerController::AOpenWorldPlayerController()
 	// Cheat console commands (otomatis tidak dibuat di Shipping)
 	CheatClass = UOpenWorldCheatManager::StaticClass();
 
-	// Sistem leveling selalu ada (cheat & UI mengaksesnya via FindComponentByClass).
+	// Sistem leveling & resonance selalu ada (cheat/UI akses via FindComponentByClass).
 	Leveling = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
+	Resonance = CreateDefaultSubobject<UResonanceComponent>(TEXT("ResonanceComponent"));
+}
+
+void AOpenWorldPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	// Karakter aktif baru (spawn awal / party swap) → pasang efek resonance.
+	if (Resonance)
+	{
+		Resonance->RefreshResonances();
+	}
 }
 
 void AOpenWorldPlayerController::BeginPlay()

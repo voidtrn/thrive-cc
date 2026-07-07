@@ -93,6 +93,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	float PhysicalDMGBonus = 0.f;
 
+	/** Pengali biaya stamina (Anemo resonance = 0.85). 1 = normal. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	float StaminaCostMultiplier = 1.f;
+
+	/** Bonus RES flat semua elemen (Protective Canopy resonance = +0.15). */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	float FlatRESBonus = 0.f;
+
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentEnergy = 0.f;
 

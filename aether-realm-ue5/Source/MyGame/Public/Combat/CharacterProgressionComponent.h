@@ -86,6 +86,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Progression|Talent")
 	FTalentLevels Talents;
 
+	// --- Kontribusi eksternal (di-set ResonanceComponent, fold di Recalculate) ---
+	/** ATK% dari resonance (Fervent Flames = 0.25). Masuk bucket ATK%. */
+	UPROPERTY(BlueprintReadWrite, Category = "Progression|External")
+	float ResonanceATKPercent = 0.f;
+
+	/** HP% dari resonance (Soothing Water = 0.25). Masuk bucket HP%. */
+	UPROPERTY(BlueprintReadWrite, Category = "Progression|External")
+	float ResonanceHPPercent = 0.f;
+
+	/** EM flat dari resonance (Sprawling Greenery = +50). */
+	UPROPERTY(BlueprintReadWrite, Category = "Progression|External")
+	float ResonanceEMFlat = 0.f;
+
 protected:
 	virtual void BeginPlay() override;
 

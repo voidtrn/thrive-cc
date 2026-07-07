@@ -149,7 +149,8 @@ float ACharacterBase::GetResShred(EElement DamageElement) const
 float ACharacterBase::GetResistance(EElement DamageElement) const
 {
 	// RES efektif bisa negatif (shred > base) → ResMultiplier handle (RES<0 → /4).
-	return GetBaseResistance(DamageElement) - GetResShred(DamageElement);
+	// FlatRESBonus dari resonance (Protective Canopy) menambah semua elemen.
+	return GetBaseResistance(DamageElement) - GetResShred(DamageElement) + FlatRESBonus;
 }
 
 // ---------- Damage & health ----------
@@ -263,6 +264,8 @@ void ACharacterBase::TickStamina(float DeltaSeconds)
 	{
 		DrainPerSecond = SprintStaminaPerSecond;
 	}
+
+	DrainPerSecond *= StaminaCostMultiplier; // Anemo resonance -15%
 
 	if (DrainPerSecond > 0.f)
 	{
