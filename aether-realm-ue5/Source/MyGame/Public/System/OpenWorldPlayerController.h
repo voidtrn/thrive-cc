@@ -6,6 +6,7 @@
 
 class UInputMappingContext;
 class UInputConfig;
+class ULevelingComponent;
 
 /** Mode input aktif. Menentukan IMC mana yang terpasang. */
 UENUM(BlueprintType)
@@ -45,6 +46,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Input")
 	UInputConfig* GetInputConfig() const { return InputConfig; }
 
+	UFUNCTION(BlueprintPure, Category = "Progression")
+	ULevelingComponent* GetLeveling() const { return Leveling; }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -66,6 +70,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Contexts")
 	TObjectPtr<UInputMappingContext> IMC_Dialog;
+
+	/** Sistem leveling (konsumsi material ascension/talent/artifact). */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Progression")
+	TObjectPtr<ULevelingComponent> Leveling;
 
 private:
 	EInputContextMode CurrentMode = EInputContextMode::Default;

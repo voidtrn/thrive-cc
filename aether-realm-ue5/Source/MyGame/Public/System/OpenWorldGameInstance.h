@@ -136,6 +136,20 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Persistent|Map")
 	bool AddMapPin(const FMapPin& Pin);
 
+	// --- Inventory helpers (dipakai leveling/shop/quest) ---
+	UFUNCTION(BlueprintPure, Category = "Persistent|Inventory")
+	int32 GetItemCount(FName ItemId) const;
+
+	UFUNCTION(BlueprintPure, Category = "Persistent|Inventory")
+	bool HasItem(FName ItemId, int32 Count = 1) const { return GetItemCount(ItemId) >= Count; }
+
+	UFUNCTION(BlueprintCallable, Category = "Persistent|Inventory")
+	void AddItem(FName ItemId, int32 Count);
+
+	/** Kurangi item. False (tanpa perubahan) kalau stok kurang. */
+	UFUNCTION(BlueprintCallable, Category = "Persistent|Inventory")
+	bool RemoveItem(FName ItemId, int32 Count);
+
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Rank")
 	int32 AdventureRank = 1;
 

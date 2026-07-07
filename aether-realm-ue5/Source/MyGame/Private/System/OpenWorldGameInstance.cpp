@@ -177,3 +177,42 @@ bool UOpenWorldGameInstance::AddMapPin(const FMapPin& Pin)
 	MapPins.Add(Pin);
 	return true;
 }
+
+int32 UOpenWorldGameInstance::GetItemCount(FName ItemId) const
+{
+	const int32* Count = InventoryItems.Find(ItemId);
+	return Count ? *Count : 0;
+}
+
+void UOpenWorldGameInstance::AddItem(FName ItemId, int32 Count)
+{
+	if (ItemId.IsNone() || Count == 0)
+	{
+		return;
+	}
+	int32& Stored = InventoryItems.FindOrAdd(ItemId);
+	Stored = FMath::Max(0, Stored + Count);
+	if (Stored == 0)
+	{
+		InventoryItems.Remove(ItemId);
+	}
+}
+
+bool UOpenWorldGameInstance::RemoveItem(FName ItemId, int32 Count)
+{
+	if (Count <= 0)
+	{
+		return true;
+	}
+	int32* Stored = InventoryItems.Find(ItemId);
+	if (!Stored || *Stored < Count)
+	{
+		return false; // stok kurang — jangan ubah apa pun
+	}
+	*Stored -= Count;
+	if (*Stored == 0)
+	{
+		InventoryItems.Remove(ItemId);
+	}
+	return true;
+}

@@ -58,13 +58,20 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
    `GetDMGBonus(Element)` dipakai damage formula. **Bonus fix:** physical hit
    (`None`) tak lagi salah dapat elemental bonus (dulu bug).
 
-### P3 — konten, saat scaling
+### P3 — SUDAH DIKERJAKAN ✅ (pass ini)
 
-7. **Item ascension/level-up materials** belum ada sistem konsumsi
-   (weapon/character ascension pakai material). Data ada (Rewards.Items),
-   flow-nya belum.
-8. **Talent level-up cost** (talent book + mora) belum ada.
-9. **Artifact enhancement** (naik level artifact via EXP) belum ada.
+7. ~~**Item ascension/level-up materials.**~~ → `ULevelingComponent`
+   (di PlayerController). `AscendCharacter`/`AscendWeapon` (data-driven
+   `FAscensionCostRow`, cek level cap), `LevelUpCharacter`/`LevelUpWeapon`
+   (EXP item Hero's Wit/Mystic Ore + mora rasio EXP/5). Inventory helper
+   `GetItemCount`/`HasItem`/`AddItem`/`RemoveItem` di GameInstance.
+8. ~~**Talent level-up cost.**~~ → `LevelUpTalent` (data-driven `FTalentCostRow`
+   key `<Char>_<Talent>_<Level>`), sync ke progression karakter aktif.
+9. ~~**Artifact enhancement.**~~ → `EnhanceArtifact` (EXP fodder + mora), level
+   naik via kurva per-rarity, substat baru/upgrade acak tiap +4, cap by rarity.
+
+Cheat command test: `LevelUpChar <lvl>`, `AscendChar`, `LevelTalent <1-3>`.
+Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
 
 ---
 
@@ -109,17 +116,19 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
 
 | | Jumlah |
 |---|---|
-| C++ class | 44 |
-| Source file | 96 |
+| C++ class | 45 |
+| Source file | 98 |
 | Setup/review docs | 20 |
 | Automation test | 2 file (5 test) |
-| Gap fungsional fixed | 3 + P1 (3) + P2 (3) |
-| Gap tersisa (P3) | 3 (ascension/talent/artifact leveling) |
+| Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
+| Gap tersisa | 0 (semua P1-P3 selesai) |
 
 ## Rekomendasi urutan garap berikutnya
 
 1. **First-compile** di UE (fix error kecil) — sebelum apa pun
 2. ~~**P1 gap** (enemy elemen, talent auto, off-field energy)~~ ✅ selesai
 3. ~~**P2 gap** (set/const hook, superconduct shred, per-elemen DMG)~~ ✅ selesai
-4. **First region playable** (course Bagian 26 flow) pakai cheat manager buat test
-5. **P3** (ascension/talent/artifact leveling material) saat scaling konten
+4. ~~**P3 gap** (ascension/talent/artifact leveling material)~~ ✅ selesai
+5. **First region playable** (course Bagian 26 flow) pakai cheat manager buat test
+6. **Isi DataTable**: DT_CharacterAscension / DT_WeaponAscension / DT_TalentCost
+   (row + material cost) — sistem kode siap, tinggal data.

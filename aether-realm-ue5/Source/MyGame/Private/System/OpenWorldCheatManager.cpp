@@ -1,6 +1,7 @@
 #include "System/OpenWorldCheatManager.h"
 #include "System/OpenWorldGameInstance.h"
 #include "System/OpenWorldGameState.h"
+#include "System/LevelingComponent.h"
 #include "Character/CharacterBase.h"
 #include "Character/EnemyBase.h"
 #include "World/Waypoint.h"
@@ -18,6 +19,12 @@ UOpenWorldGameInstance* UOpenWorldCheatManager::GetGI() const
 {
 	const APlayerController* PC = GetOuterAPlayerController();
 	return PC ? PC->GetGameInstance<UOpenWorldGameInstance>() : nullptr;
+}
+
+ULevelingComponent* UOpenWorldCheatManager::GetLeveling() const
+{
+	const APlayerController* PC = GetOuterAPlayerController();
+	return PC ? PC->FindComponentByClass<ULevelingComponent>() : nullptr;
 }
 
 void UOpenWorldCheatManager::AddPrimogems(int32 Amount)
@@ -43,8 +50,42 @@ void UOpenWorldCheatManager::GiveItem(FName ItemId, int32 Count)
 {
 	if (UOpenWorldGameInstance* GI = GetGI())
 	{
-		GI->InventoryItems.FindOrAdd(ItemId) += Count;
+		GI->AddItem(ItemId, Count);
 		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] +%d %s"), Count, *ItemId.ToString());
+	}
+}
+
+void UOpenWorldCheatManager::LevelUpChar(int32 TargetLevel)
+{
+	ULevelingComponent* Lvl = GetLeveling();
+	ACharacterBase* C = GetPlayerCharacter();
+	if (Lvl && C)
+	{
+		const ELevelingResult R = Lvl->LevelUpCharacter(C, TargetLevel);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] LevelUpChar → %d, result %d"), C->Level, (int32)R);
+	}
+}
+
+void UOpenWorldCheatManager::AscendChar()
+{
+	ULevelingComponent* Lvl = GetLeveling();
+	ACharacterBase* C = GetPlayerCharacter();
+	if (Lvl && C)
+	{
+		const ELevelingResult R = Lvl->AscendCharacter(C);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] AscendChar → phase %d, result %d"), C->Ascension, (int32)R);
+	}
+}
+
+void UOpenWorldCheatManager::LevelTalent(int32 TalentIndex)
+{
+	ULevelingComponent* Lvl = GetLeveling();
+	ACharacterBase* C = GetPlayerCharacter();
+	if (Lvl && C)
+	{
+		const ETalentSource Talent = static_cast<ETalentSource>(FMath::Clamp(TalentIndex, 1, 3));
+		const ELevelingResult R = Lvl->LevelUpTalent(C->CharacterID, Talent);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] LevelTalent %d, result %d"), TalentIndex, (int32)R);
 	}
 }
 

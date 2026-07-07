@@ -112,6 +112,10 @@ struct FArtifactInstance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Level = 0;
 
+	/** EXP terkumpul di level sekarang (sisa fodder). Level naik saat cukup. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Experience = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EArtifactStat MainStat = EArtifactStat::HP;
 

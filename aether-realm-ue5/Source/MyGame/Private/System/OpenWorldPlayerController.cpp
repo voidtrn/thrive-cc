@@ -1,5 +1,6 @@
 #include "System/OpenWorldPlayerController.h"
 #include "System/OpenWorldCheatManager.h"
+#include "System/LevelingComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "MyGame.h"
@@ -8,6 +9,9 @@ AOpenWorldPlayerController::AOpenWorldPlayerController()
 {
 	// Cheat console commands (otomatis tidak dibuat di Shipping)
 	CheatClass = UOpenWorldCheatManager::StaticClass();
+
+	// Sistem leveling selalu ada (cheat & UI mengaksesnya via FindComponentByClass).
+	Leveling = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
 }
 
 void AOpenWorldPlayerController::BeginPlay()
