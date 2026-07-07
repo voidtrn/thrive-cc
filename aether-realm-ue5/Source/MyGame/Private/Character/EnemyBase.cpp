@@ -1,6 +1,7 @@
 #include "Character/EnemyBase.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
+#include "Combat/StatusEffectComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "MyGame.h"
@@ -91,6 +92,16 @@ void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
 		this, Target, DamageMultiplier, 0.f, Element, ReactionMult, FlatReaction, bCrit);
 
 	Target->ApplyDamage(Damage, Element, Reaction);
+
+	// Serangan CC berat → stun singkat via status system.
+	if (Reaction == EHitReaction::Knockback || Reaction == EHitReaction::Launch
+		|| Reaction == EHitReaction::KnockedDown)
+	{
+		if (UStatusEffectComponent* Status = Target->FindComponentByClass<UStatusEffectComponent>())
+		{
+			Status->ApplyStatus(TEXT("EnemyKnockdown"), EStatusType::Stun, 0.f, /*Duration=*/1.5f);
+		}
+	}
 }
 
 void AEnemyBase::HandleDeath()

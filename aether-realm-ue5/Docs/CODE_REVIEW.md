@@ -26,6 +26,10 @@ Hasil audit seluruh codebase + course. Jujur & prioritas.
   Crimson Witch (skill→Pyro DMG stack), Instructor (reaksi→EM), + crystallize→shield
   core. Pakai delegate `OnElementalBurstUsed`/`OnElementalSkillUsed`/`OnReactionTriggered`.
   Komponen BP-added (seperti Combat/Buff/Progression).
+- **Status/affliction** (`UStatusEffectComponent`) — slow (move-speed mult), stun
+  (lock gerak, hormati frozen), DOT (`ApplyDamageOverTime`, kena shield). Enemy hit
+  CC berat (Knockback/Launch/KnockedDown) → stun 1.5s. Cheat `TestStatus`.
+  Detail wiring: `COMBAT_COMPONENTS.md`.
 
 ## 🔧 FIXED pass ini (3 gap fungsional)
 

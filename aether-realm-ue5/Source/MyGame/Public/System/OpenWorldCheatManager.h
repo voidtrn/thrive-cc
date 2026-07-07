@@ -43,6 +43,9 @@ public:
 	/** Log resonance party aktif + refresh efeknya. */
 	UFUNCTION(Exec) void ShowResonance();
 
+	/** Test status: slow 50% + burn DOT 10 dps ke diri sendiri, Duration detik. */
+	UFUNCTION(Exec) void TestStatus(float Duration = 5.f);
+
 	/** Kebal damage (toggle). */
 	UFUNCTION(Exec) void GodMode();
 

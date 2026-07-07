@@ -120,6 +120,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void Heal(float Amount);
 
+	/** Damage tanpa hit-reaction/shake (untuk DOT/status). Tetap kena shield. */
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void ApplyDamageOverTime(float Amount, EElement DamageElement);
+
 	UFUNCTION(BlueprintPure, Category = "Stats")
 	bool IsAlive() const { return CurrentHP > 0.f; }
 

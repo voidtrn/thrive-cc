@@ -189,6 +189,28 @@ void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReact
 	}
 }
 
+void ACharacterBase::ApplyDamageOverTime(float Amount, EElement DamageElement)
+{
+	if (!IsAlive() || Amount <= 0.f || bInvulnerable)
+	{
+		return;
+	}
+
+	float ToHP = Amount;
+	if (UShieldComponent* Shield = FindComponentByClass<UShieldComponent>())
+	{
+		ToHP = Shield->AbsorbDamage(Amount, DamageElement);
+	}
+
+	CurrentHP = FMath::Max(0.f, CurrentHP - ToHP);
+	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
+
+	if (!IsAlive())
+	{
+		HandleDeath();
+	}
+}
+
 void ACharacterBase::Heal(float Amount)
 {
 	if (!IsAlive() || Amount <= 0.f)

@@ -4,6 +4,7 @@
 #include "System/LevelingComponent.h"
 #include "System/ResonanceComponent.h"
 #include "System/OpenWorldPlayerController.h"
+#include "Combat/StatusEffectComponent.h"
 #include "Character/CharacterBase.h"
 #include "Character/EnemyBase.h"
 #include "World/Waypoint.h"
@@ -105,6 +106,21 @@ void UOpenWorldCheatManager::ShowResonance()
 	for (const EElementalResonance R : Active)
 	{
 		UE_LOG(LogAetherRealm, Log, TEXT("  - Resonance %d"), (int32)R);
+	}
+}
+
+void UOpenWorldCheatManager::TestStatus(float Duration)
+{
+	ACharacterBase* C = GetPlayerCharacter();
+	if (!C)
+	{
+		return;
+	}
+	if (UStatusEffectComponent* Status = C->FindComponentByClass<UStatusEffectComponent>())
+	{
+		Status->ApplyStatus(TEXT("CheatSlow"), EStatusType::MoveSpeedMultiplier, 0.5f, Duration);
+		Status->ApplyStatus(TEXT("CheatBurn"), EStatusType::DamageOverTime, 10.f, Duration, 1.f, EElement::Pyro);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] TestStatus: slow+burn %.1fs"), Duration);
 	}
 }
 
