@@ -130,7 +130,9 @@ void ACharacterBase::Heal(float Amount)
 	{
 		return;
 	}
-	CurrentHP = FMath::Min(MaxHP, CurrentHP + Amount);
+	// HealingBonus meningkatkan heal keluar (dari gear healer)
+	const float Healed = Amount * (1.f + HealingBonus);
+	CurrentHP = FMath::Min(MaxHP, CurrentHP + Healed);
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
 }
 

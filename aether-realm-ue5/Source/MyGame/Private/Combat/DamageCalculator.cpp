@@ -19,8 +19,8 @@ float UDamageCalculator::CalculateDamage(
 
 	const float Base = Attacker->ATK * SkillMultiplier + FlatDamage + FlatReactionBonus;
 
-	// DMGBonus% — Phase 4: dari artifact/weapon. Sekarang 0.
-	const float DmgBonus = 1.f;
+	// DMGBonus% dari artifact/weapon (di-set progression component).
+	const float DmgBonus = 1.f + Attacker->ElementalDMGBonus;
 
 	bOutCrit = FMath::FRand() < Attacker->CritRate;
 	const float CritMult = bOutCrit ? (1.f + Attacker->CritDMG) : 1.f;

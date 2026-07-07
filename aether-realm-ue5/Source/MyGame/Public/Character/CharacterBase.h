@@ -77,6 +77,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	float EnergyRecharge = 1.f;
 
+	/** Bonus DMG% (dari artifact/weapon via progression). 0.15 = +15%. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	float ElementalDMGBonus = 0.f;
+
+	/** Bonus outgoing healing (0.2 = +20%). */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	float HealingBonus = 0.f;
+
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentEnergy = 0.f;
 

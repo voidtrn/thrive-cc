@@ -67,7 +67,8 @@ void UElementalReactionSubsystem::Tick(float DeltaTime)
 		if (Now >= EC.NextTickTime)
 		{
 			const float Dmg = UDamageCalculator::TransformativeBaseDamage(EC.Source->Level, 1.2f)
-				* (1.f + UDamageCalculator::TransformativeEmBonus(EC.Source->ElementalMastery));
+				* (1.f + UDamageCalculator::TransformativeEmBonus(EC.Source->ElementalMastery))
+				* UDamageCalculator::ResMultiplier(EC.Target->GetResistance(EElement::Electro));
 			EC.Target->ApplyDamage(Dmg, EElement::Electro, EHitReaction::Light);
 			EC.TicksLeft--;
 			EC.NextTickTime = Now + 1.0;
@@ -380,7 +381,9 @@ void UElementalReactionSubsystem::DoTransformativeDamage(
 		}
 		if (ACharacterBase* Victim = Cast<ACharacterBase>(Actor))
 		{
-			Victim->ApplyDamage(Damage, Element,
+			// Reaksi transformative tetap kena elemental RES musuh (Genshin)
+			const float FinalDmg = Damage * UDamageCalculator::ResMultiplier(Victim->GetResistance(Element));
+			Victim->ApplyDamage(FinalDmg, Element,
 				bKnockback ? EHitReaction::Knockback : EHitReaction::Light);
 
 			if (bKnockback)

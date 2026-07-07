@@ -171,6 +171,8 @@ void UCharacterProgressionComponent::Recalculate()
 	OwnerChar->CritRate = CachedStats.CritRate;
 	OwnerChar->CritDMG = CachedStats.CritDMG;
 	OwnerChar->EnergyRecharge = CachedStats.EnergyRecharge;
+	OwnerChar->ElementalDMGBonus = CachedStats.ElementalDMGBonus;
+	OwnerChar->HealingBonus = CachedStats.HealingBonus;
 
 	// Buff aktif ter-hapus oleh penulisan stat di atas — pasang ulang
 	// (kalau tidak, stat jatuh di bawah base saat buff expire)
