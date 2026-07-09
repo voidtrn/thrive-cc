@@ -1,0 +1,1325 @@
+[
+  {
+    "Name": "Char_Kagari_NormalAttack_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_NormalAttack_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalSkill_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_ElementalBurst_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Ember",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_NormalAttack_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalSkill_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_ElementalBurst_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Frost",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_NormalAttack_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalSkill_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_2",
+    "TargetLevel": 2,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_3",
+    "TargetLevel": 3,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_4",
+    "TargetLevel": 4,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_5",
+    "TargetLevel": 5,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_6",
+    "TargetLevel": 6,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_7",
+    "TargetLevel": 7,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_8",
+    "TargetLevel": 8,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_9",
+    "TargetLevel": 9,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 14
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_ElementalBurst_10",
+    "TargetLevel": 10,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_TalentBook_Storm",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  }
+]

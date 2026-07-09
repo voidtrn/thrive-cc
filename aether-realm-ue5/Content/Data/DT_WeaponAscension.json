@@ -1,0 +1,434 @@
+[
+  {
+    "Name": "Sword_Iron_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 5000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 2
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Iron_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Iron_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 9
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Iron_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 1
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Iron_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 25000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Iron_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 30000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Catalyst_Frost_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Catalyst_Frost_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Catalyst_Frost_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 30000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 9
+      }
+    ]
+  },
+  {
+    "Name": "Catalyst_Frost_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Catalyst_Frost_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 50000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Catalyst_Frost_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Polearm_Storm_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Polearm_Storm_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Polearm_Storm_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 30000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 9
+      }
+    ]
+  },
+  {
+    "Name": "Polearm_Storm_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Polearm_Storm_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 50000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Polearm_Storm_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Claymore_Flame_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 15000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 4
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Claymore_Flame_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 30000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 8
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Claymore_Flame_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 45000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 9
+      }
+    ]
+  },
+  {
+    "Name": "Claymore_Flame_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 16
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Claymore_Flame_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 75000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Claymore_Flame_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 90000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 24
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 9
+      }
+    ]
+  }
+]

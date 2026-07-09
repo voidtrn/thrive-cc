@@ -158,5 +158,7 @@ Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
 3. ~~**P2 gap** (set/const hook, superconduct shred, per-elemen DMG)~~ ✅ selesai
 4. ~~**P3 gap** (ascension/talent/artifact leveling material)~~ ✅ selesai
 5. **First region playable** (course Bagian 26 flow) pakai cheat manager buat test
-6. **Isi DataTable**: DT_CharacterAscension / DT_WeaponAscension / DT_TalentCost
-   (row + material cost) — sistem kode siap, tinggal data.
+6. ~~**Isi DataTable**~~ ✅ SELESAI — 123 row JSON siap-import di
+   `Content/Data/` (18 char ascension + 24 weapon ascension + 81 talent),
+   digenerate `Scripts/generate_leveling_data.py`. Import + katalog material
+   + kurva biaya: `Docs/DATA_TABLES.md`.

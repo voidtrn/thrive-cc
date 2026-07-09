@@ -1,0 +1,422 @@
+[
+  {
+    "Name": "Char_Kagari_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_PyroGem",
+        "Count": 1
+      },
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_PyroGem",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_PyroGem",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 27
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 5
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_PyroGem",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 30
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_PyroGem",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 45
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 11
+      }
+    ]
+  },
+  {
+    "Name": "Char_Kagari_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 120000,
+    "Materials": [
+      {
+        "ItemId": "Mat_PyroGem",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 60
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 14
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_CryoGem",
+        "Count": 1
+      },
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_CryoGem",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_CryoGem",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 27
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 5
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_CryoGem",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 30
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_CryoGem",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 45
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 11
+      }
+    ]
+  },
+  {
+    "Name": "Char_Yukine_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 120000,
+    "Materials": [
+      {
+        "ItemId": "Mat_CryoGem",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 60
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 14
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_ElectroGem",
+        "Count": 1
+      },
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_ElectroGem",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 10
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_ElectroGem",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 27
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 5
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 80000,
+    "Materials": [
+      {
+        "ItemId": "Mat_ElectroGem",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 30
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 100000,
+    "Materials": [
+      {
+        "ItemId": "Mat_ElectroGem",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 45
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 11
+      }
+    ]
+  },
+  {
+    "Name": "Char_Shiden_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 120000,
+    "Materials": [
+      {
+        "ItemId": "Mat_ElectroGem",
+        "Count": 20
+      },
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 60
+      },
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_BossCore",
+        "Count": 14
+      }
+    ]
+  }
+]
