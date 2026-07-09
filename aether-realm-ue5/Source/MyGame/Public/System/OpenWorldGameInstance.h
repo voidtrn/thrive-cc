@@ -6,6 +6,7 @@
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
 #include "System/WeaponTypes.h"
+#include "System/ExpeditionTypes.h"
 #include "UI/InventoryTypes.h"
 #include "OpenWorldGameInstance.generated.h"
 
@@ -155,6 +156,18 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Rank")
 	int32 ARExperience = 0;
+
+	// --- Resin (state; logic di UResinSubsystem) ---
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Resin")
+	int32 Resin = 160;
+
+	/** Anchor regen berbasis timestamp — jalan walau game ditutup. */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Resin")
+	FDateTime LastResinUpdate;
+
+	// --- Expedition (state; logic di UExpeditionSubsystem) ---
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Expedition")
+	TArray<FActiveExpedition> ActiveExpeditions;
 
 	// --- Upgrades ---
 	/** Bonus stamina dari Statue of The Seven (+10 per upgrade, cap total 240). */

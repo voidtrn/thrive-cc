@@ -1,0 +1,101 @@
+[
+  {
+    "Name": "Exp_MoraRun_Short",
+    "DisplayName": "Patrol Dataran",
+    "DurationHours": 4,
+    "ARRequirement": 1,
+    "MoraReward": 5000,
+    "ItemRewards": [
+      {
+        "ItemId": "Ing_RawMeat",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Exp_MoraRun_Long",
+    "DisplayName": "Ekspedisi Dagang",
+    "DurationHours": 20,
+    "ARRequirement": 5,
+    "MoraReward": 30000,
+    "ItemRewards": [
+      {
+        "ItemId": "Ing_Rice",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Exp_OreRun",
+    "DisplayName": "Tambang Pegunungan",
+    "DurationHours": 8,
+    "ARRequirement": 5,
+    "MoraReward": 2000,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 4
+      },
+      {
+        "ItemId": "Item_MysticOre",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Exp_Flameherb",
+    "DisplayName": "Panen Lembah Api",
+    "DurationHours": 8,
+    "ARRequirement": 8,
+    "MoraReward": 1500,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_Flameherb",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Exp_Frostbloom",
+    "DisplayName": "Panen Puncak Salju",
+    "DurationHours": 8,
+    "ARRequirement": 8,
+    "MoraReward": 1500,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_Frostbloom",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Exp_Stormfruit",
+    "DisplayName": "Panen Dataran Badai",
+    "DurationHours": 8,
+    "ARRequirement": 8,
+    "MoraReward": 1500,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_Stormfruit",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Exp_EliteHunt",
+    "DisplayName": "Perburuan Elite",
+    "DurationHours": 12,
+    "ARRequirement": 12,
+    "MoraReward": 8000,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 4
+      },
+      {
+        "ItemId": "Item_HeroWit",
+        "Count": 1
+      }
+    ]
+  }
+]

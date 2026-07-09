@@ -43,6 +43,16 @@ public:
 	/** Log resonance party aktif + refresh efeknya. */
 	UFUNCTION(Exec) void ShowResonance();
 
+	// --- Meta progression ---
+	/** Set Adventure Rank langsung (log world level baru). */
+	UFUNCTION(Exec) void SetAR(int32 NewRank);
+	/** Tambah resin (lewat cap boleh — simulasi Fragile Resin). */
+	UFUNCTION(Exec) void AddResinCheat(int32 Amount);
+	/** Log resin sekarang + waktu sampai penuh. */
+	UFUNCTION(Exec) void ShowResin();
+	/** Percepat semua expedition aktif jadi selesai sekarang. */
+	UFUNCTION(Exec) void FinishExpeditions();
+
 	/** Test status: slow 50% + burn DOT 10 dps ke diri sendiri, Duration detik. */
 	UFUNCTION(Exec) void TestStatus(float Duration = 5.f);
 

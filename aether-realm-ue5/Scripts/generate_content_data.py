@@ -277,6 +277,32 @@ def shop_general():
     ]
 
 
+# --------------------------------------------------------- DT_Expeditions
+
+def expeditions():
+    def exp(name, display, hours, ar_req, mora, rewards):
+        return {
+            "Name": name,
+            "DisplayName": display,
+            "DurationHours": hours,
+            "ARRequirement": ar_req,
+            "MoraReward": mora,
+            "ItemRewards": [{"ItemId": i, "Count": c} for i, c in rewards],
+        }
+
+    return [
+        exp("Exp_MoraRun_Short", "Patrol Dataran", 4, 1, 5000, [("Ing_RawMeat", 2)]),
+        exp("Exp_MoraRun_Long", "Ekspedisi Dagang", 20, 5, 30000, [("Ing_Rice", 4)]),
+        exp("Exp_OreRun", "Tambang Pegunungan", 8, 5, 2000,
+            [("Mat_WeaponOre", 4), ("Item_MysticOre", 2)]),
+        exp("Exp_Flameherb", "Panen Lembah Api", 8, 8, 1500, [("Mat_Flameherb", 6)]),
+        exp("Exp_Frostbloom", "Panen Puncak Salju", 8, 8, 1500, [("Mat_Frostbloom", 6)]),
+        exp("Exp_Stormfruit", "Panen Dataran Badai", 8, 8, 1500, [("Mat_Stormfruit", 6)]),
+        exp("Exp_EliteHunt", "Perburuan Elite", 12, 12, 8000,
+            [("Mat_SlimeCore", 4), ("Item_HeroWit", 1)]),
+    ]
+
+
 # ------------------------------------------------------------- DT_Banners
 
 def banners():
@@ -343,4 +369,18 @@ if __name__ == "__main__":
     write("DT_EnemyStats.json", enemy_stats())
     write("DT_Consumables.json", consumables())
     write("DT_Shop_General.json", shop_general())
+    write("DT_Expeditions.json", expeditions())
     write("DT_Banners.json", banners())
+
+    # Validasi silang: semua ItemId yang dirujuk harus terdefinisi di DT_Items.
+    known = {r["Name"] for r in items()}
+    refs = []
+    refs += [i for r in consumables() for i in r["Recipe"]]
+    refs += [r["ItemId"] for r in shop_general()]
+    refs += [i for r in enemy_stats() for i in r["MaterialDrops"]]
+    refs += [m["ItemId"] for r in expeditions() for m in r["ItemRewards"]]
+    refs += [r["Name"] for r in consumables()]
+    unknown = sorted(set(refs) - known)
+    if unknown:
+        raise SystemExit(f"ItemId tidak terdefinisi di DT_Items: {unknown}")
+    print("cross-reference OK")

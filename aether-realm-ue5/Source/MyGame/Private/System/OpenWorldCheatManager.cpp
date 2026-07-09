@@ -2,7 +2,9 @@
 #include "System/OpenWorldGameInstance.h"
 #include "System/OpenWorldGameState.h"
 #include "System/LevelingComponent.h"
+#include "System/ResinSubsystem.h"
 #include "System/ResonanceComponent.h"
+#include "System/WorldLevelStatics.h"
 #include "System/OpenWorldPlayerController.h"
 #include "Combat/StatusEffectComponent.h"
 #include "Character/CharacterBase.h"
@@ -106,6 +108,51 @@ void UOpenWorldCheatManager::ShowResonance()
 	for (const EElementalResonance R : Active)
 	{
 		UE_LOG(LogAetherRealm, Log, TEXT("  - Resonance %d"), (int32)R);
+	}
+}
+
+void UOpenWorldCheatManager::SetAR(int32 NewRank)
+{
+	if (UOpenWorldGameInstance* GI = GetGI())
+	{
+		GI->AdventureRank = FMath::Clamp(NewRank, 1, 60);
+		GI->ARExperience = 0;
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] AR = %d, World Level = %d (berlaku untuk enemy spawn berikutnya)"),
+			GI->AdventureRank, UWorldLevelStatics::WorldLevelForAR(GI->AdventureRank));
+	}
+}
+
+void UOpenWorldCheatManager::AddResinCheat(int32 Amount)
+{
+	UOpenWorldGameInstance* GI = GetGI();
+	if (UResinSubsystem* ResinSys = GI ? GI->GetSubsystem<UResinSubsystem>() : nullptr)
+	{
+		ResinSys->AddResin(Amount);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] Resin sekarang: %d"), ResinSys->GetResin());
+	}
+}
+
+void UOpenWorldCheatManager::ShowResin()
+{
+	UOpenWorldGameInstance* GI = GetGI();
+	if (UResinSubsystem* ResinSys = GI ? GI->GetSubsystem<UResinSubsystem>() : nullptr)
+	{
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] Resin %d/%d — next +1 dalam %ds, penuh dalam %ds"),
+			ResinSys->GetResin(), UResinSubsystem::ResinCap,
+			ResinSys->SecondsUntilNextResin(), ResinSys->SecondsUntilFull());
+	}
+}
+
+void UOpenWorldCheatManager::FinishExpeditions()
+{
+	if (UOpenWorldGameInstance* GI = GetGI())
+	{
+		for (FActiveExpedition& E : GI->ActiveExpeditions)
+		{
+			E.StartTime = FDateTime::UtcNow() - FTimespan::FromHours(E.DurationHours + 1);
+		}
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] %d expedition dipercepat — siap klaim"),
+			GI->ActiveExpeditions.Num());
 	}
 }
 

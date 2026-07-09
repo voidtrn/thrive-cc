@@ -2,6 +2,8 @@
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Combat/StatusEffectComponent.h"
+#include "System/OpenWorldGameInstance.h"
+#include "System/WorldLevelStatics.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "MyGame.h"
@@ -44,10 +46,23 @@ void AEnemyBase::LoadStatsFromTable()
 
 	CachedStats = *Row;
 	EnemyType = Row->Type;
-	MaxHP = Row->BaseHP;
-	ATK = Row->BaseATK;
-	DEF = Row->BaseDEF;
-	Level = Row->Level;
+
+	// World level scaling: AR pemain → musuh lebih kuat (Genshin-like).
+	// Berjalan server-side saat spawn; co-op ikut AR host.
+	int32 WorldLevel = 0;
+	if (const UOpenWorldGameInstance* GI = Cast<UOpenWorldGameInstance>(GetGameInstance()))
+	{
+		WorldLevel = UWorldLevelStatics::WorldLevelForAR(GI->AdventureRank);
+	}
+
+	MaxHP = Row->BaseHP * UWorldLevelStatics::EnemyHPMultiplier(WorldLevel);
+	ATK = Row->BaseATK * UWorldLevelStatics::EnemyATKMultiplier(WorldLevel);
+	DEF = Row->BaseDEF * UWorldLevelStatics::EnemyDEFMultiplier(WorldLevel);
+	Level = Row->Level + UWorldLevelStatics::BonusEnemyLevels(WorldLevel);
+
+	// Drop ikut naik — dibaca HandleDeath/loot flow dari CachedStats.
+	CachedStats.MoraDrop = FMath::RoundToInt32(
+		Row->MoraDrop * UWorldLevelStatics::MoraDropMultiplier(WorldLevel));
 }
 
 float AEnemyBase::GetBaseResistance(EElement DamageElement) const

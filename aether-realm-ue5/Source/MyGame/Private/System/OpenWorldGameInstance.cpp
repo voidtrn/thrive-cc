@@ -60,6 +60,10 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 	Save->AdventureRank = AdventureRank;
 	Save->ARExperience = ARExperience;
 
+	Save->Resin = Resin;
+	Save->LastResinUpdate = LastResinUpdate;
+	Save->ActiveExpeditions = ActiveExpeditions;
+
 	Save->AcquaintFates = AcquaintFates;
 	Save->IntertwinedFates = IntertwinedFates;
 	Save->Starglitter = Starglitter;
@@ -137,6 +141,10 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 	Mora = Save->Mora;
 	AdventureRank = Save->AdventureRank;
 	ARExperience = Save->ARExperience;
+
+	Resin = Save->Resin;
+	LastResinUpdate = Save->LastResinUpdate;
+	ActiveExpeditions = Save->ActiveExpeditions;
 
 	AcquaintFates = Save->AcquaintFates;
 	IntertwinedFates = Save->IntertwinedFates;

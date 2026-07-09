@@ -5,6 +5,7 @@
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
 #include "System/WeaponTypes.h"
+#include "System/ExpeditionTypes.h"
 #include "UI/InventoryTypes.h"
 #include "OpenWorldSaveGame.generated.h"
 
@@ -82,6 +83,11 @@ public:
 	UPROPERTY() int32 Mora = 0;
 	UPROPERTY() int32 AdventureRank = 1;
 	UPROPERTY() int32 ARExperience = 0;
+
+	// --- Resin & expedition ---
+	UPROPERTY() int32 Resin = 160;
+	UPROPERTY() FDateTime LastResinUpdate;
+	UPROPERTY() TArray<FActiveExpedition> ActiveExpeditions;
 
 	// --- Wish / gacha ---
 	UPROPERTY() int32 AcquaintFates = 0;
