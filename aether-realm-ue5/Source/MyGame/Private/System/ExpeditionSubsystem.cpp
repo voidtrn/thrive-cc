@@ -1,4 +1,5 @@
 #include "System/ExpeditionSubsystem.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "Engine/DataTable.h"
 #include "MyGame.h"
@@ -104,6 +105,11 @@ EExpeditionResult UExpeditionSubsystem::ClaimExpedition(const UDataTable* Expedi
 
 	UE_LOG(LogAetherRealm, Log, TEXT("Expedition '%s' claimed: %d mora, %d item types"),
 		*ExpeditionId.ToString(), Row->MoraReward, Row->ItemRewards.Num());
+
+	if (UAchievementSubsystem* Achievements = GI->GetSubsystem<UAchievementSubsystem>())
+	{
+		Achievements->ReportStat(TEXT("Stat_ExpeditionsClaimed"));
+	}
 
 	OnExpeditionsChanged.Broadcast(GI->ActiveExpeditions);
 	GI->AutoSave();

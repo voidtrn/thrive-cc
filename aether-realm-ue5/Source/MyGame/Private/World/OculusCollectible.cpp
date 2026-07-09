@@ -1,5 +1,6 @@
 #include "World/OculusCollectible.h"
 #include "Components/SphereComponent.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "MyGame.h"
 
@@ -59,6 +60,7 @@ void AOculusCollectible::OnPickupOverlap(UPrimitiveComponent*, AActor* OtherActo
 		Total = ++GI->InventoryItems.FindOrAdd(ItemId);
 	}
 
+	UAchievementSubsystem::Report(this, TEXT("Stat_OculiCollected"));
 	OnCollected.Broadcast(ItemId, Total);
 	UE_LOG(LogAetherRealm, Log, TEXT("Oculus collected: %s (total %d)"), *ItemId.ToString(), Total);
 

@@ -65,6 +65,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Leveling|Weapon")
 	ELevelingResult AscendWeapon(FGuid WeaponInstanceId);
 
+	/**
+	 * Refinement: konsumsi duplikat senjata SAMA (WeaponId sama, instance
+	 * beda, fodder tidak sedang di-equip) → refinement target +1 (max 5).
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Leveling|Weapon")
+	ELevelingResult RefineWeapon(FGuid TargetInstanceId, FGuid FodderInstanceId);
+
+	/**
+	 * Nilai pasif senjata pada rank refinement R (1-5), skala linear:
+	 * Base + PerRefine×(R-1). Dipakai gameplay BP saat baca PassiveId.
+	 * Pure static — automation-testable.
+	 */
+	UFUNCTION(BlueprintPure, Category = "Leveling|Weapon")
+	static float GetPassiveMagnitude(float BaseValue, float ValuePerRefine, int32 Refinement);
+
 	// ---------- Artifact ----------
 	/** Tambah EXP fodder ke artifact; level naik & substat baru/upgrade tiap +4. */
 	UFUNCTION(BlueprintCallable, Category = "Leveling|Artifact")

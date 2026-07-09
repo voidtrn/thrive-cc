@@ -2,6 +2,7 @@
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Combat/StatusEffectComponent.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "System/WorldLevelStatics.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -122,6 +123,8 @@ void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
 void AEnemyBase::HandleDeath()
 {
 	Super::HandleDeath();
+
+	UAchievementSubsystem::Report(this, TEXT("Stat_EnemiesDefeated"));
 
 	// Spawn energy orbs
 	if (EnergyOrbClass)

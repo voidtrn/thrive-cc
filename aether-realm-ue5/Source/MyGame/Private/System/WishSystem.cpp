@@ -1,4 +1,5 @@
 #include "System/WishSystem.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "MyGame.h"
 
@@ -132,6 +133,11 @@ TArray<FWishResult> UWishSystem::Pull(const FBannerData& Banner, int32 Count)
 		Entry.BannerType = Banner.BannerType;
 		Entry.Timestamp = FDateTime::UtcNow();
 		GI->WishHistory.Add(Entry);
+	}
+
+	if (UAchievementSubsystem* Achievements = GI->GetSubsystem<UAchievementSubsystem>())
+	{
+		Achievements->ReportStat(TEXT("Stat_WishesMade"), Count);
 	}
 
 	GI->AutoSave();

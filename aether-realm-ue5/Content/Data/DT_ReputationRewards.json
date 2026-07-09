@@ -1,0 +1,110 @@
+[
+  {
+    "Name": "Starter_2",
+    "DisplayName": "Warga Baru",
+    "RequiredLevel": 2,
+    "MoraReward": 20000,
+    "ItemRewards": [
+      {
+        "ItemId": "Ing_Rice",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Starter_3",
+    "DisplayName": "Kenalan Kota",
+    "RequiredLevel": 3,
+    "MoraReward": 0,
+    "ItemRewards": [
+      {
+        "ItemId": "Item_MysticOre",
+        "Count": 5
+      }
+    ]
+  },
+  {
+    "Name": "Starter_4",
+    "DisplayName": "Teman Warga",
+    "RequiredLevel": 4,
+    "MoraReward": 30000,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Starter_5",
+    "DisplayName": "Sahabat Kota",
+    "RequiredLevel": 5,
+    "MoraReward": 0,
+    "ItemRewards": [
+      {
+        "ItemId": "Item_HeroWit",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Starter_6",
+    "DisplayName": "Pelindung",
+    "RequiredLevel": 6,
+    "MoraReward": 40000,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_SlimeCore",
+        "Count": 10
+      }
+    ]
+  },
+  {
+    "Name": "Starter_7",
+    "DisplayName": "Pahlawan Lokal",
+    "RequiredLevel": 7,
+    "MoraReward": 0,
+    "ItemRewards": [
+      {
+        "ItemId": "Item_HeroWit",
+        "Count": 5
+      }
+    ]
+  },
+  {
+    "Name": "Starter_8",
+    "DisplayName": "Legenda Kota",
+    "RequiredLevel": 8,
+    "MoraReward": 50000,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 5
+      }
+    ]
+  },
+  {
+    "Name": "Starter_9",
+    "DisplayName": "Penjaga Region",
+    "RequiredLevel": 9,
+    "MoraReward": 0,
+    "ItemRewards": [
+      {
+        "ItemId": "Item_HeroWit",
+        "Count": 8
+      }
+    ]
+  },
+  {
+    "Name": "Starter_10",
+    "DisplayName": "Kehormatan Tertinggi",
+    "RequiredLevel": 10,
+    "MoraReward": 100000,
+    "ItemRewards": [
+      {
+        "ItemId": "Mat_WeeklyRelic",
+        "Count": 2
+      }
+    ]
+  }
+]

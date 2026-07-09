@@ -169,6 +169,23 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Expedition")
 	TArray<FActiveExpedition> ActiveExpeditions;
 
+	// --- Achievement (state; logic di UAchievementSubsystem) ---
+	/** Counter seumur-save (kills, chests, wishes, ...). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Achievement")
+	TMap<FName, int32> LifetimeStats;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Achievement")
+	TSet<FName> ClaimedAchievements;
+
+	// --- Reputation (state; logic di UReputationSubsystem) ---
+	/** Total EXP reputasi per region. */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Reputation")
+	TMap<FName, int32> RegionReputation;
+
+	/** Row key reward yang diklaim ("<Region>_<Level>"). */
+	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Reputation")
+	TSet<FName> ClaimedReputationRewards;
+
 	// --- Upgrades ---
 	/** Bonus stamina dari Statue of The Seven (+10 per upgrade, cap total 240). */
 	UPROPERTY(BlueprintReadWrite, Category = "Persistent|Upgrades")

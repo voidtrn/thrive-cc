@@ -1,6 +1,7 @@
 #include "World/Chest.h"
 #include "Character/EnemyBase.h"
 #include "Combat/ElementalReactionSubsystem.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -111,6 +112,7 @@ void AChest::FinishOpening()
 		}
 	}
 
+	UAchievementSubsystem::Report(this, TEXT("Stat_ChestsOpened"));
 	OnChestOpened.Broadcast(this, Primogems);
 	UE_LOG(LogAetherRealm, Log, TEXT("Chest opened: %s (+%d primogems)"), *GetName(), Primogems);
 }

@@ -89,6 +89,12 @@ public:
 	UPROPERTY() FDateTime LastResinUpdate;
 	UPROPERTY() TArray<FActiveExpedition> ActiveExpeditions;
 
+	// --- Achievement & reputation ---
+	UPROPERTY() TMap<FName, int32> LifetimeStats;
+	UPROPERTY() TArray<FName> ClaimedAchievements;
+	UPROPERTY() TMap<FName, int32> RegionReputation;
+	UPROPERTY() TArray<FName> ClaimedReputationRewards;
+
 	// --- Wish / gacha ---
 	UPROPERTY() int32 AcquaintFates = 0;
 	UPROPERTY() int32 IntertwinedFates = 0;

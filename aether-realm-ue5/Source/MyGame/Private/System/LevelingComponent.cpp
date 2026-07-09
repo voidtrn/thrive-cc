@@ -351,6 +351,51 @@ ELevelingResult ULevelingComponent::AscendWeapon(FGuid WeaponInstanceId)
 	return ELevelingResult::Success;
 }
 
+float ULevelingComponent::GetPassiveMagnitude(float BaseValue, float ValuePerRefine, int32 Refinement)
+{
+	return BaseValue + ValuePerRefine * (FMath::Clamp(Refinement, 1, 5) - 1);
+}
+
+ELevelingResult ULevelingComponent::RefineWeapon(FGuid TargetInstanceId, FGuid FodderInstanceId)
+{
+	UOpenWorldGameInstance* GI = GetGI();
+	if (!GI || TargetInstanceId == FodderInstanceId)
+	{
+		return ELevelingResult::InvalidTarget;
+	}
+
+	FWeaponInstance* Target = GI->OwnedWeapons.FindByPredicate(
+		[&](const FWeaponInstance& W) { return W.InstanceId == TargetInstanceId; });
+	const FWeaponInstance* Fodder = GI->OwnedWeapons.FindByPredicate(
+		[&](const FWeaponInstance& W) { return W.InstanceId == FodderInstanceId; });
+
+	if (!Target || !Fodder)
+	{
+		return ELevelingResult::InvalidTarget;
+	}
+	if (Target->WeaponId != Fodder->WeaponId || !Fodder->EquippedCharacter.IsNone())
+	{
+		// Bukan duplikat senjata sama / fodder sedang di-equip karakter
+		return ELevelingResult::InvalidTarget;
+	}
+	if (Target->Refinement >= 5)
+	{
+		return ELevelingResult::MaxLevelReached;
+	}
+
+	// Refine dulu, simpan info yang dibutuhkan, BARU remove — RemoveAll
+	// meng-invalidate kedua pointer.
+	++Target->Refinement;
+	const int32 NewRefinement = Target->Refinement;
+	const FName EquippedChar = Target->EquippedCharacter;
+	GI->OwnedWeapons.RemoveAll(
+		[&](const FWeaponInstance& W) { return W.InstanceId == FodderInstanceId; });
+
+	RecalcCharacterIfActive(EquippedChar);
+	UE_LOG(LogAetherRealm, Log, TEXT("Weapon refined to R%d (fodder consumed)"), NewRefinement);
+	return ELevelingResult::Success;
+}
+
 // ---------- Artifact ----------
 
 ELevelingResult ULevelingComponent::EnhanceArtifact(FGuid ArtifactInstanceId, int32 ExpFromFodder)

@@ -1,6 +1,7 @@
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Character/CharacterBase.h"
+#include "System/AchievementSubsystem.h"
 #include "Engine/OverlapResult.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyGame.h"
@@ -110,6 +111,7 @@ FReactionResult UElementalReactionSubsystem::ApplyElement(
 		FrozenUntil.Remove(Target);
 		Result.Reaction = EReactionType::Shatter;
 		Result.FlatBonus = UDamageCalculator::TransformativeBaseDamage(Instigator->Level, 1.5f);
+		UAchievementSubsystem::Report(this, TEXT("Stat_ReactionsTriggered"));
 		OnReactionTriggered.Broadcast(EReactionType::Shatter, Target, Instigator, Target->GetActorLocation());
 		return Result;
 	}
@@ -168,6 +170,7 @@ FReactionResult UElementalReactionSubsystem::ResolveReaction(
 	auto Broadcast = [&](EReactionType R)
 	{
 		Result.Reaction = R;
+		UAchievementSubsystem::Report(this, TEXT("Stat_ReactionsTriggered"));
 		OnReactionTriggered.Broadcast(R, Target, Instigator, Loc);
 	};
 

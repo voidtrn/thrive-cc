@@ -303,6 +303,78 @@ def expeditions():
     ]
 
 
+# -------------------------------------------------------- DT_Achievements
+
+def achievements():
+    def ach(name, display, desc, stat_key, target, primogems):
+        return {
+            "Name": name,
+            "DisplayName": display,
+            "Description": desc,
+            "StatKey": stat_key,
+            "TargetCount": target,
+            "PrimogemReward": primogems,
+        }
+
+    # Tier bertingkat per stat key (key kanonis di-wire C++ — lihat
+    # AchievementTypes.h). Reward 5/10/20 ala Genshin.
+    rows = []
+    tiers = [
+        # (stat_key, judul dasar, deskripsi, [(target, primogem)...])
+        ("Stat_EnemiesDefeated", "Pemburu", "Kalahkan {n} musuh.",
+         [(10, 5), (100, 10), (500, 20)]),
+        ("Stat_ChestsOpened", "Pemburu Harta", "Buka {n} chest.",
+         [(10, 5), (50, 10), (200, 20)]),
+        ("Stat_OculiCollected", "Kolektor Oculus", "Kumpulkan {n} oculus.",
+         [(10, 5), (40, 10), (65, 20)]),
+        ("Stat_WaypointsUnlocked", "Penjelajah", "Aktifkan {n} waypoint.",
+         [(5, 5), (15, 10)]),
+        ("Stat_WishesMade", "Penggenggam Takdir", "Lakukan {n} wish.",
+         [(10, 5), (100, 10)]),
+        ("Stat_ReactionsTriggered", "Ahli Elemen", "Picu {n} elemental reaction.",
+         [(50, 5), (500, 10), (2000, 20)]),
+        ("Stat_ExpeditionsClaimed", "Komandan", "Selesaikan {n} expedition.",
+         [(5, 5), (25, 10)]),
+        ("Stat_ResinSpent", "Pekerja Keras", "Habiskan {n} resin.",
+         [(400, 5), (2000, 10)]),
+    ]
+    roman = ["I", "II", "III"]
+    for stat_key, title, desc, steps in tiers:
+        for i, (target, gems) in enumerate(steps):
+            rows.append(ach(
+                f"Ach_{stat_key.removeprefix('Stat_')}_{i + 1}",
+                f"{title} {roman[i]}",
+                desc.format(n=target),
+                stat_key, target, gems))
+    return rows
+
+
+# -------------------------------------------------- DT_ReputationRewards
+
+def reputation_rewards():
+    def rep(region, level, display, mora, rewards):
+        return {
+            "Name": f"{region}_{level}",  # row key dibaca UReputationSubsystem
+            "DisplayName": display,
+            "RequiredLevel": level,
+            "MoraReward": mora,
+            "ItemRewards": [{"ItemId": i, "Count": c} for i, c in rewards],
+        }
+
+    # Region awal "Starter" (= GI CurrentRegion default), level 2-10.
+    return [
+        rep("Starter", 2, "Warga Baru", 20000, [("Ing_Rice", 10)]),
+        rep("Starter", 3, "Kenalan Kota", 0, [("Item_MysticOre", 5)]),
+        rep("Starter", 4, "Teman Warga", 30000, [("Mat_WeaponOre", 10)]),
+        rep("Starter", 5, "Sahabat Kota", 0, [("Item_HeroWit", 3)]),
+        rep("Starter", 6, "Pelindung", 40000, [("Mat_SlimeCore", 10)]),
+        rep("Starter", 7, "Pahlawan Lokal", 0, [("Item_HeroWit", 5)]),
+        rep("Starter", 8, "Legenda Kota", 50000, [("Mat_WeaponCrystal", 5)]),
+        rep("Starter", 9, "Penjaga Region", 0, [("Item_HeroWit", 8)]),
+        rep("Starter", 10, "Kehormatan Tertinggi", 100000, [("Mat_WeeklyRelic", 2)]),
+    ]
+
+
 # ------------------------------------------------------------- DT_Banners
 
 def banners():
@@ -370,6 +442,8 @@ if __name__ == "__main__":
     write("DT_Consumables.json", consumables())
     write("DT_Shop_General.json", shop_general())
     write("DT_Expeditions.json", expeditions())
+    write("DT_Achievements.json", achievements())
+    write("DT_ReputationRewards.json", reputation_rewards())
     write("DT_Banners.json", banners())
 
     # Validasi silang: semua ItemId yang dirujuk harus terdefinisi di DT_Items.
@@ -379,6 +453,7 @@ if __name__ == "__main__":
     refs += [r["ItemId"] for r in shop_general()]
     refs += [i for r in enemy_stats() for i in r["MaterialDrops"]]
     refs += [m["ItemId"] for r in expeditions() for m in r["ItemRewards"]]
+    refs += [m["ItemId"] for r in reputation_rewards() for m in r["ItemRewards"]]
     refs += [r["Name"] for r in consumables()]
     unknown = sorted(set(refs) - known)
     if unknown:

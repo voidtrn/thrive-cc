@@ -26,6 +26,8 @@ biaya ada di DT_Items, pool banner ada di roster, dst) divalidasi generator.
 | `DT_Consumables.json` | `FConsumableDefRow` | 5 | `UConsumableComponent` (cooking + efek) |
 | `DT_Shop_General.json` | `FShopItemRow` | 10 | `UShopComponent::ShopTable` (BP_NPC_Merchant) |
 | `DT_Expeditions.json` | `FExpeditionRow` | 7 | `UExpeditionSubsystem` (UI oper table ke API) |
+| `DT_Achievements.json` | `FAchievementRow` | 20 | `UAchievementSubsystem` (unlock derived dari LifetimeStats) |
+| `DT_ReputationRewards.json` | `FReputationRewardRow` | 9 | `UReputationSubsystem::ClaimReward` (key `<Region>_<Level>`) |
 | `DT_Banners.json` | `FBannerData` | 4 | `UWishSystem::Pull` (UI banner picker) |
 
 Catatan desain konten:

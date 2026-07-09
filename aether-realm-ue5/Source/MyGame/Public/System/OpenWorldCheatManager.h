@@ -53,6 +53,13 @@ public:
 	/** Percepat semua expedition aktif jadi selesai sekarang. */
 	UFUNCTION(Exec) void FinishExpeditions();
 
+	/** Tambah counter achievement manual (test unlock). */
+	UFUNCTION(Exec) void ReportStatCheat(FName StatKey, int32 Delta);
+	/** Log semua lifetime stats. */
+	UFUNCTION(Exec) void ShowStats();
+	/** Tambah EXP reputasi region (log level baru). */
+	UFUNCTION(Exec) void AddRep(FName Region, int32 Exp);
+
 	/** Test status: slow 50% + burn DOT 10 dps ke diri sendiri, Duration detik. */
 	UFUNCTION(Exec) void TestStatus(float Duration = 5.f);
 

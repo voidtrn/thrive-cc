@@ -1,0 +1,162 @@
+[
+  {
+    "Name": "Ach_EnemiesDefeated_1",
+    "DisplayName": "Pemburu I",
+    "Description": "Kalahkan 10 musuh.",
+    "StatKey": "Stat_EnemiesDefeated",
+    "TargetCount": 10,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_EnemiesDefeated_2",
+    "DisplayName": "Pemburu II",
+    "Description": "Kalahkan 100 musuh.",
+    "StatKey": "Stat_EnemiesDefeated",
+    "TargetCount": 100,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_EnemiesDefeated_3",
+    "DisplayName": "Pemburu III",
+    "Description": "Kalahkan 500 musuh.",
+    "StatKey": "Stat_EnemiesDefeated",
+    "TargetCount": 500,
+    "PrimogemReward": 20
+  },
+  {
+    "Name": "Ach_ChestsOpened_1",
+    "DisplayName": "Pemburu Harta I",
+    "Description": "Buka 10 chest.",
+    "StatKey": "Stat_ChestsOpened",
+    "TargetCount": 10,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_ChestsOpened_2",
+    "DisplayName": "Pemburu Harta II",
+    "Description": "Buka 50 chest.",
+    "StatKey": "Stat_ChestsOpened",
+    "TargetCount": 50,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_ChestsOpened_3",
+    "DisplayName": "Pemburu Harta III",
+    "Description": "Buka 200 chest.",
+    "StatKey": "Stat_ChestsOpened",
+    "TargetCount": 200,
+    "PrimogemReward": 20
+  },
+  {
+    "Name": "Ach_OculiCollected_1",
+    "DisplayName": "Kolektor Oculus I",
+    "Description": "Kumpulkan 10 oculus.",
+    "StatKey": "Stat_OculiCollected",
+    "TargetCount": 10,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_OculiCollected_2",
+    "DisplayName": "Kolektor Oculus II",
+    "Description": "Kumpulkan 40 oculus.",
+    "StatKey": "Stat_OculiCollected",
+    "TargetCount": 40,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_OculiCollected_3",
+    "DisplayName": "Kolektor Oculus III",
+    "Description": "Kumpulkan 65 oculus.",
+    "StatKey": "Stat_OculiCollected",
+    "TargetCount": 65,
+    "PrimogemReward": 20
+  },
+  {
+    "Name": "Ach_WaypointsUnlocked_1",
+    "DisplayName": "Penjelajah I",
+    "Description": "Aktifkan 5 waypoint.",
+    "StatKey": "Stat_WaypointsUnlocked",
+    "TargetCount": 5,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_WaypointsUnlocked_2",
+    "DisplayName": "Penjelajah II",
+    "Description": "Aktifkan 15 waypoint.",
+    "StatKey": "Stat_WaypointsUnlocked",
+    "TargetCount": 15,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_WishesMade_1",
+    "DisplayName": "Penggenggam Takdir I",
+    "Description": "Lakukan 10 wish.",
+    "StatKey": "Stat_WishesMade",
+    "TargetCount": 10,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_WishesMade_2",
+    "DisplayName": "Penggenggam Takdir II",
+    "Description": "Lakukan 100 wish.",
+    "StatKey": "Stat_WishesMade",
+    "TargetCount": 100,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_ReactionsTriggered_1",
+    "DisplayName": "Ahli Elemen I",
+    "Description": "Picu 50 elemental reaction.",
+    "StatKey": "Stat_ReactionsTriggered",
+    "TargetCount": 50,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_ReactionsTriggered_2",
+    "DisplayName": "Ahli Elemen II",
+    "Description": "Picu 500 elemental reaction.",
+    "StatKey": "Stat_ReactionsTriggered",
+    "TargetCount": 500,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_ReactionsTriggered_3",
+    "DisplayName": "Ahli Elemen III",
+    "Description": "Picu 2000 elemental reaction.",
+    "StatKey": "Stat_ReactionsTriggered",
+    "TargetCount": 2000,
+    "PrimogemReward": 20
+  },
+  {
+    "Name": "Ach_ExpeditionsClaimed_1",
+    "DisplayName": "Komandan I",
+    "Description": "Selesaikan 5 expedition.",
+    "StatKey": "Stat_ExpeditionsClaimed",
+    "TargetCount": 5,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_ExpeditionsClaimed_2",
+    "DisplayName": "Komandan II",
+    "Description": "Selesaikan 25 expedition.",
+    "StatKey": "Stat_ExpeditionsClaimed",
+    "TargetCount": 25,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_ResinSpent_1",
+    "DisplayName": "Pekerja Keras I",
+    "Description": "Habiskan 400 resin.",
+    "StatKey": "Stat_ResinSpent",
+    "TargetCount": 400,
+    "PrimogemReward": 5
+  },
+  {
+    "Name": "Ach_ResinSpent_2",
+    "DisplayName": "Pekerja Keras II",
+    "Description": "Habiskan 2000 resin.",
+    "StatKey": "Stat_ResinSpent",
+    "TargetCount": 2000,
+    "PrimogemReward": 10
+  }
+]

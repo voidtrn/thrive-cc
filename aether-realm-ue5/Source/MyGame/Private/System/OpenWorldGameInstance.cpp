@@ -64,6 +64,11 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 	Save->LastResinUpdate = LastResinUpdate;
 	Save->ActiveExpeditions = ActiveExpeditions;
 
+	Save->LifetimeStats = LifetimeStats;
+	Save->ClaimedAchievements = ClaimedAchievements.Array();
+	Save->RegionReputation = RegionReputation;
+	Save->ClaimedReputationRewards = ClaimedReputationRewards.Array();
+
 	Save->AcquaintFates = AcquaintFates;
 	Save->IntertwinedFates = IntertwinedFates;
 	Save->Starglitter = Starglitter;
@@ -145,6 +150,11 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 	Resin = Save->Resin;
 	LastResinUpdate = Save->LastResinUpdate;
 	ActiveExpeditions = Save->ActiveExpeditions;
+
+	LifetimeStats = Save->LifetimeStats;
+	ClaimedAchievements = TSet<FName>(Save->ClaimedAchievements);
+	RegionReputation = Save->RegionReputation;
+	ClaimedReputationRewards = TSet<FName>(Save->ClaimedReputationRewards);
 
 	AcquaintFates = Save->AcquaintFates;
 	IntertwinedFates = Save->IntertwinedFates;

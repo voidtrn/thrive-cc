@@ -1,6 +1,7 @@
 #include "World/Waypoint.h"
 #include "Components/SphereComponent.h"
 #include "Character/CharacterBase.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyGame.h"
@@ -56,6 +57,7 @@ void AWaypoint::Unlock()
 		GI->UnlockedWaypoints.Add(GetWaypointId());
 	}
 
+	UAchievementSubsystem::Report(this, TEXT("Stat_WaypointsUnlocked"));
 	OnUnlocked.Broadcast(this);
 	UE_LOG(LogAetherRealm, Log, TEXT("Waypoint unlocked: %s"), *GetName());
 }

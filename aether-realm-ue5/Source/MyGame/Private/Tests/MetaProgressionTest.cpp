@@ -2,6 +2,8 @@
 #include "System/WorldLevelStatics.h"
 #include "System/ResinSubsystem.h"
 #include "System/ExpeditionSubsystem.h"
+#include "System/ReputationSubsystem.h"
+#include "System/LevelingComponent.h"
 
 #if WITH_AUTOMATION_TESTS
 
@@ -121,6 +123,61 @@ bool FExpeditionCompletionTest::RunTest(const FString&)
 		UExpeditionSubsystem::IsCompleteAt(Start, 8, Start + FTimespan::FromDays(3)));
 	TestFalse(TEXT("clock mundur: tidak selesai"),
 		UExpeditionSubsystem::IsCompleteAt(Start, 8, Start - FTimespan::FromHours(1)));
+
+	return true;
+}
+
+// ---------- Reputation ----------
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FReputationCurveTest,
+	"AetherRealm.Meta.ReputationCurve",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FReputationCurveTest::RunTest(const FString&)
+{
+	// Titik kunci kurva: L1=0, L2=1000, L3=2500 (1000+1500), L10=27000
+	TestEqual(TEXT("L1 = 0 EXP"), UReputationSubsystem::ExpToReachLevel(1), 0);
+	TestEqual(TEXT("L2 = 1000"), UReputationSubsystem::ExpToReachLevel(2), 1000);
+	TestEqual(TEXT("L3 = 2500"), UReputationSubsystem::ExpToReachLevel(3), 2500);
+	TestEqual(TEXT("L10 = 27000"), UReputationSubsystem::ExpToReachLevel(10), 27000);
+
+	// Inverse konsisten: LevelForTotalExp(ExpToReachLevel(L)) == L, dan
+	// 1 EXP sebelum threshold masih level sebelumnya.
+	for (int32 L = 2; L <= UReputationSubsystem::MaxReputationLevel; ++L)
+	{
+		const int32 Threshold = UReputationSubsystem::ExpToReachLevel(L);
+		TestEqual(TEXT("threshold tepat = level"), UReputationSubsystem::LevelForTotalExp(Threshold), L);
+		TestEqual(TEXT("threshold-1 = level sebelumnya"),
+			UReputationSubsystem::LevelForTotalExp(Threshold - 1), L - 1);
+	}
+
+	// Clamp: EXP raksasa & input aneh tidak melampaui max
+	TestEqual(TEXT("EXP raksasa = max level"),
+		UReputationSubsystem::LevelForTotalExp(999999999), UReputationSubsystem::MaxReputationLevel);
+	TestEqual(TEXT("EXP 0 = L1"), UReputationSubsystem::LevelForTotalExp(0), 1);
+	TestEqual(TEXT("level > max di-clamp"),
+		UReputationSubsystem::ExpToReachLevel(99), UReputationSubsystem::ExpToReachLevel(10));
+
+	return true;
+}
+
+// ---------- Weapon Refinement ----------
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FRefinementMagnitudeTest,
+	"AetherRealm.Meta.RefinementMagnitude",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FRefinementMagnitudeTest::RunTest(const FString&)
+{
+	// Skala linear: base di R1, +per-refine tiap rank. Contoh pasif
+	// "skill DMG +12% / +3% per refine" → R1 12%, R5 24%.
+	TestEqual(TEXT("R1 = base"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 1), 0.12f);
+	TestEqual(TEXT("R3 = base+2 step"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 3), 0.18f);
+	TestEqual(TEXT("R5 = base+4 step"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 5), 0.24f);
+
+	// Refinement di luar range di-clamp 1-5
+	TestEqual(TEXT("R0 clamp ke R1"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 0), 0.12f);
+	TestEqual(TEXT("R9 clamp ke R5"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 9), 0.24f);
 
 	return true;
 }

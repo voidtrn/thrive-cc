@@ -21,7 +21,8 @@ elemental combat, 1 region ±1km², World Partition streaming.
 | **10. Progression** | Weapon/artifact stat aggregation, talent, constellation | ✅ kode selesai — lihat [Docs/PHASE10_PROGRESSION.md](Docs/PHASE10_PROGRESSION.md) |
 | **11. Content Systems** | Buff, consumable/cooking, shop/merchant, domain arena | ✅ kode selesai — lihat [Docs/PHASE11_CONTENT_SYSTEMS.md](Docs/PHASE11_CONTENT_SYSTEMS.md) |
 | **12. Meta Progression** | World Level (AR → enemy scaling), Resin (gate reward, regen offline), Expedition (idle dispatch) | ✅ kode selesai — data di [Docs/DATA_TABLES.md](Docs/DATA_TABLES.md) |
-| **Data** | 12 DataTable JSON siap-import (212 row): items, weapons, characters, sets, enemies, resep, shop, expedition, banner, leveling economy | ✅ digenerate `Scripts/generate_*.py` |
+| **13. Achievement, Reputation, Refinement** | Achievement stat-driven (8 hook C++ + klaim primogem), reputasi region (kurva EXP + reward), weapon refinement (konsumsi duplikat, pasif skala R1-R5) | ✅ kode selesai — data di [Docs/DATA_TABLES.md](Docs/DATA_TABLES.md) |
+| **Data** | 14 DataTable JSON siap-import (241 row): items, weapons, characters, sets, enemies, resep, shop, expedition, achievement, reputasi, banner, leveling economy | ✅ digenerate `Scripts/generate_*.py` |
 | **Art A. Karakter** | Pipeline VRoid→Blender→UE5, spec 3 karakter (Kagari/Yukine/Shiden), enemy specs | 📋 [Docs/ART_A_CHARACTERS.md](Docs/ART_A_CHARACTERS.md) |
 | **Art B. VFX** | Niagara specs 7 elemen + environment + combat polish (hit stop ✅ C++) | 📋 [Docs/ART_B_VFX.md](Docs/ART_B_VFX.md) |
 | **Art C. Audio** | Footstep system ✅ C++, music manager ✅ C++, SFX/musik/VO specs | 📋 [Docs/ART_C_AUDIO.md](Docs/ART_C_AUDIO.md) |

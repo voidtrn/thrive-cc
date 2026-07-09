@@ -1,7 +1,9 @@
 #include "System/OpenWorldCheatManager.h"
 #include "System/OpenWorldGameInstance.h"
 #include "System/OpenWorldGameState.h"
+#include "System/AchievementSubsystem.h"
 #include "System/LevelingComponent.h"
+#include "System/ReputationSubsystem.h"
 #include "System/ResinSubsystem.h"
 #include "System/ResonanceComponent.h"
 #include "System/WorldLevelStatics.h"
@@ -153,6 +155,40 @@ void UOpenWorldCheatManager::FinishExpeditions()
 		}
 		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] %d expedition dipercepat — siap klaim"),
 			GI->ActiveExpeditions.Num());
+	}
+}
+
+void UOpenWorldCheatManager::ReportStatCheat(FName StatKey, int32 Delta)
+{
+	UOpenWorldGameInstance* GI = GetGI();
+	if (UAchievementSubsystem* Achievements = GI ? GI->GetSubsystem<UAchievementSubsystem>() : nullptr)
+	{
+		Achievements->ReportStat(StatKey, Delta);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] Stat %s = %d"),
+			*StatKey.ToString(), Achievements->GetStat(StatKey));
+	}
+}
+
+void UOpenWorldCheatManager::ShowStats()
+{
+	if (const UOpenWorldGameInstance* GI = GetGI())
+	{
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] Lifetime stats (%d):"), GI->LifetimeStats.Num());
+		for (const auto& Pair : GI->LifetimeStats)
+		{
+			UE_LOG(LogAetherRealm, Log, TEXT("  %s = %d"), *Pair.Key.ToString(), Pair.Value);
+		}
+	}
+}
+
+void UOpenWorldCheatManager::AddRep(FName Region, int32 Exp)
+{
+	UOpenWorldGameInstance* GI = GetGI();
+	if (UReputationSubsystem* Reputation = GI ? GI->GetSubsystem<UReputationSubsystem>() : nullptr)
+	{
+		Reputation->AddReputation(Region, Exp);
+		UE_LOG(LogAetherRealm, Log, TEXT("[Cheat] Reputasi %s: %d EXP, level %d"),
+			*Region.ToString(), Reputation->GetTotalExp(Region), Reputation->GetLevel(Region));
 	}
 }
 

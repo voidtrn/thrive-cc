@@ -1,4 +1,5 @@
 #include "System/ResinSubsystem.h"
+#include "System/AchievementSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 
 UOpenWorldGameInstance* UResinSubsystem::GetOWGameInstance() const
@@ -98,6 +99,12 @@ bool UResinSubsystem::SpendResin(int32 Amount)
 	// oleh ComputeRegen selama berada di cap).
 	GI->Resin = Current - Amount;
 	OnResinChanged.Broadcast(GI->Resin);
+
+	if (UAchievementSubsystem* Achievements = GI->GetSubsystem<UAchievementSubsystem>())
+	{
+		Achievements->ReportStat(TEXT("Stat_ResinSpent"), Amount);
+	}
+
 	GI->AutoSave();
 	return true;
 }
