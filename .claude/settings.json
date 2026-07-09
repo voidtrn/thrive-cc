@@ -14,6 +14,12 @@
             "command": "node \"/home/user/thrive-cc/.claude/hooks/caveman-activate.js\"",
             "timeout": 5,
             "statusMessage": "Loading caveman mode..."
+          },
+          {
+            "type": "command",
+            "command": "sh \"/home/user/thrive-cc/.claude/hooks/statusline-ensure.sh\"",
+            "timeout": 10,
+            "statusMessage": "Ensuring statusline badge..."
           }
         ]
       }
