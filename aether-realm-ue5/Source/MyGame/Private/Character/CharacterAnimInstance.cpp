@@ -1,4 +1,5 @@
 #include "Character/CharacterAnimInstance.h"
+#include "Character/AimModeComponent.h"
 #include "Character/CharacterBase.h"
 #include "Character/OpenWorldMovementComponent.h"
 #include "Character/LockOnComponent.h"
@@ -41,6 +42,14 @@ void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsGliding = MoveComp->IsGliding();
 	bIsSwimming = MoveComp->IsSwimming();
 	bIsClimbing = MoveComp->IsClimbing();
+
+	// Aim TPS: pose strafe + pitch untuk aim offset. bIsAiming ikut
+	// replikasi komponen, jadi simulated proxy co-op ikut pose yang benar.
+	if (const UAimModeComponent* Aim = OwnerCharacter->FindComponentByClass<UAimModeComponent>())
+	{
+		bIsAiming = Aim->IsAiming();
+	}
+	AimPitch = FRotator::NormalizeAxis(OwnerCharacter->GetBaseAimRotation().Pitch);
 
 	// Head tracking ke target lock-on
 	if (const ULockOnComponent* LockOn = OwnerCharacter->GetLockOn())

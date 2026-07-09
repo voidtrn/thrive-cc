@@ -56,6 +56,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Special")
 	bool bIsClimbing = false;
 
+	// --- Aim (mode TPS — pose strafe + aim offset) ---
+	UPROPERTY(BlueprintReadOnly, Category = "Aim")
+	bool bIsAiming = false;
+
+	/** Pitch bidik -90..90 untuk aim offset blend space. */
+	UPROPERTY(BlueprintReadOnly, Category = "Aim")
+	float AimPitch = 0.f;
+
 	// --- Look At (head tracking, dipakai Control Rig / AnimGraph LookAt node) ---
 	UPROPERTY(BlueprintReadOnly, Category = "LookAt")
 	FVector LookAtTarget = FVector::ZeroVector;

@@ -5,6 +5,7 @@
 #include "System/ReputationSubsystem.h"
 #include "System/LevelingComponent.h"
 #include "System/GameDirectorSubsystem.h"
+#include "Character/AimModeComponent.h"
 
 #if WITH_AUTOMATION_TESTS
 
@@ -225,6 +226,52 @@ bool FDirectorPacingTest::RunTest(const FString&)
 		D::IsAmbushWindowAt(EDirectorPhase::BuildUp, 10.f, 5.f, 60.f));
 	TestFalse(TEXT("cooldown ambush belum lewat: tolak"),
 		D::IsAmbushWindowAt(EDirectorPhase::BuildUp, 10.f, 20.f, 10.f));
+
+	return true;
+}
+
+// ---------- TPS Spread ----------
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAimSpreadTest,
+	"AetherRealm.Meta.AimSpread",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FAimSpreadTest::RunTest(const FString&)
+{
+	const FVector Base = FVector(1, 0, 0);
+
+	// Spread 0 = arah persis
+	TestTrue(TEXT("spread 0 = base dir"),
+		UAimModeComponent::ComputeSpreadDirection(Base, 0.f, 0.5f, 0.5f).Equals(Base, 1e-4f));
+
+	// Hasil selalu unit vector & dalam cone (sampling grid deterministik)
+	constexpr float HalfAngle = 5.f;
+	const float MinDot = FMath::Cos(FMath::DegreesToRadians(HalfAngle)) - 1e-4f;
+	for (int32 A = 0; A <= 10; ++A)
+	{
+		for (int32 B = 0; B <= 10; ++B)
+		{
+			const FVector Dir = UAimModeComponent::ComputeSpreadDirection(
+				Base, HalfAngle, A / 10.f, B / 10.f);
+			TestTrue(TEXT("unit length"), FMath::IsNearlyEqual(Dir.Size(), 1.f, 1e-3f));
+			if (FVector::DotProduct(Dir, Base) < MinDot)
+			{
+				AddError(FString::Printf(TEXT("keluar cone: rand=(%d,%d) dot=%f"),
+					A, B, FVector::DotProduct(Dir, Base)));
+			}
+		}
+	}
+
+	// Rand01A = 1 (tepi cone) harus MENYENTUH sudut penuh (bukan selalu tengah)
+	const FVector Edge = UAimModeComponent::ComputeSpreadDirection(Base, HalfAngle, 1.f, 0.f);
+	TestTrue(TEXT("tepi cone tercapai"),
+		FMath::IsNearlyEqual(
+			FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(Edge, Base))),
+			HalfAngle, 0.1f));
+
+	// Arah nol tidak meledak
+	TestTrue(TEXT("zero dir aman"),
+		UAimModeComponent::ComputeSpreadDirection(FVector::ZeroVector, 5.f, 0.5f, 0.5f).IsNearlyZero());
 
 	return true;
 }

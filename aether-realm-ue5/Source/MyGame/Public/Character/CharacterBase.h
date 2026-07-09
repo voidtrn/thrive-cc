@@ -226,6 +226,20 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Camera")
 	ULockOnComponent* GetLockOn() const { return LockOn; }
 
+	// Akses kamera untuk UAimModeComponent (mode TPS)
+	UFUNCTION(BlueprintPure, Category = "Camera")
+	USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+	UFUNCTION(BlueprintPure, Category = "Camera")
+	UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	/** Set target zoom (di-lerp TickCamera). Aim mode override lalu restore. */
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void SetCameraZoomTarget(float NewTarget) { TargetZoom = NewTarget; }
+
+	UFUNCTION(BlueprintPure, Category = "Camera")
+	bool IsAimMode() const { return bAimMode; }
+
 	UFUNCTION(BlueprintPure, Category = "Movement")
 	UOpenWorldMovementComponent* GetOpenWorldMovement() const;
 
