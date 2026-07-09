@@ -1,0 +1,73 @@
+[
+  {
+    "Name": "Start",
+    "SpeakerName": "???",
+    "bPortraitLeft": true,
+    "DialogueText": "...bangun. Bangun! Apinya jangan padam dulu.",
+    "NextNodeID": "K1"
+  },
+  {
+    "Name": "K1",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "Ugh... kepala rasanya kayak habis dilempar dari langit. Tunggu — tangan siapa ini? Kenapa NYALA?!",
+    "NextNodeID": "K2"
+  },
+  {
+    "Name": "K2",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "Oke. Tenang. Tangan terbakar tapi tidak sakit. Itu... normal, kan? Pasti normal.",
+    "NextNodeID": "C1"
+  },
+  {
+    "Name": "C1",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "(Api di telapak tangan bergoyang, seolah menjawab.)",
+    "Choices": [
+      {
+        "ChoiceText": "\"Kamu... barusan ngomong?\"",
+        "NextNodeID": "V1"
+      },
+      {
+        "ChoiceText": "(Diam, coba padamkan apinya.)",
+        "NextNodeID": "V1B"
+      }
+    ]
+  },
+  {
+    "Name": "V1",
+    "SpeakerName": "???",
+    "bPortraitLeft": true,
+    "DialogueText": "Statue tidak menjawab. Tapi arus di bawah lembah ini nyaris kering — dan kau, penyala kecil, satu-satunya yang masih membara.",
+    "NextNodeID": "V2"
+  },
+  {
+    "Name": "V1B",
+    "SpeakerName": "???",
+    "bPortraitLeft": true,
+    "DialogueText": "Percuma. Api itu bukan di tanganmu — api itu KAMU. Dan lembah ini hampir padam.",
+    "NextNodeID": "V2"
+  },
+  {
+    "Name": "V2",
+    "SpeakerName": "???",
+    "bPortraitLeft": true,
+    "DialogueText": "Pergilah ke desa di timur. Kalau lembah ini pucat sepenuhnya, apimu ikut padam... dan kau tidak akan pernah tahu siapa dirimu.",
+    "NextNodeID": "K3"
+  },
+  {
+    "Name": "K3",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "Desa. Timur. Jangan padam. Siap. ...Semoga di sana ada yang jual sarung tangan tahan api.",
+    "Actions": [
+      {
+        "Type": "StartQuest",
+        "Amount": 1,
+        "TargetID": "Q_A1_Terbangun"
+      }
+    ]
+  }
+]

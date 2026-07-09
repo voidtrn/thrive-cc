@@ -2,6 +2,7 @@
 #include "Character/OpenWorldMovementComponent.h"
 #include "Character/LockOnComponent.h"
 #include "Combat/ShieldComponent.h"
+#include "System/GameDirectorSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -172,6 +173,15 @@ void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReact
 
 	CurrentHP = FMath::Max(0.f, CurrentHP - ToHP);
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
+
+	// Game Director: damage ke PEMAIN menaikkan intensity (pacing L4D2)
+	if (IsPlayerControlled() && MaxHP > 0.f)
+	{
+		if (UGameDirectorSubsystem* Director = GetWorld()->GetSubsystem<UGameDirectorSubsystem>())
+		{
+			Director->ReportPlayerDamage(ToHP / MaxHP);
+		}
+	}
 
 	if (UAnimMontage* const* Montage = HitReactionMontages.Find(Reaction))
 	{

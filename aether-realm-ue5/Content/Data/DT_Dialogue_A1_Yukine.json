@@ -1,0 +1,80 @@
+[
+  {
+    "Name": "Start",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": true,
+    "DialogueText": "Perpustakaan tutup. Kecuali kau membawa sampel anomali ley line, silakan keluar lewat pintu yang sama dengan masukmu.",
+    "NextNodeID": "K1"
+  },
+  {
+    "Name": "K1",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "Sampel? Yang kubawa cuma tangan menyala. Hitungan sampel bukan?",
+    "NextNodeID": "Y1"
+  },
+  {
+    "Name": "Y1",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "...Menarik. Duduk. Jangan sentuh apa pun. Terutama buku. TERUTAMA buku.",
+    "NextNodeID": "Y2"
+  },
+  {
+    "Name": "Y2",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "Api tanpa bahan bakar, tanpa luka bakar. Kalau teoriku benar, kau bukan membawa pecahan Aether. Kau — spesimen — ADALAH pecahannya.",
+    "NextNodeID": "C1"
+  },
+  {
+    "Name": "C1",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "(Dia menatapmu seperti menatap soal ujian.)",
+    "Choices": [
+      {
+        "ChoiceText": "\"Namaku Kagari, bukan 'spesimen'.\"",
+        "NextNodeID": "Y3"
+      },
+      {
+        "ChoiceText": "\"Pecahan? Jelaskan pelan-pelan.\"",
+        "NextNodeID": "Y3B"
+      }
+    ]
+  },
+  {
+    "Name": "Y3",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "Akan kucatat: 'Spesimen keberatan dipanggil spesimen.' Baik, Kagari. Mentorku menghilang saat meneliti hal yang persis sama denganmu.",
+    "NextNodeID": "Y4"
+  },
+  {
+    "Name": "Y3B",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "Pelan-pelan butuh enam jam dan tiga papan tulis. Versi cepat: ley line lembah ini disedot sesuatu, dan energimu sejenis dengan yang dicuri.",
+    "NextNodeID": "Y4"
+  },
+  {
+    "Name": "Y4",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "Kesepakatan: aku ikut kau ke lapangan, kau jadi... instrumen pengukurku yang bisa jalan. Bawakan tiga Flameherb dari lereng — kita mulai dari sana.",
+    "NextNodeID": "K2"
+  },
+  {
+    "Name": "K2",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "Instrumen yang bisa jalan DAN bisa masak. Kau tidak akan menyesal.",
+    "Actions": [
+      {
+        "Type": "ReportTalkObjective",
+        "Amount": 1,
+        "TargetID": "NPC_Yukine"
+      }
+    ]
+  }
+]

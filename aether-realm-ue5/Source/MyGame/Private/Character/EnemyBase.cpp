@@ -126,6 +126,11 @@ void AEnemyBase::HandleDeath()
 
 	UAchievementSubsystem::Report(this, TEXT("Stat_EnemiesDefeated"));
 
+	if (UGameDirectorSubsystem* Director = GetWorld()->GetSubsystem<UGameDirectorSubsystem>())
+	{
+		Director->ReportEnemyKilled();
+	}
+
 	// Spawn energy orbs
 	if (EnergyOrbClass)
 	{

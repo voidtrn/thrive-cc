@@ -29,6 +29,7 @@ biaya ada di DT_Items, pool banner ada di roster, dst) divalidasi generator.
 | `DT_Achievements.json` | `FAchievementRow` | 20 | `UAchievementSubsystem` (unlock derived dari LifetimeStats) |
 | `DT_ReputationRewards.json` | `FReputationRewardRow` | 9 | `UReputationSubsystem::ClaimReward` (key `<Region>_<Level>`) |
 | `DT_Banners.json` | `FBannerData` | 4 | `UWishSystem::Pull` (UI banner picker) |
+| `DT_Dialogue_A1_*.json` (×3) | `FDialogueNode` | 25 | `UDialogueManager` — scene Act 1 (lihat `STORY_ACT1.md`) |
 
 Catatan desain konten:
 - **Roster**: Kagari 5★ (limited banner `Banner_Limited_Kagari`), Yukine 4★

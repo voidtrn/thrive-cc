@@ -214,5 +214,85 @@
     "Category": "Food",
     "Rarity": "ThreeStar",
     "MaxStack": 99
+  },
+  {
+    "Name": "Lore_Journal_1",
+    "DisplayName": "Serpihan Jurnal Veyra 1/10",
+    "Description": "Hari pertama di Sidra. Ley line di sini bernyanyi — Yukine kecil pasti suka mendengarnya.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_2",
+    "DisplayName": "Serpihan Jurnal Veyra 2/10",
+    "Description": "Anomali di sektor timur. Arus TIDAK melemah alami. Ada polanya. Ada niatnya.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_3",
+    "DisplayName": "Serpihan Jurnal Veyra 3/10",
+    "Description": "Dewan menolak laporanku. 'Terlalu spekulatif.' Keluargaku juga dibilang begitu, dulu, sebelum Malam Hampa.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_4",
+    "DisplayName": "Serpihan Jurnal Veyra 4/10",
+    "Description": "Aku menemukan sigil di bawah shrine. Bukan peninggalan — BARU. Seseorang menggambar ulang luka lama.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_5",
+    "DisplayName": "Serpihan Jurnal Veyra 5/10",
+    "Description": "Mereka menyebut diri Ordo Lubang Bayang. Kukira monster. Ternyata orang-orang yang kehilangan, sepertiku.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_6",
+    "DisplayName": "Serpihan Jurnal Veyra 6/10",
+    "Description": "Argumen mereka cacat. Tapi malam ini aku tidak bisa menemukan di mana cacatnya.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_7",
+    "DisplayName": "Serpihan Jurnal Veyra 7/10",
+    "Description": "Kalau dunia bisa dihampakan semudah itu... mungkin bukan Hampa yang salah. Mungkin dunianya yang rapuh.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_8",
+    "DisplayName": "Serpihan Jurnal Veyra 8/10",
+    "Description": "Yukine mengirim surat. Tidak kubalas. Dia akan mencariku — anak itu terlalu pintar. Kuharap terlambat.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_9",
+    "DisplayName": "Serpihan Jurnal Veyra 9/10",
+    "Description": "Aku berhenti menulis 'mereka'. Mulai malam ini: 'kami'.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
+  },
+  {
+    "Name": "Lore_Journal_10",
+    "DisplayName": "Serpihan Jurnal Veyra 10/10",
+    "Description": "Jurnal terakhir. Kalau kau membaca ini, Yukine — jangan ikuti aku. Atau ikuti, dan buktikan cacat argumenku. Kumohon.",
+    "Category": "QuestItem",
+    "Rarity": "FourStar",
+    "MaxStack": 1
   }
 ]

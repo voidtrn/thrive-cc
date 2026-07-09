@@ -158,5 +158,37 @@
     "StatKey": "Stat_ResinSpent",
     "TargetCount": 2000,
     "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_Secret_First",
+    "DisplayName": "…Apa Itu Tadi?",
+    "Description": "Temukan 1 rahasia tersembunyi.",
+    "StatKey": "Stat_SecretsFound",
+    "TargetCount": 1,
+    "PrimogemReward": 10
+  },
+  {
+    "Name": "Ach_Secret_Hunter",
+    "DisplayName": "Mata Elang",
+    "Description": "Temukan 4 rahasia tersembunyi.",
+    "StatKey": "Stat_SecretsFound",
+    "TargetCount": 4,
+    "PrimogemReward": 20
+  },
+  {
+    "Name": "Ach_Secret_All",
+    "DisplayName": "Tidak Ada yang Luput",
+    "Description": "Temukan semua 7 rahasia.",
+    "StatKey": "Stat_SecretsFound",
+    "TargetCount": 7,
+    "PrimogemReward": 40
+  },
+  {
+    "Name": "Ach_Secret_Journal",
+    "DisplayName": "Cacat dalam Argumen",
+    "Description": "Kumpulkan 10 Serpihan Jurnal Veyra.",
+    "StatKey": "Stat_JournalsCollected",
+    "TargetCount": 10,
+    "PrimogemReward": 40
   }
 ]

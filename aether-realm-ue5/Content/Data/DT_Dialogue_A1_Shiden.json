@@ -1,0 +1,73 @@
+[
+  {
+    "Name": "Start",
+    "SpeakerName": "Shiden",
+    "bPortraitLeft": true,
+    "DialogueText": "...Berhenti. Sebelum kalian melangkah lagi — penyergapan tadi bukan kebetulan. Mereka tahu rutemu karena aku yang memberi tahu.",
+    "NextNodeID": "Y1"
+  },
+  {
+    "Name": "Y1",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "Kau — sejak kapan? Penjaga bayaran yang 'kebetulan' selalu lewat. Tentu saja. Data-nya konsisten dari awal.",
+    "NextNodeID": "S1"
+  },
+  {
+    "Name": "S1",
+    "SpeakerName": "Shiden",
+    "bPortraitLeft": true,
+    "DialogueText": "Ordo menjanjikan desaku dipulihkan dari Hampa. Tadi aku dengar komandan mereka tertawa — desaku MEREKA yang hampakan. Untuk merekrutku.",
+    "NextNodeID": "S2"
+  },
+  {
+    "Name": "S2",
+    "SpeakerName": "Shiden",
+    "bPortraitLeft": true,
+    "DialogueText": "Aku tidak minta maaf dengan kata-kata. Tombakku, sisanya hidupku — itu penawarannya. Terima atau bunuh aku di sini.",
+    "NextNodeID": "C1"
+  },
+  {
+    "Name": "C1",
+    "SpeakerName": "Kagari",
+    "bPortraitLeft": true,
+    "DialogueText": "(Semua menunggumu.)",
+    "Choices": [
+      {
+        "ChoiceText": "\"Orang yang dibohongi bukan pengkhianat. Ikut kami.\"",
+        "NextNodeID": "F1"
+      },
+      {
+        "ChoiceText": "\"Aku tidak percaya kau. Tapi tombakmu boleh ikut.\"",
+        "NextNodeID": "F2"
+      }
+    ]
+  },
+  {
+    "Name": "F1",
+    "SpeakerName": "Shiden",
+    "bPortraitLeft": true,
+    "DialogueText": "...Hn. Jangan buat aku menyesali ini.",
+    "NextNodeID": "END"
+  },
+  {
+    "Name": "F2",
+    "SpeakerName": "Shiden",
+    "bPortraitLeft": true,
+    "DialogueText": "Adil. Kepercayaan dibayar darah, bukan kata. Akan kubayar.",
+    "NextNodeID": "END"
+  },
+  {
+    "Name": "END",
+    "SpeakerName": "Yukine",
+    "bPortraitLeft": false,
+    "DialogueText": "Catatan lapangan: party bertambah satu variabel tidak stabil. ...Selamat bergabung, Stormchaser.",
+    "Actions": [
+      {
+        "Type": "ReportTalkObjective",
+        "Amount": 1,
+        "TargetID": "NPC_Shiden"
+      }
+    ]
+  }
+]

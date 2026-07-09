@@ -4,6 +4,7 @@
 #include "System/ExpeditionSubsystem.h"
 #include "System/ReputationSubsystem.h"
 #include "System/LevelingComponent.h"
+#include "System/GameDirectorSubsystem.h"
 
 #if WITH_AUTOMATION_TESTS
 
@@ -178,6 +179,52 @@ bool FRefinementMagnitudeTest::RunTest(const FString&)
 	// Refinement di luar range di-clamp 1-5
 	TestEqual(TEXT("R0 clamp ke R1"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 0), 0.12f);
 	TestEqual(TEXT("R9 clamp ke R5"), ULevelingComponent::GetPassiveMagnitude(0.12f, 0.03f, 9), 0.24f);
+
+	return true;
+}
+
+// ---------- Game Director ----------
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDirectorPacingTest,
+	"AetherRealm.Meta.DirectorPacing",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FDirectorPacingTest::RunTest(const FString&)
+{
+	using D = UGameDirectorSubsystem;
+
+	// Decay linear, tidak negatif
+	TestEqual(TEXT("decay 1s"), D::DecayedIntensity(50.f, 1.f), 50.f - D::DecayPerSecond);
+	TestEqual(TEXT("decay tidak negatif"), D::DecayedIntensity(2.f, 10.f), 0.f);
+	TestEqual(TEXT("dt negatif diabaikan"), D::DecayedIntensity(50.f, -5.f), 50.f);
+
+	// Transisi + hysteresis
+	TestTrue(TEXT("BuildUp tetap di 69"),
+		D::ComputePhaseTransition(EDirectorPhase::BuildUp, 69.f, 100.f) == EDirectorPhase::BuildUp);
+	TestTrue(TEXT("BuildUp -> Peak di 70"),
+		D::ComputePhaseTransition(EDirectorPhase::BuildUp, 70.f, 0.f) == EDirectorPhase::Peak);
+	TestTrue(TEXT("Peak bertahan di 41 (hysteresis)"),
+		D::ComputePhaseTransition(EDirectorPhase::Peak, 41.f, 60.f) == EDirectorPhase::Peak);
+	TestTrue(TEXT("Peak -> Relax di 40"),
+		D::ComputePhaseTransition(EDirectorPhase::Peak, 40.f, 60.f) == EDirectorPhase::Relax);
+	TestTrue(TEXT("Relax belum habis: tetap"),
+		D::ComputePhaseTransition(EDirectorPhase::Relax, 10.f, D::RelaxDuration - 1.f) == EDirectorPhase::Relax);
+	TestTrue(TEXT("Relax habis -> BuildUp"),
+		D::ComputePhaseTransition(EDirectorPhase::Relax, 10.f, D::RelaxDuration) == EDirectorPhase::BuildUp);
+	TestTrue(TEXT("combat besar memotong Relax -> Peak"),
+		D::ComputePhaseTransition(EDirectorPhase::Relax, 75.f, 5.f) == EDirectorPhase::Peak);
+
+	// Jendela ambush: semua syarat harus terpenuhi
+	TestTrue(TEXT("ambush valid"),
+		D::IsAmbushWindowAt(EDirectorPhase::BuildUp, 10.f, 20.f, 60.f));
+	TestFalse(TEXT("bukan BuildUp: tolak"),
+		D::IsAmbushWindowAt(EDirectorPhase::Relax, 10.f, 20.f, 60.f));
+	TestFalse(TEXT("tensi tinggi: tolak"),
+		D::IsAmbushWindowAt(EDirectorPhase::BuildUp, 35.f, 20.f, 60.f));
+	TestFalse(TEXT("belum cukup sepi: tolak"),
+		D::IsAmbushWindowAt(EDirectorPhase::BuildUp, 10.f, 5.f, 60.f));
+	TestFalse(TEXT("cooldown ambush belum lewat: tolak"),
+		D::IsAmbushWindowAt(EDirectorPhase::BuildUp, 10.f, 20.f, 10.f));
 
 	return true;
 }

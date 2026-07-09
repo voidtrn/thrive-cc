@@ -81,6 +81,23 @@ def items():
         item("Food_ATKSkewer", "Blazing Skewer", "Buff ATK sementara.", "Food", "TwoStar", 99),
         item("Food_CritBerryTart", "Critical Berry Tart", "Buff Crit Rate sementara.", "Food", "ThreeStar", 99),
     ]
+    # Lore collectible: Serpihan Jurnal Veyra (STORY_ACT1.md) — teks isi
+    # jurnal di description, dibaca dari inventory UI.
+    journal = [
+        "Hari pertama di Sidra. Ley line di sini bernyanyi — Yukine kecil pasti suka mendengarnya.",
+        "Anomali di sektor timur. Arus TIDAK melemah alami. Ada polanya. Ada niatnya.",
+        "Dewan menolak laporanku. 'Terlalu spekulatif.' Keluargaku juga dibilang begitu, dulu, sebelum Malam Hampa.",
+        "Aku menemukan sigil di bawah shrine. Bukan peninggalan — BARU. Seseorang menggambar ulang luka lama.",
+        "Mereka menyebut diri Ordo Lubang Bayang. Kukira monster. Ternyata orang-orang yang kehilangan, sepertiku.",
+        "Argumen mereka cacat. Tapi malam ini aku tidak bisa menemukan di mana cacatnya.",
+        "Kalau dunia bisa dihampakan semudah itu... mungkin bukan Hampa yang salah. Mungkin dunianya yang rapuh.",
+        "Yukine mengirim surat. Tidak kubalas. Dia akan mencariku — anak itu terlalu pintar. Kuharap terlambat.",
+        "Aku berhenti menulis 'mereka'. Mulai malam ini: 'kami'.",
+        "Jurnal terakhir. Kalau kau membaca ini, Yukine — jangan ikuti aku. Atau ikuti, dan buktikan cacat argumenku. Kumohon.",
+    ]
+    for i, text in enumerate(journal, start=1):
+        rows.append(item(f"Lore_Journal_{i}", f"Serpihan Jurnal Veyra {i}/10",
+                         text, "QuestItem", "FourStar", 1))
     return rows
 
 
@@ -346,6 +363,20 @@ def achievements():
                 f"{title} {roman[i]}",
                 desc.format(n=target),
                 stat_key, target, gems))
+
+    # Secret achievements (easter egg — lihat Docs/EASTER_EGGS.md).
+    # BP lapor Stat_SecretsFound saat easter egg ditemukan; UI sembunyikan
+    # deskripsi sampai unlocked ("???").
+    rows += [
+        ach("Ach_Secret_First", "…Apa Itu Tadi?", "Temukan 1 rahasia tersembunyi.",
+            "Stat_SecretsFound", 1, 10),
+        ach("Ach_Secret_Hunter", "Mata Elang", "Temukan 4 rahasia tersembunyi.",
+            "Stat_SecretsFound", 4, 20),
+        ach("Ach_Secret_All", "Tidak Ada yang Luput", "Temukan semua 7 rahasia.",
+            "Stat_SecretsFound", 7, 40),
+        ach("Ach_Secret_Journal", "Cacat dalam Argumen", "Kumpulkan 10 Serpihan Jurnal Veyra.",
+            "Stat_JournalsCollected", 10, 40),
+    ]
     return rows
 
 
@@ -372,6 +403,92 @@ def reputation_rewards():
         rep("Starter", 8, "Legenda Kota", 50000, [("Mat_WeaponCrystal", 5)]),
         rep("Starter", 9, "Penjaga Region", 0, [("Item_HeroWit", 8)]),
         rep("Starter", 10, "Kehormatan Tertinggi", 100000, [("Mat_WeeklyRelic", 2)]),
+    ]
+
+
+# ---------------------------------------------------- DT_Dialogue_* (Act 1)
+# FDialogueNode rows. Node pertama SELALU "Start". Teks Indonesia dulu —
+# retrofit FText/String Table saat localization pass (course Bagian 36).
+
+def _node(name, speaker, text, next_node="", choices=None, actions=None, left=True):
+    row = {
+        "Name": name,
+        "SpeakerName": speaker,
+        "bPortraitLeft": left,
+        "DialogueText": text,
+    }
+    if next_node:
+        row["NextNodeID"] = next_node
+    if choices:
+        row["Choices"] = choices
+    if actions:
+        row["Actions"] = actions
+    return row
+
+
+def _choice(text, next_node):
+    return {"ChoiceText": text, "NextNodeID": next_node}
+
+
+def _action(atype, target="", amount=1):
+    a = {"Type": atype, "Amount": amount}
+    if target:
+        a["TargetID"] = target
+    return a
+
+
+def dialogue_opening():
+    """Q1 — Kagari bangun di kaki Statue. Nada: misteri + humor ringan."""
+    return [
+        _node("Start", "???", "...bangun. Bangun! Apinya jangan padam dulu.", "K1"),
+        _node("K1", "Kagari", "Ugh... kepala rasanya kayak habis dilempar dari langit. Tunggu — tangan siapa ini? Kenapa NYALA?!", "K2"),
+        _node("K2", "Kagari", "Oke. Tenang. Tangan terbakar tapi tidak sakit. Itu... normal, kan? Pasti normal.", "C1"),
+        _node("C1", "Kagari", "(Api di telapak tangan bergoyang, seolah menjawab.)", choices=[
+            _choice("\"Kamu... barusan ngomong?\"", "V1"),
+            _choice("(Diam, coba padamkan apinya.)", "V1B"),
+        ]),
+        _node("V1", "???", "Statue tidak menjawab. Tapi arus di bawah lembah ini nyaris kering — dan kau, penyala kecil, satu-satunya yang masih membara.", "V2"),
+        _node("V1B", "???", "Percuma. Api itu bukan di tanganmu — api itu KAMU. Dan lembah ini hampir padam.", "V2"),
+        _node("V2", "???", "Pergilah ke desa di timur. Kalau lembah ini pucat sepenuhnya, apimu ikut padam... dan kau tidak akan pernah tahu siapa dirimu.", "K3"),
+        _node("K3", "Kagari", "Desa. Timur. Jangan padam. Siap. ...Semoga di sana ada yang jual sarung tangan tahan api.",
+              actions=[_action("StartQuest", "Q_A1_Terbangun")]),
+    ]
+
+
+def dialogue_yukine():
+    """Q3 — rekrut Yukine di perpustakaan. Nada: dingin-lucu, scholar."""
+    return [
+        _node("Start", "Yukine", "Perpustakaan tutup. Kecuali kau membawa sampel anomali ley line, silakan keluar lewat pintu yang sama dengan masukmu.", "K1"),
+        _node("K1", "Kagari", "Sampel? Yang kubawa cuma tangan menyala. Hitungan sampel bukan?", "Y1"),
+        _node("Y1", "Yukine", "...Menarik. Duduk. Jangan sentuh apa pun. Terutama buku. TERUTAMA buku.", "Y2", left=False),
+        _node("Y2", "Yukine", "Api tanpa bahan bakar, tanpa luka bakar. Kalau teoriku benar, kau bukan membawa pecahan Aether. Kau — spesimen — ADALAH pecahannya.", "C1", left=False),
+        _node("C1", "Kagari", "(Dia menatapmu seperti menatap soal ujian.)", choices=[
+            _choice("\"Namaku Kagari, bukan 'spesimen'.\"", "Y3"),
+            _choice("\"Pecahan? Jelaskan pelan-pelan.\"", "Y3B"),
+        ]),
+        _node("Y3", "Yukine", "Akan kucatat: 'Spesimen keberatan dipanggil spesimen.' Baik, Kagari. Mentorku menghilang saat meneliti hal yang persis sama denganmu.", "Y4", left=False),
+        _node("Y3B", "Yukine", "Pelan-pelan butuh enam jam dan tiga papan tulis. Versi cepat: ley line lembah ini disedot sesuatu, dan energimu sejenis dengan yang dicuri.", "Y4", left=False),
+        _node("Y4", "Yukine", "Kesepakatan: aku ikut kau ke lapangan, kau jadi... instrumen pengukurku yang bisa jalan. Bawakan tiga Flameherb dari lereng — kita mulai dari sana.", "K2", left=False),
+        _node("K2", "Kagari", "Instrumen yang bisa jalan DAN bisa masak. Kau tidak akan menyesal.",
+              actions=[_action("ReportTalkObjective", "NPC_Yukine")]),
+    ]
+
+
+def dialogue_shiden():
+    """Q5 — pengakuan Shiden setelah ambush. Nada: berat, pilihan bermakna."""
+    return [
+        _node("Start", "Shiden", "...Berhenti. Sebelum kalian melangkah lagi — penyergapan tadi bukan kebetulan. Mereka tahu rutemu karena aku yang memberi tahu.", "Y1"),
+        _node("Y1", "Yukine", "Kau — sejak kapan? Penjaga bayaran yang 'kebetulan' selalu lewat. Tentu saja. Data-nya konsisten dari awal.", "S1", left=False),
+        _node("S1", "Shiden", "Ordo menjanjikan desaku dipulihkan dari Hampa. Tadi aku dengar komandan mereka tertawa — desaku MEREKA yang hampakan. Untuk merekrutku.", "S2"),
+        _node("S2", "Shiden", "Aku tidak minta maaf dengan kata-kata. Tombakku, sisanya hidupku — itu penawarannya. Terima atau bunuh aku di sini.", "C1"),
+        _node("C1", "Kagari", "(Semua menunggumu.)", choices=[
+            _choice("\"Orang yang dibohongi bukan pengkhianat. Ikut kami.\"", "F1"),
+            _choice("\"Aku tidak percaya kau. Tapi tombakmu boleh ikut.\"", "F2"),
+        ]),
+        _node("F1", "Shiden", "...Hn. Jangan buat aku menyesali ini.", "END"),
+        _node("F2", "Shiden", "Adil. Kepercayaan dibayar darah, bukan kata. Akan kubayar.", "END"),
+        _node("END", "Yukine", "Catatan lapangan: party bertambah satu variabel tidak stabil. ...Selamat bergabung, Stormchaser.",
+              left=False, actions=[_action("ReportTalkObjective", "NPC_Shiden")]),
     ]
 
 
@@ -445,6 +562,21 @@ if __name__ == "__main__":
     write("DT_Achievements.json", achievements())
     write("DT_ReputationRewards.json", reputation_rewards())
     write("DT_Banners.json", banners())
+    write("DT_Dialogue_A1_Opening.json", dialogue_opening())
+    write("DT_Dialogue_A1_Yukine.json", dialogue_yukine())
+    write("DT_Dialogue_A1_Shiden.json", dialogue_shiden())
+
+    # Validasi dialog: semua NextNodeID/choice target harus node yang ada.
+    for label, nodes in [("Opening", dialogue_opening()),
+                         ("Yukine", dialogue_yukine()),
+                         ("Shiden", dialogue_shiden())]:
+        ids = {n["Name"] for n in nodes}
+        for n in nodes:
+            targets = [n.get("NextNodeID")] + [c["NextNodeID"] for c in n.get("Choices", [])]
+            for t in targets:
+                if t and t not in ids:
+                    raise SystemExit(f"Dialog {label}: node '{n['Name']}' menunjuk '{t}' yang tidak ada")
+    print("dialogue graph OK")
 
     # Validasi silang: semua ItemId yang dirujuk harus terdefinisi di DT_Items.
     known = {r["Name"] for r in items()}
