@@ -5,6 +5,9 @@
 > Pasangan dari `silabus-british-rp.md`, `silabus-american.md`, `aksen-lengkap.md`.
 > Default transkripsi = **RP** (/.../ fonemik). Kalau beda jauh di GenAm, ditandai.
 > Tiap set ada **Kunci Jawaban** yang bisa dibuka (klik ▸). **Coba dulu, baru buka.**
+>
+> **Lanjutan per-aksen** (setelah SET A–C kuat): `latihan-rp.md` (drill khusus RP +
+> writing British) dan `latihan-american.md` (drill khusus GenAm + writing American).
 
 ---
 
