@@ -5,6 +5,12 @@
         "hooks": [
           {
             "type": "command",
+            "command": "sh \"/home/user/thrive-cc/.claude/hooks/rtk-ensure.sh\"",
+            "timeout": 15,
+            "statusMessage": "Ensuring rtk binary..."
+          },
+          {
+            "type": "command",
             "command": "node \"/home/user/thrive-cc/.claude/hooks/caveman-activate.js\"",
             "timeout": 5,
             "statusMessage": "Loading caveman mode..."
