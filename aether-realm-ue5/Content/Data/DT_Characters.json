@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "Char_Kagari",
+    "DisplayName": "Kagari",
+    "Element": "Pyro",
+    "WeaponType": "Sword",
+    "Rarity": 5
+  },
+  {
+    "Name": "Char_Yukine",
+    "DisplayName": "Yukine",
+    "Element": "Cryo",
+    "WeaponType": "Catalyst",
+    "Rarity": 4
+  },
+  {
+    "Name": "Char_Shiden",
+    "DisplayName": "Shiden",
+    "Element": "Electro",
+    "WeaponType": "Polearm",
+    "Rarity": 4
+  }
+]

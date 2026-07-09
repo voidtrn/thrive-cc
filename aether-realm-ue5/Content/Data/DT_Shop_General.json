@@ -1,0 +1,72 @@
+[
+  {
+    "Name": "Shop_RawMeat",
+    "ItemId": "Ing_RawMeat",
+    "Price": 80,
+    "Currency": "Mora",
+    "Stock": -1
+  },
+  {
+    "Name": "Shop_Rice",
+    "ItemId": "Ing_Rice",
+    "Price": 40,
+    "Currency": "Mora",
+    "Stock": -1
+  },
+  {
+    "Name": "Shop_Mushroom",
+    "ItemId": "Ing_Mushroom",
+    "Price": 60,
+    "Currency": "Mora",
+    "Stock": -1
+  },
+  {
+    "Name": "Shop_Berry",
+    "ItemId": "Ing_Berry",
+    "Price": 60,
+    "Currency": "Mora",
+    "Stock": -1
+  },
+  {
+    "Name": "Shop_Fish",
+    "ItemId": "Ing_Fish",
+    "Price": 100,
+    "Currency": "Mora",
+    "Stock": -1
+  },
+  {
+    "Name": "Shop_WeaponOre",
+    "ItemId": "Mat_WeaponOre",
+    "Price": 500,
+    "Currency": "Mora",
+    "Stock": 10
+  },
+  {
+    "Name": "Shop_MysticOre",
+    "ItemId": "Item_MysticOre",
+    "Price": 1200,
+    "Currency": "Mora",
+    "Stock": 5
+  },
+  {
+    "Name": "Shop_HeroWit",
+    "ItemId": "Item_HeroWit",
+    "Price": 4000,
+    "Currency": "Mora",
+    "Stock": 3
+  },
+  {
+    "Name": "Shop_HeroWit_Dust",
+    "ItemId": "Item_HeroWit",
+    "Price": 10,
+    "Currency": "Stardust",
+    "Stock": 10
+  },
+  {
+    "Name": "Shop_WeeklyRelic_Glitter",
+    "ItemId": "Mat_WeeklyRelic",
+    "Price": 20,
+    "Currency": "Starglitter",
+    "Stock": 1
+  }
+]

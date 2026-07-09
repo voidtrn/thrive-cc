@@ -1,0 +1,72 @@
+[
+  {
+    "Name": "Sword_Iron",
+    "DisplayName": "Iron Blade",
+    "WeaponType": "Sword",
+    "Rarity": 3,
+    "BaseATKLevel1": 40,
+    "ATKPerLevel": 7,
+    "SubStat": "CritRate",
+    "SubStatBase": 0.06,
+    "SubStatPerLevel": 0.0007
+  },
+  {
+    "Name": "Sword_Flameforged",
+    "DisplayName": "Flameforged Edge",
+    "WeaponType": "Sword",
+    "Rarity": 4,
+    "BaseATKLevel1": 44,
+    "ATKPerLevel": 8,
+    "SubStat": "ATKPercent",
+    "SubStatBase": 0.09,
+    "SubStatPerLevel": 0.001,
+    "PassiveId": "Passive_SkillDMG"
+  },
+  {
+    "Name": "Catalyst_Frost",
+    "DisplayName": "Frost Codex",
+    "WeaponType": "Catalyst",
+    "Rarity": 4,
+    "BaseATKLevel1": 44,
+    "ATKPerLevel": 8,
+    "SubStat": "EnergyRecharge",
+    "SubStatBase": 0.1,
+    "SubStatPerLevel": 0.0011,
+    "PassiveId": "Passive_HealBonus"
+  },
+  {
+    "Name": "Polearm_Storm",
+    "DisplayName": "Stormpiercer",
+    "WeaponType": "Polearm",
+    "Rarity": 4,
+    "BaseATKLevel1": 44,
+    "ATKPerLevel": 8,
+    "SubStat": "EnergyRecharge",
+    "SubStatBase": 0.1,
+    "SubStatPerLevel": 0.0011,
+    "PassiveId": "Passive_ElectroDMG"
+  },
+  {
+    "Name": "Bow_Gale",
+    "DisplayName": "Galestring",
+    "WeaponType": "Bow",
+    "Rarity": 4,
+    "BaseATKLevel1": 42,
+    "ATKPerLevel": 8,
+    "SubStat": "CritDMG",
+    "SubStatBase": 0.12,
+    "SubStatPerLevel": 0.0013
+  },
+  {
+    "Name": "Claymore_Flame",
+    "DisplayName": "Flame Cleaver",
+    "WeaponType": "Claymore",
+    "Rarity": 5,
+    "BaseATKLevel1": 48,
+    "ATKPerLevel": 9,
+    "SubStat": "ATKPercent",
+    "SubStatBase": 0.1,
+    "SubStatPerLevel": 0.0012,
+    "PassiveId": "Passive_BurstATK"
+  }
+]

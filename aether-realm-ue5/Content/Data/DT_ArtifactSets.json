@@ -1,0 +1,53 @@
+[
+  {
+    "Name": "Set_NoblesseOblige",
+    "SetName": "Noblesse Oblige",
+    "TwoPieceBonus": {
+      "Stat": "EnergyRecharge",
+      "Value": 0.1
+    },
+    "FourPieceEffectId": "NoblesseOblige"
+  },
+  {
+    "Name": "Set_CrimsonWitch",
+    "SetName": "Crimson Witch of Embers",
+    "TwoPieceBonus": {
+      "Stat": "ElementalDMGBonus",
+      "Value": 0.15
+    },
+    "FourPieceEffectId": "CrimsonWitch"
+  },
+  {
+    "Name": "Set_Instructor",
+    "SetName": "Instructor",
+    "TwoPieceBonus": {
+      "Stat": "ElementalMastery",
+      "Value": 80.0
+    },
+    "FourPieceEffectId": "Instructor"
+  },
+  {
+    "Name": "Set_Gladiator",
+    "SetName": "Gladiator's Resolve",
+    "TwoPieceBonus": {
+      "Stat": "ATKPercent",
+      "Value": 0.18
+    },
+    "FourPieceStatBonus": {
+      "Stat": "ATKPercent",
+      "Value": 0.17
+    }
+  },
+  {
+    "Name": "Set_Maiden",
+    "SetName": "Maiden's Mercy",
+    "TwoPieceBonus": {
+      "Stat": "HealingBonus",
+      "Value": 0.15
+    },
+    "FourPieceStatBonus": {
+      "Stat": "HPPercent",
+      "Value": 0.2
+    }
+  }
+]

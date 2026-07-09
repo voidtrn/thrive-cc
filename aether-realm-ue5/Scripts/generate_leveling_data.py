@@ -25,11 +25,14 @@ CHARACTERS = {
     "Char_Shiden": ("Mat_ElectroGem", "Mat_Stormfruit", "Mat_TalentBook_Storm"),
 }
 
-# WeaponId -> rarity. Row DT_Weapons (PHASE10) + Polearm_Storm untuk Shiden.
+# WeaponId -> rarity. Harus sinkron dengan DT_Weapons.json
+# (generate_content_data.py) — setiap senjata butuh 6 row ascension.
 WEAPONS = {
     "Sword_Iron": 3,
+    "Sword_Flameforged": 4,
     "Catalyst_Frost": 4,
     "Polearm_Storm": 4,
+    "Bow_Gale": 4,
     "Claymore_Flame": 5,
 }
 

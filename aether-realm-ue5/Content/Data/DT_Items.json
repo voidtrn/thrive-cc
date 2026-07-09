@@ -1,0 +1,218 @@
+[
+  {
+    "Name": "Mat_PyroGem",
+    "DisplayName": "Agnite Gem",
+    "Description": "Kristal elemen Pyro untuk ascension.",
+    "Category": "Material",
+    "Rarity": "FourStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_CryoGem",
+    "DisplayName": "Glacite Gem",
+    "Description": "Kristal elemen Cryo untuk ascension.",
+    "Category": "Material",
+    "Rarity": "FourStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_ElectroGem",
+    "DisplayName": "Fulgite Gem",
+    "Description": "Kristal elemen Electro untuk ascension.",
+    "Category": "Material",
+    "Rarity": "FourStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_Flameherb",
+    "DisplayName": "Flameherb",
+    "Description": "Herba merah menyala — specialty region vulkanik.",
+    "Category": "Material",
+    "Rarity": "TwoStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_Frostbloom",
+    "DisplayName": "Frostbloom",
+    "Description": "Bunga es abadi — specialty area salju.",
+    "Category": "Material",
+    "Rarity": "TwoStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_Stormfruit",
+    "DisplayName": "Stormfruit",
+    "Description": "Buah bermuatan listrik — specialty dataran tinggi.",
+    "Category": "Material",
+    "Rarity": "TwoStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_BossCore",
+    "DisplayName": "Primal Core",
+    "Description": "Inti energi world boss.",
+    "Category": "Material",
+    "Rarity": "FourStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_SlimeGel",
+    "DisplayName": "Slime Gel",
+    "Description": "Gel kenyal drop musuh kecil.",
+    "Category": "Material",
+    "Rarity": "OneStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_SlimeCore",
+    "DisplayName": "Slime Core",
+    "Description": "Inti padat slime besar / mob elite.",
+    "Category": "Material",
+    "Rarity": "ThreeStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_TalentBook_Ember",
+    "DisplayName": "Teachings of Ember",
+    "Description": "Buku talent elemen Pyro.",
+    "Category": "Material",
+    "Rarity": "ThreeStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_TalentBook_Frost",
+    "DisplayName": "Teachings of Frost",
+    "Description": "Buku talent elemen Cryo.",
+    "Category": "Material",
+    "Rarity": "ThreeStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_TalentBook_Storm",
+    "DisplayName": "Teachings of Storm",
+    "Description": "Buku talent elemen Electro.",
+    "Category": "Material",
+    "Rarity": "ThreeStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_WeeklyRelic",
+    "DisplayName": "Stormlord's Relic",
+    "Description": "Material langka weekly boss.",
+    "Category": "Material",
+    "Rarity": "FiveStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_WeaponOre",
+    "DisplayName": "Reinforce Ore",
+    "Description": "Ore penguat senjata (ascension).",
+    "Category": "Material",
+    "Rarity": "TwoStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Mat_WeaponCrystal",
+    "DisplayName": "Reinforce Crystal",
+    "Description": "Kristal penguat langka (phase tinggi).",
+    "Category": "Material",
+    "Rarity": "FourStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Item_HeroWit",
+    "DisplayName": "Hero's Wit",
+    "Description": "EXP karakter 20.000.",
+    "Category": "Material",
+    "Rarity": "FourStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Item_MysticOre",
+    "DisplayName": "Mystic Enhancement Ore",
+    "Description": "EXP senjata 10.000.",
+    "Category": "Material",
+    "Rarity": "ThreeStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Ing_RawMeat",
+    "DisplayName": "Raw Meat",
+    "Description": "Daging buruan segar.",
+    "Category": "Material",
+    "Rarity": "OneStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Ing_Rice",
+    "DisplayName": "Rice",
+    "Description": "Beras lokal.",
+    "Category": "Material",
+    "Rarity": "OneStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Ing_Mushroom",
+    "DisplayName": "Mushroom",
+    "Description": "Jamur hutan.",
+    "Category": "Material",
+    "Rarity": "OneStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Ing_Berry",
+    "DisplayName": "Sunberry",
+    "Description": "Beri manis, bahan tonik.",
+    "Category": "Material",
+    "Rarity": "OneStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Ing_Fish",
+    "DisplayName": "River Fish",
+    "Description": "Ikan sungai.",
+    "Category": "Material",
+    "Rarity": "OneStar",
+    "MaxStack": 999
+  },
+  {
+    "Name": "Food_GrilledMeat",
+    "DisplayName": "Grilled Meat",
+    "Description": "Heal cepat sederhana.",
+    "Category": "Food",
+    "Rarity": "OneStar",
+    "MaxStack": 99
+  },
+  {
+    "Name": "Food_HeartyStew",
+    "DisplayName": "Hearty Stew",
+    "Description": "Heal besar berbasis persen.",
+    "Category": "Food",
+    "Rarity": "ThreeStar",
+    "MaxStack": 99
+  },
+  {
+    "Name": "Food_RevivalBroth",
+    "DisplayName": "Revival Broth",
+    "Description": "Menghidupkan karakter tumbang.",
+    "Category": "Food",
+    "Rarity": "ThreeStar",
+    "MaxStack": 99
+  },
+  {
+    "Name": "Food_ATKSkewer",
+    "DisplayName": "Blazing Skewer",
+    "Description": "Buff ATK sementara.",
+    "Category": "Food",
+    "Rarity": "TwoStar",
+    "MaxStack": 99
+  },
+  {
+    "Name": "Food_CritBerryTart",
+    "DisplayName": "Critical Berry Tart",
+    "Description": "Buff Crit Rate sementara.",
+    "Category": "Food",
+    "Rarity": "ThreeStar",
+    "MaxStack": 99
+  }
+]

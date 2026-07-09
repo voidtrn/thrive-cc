@@ -1,0 +1,104 @@
+[
+  {
+    "Name": "Banner_Standard",
+    "BannerID": "Banner_Standard",
+    "BannerName": "Wanderlust Invocation",
+    "BannerType": "Standard",
+    "Pool5StarStandard": [
+      "Claymore_Flame"
+    ],
+    "Pool4Star": [
+      "Char_Yukine",
+      "Char_Shiden",
+      "Catalyst_Frost",
+      "Polearm_Storm",
+      "Bow_Gale",
+      "Sword_Flameforged"
+    ],
+    "Pool3Star": [
+      "Sword_Iron"
+    ]
+  },
+  {
+    "Name": "Banner_Beginner",
+    "BannerID": "Banner_Beginner",
+    "BannerName": "Beginner's Wish",
+    "BannerType": "Beginner",
+    "Featured4Star": [
+      "Char_Yukine"
+    ],
+    "Pool5StarStandard": [
+      "Claymore_Flame"
+    ],
+    "Pool4Star": [
+      "Char_Yukine",
+      "Char_Shiden",
+      "Catalyst_Frost",
+      "Polearm_Storm",
+      "Bow_Gale",
+      "Sword_Flameforged"
+    ],
+    "Pool3Star": [
+      "Sword_Iron"
+    ]
+  },
+  {
+    "Name": "Banner_Limited_Kagari",
+    "BannerID": "Banner_Limited_Kagari",
+    "BannerName": "Flamebound Ballad",
+    "BannerType": "LimitedCharacter",
+    "Featured5Star": [
+      "Char_Kagari"
+    ],
+    "Featured4Star": [
+      "Char_Shiden",
+      "Sword_Flameforged",
+      "Bow_Gale"
+    ],
+    "Pool5StarStandard": [
+      "Claymore_Flame"
+    ],
+    "Pool4Star": [
+      "Char_Yukine",
+      "Char_Shiden",
+      "Catalyst_Frost",
+      "Polearm_Storm",
+      "Bow_Gale",
+      "Sword_Flameforged"
+    ],
+    "Pool3Star": [
+      "Sword_Iron"
+    ],
+    "StartDate": "2026.07.01-00.00.00",
+    "EndDate": "2026.07.22-00.00.00"
+  },
+  {
+    "Name": "Banner_Weapon_v1",
+    "BannerID": "Banner_Weapon_v1",
+    "BannerName": "Epitome of the Flame",
+    "BannerType": "LimitedWeapon",
+    "Featured5Star": [
+      "Claymore_Flame"
+    ],
+    "Featured4Star": [
+      "Catalyst_Frost",
+      "Polearm_Storm"
+    ],
+    "Pool5StarStandard": [
+      "Claymore_Flame"
+    ],
+    "Pool4Star": [
+      "Char_Yukine",
+      "Char_Shiden",
+      "Catalyst_Frost",
+      "Polearm_Storm",
+      "Bow_Gale",
+      "Sword_Flameforged"
+    ],
+    "Pool3Star": [
+      "Sword_Iron"
+    ],
+    "StartDate": "2026.07.01-00.00.00",
+    "EndDate": "2026.07.22-00.00.00"
+  }
+]

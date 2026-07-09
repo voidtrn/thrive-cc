@@ -1,0 +1,236 @@
+[
+  {
+    "Name": "Hilichurl_T1",
+    "Type": "Hilichurl",
+    "BaseHP": 500,
+    "BaseATK": 50,
+    "BaseDEF": 30,
+    "Level": 5,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "None",
+    "MoraDrop": 60,
+    "MaterialDrops": [
+      "Mat_SlimeGel"
+    ],
+    "ArtifactDropChance": 0.05
+  },
+  {
+    "Name": "HilichurlArcher_T1",
+    "Type": "HilichurlArcher",
+    "BaseHP": 400,
+    "BaseATK": 60,
+    "BaseDEF": 25,
+    "Level": 5,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "None",
+    "MoraDrop": 60,
+    "MaterialDrops": [
+      "Mat_SlimeGel"
+    ],
+    "ArtifactDropChance": 0.05
+  },
+  {
+    "Name": "Slime_Pyro_T1",
+    "Type": "Slime",
+    "BaseHP": 350,
+    "BaseATK": 45,
+    "BaseDEF": 20,
+    "Level": 4,
+    "ElementalRES": {
+      "Pyro": 1.0,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Pyro",
+    "MoraDrop": 40,
+    "MaterialDrops": [
+      "Mat_SlimeGel"
+    ],
+    "ArtifactDropChance": 0.05
+  },
+  {
+    "Name": "Slime_Cryo_T1",
+    "Type": "Slime",
+    "BaseHP": 350,
+    "BaseATK": 45,
+    "BaseDEF": 20,
+    "Level": 4,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 1.0,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Cryo",
+    "MoraDrop": 40,
+    "MaterialDrops": [
+      "Mat_SlimeGel"
+    ],
+    "ArtifactDropChance": 0.05
+  },
+  {
+    "Name": "Slime_Electro_T1",
+    "Type": "Slime",
+    "BaseHP": 350,
+    "BaseATK": 45,
+    "BaseDEF": 20,
+    "Level": 4,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 1.0,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Electro",
+    "MoraDrop": 40,
+    "MaterialDrops": [
+      "Mat_SlimeGel"
+    ],
+    "ArtifactDropChance": 0.05
+  },
+  {
+    "Name": "Mitachurl_T2",
+    "Type": "Mitachurl",
+    "BaseHP": 3500,
+    "BaseATK": 140,
+    "BaseDEF": 80,
+    "Level": 20,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "None",
+    "MoraDrop": 300,
+    "MaterialDrops": [
+      "Mat_SlimeGel",
+      "Mat_SlimeCore"
+    ],
+    "ArtifactDropChance": 0.25
+  },
+  {
+    "Name": "AbyssMage_Pyro_T2",
+    "Type": "AbyssMage",
+    "BaseHP": 2200,
+    "BaseATK": 160,
+    "BaseDEF": 60,
+    "Level": 20,
+    "ElementalRES": {
+      "Pyro": 0.4,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Pyro",
+    "MoraDrop": 350,
+    "MaterialDrops": [
+      "Mat_SlimeCore"
+    ],
+    "ArtifactDropChance": 0.25
+  },
+  {
+    "Name": "AbyssMage_Cryo_T2",
+    "Type": "AbyssMage",
+    "BaseHP": 2200,
+    "BaseATK": 160,
+    "BaseDEF": 60,
+    "Level": 20,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 0.4,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Cryo",
+    "MoraDrop": 350,
+    "MaterialDrops": [
+      "Mat_SlimeCore"
+    ],
+    "ArtifactDropChance": 0.25
+  },
+  {
+    "Name": "Slime_Pyro_T2",
+    "Type": "Slime",
+    "BaseHP": 1800,
+    "BaseATK": 120,
+    "BaseDEF": 50,
+    "Level": 20,
+    "ElementalRES": {
+      "Pyro": 1.0,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.1,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Pyro",
+    "MoraDrop": 150,
+    "MaterialDrops": [
+      "Mat_SlimeGel",
+      "Mat_SlimeCore"
+    ],
+    "ArtifactDropChance": 0.05
+  },
+  {
+    "Name": "Boss_StormColossus",
+    "Type": "Mitachurl",
+    "BaseHP": 25000,
+    "BaseATK": 320,
+    "BaseDEF": 150,
+    "Level": 30,
+    "ElementalRES": {
+      "Pyro": 0.1,
+      "Hydro": 0.1,
+      "Cryo": 0.1,
+      "Electro": 0.5,
+      "Anemo": 0.1,
+      "Geo": 0.1,
+      "Dendro": 0.1
+    },
+    "InnateElement": "Electro",
+    "MoraDrop": 2000,
+    "MaterialDrops": [
+      "Mat_BossCore",
+      "Mat_ElectroGem",
+      "Mat_WeeklyRelic"
+    ],
+    "ArtifactDropChance": 1.0
+  }
+]

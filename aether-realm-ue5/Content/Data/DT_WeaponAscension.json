@@ -108,6 +108,114 @@
     ]
   },
   {
+    "Name": "Sword_Flameforged_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Flameforged_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Flameforged_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 30000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 9
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Flameforged_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Flameforged_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 50000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Sword_Flameforged_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 6
+      }
+    ]
+  },
+  {
     "Name": "Catalyst_Frost_0",
     "Phase": 0,
     "RequiredLevel": 20,
@@ -305,6 +413,114 @@
   },
   {
     "Name": "Polearm_Storm_5",
+    "Phase": 5,
+    "RequiredLevel": 80,
+    "MoraCost": 60000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 18
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Bow_Gale_0",
+    "Phase": 0,
+    "RequiredLevel": 20,
+    "MoraCost": 10000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 3
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 3
+      }
+    ]
+  },
+  {
+    "Name": "Bow_Gale_1",
+    "Phase": 1,
+    "RequiredLevel": 40,
+    "MoraCost": 20000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 6
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 6
+      }
+    ]
+  },
+  {
+    "Name": "Bow_Gale_2",
+    "Phase": 2,
+    "RequiredLevel": 50,
+    "MoraCost": 30000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 9
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 9
+      }
+    ]
+  },
+  {
+    "Name": "Bow_Gale_3",
+    "Phase": 3,
+    "RequiredLevel": 60,
+    "MoraCost": 40000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 12
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 2
+      }
+    ]
+  },
+  {
+    "Name": "Bow_Gale_4",
+    "Phase": 4,
+    "RequiredLevel": 70,
+    "MoraCost": 50000,
+    "Materials": [
+      {
+        "ItemId": "Mat_WeaponOre",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_SlimeGel",
+        "Count": 15
+      },
+      {
+        "ItemId": "Mat_WeaponCrystal",
+        "Count": 4
+      }
+    ]
+  },
+  {
+    "Name": "Bow_Gale_5",
     "Phase": 5,
     "RequiredLevel": 80,
     "MoraCost": 60000,

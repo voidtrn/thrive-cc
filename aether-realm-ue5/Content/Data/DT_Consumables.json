@@ -1,0 +1,59 @@
+[
+  {
+    "Name": "Food_GrilledMeat",
+    "DisplayName": "",
+    "Effect": "Heal",
+    "Magnitude": 800.0,
+    "Recipe": {
+      "Ing_RawMeat": 2
+    }
+  },
+  {
+    "Name": "Food_HeartyStew",
+    "DisplayName": "",
+    "Effect": "HealPercent",
+    "Magnitude": 0.4,
+    "Recipe": {
+      "Ing_RawMeat": 2,
+      "Ing_Mushroom": 2,
+      "Ing_Rice": 1
+    }
+  },
+  {
+    "Name": "Food_RevivalBroth",
+    "DisplayName": "",
+    "Effect": "Revive",
+    "Magnitude": 0.25,
+    "Recipe": {
+      "Ing_Fish": 2,
+      "Ing_Berry": 2,
+      "Ing_Rice": 1
+    }
+  },
+  {
+    "Name": "Food_ATKSkewer",
+    "DisplayName": "",
+    "Effect": "StatBuff",
+    "Magnitude": 0.0,
+    "Recipe": {
+      "Ing_RawMeat": 3,
+      "Ing_Berry": 1
+    },
+    "BuffStat": "ATKPercent",
+    "BuffDelta": 0.12,
+    "BuffDuration": 300.0
+  },
+  {
+    "Name": "Food_CritBerryTart",
+    "DisplayName": "",
+    "Effect": "StatBuff",
+    "Magnitude": 0.0,
+    "Recipe": {
+      "Ing_Berry": 3,
+      "Ing_Rice": 2
+    },
+    "BuffStat": "CritRate",
+    "BuffDelta": 0.08,
+    "BuffDuration": 300.0
+  }
+]
