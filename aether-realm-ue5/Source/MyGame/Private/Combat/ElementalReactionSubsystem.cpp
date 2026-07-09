@@ -1,6 +1,7 @@
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Character/CharacterBase.h"
+#include "Engine/OverlapResult.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyGame.h"
 
@@ -371,27 +372,50 @@ void UElementalReactionSubsystem::DoTransformativeDamage(
 	const float Damage = UDamageCalculator::TransformativeBaseDamage(Instigator->Level, ReactionCoefficient)
 		* (1.f + UDamageCalculator::TransformativeEmBonus(Instigator->ElementalMastery));
 
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Enemy"), Enemies);
+	TArray<ACharacterBase*> Enemies;
+	GetEnemiesInRadius(GetWorld(), Center, Radius, Enemies);
 
-	for (AActor* Actor : Enemies)
+	for (ACharacterBase* Victim : Enemies)
 	{
-		if (FVector::Dist(Actor->GetActorLocation(), Center) > Radius)
-		{
-			continue;
-		}
-		if (ACharacterBase* Victim = Cast<ACharacterBase>(Actor))
-		{
-			// Reaksi transformative tetap kena elemental RES musuh (Genshin)
-			const float FinalDmg = Damage * UDamageCalculator::ResMultiplier(Victim->GetResistance(Element));
-			Victim->ApplyDamage(FinalDmg, Element,
-				bKnockback ? EHitReaction::Knockback : EHitReaction::Light);
+		// Reaksi transformative tetap kena elemental RES musuh (Genshin)
+		const float FinalDmg = Damage * UDamageCalculator::ResMultiplier(Victim->GetResistance(Element));
+		Victim->ApplyDamage(FinalDmg, Element,
+			bKnockback ? EHitReaction::Knockback : EHitReaction::Light);
 
-			if (bKnockback)
-			{
-				const FVector Dir = (Victim->GetActorLocation() - Center).GetSafeNormal2D();
-				Victim->LaunchCharacter(Dir * 600.f + FVector(0, 0, 300.f), true, true);
-			}
+		if (bKnockback)
+		{
+			const FVector Dir = (Victim->GetActorLocation() - Center).GetSafeNormal2D();
+			Victim->LaunchCharacter(Dir * 600.f + FVector(0, 0, 300.f), true, true);
+		}
+	}
+}
+
+void UElementalReactionSubsystem::GetEnemiesInRadius(
+	const UWorld* World, const FVector& Center, float Radius,
+	TArray<ACharacterBase*>& OutEnemies, FName RequiredTag)
+{
+	OutEnemies.Reset();
+	if (!World)
+	{
+		return;
+	}
+
+	TArray<FOverlapResult> Overlaps;
+	FCollisionObjectQueryParams ObjectParams;
+	ObjectParams.AddObjectTypesToQuery(ECC_Pawn);
+
+	World->OverlapMultiByObjectType(
+		Overlaps, Center, FQuat::Identity, ObjectParams, FCollisionShape::MakeSphere(Radius));
+
+	for (const FOverlapResult& Overlap : Overlaps)
+	{
+		ACharacterBase* Enemy = Cast<ACharacterBase>(Overlap.GetActor());
+		if (Enemy
+			&& Enemy->ActorHasTag(RequiredTag)
+			&& FVector::Dist(Enemy->GetActorLocation(), Center) <= Radius
+			&& !OutEnemies.Contains(Enemy)) // multi-body bisa duplikat actor
+		{
+			OutEnemies.Add(Enemy);
 		}
 	}
 }

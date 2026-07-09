@@ -104,6 +104,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Elemental")
 	EElement GetPrimaryAura(AActor* Target) const;
 
+	/**
+	 * Musuh dalam radius via sphere overlap (spatial query — O(lokal)), pengganti
+	 * GetAllActorsWithTag yang scan seluruh world O(semua actor). Distance check
+	 * tetap pakai lokasi actor supaya semantik identik dengan versi lama.
+	 */
+	static void GetEnemiesInRadius(
+		const UWorld* World, const FVector& Center, float Radius,
+		TArray<ACharacterBase*>& OutEnemies, FName RequiredTag = FName(TEXT("Enemy")));
+
 	UPROPERTY(BlueprintAssignable, Category = "Elemental")
 	FOnReactionTriggered OnReactionTriggered;
 

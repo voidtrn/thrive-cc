@@ -1,5 +1,6 @@
 #include "Character/EnemyAIController.h"
 #include "Character/EnemyBase.h"
+#include "Combat/ElementalReactionSubsystem.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Hearing.h"
@@ -96,19 +97,24 @@ void AEnemyAIController::SetCombatTarget(AActor* Target)
 
 void AEnemyAIController::AlertNearbyAllies(AActor* Target)
 {
-	TArray<AActor*> Allies;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyBase::StaticClass(), Allies);
-
-	const FVector MyLocation = GetPawn() ? GetPawn()->GetActorLocation() : FVector::ZeroVector;
-
-	for (AActor* Ally : Allies)
+	if (!GetPawn())
 	{
-		if (Ally == GetPawn() || FVector::Dist(Ally->GetActorLocation(), MyLocation) > TeamAggroRadius)
+		return;
+	}
+	const FVector MyLocation = GetPawn()->GetActorLocation();
+
+	// Sphere overlap se-radius aggro, bukan scan seluruh world (EnemyBase
+	// selalu ber-tag "Enemy" dari constructor)
+	TArray<ACharacterBase*> Allies;
+	UElementalReactionSubsystem::GetEnemiesInRadius(GetWorld(), MyLocation, TeamAggroRadius, Allies);
+
+	for (ACharacterBase* Ally : Allies)
+	{
+		if (Ally == GetPawn())
 		{
 			continue;
 		}
-		if (AEnemyAIController* AllyController =
-			Cast<AEnemyAIController>(Cast<APawn>(Ally)->GetController()))
+		if (AEnemyAIController* AllyController = Cast<AEnemyAIController>(Ally->GetController()))
 		{
 			AllyController->SetCombatTarget(Target);
 		}

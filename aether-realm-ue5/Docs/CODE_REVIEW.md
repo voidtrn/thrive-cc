@@ -104,25 +104,35 @@ Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
    AttributeSet + GameplayEffect saat itu terasa. ASC sudah terpasang =
    migrasi mulus.
 
-3. **Climb custom movement tanpa `FSavedMove`.** Single-player mulus.
-   Co-op: climb akan "karet"/desync di client. Wajib tambah SavedMove
-   sebelum co-op serius.
+3. ~~**Climb custom movement tanpa `FSavedMove`.**~~ ✅ SELESAI —
+   `FSavedMove_OpenWorld` bawa sprint/glide/climb via compressed flags
+   (FLAG_Custom_0/1/2). Climb jadi desire-flag `bWantsToClimb`, transisi
+   dieksekusi di `UpdateCharacterStateBeforeMovement` (identik client/server).
+   Sisa kecil: `JumpClimb` (impulse one-shot) belum dibawa saved move —
+   catatan di header, pindahkan ke Server RPC kalau terasa snap di co-op.
 
-4. **Damage number spawn actor + widget component per hit.** Kalau ratusan
-   hit/detik (AOE besar, banyak musuh) → banyak alokasi. Pertimbangkan
-   object pool damage number saat profiling nanti.
+4. ~~**Damage number spawn actor + widget component per hit.**~~ ✅ SELESAI —
+   `UDamageNumberPoolSubsystem` (world subsystem): pool max 64 actor, reuse
+   hide/unhide, steal paling tua saat penuh. BP tidak berubah
+   (`SpawnDamageNumber` delegasi ke pool).
 
-5. **`GetAllActorsWithTag("Enemy")` / `GetAllActorsOfClass`** dipakai di
-   reaction AOE, plunge, cheat, minimap. Mahal kalau musuh banyak & dipanggil
-   sering. Ganti ke overlap query / spatial grid saat musuh > 50.
+5. ~~**`GetAllActorsWithTag("Enemy")` / `GetAllActorsOfClass`**~~ ✅ SELESAI
+   (hot path) — helper `UElementalReactionSubsystem::GetEnemiesInRadius`
+   (sphere overlap ECC_Pawn + filter tag). Dipakai: reaction AOE, plunge,
+   lock-on, alert allies AI, chest. Cheat manager & minimap sengaja tetap
+   scan (dev-only / jarang dipanggil).
 
 6. **Timestamp save tidak dimuat** (sengaja) — tapi kalau nanti bikin UI
    "save slot list dengan tanggal", pastikan baca `Save->Timestamp` langsung
    dari file, bukan dari GameInstance.
 
-7. **Wish 50/50 & pity antar-banner-tipe.** Sudah benar, tapi belum ada
-   test untuk pity soft/hard (thresholds protected). Tambah friend test atau
-   expose untuk validasi statistik sebelum rilis (gacha wajib benar — legal).
+7. ~~**Wish 50/50 & pity antar-banner-tipe.**~~ ✅ SELESAI — test seam
+   `RollSingleForTest`/`GetPityThresholdsForTest` (gated
+   `WITH_DEV_AUTOMATION_TESTS`) + 6 automation test baru di
+   `WishSystemTest.cpp`: threshold (75/90, 65/80), hard pity invariant,
+   interval 20k pull (gap 5* ≤ 90, guarantee 4*), 50/50 + guarantee flag,
+   epitomized path (2 point → target, akumulasi/reset), soft pity ramp
+   statistik (rate zona soft >> base).
 
 8. **Localization**: kalau text sudah terlanjur di-hardcode di BP yang dibuat
    nanti, retrofit mahal. Disiplin FText + String Table dari awal (course
@@ -137,7 +147,7 @@ Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
 | C++ class | 46 |
 | Source file | 100 |
 | Setup/review docs | 21 |
-| Automation test | 2 file (5 test) |
+| Automation test | 2 file (11 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 

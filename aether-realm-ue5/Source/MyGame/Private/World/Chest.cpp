@@ -1,5 +1,6 @@
 #include "World/Chest.h"
 #include "Character/EnemyBase.h"
+#include "Combat/ElementalReactionSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -128,14 +129,14 @@ int32 AChest::RollPrimogems() const
 
 bool AChest::AreNearbyEnemiesDead() const
 {
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyBase::StaticClass(), Enemies);
+	// Sphere overlap se-radius cek, bukan scan seluruh world
+	TArray<ACharacterBase*> Enemies;
+	UElementalReactionSubsystem::GetEnemiesInRadius(
+		GetWorld(), GetActorLocation(), EnemyCheckRadius, Enemies);
 
-	for (const AActor* Actor : Enemies)
+	for (const ACharacterBase* Enemy : Enemies)
 	{
-		const AEnemyBase* Enemy = Cast<AEnemyBase>(Actor);
-		if (Enemy && Enemy->IsAlive()
-			&& FVector::Dist(Enemy->GetActorLocation(), GetActorLocation()) < EnemyCheckRadius)
+		if (Enemy->IsAlive())
 		{
 			return false;
 		}

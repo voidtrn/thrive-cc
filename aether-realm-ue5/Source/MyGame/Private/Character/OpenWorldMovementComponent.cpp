@@ -105,25 +105,50 @@ bool UOpenWorldMovementComponent::TraceClimbSurface(FHitResult& OutHit) const
 	return GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, Params);
 }
 
-bool UOpenWorldMovementComponent::TryStartClimbing()
+bool UOpenWorldMovementComponent::CanEnterClimb(FHitResult& OutHit) const
 {
 	if (IsClimbing() || IsSwimming())
 	{
 		return false;
 	}
 
-	FHitResult Hit;
-	if (!TraceClimbSurface(Hit))
+	if (!TraceClimbSurface(OutHit))
 	{
 		return false;
 	}
 
 	// Sudut permukaan vs horizontal: > MinClimbAngle = climbable wall
 	const float SurfaceAngle = FMath::RadiansToDegrees(
-		FMath::Acos(FVector::DotProduct(Hit.ImpactNormal, FVector::UpVector)));
-	if (SurfaceAngle < MinClimbAngle)
+		FMath::Acos(FVector::DotProduct(OutHit.ImpactNormal, FVector::UpVector)));
+	return SurfaceAngle >= MinClimbAngle;
+}
+
+bool UOpenWorldMovementComponent::TryStartClimbing()
+{
+	FHitResult Hit;
+	if (!CanEnterClimb(Hit))
 	{
 		return false;
+	}
+
+	// Transisi aktual terjadi di UpdateCharacterStateBeforeMovement (frame
+	// yang sama, sebelum phys) — flag ini ikut compressed flags ke server.
+	bWantsToClimb = true;
+	return true;
+}
+
+void UOpenWorldMovementComponent::StopClimbing()
+{
+	bWantsToClimb = false;
+}
+
+void UOpenWorldMovementComponent::EnterClimb()
+{
+	FHitResult Hit;
+	if (!CanEnterClimb(Hit))
+	{
+		bWantsToClimb = false;
+		return;
 	}
 
 	ClimbSurfaceNormal = Hit.ImpactNormal;
@@ -145,17 +170,16 @@ bool UOpenWorldMovementComponent::TryStartClimbing()
 
 	// Hadapkan karakter ke dinding
 	GetOwner()->SetActorRotation((-ClimbSurfaceNormal).Rotation());
-	return true;
 }
 
-void UOpenWorldMovementComponent::StopClimbing()
+void UOpenWorldMovementComponent::ExitClimb()
 {
-	if (!IsClimbing())
+	bWantsToClimb = false;
+	if (IsClimbing())
 	{
-		return;
+		SetMovementMode(MOVE_Falling);
+		bOrientRotationToMovement = true;
 	}
-	SetMovementMode(MOVE_Falling);
-	bOrientRotationToMovement = true;
 }
 
 void UOpenWorldMovementComponent::JumpClimb()
@@ -185,7 +209,7 @@ void UOpenWorldMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
 	{
 		// Sampai puncak — dorong ke atas-depan lalu keluar climb
 		Velocity = FVector::UpVector * 300.f + GetOwner()->GetActorForwardVector() * 200.f;
-		StopClimbing();
+		ExitClimb();
 		return;
 	}
 	ClimbSurfaceNormal = Hit.ImpactNormal;
@@ -211,4 +235,130 @@ void UOpenWorldMovementComponent::PhysClimb(float deltaTime, int32 Iterations)
 	{
 		SlideAlongSurface(Delta, 1.f - MoveHit.Time, MoveHit.Normal, MoveHit, true);
 	}
+}
+
+// ---------- Network prediction (co-op) ----------
+
+void UOpenWorldMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSeconds)
+{
+	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
+
+	// Jalan identik di autonomous client & server (replay ServerMove) —
+	// transisi climb deterministik dari flag + posisi.
+	if (CharacterOwner && CharacterOwner->GetLocalRole() != ROLE_SimulatedProxy)
+	{
+		if (bWantsToClimb && !IsClimbing())
+		{
+			EnterClimb(); // gagal trace → clear flag sendiri
+		}
+		else if (!bWantsToClimb && IsClimbing())
+		{
+			SetMovementMode(MOVE_Falling);
+			bOrientRotationToMovement = true;
+		}
+	}
+}
+
+void UOpenWorldMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
+{
+	Super::UpdateFromCompressedFlags(Flags);
+
+	// Server menerima flag dari ServerMove client.
+	const bool bNewSprint = (Flags & FSavedMove_Character::FLAG_Custom_0) != 0;
+	if (bNewSprint != bWantsToSprint)
+	{
+		bWantsToSprint = bNewSprint;
+		RefreshMaxWalkSpeed();
+	}
+
+	const bool bNewGlide = (Flags & FSavedMove_Character::FLAG_Custom_1) != 0;
+	if (bNewGlide != bIsGliding)
+	{
+		bNewGlide ? StartGliding() : StopGliding();
+	}
+
+	bWantsToClimb = (Flags & FSavedMove_Character::FLAG_Custom_2) != 0;
+}
+
+FNetworkPredictionData_Client* UOpenWorldMovementComponent::GetPredictionData_Client() const
+{
+	if (!ClientPredictionData)
+	{
+		UOpenWorldMovementComponent* MutableThis = const_cast<UOpenWorldMovementComponent*>(this);
+		MutableThis->ClientPredictionData = new FNetworkPredictionData_Client_OpenWorld(*this);
+	}
+	return ClientPredictionData;
+}
+
+// ---------- FSavedMove_OpenWorld ----------
+
+void FSavedMove_OpenWorld::Clear()
+{
+	Super::Clear();
+	bSavedWantsToSprint = 0;
+	bSavedIsGliding = 0;
+	bSavedWantsToClimb = 0;
+}
+
+uint8 FSavedMove_OpenWorld::GetCompressedFlags() const
+{
+	uint8 Flags = Super::GetCompressedFlags();
+	if (bSavedWantsToSprint)
+	{
+		Flags |= FLAG_Custom_0;
+	}
+	if (bSavedIsGliding)
+	{
+		Flags |= FLAG_Custom_1;
+	}
+	if (bSavedWantsToClimb)
+	{
+		Flags |= FLAG_Custom_2;
+	}
+	return Flags;
+}
+
+bool FSavedMove_OpenWorld::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InCharacter, float MaxDelta) const
+{
+	const FSavedMove_OpenWorld* Other = static_cast<const FSavedMove_OpenWorld*>(NewMove.Get());
+	if (bSavedWantsToSprint != Other->bSavedWantsToSprint
+		|| bSavedIsGliding != Other->bSavedIsGliding
+		|| bSavedWantsToClimb != Other->bSavedWantsToClimb)
+	{
+		return false;
+	}
+	return Super::CanCombineWith(NewMove, InCharacter, MaxDelta);
+}
+
+void FSavedMove_OpenWorld::SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& NewAccel,
+	FNetworkPredictionData_Client_Character& ClientData)
+{
+	Super::SetMoveFor(C, InDeltaTime, NewAccel, ClientData);
+
+	if (const UOpenWorldMovementComponent* Movement =
+		Cast<UOpenWorldMovementComponent>(C->GetCharacterMovement()))
+	{
+		bSavedWantsToSprint = Movement->bWantsToSprint;
+		bSavedIsGliding = Movement->bIsGliding;
+		bSavedWantsToClimb = Movement->bWantsToClimb;
+	}
+}
+
+void FSavedMove_OpenWorld::PrepMoveFor(ACharacter* C)
+{
+	Super::PrepMoveFor(C);
+
+	if (UOpenWorldMovementComponent* Movement =
+		Cast<UOpenWorldMovementComponent>(C->GetCharacterMovement()))
+	{
+		Movement->bWantsToSprint = bSavedWantsToSprint;
+		Movement->RefreshMaxWalkSpeed();
+		Movement->bIsGliding = bSavedIsGliding;
+		Movement->bWantsToClimb = bSavedWantsToClimb;
+	}
+}
+
+FSavedMovePtr FNetworkPredictionData_Client_OpenWorld::AllocateNewMove()
+{
+	return FSavedMovePtr(new FSavedMove_OpenWorld());
 }

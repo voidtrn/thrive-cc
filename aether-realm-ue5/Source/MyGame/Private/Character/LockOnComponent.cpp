@@ -1,7 +1,8 @@
 #include "Character/LockOnComponent.h"
+#include "Character/CharacterBase.h"
+#include "Combat/ElementalReactionSubsystem.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 ULockOnComponent::ULockOnComponent()
@@ -69,13 +70,16 @@ void ULockOnComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 AActor* ULockOnComponent::FindBestTarget() const
 {
 	const AActor* Owner = GetOwner();
-	TArray<AActor*> Candidates;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), EnemyTag, Candidates);
+
+	// Sphere overlap se-radius search, bukan scan seluruh world
+	TArray<ACharacterBase*> Candidates;
+	UElementalReactionSubsystem::GetEnemiesInRadius(
+		GetWorld(), Owner->GetActorLocation(), SearchRadius, Candidates, EnemyTag);
 
 	AActor* Best = nullptr;
 	float BestDist = SearchRadius;
 
-	for (AActor* Candidate : Candidates)
+	for (ACharacterBase* Candidate : Candidates)
 	{
 		const float Dist = FVector::Dist(Owner->GetActorLocation(), Candidate->GetActorLocation());
 		if (Dist < BestDist && HasLineOfSight(Candidate))

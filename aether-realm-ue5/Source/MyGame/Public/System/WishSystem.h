@@ -66,6 +66,20 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Wish")
 	FOnWishCompleted OnWishCompleted;
 
+#if WITH_DEV_AUTOMATION_TESTS
+	// Test seam: RollSingle/MakeResult adalah pure logic (tidak menyentuh
+	// GameInstance), jadi automation test bisa memvalidasi pity/50-50/
+	// epitomized path langsung tanpa setup dunia. Gacha wajib akurat (legal).
+	FWishResult RollSingleForTest(const FBannerData& Banner, FBannerPityState& Pity)
+	{
+		return RollSingle(Banner, Pity);
+	}
+	static void GetPityThresholdsForTest(EBannerType Type, int32& OutSoftPity, int32& OutHardPity)
+	{
+		GetPityThresholds(Type, OutSoftPity, OutHardPity);
+	}
+#endif
+
 	// ---------- Konstanta rate (tuning di satu tempat) ----------
 	static constexpr float Rate5Star = 0.006f;
 	static constexpr float Rate4Star = 0.051f;

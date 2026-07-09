@@ -15,11 +15,18 @@ enum class ECustomMovementMode : uint8
 /**
  * Movement custom: 3 tier kecepatan darat (walk/run/sprint sesuai
  * blend space 0-250 / 250-500 / 500-800), glide, climb (custom mode).
+ *
+ * Co-op ready: sprint/glide/climb dibawa sebagai compressed flags lewat
+ * FSavedMove_OpenWorld, jadi server mereplay input yang sama dan autonomous
+ * proxy tidak rubber-band. Transisi climb dieksekusi di
+ * UpdateCharacterStateBeforeMovement (jalan identik di client & server).
  */
 UCLASS()
 class MYGAME_API UOpenWorldMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
+
+	friend class FSavedMove_OpenWorld;
 
 public:
 	UOpenWorldMovementComponent();
@@ -47,7 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Movement|Climb")
 	void StopClimbing();
 
-	/** Lompatan kecil ke atas saat climbing. Stamina dicek pemanggil (25). */
+	/** Lompatan kecil ke atas saat climbing. Stamina dicek pemanggil (25).
+	    Catatan co-op: impulse one-shot ini belum dibawa saved move — kalau
+	    terasa snap di client, pindahkan ke Server RPC atau flag berdurasi. */
 	UFUNCTION(BlueprintCallable, Category = "Movement|Climb")
 	void JumpClimb();
 
@@ -103,9 +112,17 @@ public:
 	virtual void PhysFalling(float deltaTime, int32 Iterations) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 
+	// ---------- Network prediction (co-op) ----------
+	virtual FNetworkPredictionData_Client* GetPredictionData_Client() const override;
+	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
+	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
+
 protected:
 	bool bWantsToSprint = false;
 	bool bIsGliding = false;
+	/** Desire flag climb — direplikasi via compressed flags, transisi aktual
+	    di UpdateCharacterStateBeforeMovement supaya server & client sinkron. */
+	bool bWantsToClimb = false;
 
 	float DefaultAirControl = 0.35f;
 	float CurrentClimbCostMultiplier = 1.f;
@@ -114,4 +131,49 @@ protected:
 	void RefreshMaxWalkSpeed();
 	void PhysClimb(float deltaTime, int32 Iterations);
 	bool TraceClimbSurface(FHitResult& OutHit) const;
+
+	/** Trace + cek sudut — dipakai TryStartClimbing (UX) dan transisi actual. */
+	bool CanEnterClimb(FHitResult& OutHit) const;
+	void EnterClimb();
+	void ExitClimb();
+};
+
+/**
+ * Saved move dengan flag custom: sprint (FLAG_Custom_0), glide (FLAG_Custom_1),
+ * climb (FLAG_Custom_2). Tanpa ini, server tidak tahu state custom saat
+ * mereplay ServerMove → autonomous proxy climb/glide "karet" di co-op.
+ */
+class MYGAME_API FSavedMove_OpenWorld : public FSavedMove_Character
+{
+	using Super = FSavedMove_Character;
+
+public:
+	uint8 bSavedWantsToSprint : 1;
+	uint8 bSavedIsGliding : 1;
+	uint8 bSavedWantsToClimb : 1;
+
+	FSavedMove_OpenWorld()
+		: bSavedWantsToSprint(0), bSavedIsGliding(0), bSavedWantsToClimb(0)
+	{
+	}
+
+	virtual void Clear() override;
+	virtual uint8 GetCompressedFlags() const override;
+	virtual bool CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* InCharacter, float MaxDelta) const override;
+	virtual void SetMoveFor(ACharacter* C, float InDeltaTime, FVector const& NewAccel,
+		FNetworkPredictionData_Client_Character& ClientData) override;
+	virtual void PrepMoveFor(ACharacter* C) override;
+};
+
+class MYGAME_API FNetworkPredictionData_Client_OpenWorld : public FNetworkPredictionData_Client_Character
+{
+	using Super = FNetworkPredictionData_Client_Character;
+
+public:
+	FNetworkPredictionData_Client_OpenWorld(const UCharacterMovementComponent& ClientMovement)
+		: Super(ClientMovement)
+	{
+	}
+
+	virtual FSavedMovePtr AllocateNewMove() override;
 };
