@@ -63,6 +63,10 @@ void AEnemyBoss::HandleHealthChangedForPhase(float NewHP, float MaxHPValue)
 
 void AEnemyBoss::EnterPhase(int32 NewPhase)
 {
+	// Simpan sebelum overwrite — satu hit besar bisa lompat >1 threshold
+	// (EnterPhase(2) langsung tanpa pernah EnterPhase(1)); gate thread di
+	// bawah pakai ini, bukan NewPhase == 1.
+	const int32 PreviousPhase = CurrentPhase;
 	CurrentPhase = NewPhase;
 
 	if (PhaseATKMultipliers.IsValidIndex(NewPhase))
@@ -93,10 +97,13 @@ void AEnemyBoss::EnterPhase(int32 NewPhase)
 		Pacing->ReportBossPhaseChanged(NewPhase, GetActorLocation());
 	}
 
-	// Chronicle: boss sudah dilawan (phase pertama tercapai) tapi belum
-	// tumbang = thread Zeigarnik terbuka. Kalau pemain kabur/mati, epilog
-	// sesi menutup dengan cliffhanger boss ini (FOUNDATIONS §1b).
-	if (HasAuthority() && NewPhase == 1)
+	// Chronicle: boss sudah dilawan (keluar dari phase 0) tapi belum tumbang
+	// = thread Zeigarnik terbuka. Kalau pemain kabur/mati, epilog sesi
+	// menutup dengan cliffhanger boss ini (FOUNDATIONS §1b).
+	// BossId = archetype (StatsRowName) — ASUMSI KONTEN: satu archetype boss
+	// = satu encounter aktif di world. Dua boss archetype sama yang hidup
+	// bersamaan akan share satu thread (resolve salah satu menutup keduanya).
+	if (HasAuthority() && PreviousPhase == 0)
 	{
 		if (USessionChronicleSubsystem* Chronicle = GetChronicle(GetWorld()))
 		{

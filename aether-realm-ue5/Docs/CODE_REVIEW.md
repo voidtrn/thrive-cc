@@ -161,6 +161,19 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
 | `GetPlayerHPFraction` cuma baca player 0 — anggota co-op sekarat tak terhitung stress | ✅ Fixed — pakai HP fraction terendah semua player controller |
 | `AlertNearbyAllies` pakai `GetAllActorsOfClass` per aggro pertama | 📋 Pre-existing, sudah tercatat di ANTISIPASI #5 (threshold >50 musuh) |
 
+## 🆕 PSYCHOLOGY PASS — Session Chronicle (memoar)
+
+`USessionChronicleSubsystem` — teori & rasional di
+`GAME_PSYCHOLOGY_FOUNDATIONS.md`. Review `ue5-reviewer`: 4 finding
+(0🔴 2🟡 0🔵 2❓), status:
+
+| Finding | Status |
+|---|---|
+| Phase-skip: satu hit lompat >1 threshold → `EnterPhase(1)` tak pernah jalan → thread "BossUnfinished" tak kebuka | ✅ Fixed — gate pakai `PreviousPhase == 0` (dicapture sebelum overwrite), bukan `NewPhase == 1` |
+| `ImportFromSave` tak trim over-cap (cap turun di update / save korup) → drain 1 entri per RecordMoment | ✅ Fixed — trim penuh saat import |
+| `EmitHighlight` forward ke chronicle tanpa authority gate → client bisa persist entri dari pacing state lokal non-authoritative | ✅ Fixed — skip di `NM_Client`; broadcast presentasi tetap semua mesin |
+| BossId pakai archetype (`StatsRowName`) — 2 boss archetype sama hidup bersamaan share 1 thread | 📋 Diterima sebagai asumsi konten (1 archetype = 1 encounter aktif), didokumentasikan di kode. Ganti per-instance id kalau desain berubah |
+
 ## ⚠️ ANTISIPASI — yang akan menggigit nanti
 
 1. **Belum pernah di-compile.** Harapkan error kecil build pertama

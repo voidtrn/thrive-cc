@@ -152,7 +152,18 @@ void UPacingDirectorSubsystem::ReportBossPhaseChanged(int32 NewPhase, const FVec
 
 void UPacingDirectorSubsystem::EmitHighlight(FName Reason, const FVector& Location, float Intensity)
 {
+	// Broadcast presentasi (slow-mo/sting BP) boleh di semua mesin...
 	OnHighlightMoment.Broadcast(Reason, Location);
+
+	// ...tapi penulisan memoar hanya di server/host — konsisten dengan gate
+	// HasAuthority di penulis chronicle lain (BossUnfinished/BossSlain/Fallen).
+	// Tanpa ini, ReportChainReaction dari BP client (atau EnterPhase yang
+	// memang jalan di client via OnRep) bisa mem-persist entri dari state
+	// pacing lokal non-authoritative.
+	if (GetWorld()->GetNetMode() == NM_Client)
+	{
+		return;
+	}
 
 	if (const UGameInstance* GI = GetWorld()->GetGameInstance())
 	{

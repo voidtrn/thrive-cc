@@ -142,6 +142,14 @@ void USessionChronicleSubsystem::ImportFromSave(const UOpenWorldSaveGame* Save)
 	}
 	LifetimeChronicle = Save->ChronicleEntries;
 	OpenThreads = Save->ChronicleOpenThreads;
+
+	// Save bisa over-cap (cap diturunkan di update, atau file hasil edit) —
+	// RecordMoment cuma prune 1 entri per panggilan, jadi trim penuh di sini.
+	while (LifetimeChronicle.Num() > MaxLifetimeEntries)
+	{
+		PruneLifetime();
+	}
+
 	// SessionMoments sengaja TIDAK di-restore — epilog selalu tentang sesi
 	// berjalan; memoar lama tetap terbaca via GetLifetimeChronicle.
 }
