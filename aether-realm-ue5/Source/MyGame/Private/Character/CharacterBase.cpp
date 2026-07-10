@@ -1,6 +1,7 @@
 #include "Character/CharacterBase.h"
 #include "Character/OpenWorldMovementComponent.h"
 #include "Character/LockOnComponent.h"
+#include "Combat/CombatComponent.h"
 #include "Combat/ShieldComponent.h"
 #include "Combat/StatusEffectComponent.h"
 #include "System/OpenWorldGameInstance.h"
@@ -96,6 +97,17 @@ void ACharacterBase::OnRep_CurrentHP()
 	// Server sudah broadcast lewat ApplyDamage/Heal langsung — ini cuma buat
 	// remote client (co-op guest), yang tak pernah eksekusi fungsi itu sendiri.
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
+}
+
+void ACharacterBase::ServerRequestAttack_Implementation(ACharacterBase* Victim, const FAttackParams& Params)
+{
+	// RPC body cuma jalan di server — tak perlu HasAuthority() guard lagi di
+	// sini, tapi DealDamage sendiri masih dipanggil (bukan lewat RequestAttack
+	// lagi) supaya tidak infinite-forward.
+	if (UCombatComponent* Combat = FindComponentByClass<UCombatComponent>())
+	{
+		Combat->DealDamage(Victim, Params);
+	}
 }
 
 void ACharacterBase::Tick(float DeltaSeconds)

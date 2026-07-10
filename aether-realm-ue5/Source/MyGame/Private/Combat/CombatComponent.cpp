@@ -367,6 +367,21 @@ FDamageResult UCombatComponent::DealDamage(ACharacterBase* Victim, const FAttack
 		return Result;
 	}
 
+	// Server-authoritative: entry point ini dipanggil dari anim notify
+	// (combo/charged/plunge) yang jalan di owning client, atau BP skill/burst
+	// hook — bukan cuma server. Tanpa guard client bisa resolve damage lokal
+	// sendiri, gak sinkron dgn CurrentHP replicated (co-op cheat/desync risk).
+	// Forward ke server; simetris dgn AEnemyBase::AttackTarget di arah
+	// sebaliknya. Trade-off: hit stop/damage number lokal utk hit ini baru
+	// nongol di co-op guest setelah round-trip server — prediksi instan lokal
+	// butuh pass terpisah (ANTISIPASI #9, Docs/CODE_REVIEW.md, digarap bareng
+	// FSavedMove climb #3).
+	if (!OwnerChar->HasAuthority())
+	{
+		OwnerChar->ServerRequestAttack(Victim, Params);
+		return Result;
+	}
+
 	// i-frame victim (dodge)
 	if (UCombatComponent* VictimCombat = Victim->FindComponentByClass<UCombatComponent>())
 	{

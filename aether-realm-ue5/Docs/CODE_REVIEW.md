@@ -188,23 +188,32 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    "save slot list dengan tanggal", pastikan baca `Save->Timestamp` langsung
    dari file, bukan dari GameInstance.
 
-7. **Wish 50/50 & pity antar-banner-tipe.** Sudah benar, tapi belum ada
-   test untuk pity soft/hard (thresholds protected). Tambah friend test atau
-   expose untuk validasi statistik sebelum rilis (gacha wajib benar — legal).
+7. ~~**Wish 50/50 & pity antar-banner-tipe — belum ada test.**~~ → **Fixed.**
+   `UWishSystem::RollSingle`/`MakeResult` dijadiin `static` (murni fungsi dari
+   Banner+Pity, no instance state — sama filosofi `UDamageCalculator`) +
+   friend-declare 4 automation test class baru di `WishSystemTest.cpp`:
+   hard-pity guarantee (Character/Weapon/Standard), 4-star-within-10 guarantee,
+   50/50-loss featured guarantee, Epitomized Path target guarantee. Semua
+   deterministik (mengunci pity counter tepat di threshold hard-pity, di mana
+   `FMath::FRand() < 1.f` selalu true) — bukan test statistik/flaky.
 
 8. **Localization**: kalau text sudah terlanjur di-hardcode di BP yang dibuat
    nanti, retrofit mahal. Disiplin FText + String Table dari awal (course
    Bagian 36).
 
-9. **`UCombatComponent::DealDamage` belum server-gated** (player→enemy path).
-   Enemy→player sudah di-gate `HasAuthority()` (`AttackTarget`/
-   `FireProjectileAt`), tapi arah sebaliknya — combo hit player →
-   `Victim->ApplyDamage` — tak ada `HasAuthority()` check dan `TryNormalAttack`
-   belum dibungkus Server RPC. Single-player/listen-host aman; co-op client
-   akan resolve damage lokal yang tak sinkron dengan server. Fix benar =
-   Server RPC untuk seluruh jalur serangan player (refactor sedang, garap
-   bareng `FSavedMove` climb di ANTISIPASI #3 saat co-op serius). Dampak ke
-   pacing director sudah dimitigasi (report call di-gate authority).
+9. ~~**`UCombatComponent::DealDamage` belum server-gated** (player→enemy path).~~
+   → **Fixed.** `DealDamage` sekarang guard `!OwnerChar->HasAuthority()` di
+   awal (setelah null/alive check) — non-authoritative caller (combo/charged/
+   plunge dari anim notify di owning client, BP skill/burst) forward lewat
+   Server RPC baru `ACharacterBase::ServerRequestAttack`, yang balik manggil
+   `DealDamage` di server (authoritative). Simetris dgn `AEnemyBase::
+   AttackTarget`/`FireProjectileAt` di arah sebaliknya. **Known trade-off
+   belum di-fix:** hit stop & damage number lokal utk hit co-op guest baru
+   nongol setelah round-trip server (tak ada prediksi/cosmetic lokal instan
+   lagi) — SpawnDamageNumber actor juga sudah tak di-multicast dari dulu, jadi
+   ini bukan regresi baru, cuma sekarang konsisten kena delay RPC juga. Pass
+   prediksi lokal instan tetap disarankan digarap bareng `FSavedMove` climb
+   (ANTISIPASI #3) saat co-op serius.
 
 ---
 
