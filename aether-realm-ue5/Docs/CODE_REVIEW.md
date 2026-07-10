@@ -215,6 +215,23 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    prediksi lokal instan tetap disarankan digarap bareng `FSavedMove` climb
    (ANTISIPASI #3) saat co-op serius.
 
+   Review `ue5-reviewer` nemu 1 finding tambahan pas fix ini: `ServerRequestAttack`
+   itu `UFUNCTION(Server)` publik — dia percaya `FAttackParams` mentah dari
+   client, jadi client modifikasi bisa panggil RPC ini langsung skip
+   `PerformComboHit`/`ReleaseCharged`/`OnPlungeLand`, kirim `SkillMultiplier`/
+   `FlatDamage` sembarang gede atau `Victim` di ujung map lain. **Sudah
+   dimitigasi** (bukan ditutup total): `ServerRequestAttack_Implementation`
+   sekarang clamp `SkillMultiplier`/`FlatDamage` ke batas plausible generous
+   (3.5x / 500 flat) + reject kalau jarak ke `Victim` > 2000cm. Ini sanity
+   check kasar, bukan revalidasi eksak — server gak tau attack type asli
+   (ComboIndex/charge-hold-time gak dikirim), jadi cheater tetap bisa boost
+   damage sendiri dalam batas clamp. Fix penuh = server re-derive multiplier
+   dari attack-type enum + state server sendiri (refactor lebih besar,
+   worth it kalau PvP/leaderboard kompetitif jadi fitur; untuk PvE co-op
+   solo-dev scope, risiko cuma "cheater trivialize fight sendiri", low
+   severity — didokumentasikan sebagai known limitation, pola sama dgn
+   `bInvulnerable` single-bool di BUILD_NOTES.
+
 ---
 
 ## Ringkasan angka

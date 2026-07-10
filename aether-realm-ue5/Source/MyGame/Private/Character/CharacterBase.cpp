@@ -104,6 +104,35 @@ void ACharacterBase::ServerRequestAttack_Implementation(ACharacterBase* Victim, 
 	// RPC body cuma jalan di server — tak perlu HasAuthority() guard lagi di
 	// sini, tapi DealDamage sendiri masih dipanggil (bukan lewat RequestAttack
 	// lagi) supaya tidak infinite-forward.
+	if (!Victim || !Victim->IsAlive())
+	{
+		return;
+	}
+
+	// Params ini dari client — ini sanity clamp mentah (bukan revalidasi
+	// penuh per attack type; ComboIndex/charge-hold-time gak dikirim, jadi
+	// server gak bisa re-derive nilai eksak). Tanpa ini, client modifikasi
+	// bisa panggil RPC ini langsung dgn SkillMultiplier/FlatDamage sembarang
+	// gede atau Victim di ujung map lain. Batas dipilih generous di atas
+	// kombinasi legit tertinggi (plunge max 3.0x) + headroom talent scaling
+	// yang dihitung DealDamage sendiri dari state server.
+	constexpr float MaxPlausibleSkillMultiplier = 3.5f;
+	constexpr float MaxPlausibleFlatDamage = 500.f;
+	constexpr float MaxAttackRangeCm = 2000.f;
+
+	if (Params.SkillMultiplier < 0.f || Params.SkillMultiplier > MaxPlausibleSkillMultiplier
+		|| Params.FlatDamage < 0.f || Params.FlatDamage > MaxPlausibleFlatDamage)
+	{
+		UE_LOG(LogAetherRealm, Warning, TEXT("ServerRequestAttack: implausible params from %s, rejected"), *GetName());
+		return;
+	}
+
+	if (FVector::Dist(GetActorLocation(), Victim->GetActorLocation()) > MaxAttackRangeCm)
+	{
+		UE_LOG(LogAetherRealm, Warning, TEXT("ServerRequestAttack: victim out of range from %s, rejected"), *GetName());
+		return;
+	}
+
 	if (UCombatComponent* Combat = FindComponentByClass<UCombatComponent>())
 	{
 		Combat->DealDamage(Victim, Params);
