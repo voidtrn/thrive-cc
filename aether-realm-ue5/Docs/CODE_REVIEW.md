@@ -212,15 +212,16 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
 
 | | Jumlah |
 |---|---|
-| C++ class | 53 |
-| Source file | 116 |
-| Setup/review docs | 21 |
-| Automation test | 3 file (6 test) |
+| C++ class | 55 |
+| Source file | 122 |
+| Setup/review docs | 23 |
+| Automation test | 5 file (8 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
 | Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
 | Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
+| Psychology pass | Session Chronicle / memoar (`SessionChronicleSubsystem`) — teori lintas ilmu di `GAME_PSYCHOLOGY_FOUNDATIONS.md` |
 
 ## Rekomendasi urutan garap berikutnya
 

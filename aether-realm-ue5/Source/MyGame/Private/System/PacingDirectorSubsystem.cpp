@@ -1,5 +1,6 @@
 #include "System/PacingDirectorSubsystem.h"
 #include "System/MusicManagerSubsystem.h"
+#include "System/SessionChronicleSubsystem.h"
 #include "Character/CharacterBase.h"
 #include "GameFramework/PlayerController.h"
 #include "TimerManager.h"
@@ -124,7 +125,7 @@ void UPacingDirectorSubsystem::ReportEnemyKilled(const FVector& Location)
 	// Clutch kill: bunuh musuh saat HP sendiri kritis = momen clip-worthy.
 	if (GetPlayerHPFraction() < ClutchHPThreshold)
 	{
-		OnHighlightMoment.Broadcast(TEXT("ClutchKill"), Location);
+		EmitHighlight(TEXT("ClutchKill"), Location, 0.9f);
 	}
 }
 
@@ -137,7 +138,7 @@ void UPacingDirectorSubsystem::ReportChainReaction(int32 ChainLength, const FVec
 {
 	if (ChainLength >= 3 && State == EPacingState::Peak)
 	{
-		OnHighlightMoment.Broadcast(TEXT("ChainReaction"), Location);
+		EmitHighlight(TEXT("ChainReaction"), Location, 0.7f);
 	}
 }
 
@@ -145,7 +146,20 @@ void UPacingDirectorSubsystem::ReportBossPhaseChanged(int32 NewPhase, const FVec
 {
 	if (State == EPacingState::Peak)
 	{
-		OnHighlightMoment.Broadcast(TEXT("BossPhase"), Location);
+		EmitHighlight(TEXT("BossPhase"), Location, 0.8f);
+	}
+}
+
+void UPacingDirectorSubsystem::EmitHighlight(FName Reason, const FVector& Location, float Intensity)
+{
+	OnHighlightMoment.Broadcast(Reason, Location);
+
+	if (const UGameInstance* GI = GetWorld()->GetGameInstance())
+	{
+		if (USessionChronicleSubsystem* Chronicle = GI->GetSubsystem<USessionChronicleSubsystem>())
+		{
+			Chronicle->RecordMoment(Reason, NAME_None, Location, Intensity);
+		}
 	}
 }
 

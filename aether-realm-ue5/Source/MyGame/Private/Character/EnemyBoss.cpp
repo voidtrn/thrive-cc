@@ -1,7 +1,17 @@
 #include "Character/EnemyBoss.h"
 #include "System/PacingDirectorSubsystem.h"
+#include "System/SessionChronicleSubsystem.h"
 #include "TimerManager.h"
 #include "MyGame.h"
+
+namespace
+{
+	USessionChronicleSubsystem* GetChronicle(const UWorld* World)
+	{
+		const UGameInstance* GI = World ? World->GetGameInstance() : nullptr;
+		return GI ? GI->GetSubsystem<USessionChronicleSubsystem>() : nullptr;
+	}
+}
 
 AEnemyBoss::AEnemyBoss(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -82,6 +92,35 @@ void AEnemyBoss::EnterPhase(int32 NewPhase)
 	{
 		Pacing->ReportBossPhaseChanged(NewPhase, GetActorLocation());
 	}
+
+	// Chronicle: boss sudah dilawan (phase pertama tercapai) tapi belum
+	// tumbang = thread Zeigarnik terbuka. Kalau pemain kabur/mati, epilog
+	// sesi menutup dengan cliffhanger boss ini (FOUNDATIONS §1b).
+	if (HasAuthority() && NewPhase == 1)
+	{
+		if (USessionChronicleSubsystem* Chronicle = GetChronicle(GetWorld()))
+		{
+			const FName BossId = !StatsRowName.IsNone() ? StatsRowName : CharacterID;
+			Chronicle->OpenThread(TEXT("BossUnfinished"), BossId, GetActorLocation());
+		}
+	}
+}
+
+void AEnemyBoss::HandleDeath()
+{
+	// Sebelum Super (yang lapor kill ke pacing director): tutup thread +
+	// catat kemenangan sebagai momen intensitas penuh.
+	if (HasAuthority())
+	{
+		if (USessionChronicleSubsystem* Chronicle = GetChronicle(GetWorld()))
+		{
+			const FName BossId = !StatsRowName.IsNone() ? StatsRowName : CharacterID;
+			Chronicle->ResolveThread(BossId);
+			Chronicle->RecordMoment(TEXT("BossSlain"), BossId, GetActorLocation(), 1.f);
+		}
+	}
+
+	Super::HandleDeath();
 }
 
 void AEnemyBoss::EndPhaseInvulnerability()

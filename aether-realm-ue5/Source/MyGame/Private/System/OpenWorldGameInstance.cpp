@@ -80,6 +80,12 @@ bool UOpenWorldGameInstance::SaveToSlot(const FString& SlotName)
 	Save->CharacterTalents = CharacterTalents;
 	Save->CharacterConstellations = CharacterConstellations;
 
+	// Chronicle (memoar) — subsystem yang pegang datanya
+	if (const USessionChronicleSubsystem* Chronicle = GetSubsystem<USessionChronicleSubsystem>())
+	{
+		Chronicle->ExportToSave(Save);
+	}
+
 	Save->PlayTimeSeconds = GetTotalPlayTimeSeconds();
 	Save->StaminaCapBonus = StaminaCapBonus;
 	Save->GameSettings = GameSettings;
@@ -153,6 +159,12 @@ bool UOpenWorldGameInstance::LoadFromSlot(const FString& SlotName)
 	OwnedWeapons = Save->OwnedWeapons;
 	CharacterTalents = Save->CharacterTalents;
 	CharacterConstellations = Save->CharacterConstellations;
+
+	// Chronicle (memoar) — restore ke subsystem
+	if (USessionChronicleSubsystem* Chronicle = GetSubsystem<USessionChronicleSubsystem>())
+	{
+		Chronicle->ImportFromSave(Save);
+	}
 
 	LoadedPlayTimeSeconds = Save->PlayTimeSeconds;
 	SessionStartTime = FPlatformTime::Seconds();

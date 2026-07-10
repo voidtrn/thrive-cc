@@ -5,6 +5,7 @@
 #include "System/WishTypes.h"
 #include "System/QuestTypes.h"
 #include "System/WeaponTypes.h"
+#include "System/SessionChronicleSubsystem.h"
 #include "UI/InventoryTypes.h"
 #include "OpenWorldSaveGame.generated.h"
 
@@ -102,6 +103,10 @@ public:
 	UPROPERTY() TArray<FWeaponInstance> OwnedWeapons;
 	UPROPERTY() TMap<FName, FTalentLevels> CharacterTalents;
 	UPROPERTY() TMap<FName, int32> CharacterConstellations;
+
+	// --- Chronicle (memoar pemain — SessionChronicleSubsystem) ---
+	UPROPERTY() TArray<FChronicleEntry> ChronicleEntries;
+	UPROPERTY() TArray<FChronicleEntry> ChronicleOpenThreads;
 
 	// --- Misc ---
 	UPROPERTY() float PlayTimeSeconds = 0.f;
