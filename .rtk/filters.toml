@@ -11,3 +11,45 @@ schema_version = 1
 # strip_lines_matching = ["^\\s*$", "^Downloading", "^Installing"]
 # max_lines = 30
 # on_empty = "my-tool: ok"
+
+# aether-realm-ue5: UnrealBuildTool / RunUAT build+cook+package output is
+# extremely verbose (per-file compile lines, cook progress, module parsing).
+# Strip the noise, keep errors/warnings/fatal + final BUILD SUCCESSFUL/FAILED line.
+[filters.unreal-build]
+description = "Compact UnrealBuildTool / RunUAT build-cook-package output"
+match_command = "(?i)(RunUAT\\.(sh|bat|command)\\b|UnrealBuildTool\\b|\\bUBT\\b.*(Win64|Development|Editor))"
+strip_ansi = true
+strip_lines_matching = [
+  "^\\s*$",
+  "^LogTemp:",
+  "^LogInit:",
+  "^LogWindows:",
+  "^LogPlatformFile:",
+  "^\\[\\d+/\\d+\\]",
+  "^Cook(ing|ed) ",
+  "^Determining max local worker count",
+  "^Parsing headers",
+  "^Using Build Configuration",
+  "^Building .* for target",
+]
+max_lines = 80
+on_empty = "unreal build: ok, no errors/warnings"
+
+# findtalent_frontend / learn_frontend / listen_frontend: Vite dev/build noise
+# (HMR spam, banner box) when invoked directly (not via `pnpm/npm run`, which
+# already goes through rtk's built-in npm/pnpm filters).
+[filters.vite]
+description = "Compact Vite dev/build output — strip HMR spam and banner, keep errors + summary"
+match_command = "(?:^|\\s)(npx\\s+)?vite\\b"
+strip_ansi = true
+strip_lines_matching = [
+  "^\\s*$",
+  "(?i)hmr update",
+  "(?i)page reload",
+  "^\\s*VITE v\\d",
+  "^\\s*➜\\s+Local:",
+  "^\\s*➜\\s+Network:",
+  "^\\s*➜\\s+press h",
+]
+max_lines = 50
+on_empty = "vite: ok"

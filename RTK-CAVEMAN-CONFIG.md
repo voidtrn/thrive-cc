@@ -239,6 +239,21 @@ Bisa nambah MCP server lain (`ListConnectors` / `SuggestConnectors`) buat integr
 
 ---
 
+## 4.7 Yang baru ditambahkan (iterasi kedua)
+
+Item konkret yang di-tambahin di atas fondasi §1-4:
+
+| Item | File | Fungsi |
+|---|---|---|
+| Pin default caveman mode | `.caveman/config.json` | Semua kontributor/sesi di repo ini default `full`, gak tergantung config user masing-masing |
+| Filter UE5 build | `.rtk/filters.toml` → `[filters.unreal-build]` | Strip noise UnrealBuildTool/RunUAT (compile-per-file, cook progress), sisain error/warning/BUILD SUCCESSFUL-FAILED. **Catatan jujur:** syntax valid & `rtk trust`/`rtk verify` lolos, tapi belum ke-exercise end-to-end (environment ini gak punya UE5 buat generate log asli) — validasi pas build pertama kali |
+| Filter Vite | `.rtk/filters.toml` → `[filters.vite]` | Strip HMR spam saat `vite`/`npx vite` dipanggil langsung (di luar `npm run` yang udah kena filter built-in npm/pnpm) |
+| Cross-session savings ledger | `.claude/hooks/rtk-gain-snapshot.sh` + hook `Stop` di `settings.json` | `rtk gain` stats hidup di `/root/.local/share/rtk` (di luar repo, ephemeral). Hook ini nyimpen snapshot JSON tiap sesi berakhir ke `.rtk/savings-log.jsonl` (commit ke repo) — data savings gak reset lagi tiap restart container |
+| Token savings dashboard | Artifact (regenerate on request) | Visual: summary card, breakdown per-command, ledger cross-session. Minta "update token savings dashboard" buat refresh dari `.rtk/savings-log.jsonl` terbaru |
+| Subagent `ue5-reviewer` | `.claude/agents/ue5-reviewer.md` | Reviewer read-only scoped ke `aether-realm-ue5/Source` — checklist spesifik proyek (UFUNCTION handler, replikasi, `.generated.h` order, `GetWorld()` di instanced UObject, dst — diambil dari audit asli `Docs/BUILD_NOTES.md`). Output format sama compact kayak `cavecrew-reviewer` |
+| CLAUDE.md khusus | `aether-realm-ue5/CLAUDE.md` | Persona/instruksi project-specific: ground truth (belum pernah compile), convention wajib, larangan rediscover gap yang udah closed di `Docs/CODE_REVIEW.md`, arahan pakai `ue5-reviewer` |
+| Routine mingguan | trigger `trig_01PWGVuPdifRqkRSApuJRUuk` | Tiap Senin 03:00 UTC jalanin `rtk discover`, auto-fix filter/CLAUDE.md kalau nemu pola kepakaian raw command yang signifikan, commit+push. Diem kalau gak ada temuan |
+
 ## 5. Ringkasan Cepat
 
 - **RTK** = hemat token di *tool output* (command execution) → selalu prefix `rtk`.

@@ -40,6 +40,18 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"/home/user/thrive-cc/.claude/hooks/rtk-gain-snapshot.sh\"",
+            "timeout": 10,
+            "statusMessage": "Logging token savings snapshot..."
+          }
+        ]
+      }
     ]
   }
 }
