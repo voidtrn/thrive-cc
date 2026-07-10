@@ -1,10 +1,20 @@
 #include "Character/EnemyBase.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
-#include "Combat/StatusEffectComponent.h"
+#include "Combat/ShieldComponent.h"
+#include "Combat/EnemyProjectile.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "TimerManager.h"
 #include "MyGame.h"
+
+namespace
+{
+	// Shield elite tak punya durasi natural — refresh sendiri lewat regen timer,
+	// jadi cukup kasih durasi panjang (bukan literal "selamanya", tapi lebih
+	// dari cukup buat 1 encounter).
+	constexpr float EliteShieldDuration = 99999.f;
+}
 
 AEnemyBase::AEnemyBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -20,12 +30,49 @@ AEnemyBase::AEnemyBase(const FObjectInitializer& ObjectInitializer)
 	{
 		FollowCamera->SetActive(false);
 	}
+
+	// Selalu ada, no-op kalau CachedStats.ShieldAmount == 0 (lihat ApplyElementalShield).
+	EnemyShield = CreateDefaultSubobject<UShieldComponent>(TEXT("EnemyShield"));
 }
 
 void AEnemyBase::BeginPlay()
 {
 	LoadStatsFromTable();
 	Super::BeginPlay(); // Super setelah load: CurrentHP = MaxHP dari table
+
+	if (EnemyShield)
+	{
+		EnemyShield->OnShieldBroken.AddDynamic(this, &AEnemyBase::OnEnemyShieldBroken);
+	}
+	ApplyElementalShield();
+}
+
+void AEnemyBase::ApplyElementalShield()
+{
+	if (!EnemyShield || CachedStats.ShieldAmount <= 0.f)
+	{
+		return;
+	}
+	EnemyShield->ApplyShield(TEXT("EliteShield"), CachedStats.ShieldElement,
+		CachedStats.ShieldAmount, EliteShieldDuration);
+}
+
+void AEnemyBase::OnEnemyShieldBroken()
+{
+	if (CachedStats.ShieldAmount <= 0.f || CachedStats.ShieldRegenDelay <= 0.f)
+	{
+		return;
+	}
+	GetWorldTimerManager().SetTimer(ShieldRegenTimer, this,
+		&AEnemyBase::ReapplyElementalShield, CachedStats.ShieldRegenDelay, false);
+}
+
+void AEnemyBase::ReapplyElementalShield()
+{
+	if (IsAlive())
+	{
+		ApplyElementalShield();
+	}
 }
 
 void AEnemyBase::LoadStatsFromTable()
@@ -91,16 +138,31 @@ void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
 	const float Damage = UDamageCalculator::CalculateDamage(
 		this, Target, DamageMultiplier, 0.f, Element, ReactionMult, FlatReaction, bCrit);
 
+	// CC berat (Stagger/Knockback/Launch/KnockedDown) di-handle otomatis di
+	// ACharacterBase::ApplyDamage lewat poise system (RegisterPoiseDamage) —
+	// simetris dengan arah player→enemy, tak perlu duplikasi di sini lagi.
 	Target->ApplyDamage(Damage, Element, Reaction);
+}
 
-	// Serangan CC berat → stun singkat via status system.
-	if (Reaction == EHitReaction::Knockback || Reaction == EHitReaction::Launch
-		|| Reaction == EHitReaction::KnockedDown)
+void AEnemyBase::FireProjectileAt(ACharacterBase* Target, float DamageMultiplier,
+	float GaugeUnits, EHitReaction Reaction)
+{
+	if (!Target || !Target->IsAlive() || !ProjectileClass || !GetWorld())
 	{
-		if (UStatusEffectComponent* Status = Target->FindComponentByClass<UStatusEffectComponent>())
-		{
-			Status->ApplyStatus(TEXT("EnemyKnockdown"), EStatusType::Stun, 0.f, /*Duration=*/1.5f);
-		}
+		return;
+	}
+
+	const FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 60.f + FVector(0.f, 0.f, 50.f);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	if (AEnemyProjectile* Projectile = GetWorld()->SpawnActor<AEnemyProjectile>(
+		ProjectileClass, SpawnLocation, FRotator::ZeroRotator, SpawnParams))
+	{
+		Projectile->InitProjectile(this, DamageMultiplier, GaugeUnits, Reaction);
+		Projectile->LaunchAt(Target->GetActorLocation() + FVector(0.f, 0.f, 50.f));
 	}
 }
 

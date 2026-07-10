@@ -2,6 +2,7 @@
 #include "Character/OpenWorldMovementComponent.h"
 #include "Character/LockOnComponent.h"
 #include "Combat/ShieldComponent.h"
+#include "Combat/StatusEffectComponent.h"
 #include "System/OpenWorldGameInstance.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -186,7 +187,10 @@ void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReact
 	if (!IsAlive())
 	{
 		HandleDeath();
+		return;
 	}
+
+	RegisterPoiseDamage(Reaction);
 }
 
 void ACharacterBase::ApplyDamageOverTime(float Amount, EElement DamageElement)
@@ -208,6 +212,72 @@ void ACharacterBase::ApplyDamageOverTime(float Amount, EElement DamageElement)
 	if (!IsAlive())
 	{
 		HandleDeath();
+	}
+}
+
+// ---------- Poise / stagger ----------
+
+float ACharacterBase::GetPoiseDamageForReaction(EHitReaction Reaction)
+{
+	// Hanya reaction tier CC-berat yang accumulate poise. Light/Medium/Heavy
+	// murni anim, tak menyentuh poise.
+	switch (Reaction)
+	{
+	case EHitReaction::Stagger:     return 40.f;
+	case EHitReaction::Knockback:   return 70.f;
+	case EHitReaction::Launch:      return 100.f;
+	case EHitReaction::KnockedDown: return 140.f;
+	default:                        return 0.f;
+	}
+}
+
+void ACharacterBase::RegisterPoiseDamage(EHitReaction Reaction)
+{
+	const float PoiseDamage = GetPoiseDamageForReaction(Reaction);
+	if (PoiseDamage <= 0.f)
+	{
+		return;
+	}
+
+	const float Threshold = GetPoiseThreshold();
+	if (Threshold <= 0.f)
+	{
+		// Tak ada resistance — perilaku lama: reaction berat langsung stagger.
+		ApplyPoiseBreakStun(Reaction);
+		return;
+	}
+
+	const double Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+	if (Now - LastPoiseHitTime > PoiseResetWindow)
+	{
+		AccumulatedPoise = 0.f;
+	}
+	LastPoiseHitTime = Now;
+
+	AccumulatedPoise += PoiseDamage;
+	if (AccumulatedPoise >= Threshold)
+	{
+		AccumulatedPoise = 0.f;
+		ApplyPoiseBreakStun(Reaction);
+		OnPoiseBroken.Broadcast();
+	}
+}
+
+void ACharacterBase::ApplyPoiseBreakStun(EHitReaction Reaction)
+{
+	float StunDuration = 1.5f;
+	if (Reaction == EHitReaction::Stagger)
+	{
+		StunDuration = 0.8f;
+	}
+	else if (Reaction == EHitReaction::KnockedDown)
+	{
+		StunDuration = 2.f;
+	}
+
+	if (UStatusEffectComponent* Status = FindComponentByClass<UStatusEffectComponent>())
+	{
+		Status->ApplyStatus(TEXT("PoiseBreak"), EStatusType::Stun, 0.f, StunDuration);
 	}
 }
 

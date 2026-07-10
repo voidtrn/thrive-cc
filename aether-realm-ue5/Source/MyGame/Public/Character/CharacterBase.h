@@ -15,6 +15,7 @@ class UCameraShakeBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHP, float, MaxHP);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterDied, ACharacterBase*, DeadCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPoiseBroken);
 
 /**
  * Base semua karakter playable & enemy humanoid.
@@ -156,6 +157,23 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Combat")
 	bool IsInvulnerable() const { return bInvulnerable; }
+
+	// ---------- Poise / stagger ----------
+	/**
+	 * Resistance poise. 0 (default) = reaction berat (Stagger/Knockback/Launch/
+	 * KnockedDown) langsung stagger, seperti perilaku lama. Enemy elite override
+	 * ini dari DataTable (`FEnemyStatsRow::PoiseThreshold`) supaya butuh beberapa
+	 * hit berat sebelum ke-break.
+	 */
+	UFUNCTION(BlueprintPure, Category = "Combat|Poise")
+	virtual float GetPoiseThreshold() const { return 0.f; }
+
+	/** Reset akumulasi poise damage (dipanggil mis. saat boss ganti phase). */
+	UFUNCTION(BlueprintCallable, Category = "Combat|Poise")
+	void ResetPoise() { AccumulatedPoise = 0.f; }
+
+	UPROPERTY(BlueprintAssignable, Category = "Combat|Poise")
+	FOnPoiseBroken OnPoiseBroken;
 
 	UPROPERTY(BlueprintAssignable, Category = "Stats")
 	FOnHealthChanged OnHealthChanged;
@@ -299,6 +317,23 @@ private:
 
 	/** Total shred elemen ini dari semua entri yang belum kadaluarsa. */
 	float GetResShred(EElement DamageElement) const;
+
+	// ---------- Poise / stagger (internal) ----------
+	/** Jendela waktu (detik) — poise reset kalau tak kena hit lagi dalam durasi ini. */
+	UPROPERTY(EditDefaultsOnly, Category = "Combat|Poise")
+	float PoiseResetWindow = 2.f;
+
+	float AccumulatedPoise = 0.f;
+	double LastPoiseHitTime = -999.0;
+
+	/** Poise damage per tier reaction. Light/Medium/Heavy (non-CC) = 0, tak accumulate. */
+	static float GetPoiseDamageForReaction(EHitReaction Reaction);
+
+	/** Terima reaction dari ApplyDamage — accumulate/break poise sesuai GetPoiseThreshold(). */
+	void RegisterPoiseDamage(EHitReaction Reaction);
+
+	/** Stun singkat saat poise break (atau langsung, kalau threshold 0). */
+	void ApplyPoiseBreakStun(EHitReaction Reaction);
 
 	void TickCamera(float DeltaSeconds);
 	void TickStamina(float DeltaSeconds);

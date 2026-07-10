@@ -93,6 +93,45 @@ Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
 
 ---
 
+## 🆕 GAMEPLAY DEPTH — pass baru (enemy combat)
+
+Enemy AI/combat sebelumnya cuma punya 1 jalur serangan (melee-style, generic
+stagger). Pass ini nambah 4 sistem C++ baru — **belum di-compile**, sama
+seperti sisa codebase, jadi harapkan error kecil first-compile:
+
+1. **Poise/stagger simetris.** Dulu cuma `EnemyBase::AttackTarget` auto-stun
+   *player* kena CC berat — musuh sendiri tak pernah ke-stagger balik oleh
+   player. Sekarang di-pindah ke `ACharacterBase::ApplyDamage` (poin sentral,
+   dua arah). Enemy biasa tetap 1-hit-stagger (`GetPoiseThreshold()`
+   default 0, perilaku lama tak berubah); elite (`FEnemyStatsRow::PoiseThreshold
+   > 0`) butuh beberapa hit CC-tier sebelum break.
+2. **Elite shield data-driven.** `AEnemyBase` sekarang selalu punya
+   `UShieldComponent` bawaan (no-op kalau `ShieldAmount == 0`), auto-regen
+   setelah pecah. Mitachurl-style shield tanpa perlu BP wiring — cukup isi
+   DataTable.
+3. **Ranged attack path.** `AEnemyBase::FireProjectileAt` + `AEnemyProjectile`
+   (class baru) — HilichurlArcher/AbyssMage sekarang punya jalur serangan
+   jarak jauh, reuse `AttackTarget` buat damage (tak duplikat formula).
+4. **Boss phase transition.** `AEnemyBoss` (turunan `AEnemyBase`) — phase
+   berbasis HP% threshold, enrage ATK opsional, invuln singkat + poise reset
+   saat transisi. Index phase itu fungsi statik murni (`ComputePhaseIndex`),
+   ada automation test-nya (`BossPhaseTest.cpp`) — testable tanpa World,
+   sama filosofi dengan `DamageCalculatorTest`.
+
+Detail wiring lengkap: `COMBAT_COMPONENTS.md` (bagian Poise / Enemy shield /
+Ranged attack / Boss phase). Direview `ue5-reviewer` subagent sebelum commit —
+0 finding blocking (lihat commit history untuk detail).
+
+**Belum dikerjakan** (di luar scope pass ini, butuh asset/editor):
+- BP child buat HilichurlArcher/AbyssMage (assign `ProjectileClass`, animasi
+  ranged, mesh proyektil).
+- BP boss child (assign `PhaseHPThresholds`/`PhaseATKMultipliers`, moveset
+  per phase lewat `OnBossPhaseChanged`, DT_EnemyStats row buat boss).
+- Behavior Tree task "keep distance & reposition" buat archer (kiting AI) —
+  C++ cuma nyediain hook serangannya, logic jarak/reposition tetap BT/BP
+  per arsitektur project (lihat `EnemyAIController` — perception/blackboard
+  di C++, keputusan taktis di BT).
+
 ## ⚠️ ANTISIPASI — yang akan menggigit nanti
 
 1. **Belum pernah di-compile.** Harapkan error kecil build pertama
@@ -134,12 +173,13 @@ Semua pakai `ELevelingResult` (UI tahu alasan gagal: mora/material/cap/data).
 
 | | Jumlah |
 |---|---|
-| C++ class | 46 |
-| Source file | 100 |
+| C++ class | 51 |
+| Source file | 112 |
 | Setup/review docs | 21 |
-| Automation test | 2 file (5 test) |
+| Automation test | 3 file (6 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
+| Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
 
 ## Rekomendasi urutan garap berikutnya
 

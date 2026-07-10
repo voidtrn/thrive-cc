@@ -5,6 +5,9 @@
 #include "Engine/DataTable.h"
 #include "EnemyBase.generated.h"
 
+class UShieldComponent;
+class AEnemyProjectile;
+
 UENUM(BlueprintType)
 enum class EEnemyType : uint8
 {
@@ -44,6 +47,31 @@ struct FEnemyStatsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	EElement InnateElement = EElement::None;
 
+	/**
+	 * Poise resistance. 0 (default, Hilichurl/Slime/Archer) = stagger langsung
+	 * kena reaction berat, sama seperti dulu. Elite (Mitachurl/AbyssMage) diisi
+	 * >0 supaya butuh beberapa hit berat sebelum ke-break — lihat
+	 * ACharacterBase::GetPoiseThreshold / RegisterPoiseDamage.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float PoiseThreshold = 0.f;
+
+	/**
+	 * Shield fisik/elemental elite (Mitachurl). 0 = tak ada shield. Di-apply
+	 * otomatis di BeginPlay lewat UShieldComponent bawaan AEnemyBase, dan
+	 * regen otomatis ShieldRegenDelay detik setelah pecah.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float ShieldAmount = 0.f;
+
+	/** Elemen shield di atas. None = universal (tak dapat bonus 2.5× elemen cocok). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EElement ShieldElement = EElement::None;
+
+	/** Detik setelah shield pecah sebelum regen penuh lagi. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float ShieldRegenDelay = 8.f;
+
 	// --- Drops ---
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 MoraDrop = 50;
@@ -69,6 +97,7 @@ public:
 	AEnemyBase(const FObjectInitializer& ObjectInitializer);
 
 	virtual float GetBaseResistance(EElement DamageElement) const override;
+	virtual float GetPoiseThreshold() const override { return CachedStats.PoiseThreshold; }
 
 	UFUNCTION(BlueprintPure, Category = "Enemy")
 	EEnemyType GetEnemyType() const { return EnemyType; }
@@ -87,9 +116,32 @@ public:
 	void AttackTarget(ACharacterBase* Target, float DamageMultiplier = 1.f,
 		float GaugeUnits = 1.f, EHitReaction Reaction = EHitReaction::Light);
 
+	/**
+	 * Serang jarak jauh — spawn `ProjectileClass` ke arah Target, damage baru
+	 * kena saat proyektil overlap (lewat AttackTarget lagi, tak duplikat
+	 * formula). Panggil dari anim notify serangan ranged BP (HilichurlArcher/
+	 * AbyssMage). No-op kalau ProjectileClass belum di-assign.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Enemy|Combat")
+	void FireProjectileAt(ACharacterBase* Target, float DamageMultiplier = 1.f,
+		float GaugeUnits = 1.f, EHitReaction Reaction = EHitReaction::Light);
+
+	/** Class proyektil dipakai `FireProjectileAt` — assign di BP child ranged. */
+	UPROPERTY(EditDefaultsOnly, Category = "Enemy|Ranged")
+	TSubclassOf<AEnemyProjectile> ProjectileClass;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandleDeath() override;
+
+	/** Shield bawaan enemy (selalu ada, kosong/no-op kalau ShieldAmount stats = 0). */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UShieldComponent> EnemyShield;
+
+	UFUNCTION()
+	void OnEnemyShieldBroken();
+
+	void ReapplyElementalShield();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Enemy|Stats")
 	TObjectPtr<UDataTable> StatsTable;
@@ -109,6 +161,8 @@ protected:
 
 private:
 	FEnemyStatsRow CachedStats;
+	FTimerHandle ShieldRegenTimer;
 
 	void LoadStatsFromTable();
+	void ApplyElementalShield();
 };
