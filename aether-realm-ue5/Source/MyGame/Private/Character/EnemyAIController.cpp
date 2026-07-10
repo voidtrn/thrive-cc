@@ -5,6 +5,7 @@
 #include "Perception/AISenseConfig_Hearing.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "System/PacingDirectorSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 
 namespace
@@ -67,6 +68,12 @@ void AEnemyAIController::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus
 		{
 			bHasAggro = true;
 			AlertNearbyAllies(Actor);
+
+			// Pacing director: aggro baru = input stress
+			if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+			{
+				Pacing->ReportEnemyAggro(+1);
+			}
 		}
 	}
 	else

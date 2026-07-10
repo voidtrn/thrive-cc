@@ -1,4 +1,5 @@
 #include "Character/EnemyBoss.h"
+#include "System/PacingDirectorSubsystem.h"
 #include "TimerManager.h"
 #include "MyGame.h"
 
@@ -75,6 +76,12 @@ void AEnemyBoss::EnterPhase(int32 NewPhase)
 	}
 
 	OnBossPhaseChanged.Broadcast(NewPhase);
+
+	// Pacing director: boss phase saat Peak = momen highlight (clip-worthy)
+	if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+	{
+		Pacing->ReportBossPhaseChanged(NewPhase, GetActorLocation());
+	}
 }
 
 void AEnemyBoss::EndPhaseInvulnerability()

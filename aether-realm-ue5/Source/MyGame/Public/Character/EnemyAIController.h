@@ -24,6 +24,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void SetCombatTarget(AActor* Target);
 
+	/** Sedang aggro? Dipakai EnemyBase::HandleDeath buat lepas hitungan aggro director. */
+	UFUNCTION(BlueprintPure, Category = "AI")
+	bool HasAggro() const { return bHasAggro; }
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 

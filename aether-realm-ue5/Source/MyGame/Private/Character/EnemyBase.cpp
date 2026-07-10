@@ -1,4 +1,6 @@
 #include "Character/EnemyBase.h"
+#include "Character/EnemyAIController.h"
+#include "System/PacingDirectorSubsystem.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Combat/ShieldComponent.h"
@@ -186,6 +188,18 @@ void AEnemyBase::FireProjectileAt(ACharacterBase* Target, float DamageMultiplier
 void AEnemyBase::HandleDeath()
 {
 	Super::HandleDeath();
+
+	// Pacing director: kill = relief stress + deteksi clutch; lepas hitungan aggro.
+	if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+	{
+		Pacing->ReportEnemyKilled(GetActorLocation());
+
+		const AEnemyAIController* AI = Cast<AEnemyAIController>(GetController());
+		if (AI && AI->HasAggro())
+		{
+			Pacing->ReportEnemyAggro(-1);
+		}
+	}
 
 	// Spawn energy orbs
 	if (EnergyOrbClass)

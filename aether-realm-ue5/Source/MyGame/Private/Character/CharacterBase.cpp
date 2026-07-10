@@ -4,6 +4,7 @@
 #include "Combat/ShieldComponent.h"
 #include "Combat/StatusEffectComponent.h"
 #include "System/OpenWorldGameInstance.h"
+#include "System/PacingDirectorSubsystem.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "AbilitySystemComponent.h"
@@ -180,6 +181,15 @@ void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReact
 
 	CurrentHP = FMath::Max(0.f, CurrentHP - ToHP);
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
+
+	// Pacing director: player kena hit = input stress (GAME_LONGEVITY_PATTERNS §3)
+	if (IsPlayerControlled() && MaxHP > 0.f)
+	{
+		if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+		{
+			Pacing->ReportPlayerDamaged(ToHP / MaxHP);
+		}
+	}
 
 	if (UAnimMontage* const* Montage = HitReactionMontages.Find(Reaction))
 	{

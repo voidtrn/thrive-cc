@@ -198,6 +198,7 @@ known limitation:
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
 | Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
+| Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
 
 ## Rekomendasi urutan garap berikutnya
 
