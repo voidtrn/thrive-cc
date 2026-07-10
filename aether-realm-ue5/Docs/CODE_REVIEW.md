@@ -149,6 +149,18 @@ known limitation:
   per arsitektur project (lihat `EnemyAIController` — perception/blackboard
   di C++, keputusan taktis di BT).
 
+## 🆕 LONGEVITY PASS — AI Director (pacing)
+
+`UPacingDirectorSubsystem` — riset & rasional di `GAME_LONGEVITY_PATTERNS.md`.
+Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
+
+| Finding | Status |
+|---|---|
+| Aggro leak — `bHasAggro` tak pernah reset saat musuh kehilangan pemain → `AggroCount` director menggelembung permanen | ✅ Fixed — lost-sight branch reset flag + `ReportEnemyAggro(-1)` |
+| Pacing input bisa ke-feed dari mesin non-authoritative (lihat baris ANTISIPASI baru di bawah) | ✅ Mitigated — semua report call di-gate `HasAuthority()`; director efektif server-only |
+| `GetPlayerHPFraction` cuma baca player 0 — anggota co-op sekarat tak terhitung stress | ✅ Fixed — pakai HP fraction terendah semua player controller |
+| `AlertNearbyAllies` pakai `GetAllActorsOfClass` per aggro pertama | 📋 Pre-existing, sudah tercatat di ANTISIPASI #5 (threshold >50 musuh) |
+
 ## ⚠️ ANTISIPASI — yang akan menggigit nanti
 
 1. **Belum pernah di-compile.** Harapkan error kecil build pertama
@@ -183,6 +195,16 @@ known limitation:
 8. **Localization**: kalau text sudah terlanjur di-hardcode di BP yang dibuat
    nanti, retrofit mahal. Disiplin FText + String Table dari awal (course
    Bagian 36).
+
+9. **`UCombatComponent::DealDamage` belum server-gated** (player→enemy path).
+   Enemy→player sudah di-gate `HasAuthority()` (`AttackTarget`/
+   `FireProjectileAt`), tapi arah sebaliknya — combo hit player →
+   `Victim->ApplyDamage` — tak ada `HasAuthority()` check dan `TryNormalAttack`
+   belum dibungkus Server RPC. Single-player/listen-host aman; co-op client
+   akan resolve damage lokal yang tak sinkron dengan server. Fix benar =
+   Server RPC untuk seluruh jalur serangan player (refactor sedang, garap
+   bareng `FSavedMove` climb di ANTISIPASI #3 saat co-op serius). Dampak ke
+   pacing director sudah dimitigasi (report call di-gate authority).
 
 ---
 

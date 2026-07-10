@@ -131,6 +131,6 @@ private:
 	void Update();
 	void SetState(EPacingState NewState);
 
-	/** HP fraction pawn player 0 (host). 1.0 kalau tak ada pawn. */
+	/** HP fraction TERENDAH di antara semua player pawn (co-op fair). 1.0 kalau tak ada. */
 	float GetPlayerHPFraction() const;
 };

@@ -1,7 +1,7 @@
 #include "System/PacingDirectorSubsystem.h"
 #include "System/MusicManagerSubsystem.h"
 #include "Character/CharacterBase.h"
-#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 #include "TimerManager.h"
 #include "MyGame.h"
 
@@ -29,13 +29,20 @@ float UPacingDirectorSubsystem::ComputeStress(float HPFraction, float RecentDama
 
 float UPacingDirectorSubsystem::GetPlayerHPFraction() const
 {
-	const APawn* Pawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	const ACharacterBase* Character = Cast<ACharacterBase>(Pawn);
-	if (!Character || Character->MaxHP <= 0.f)
+	// HP terendah di antara semua pemain — co-op: satu anggota party sekarat
+	// harus terhitung stress walau host masih sehat (mercy loot & relax buat
+	// yang paling kesulitan, bukan cuma player 0).
+	float Lowest = 1.f;
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
-		return 1.f;
+		const APlayerController* PC = It->Get();
+		const ACharacterBase* Character = PC ? Cast<ACharacterBase>(PC->GetPawn()) : nullptr;
+		if (Character && Character->MaxHP > 0.f)
+		{
+			Lowest = FMath::Min(Lowest, Character->CurrentHP / Character->MaxHP);
+		}
 	}
-	return Character->CurrentHP / Character->MaxHP;
+	return Lowest;
 }
 
 void UPacingDirectorSubsystem::Update()

@@ -182,8 +182,10 @@ void ACharacterBase::ApplyDamage(float Amount, EElement DamageElement, EHitReact
 	CurrentHP = FMath::Max(0.f, CurrentHP - ToHP);
 	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
 
-	// Pacing director: player kena hit = input stress (GAME_LONGEVITY_PATTERNS §3)
-	if (IsPlayerControlled() && MaxHP > 0.f)
+	// Pacing director: player kena hit = input stress (GAME_LONGEVITY_PATTERNS §3).
+	// HasAuthority: director dirancang server-side (spawn/loot/AI konsumsi
+	// server) — jangan feed instance director milik client.
+	if (HasAuthority() && IsPlayerControlled() && MaxHP > 0.f)
 	{
 		if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
 		{

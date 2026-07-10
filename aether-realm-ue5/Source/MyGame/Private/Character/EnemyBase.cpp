@@ -189,15 +189,21 @@ void AEnemyBase::HandleDeath()
 {
 	Super::HandleDeath();
 
-	// Pacing director: kill = relief stress + deteksi clutch; lepas hitungan aggro.
-	if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+	// Pacing director: kill = relief stress + deteksi clutch; lepas hitungan
+	// aggro. HasAuthority: director server-side; di client HandleDeath bisa
+	// kepanggil dari jalur damage lokal yang belum server-gated (lihat
+	// ANTISIPASI CombatComponent di CODE_REVIEW.md).
+	if (HasAuthority())
 	{
-		Pacing->ReportEnemyKilled(GetActorLocation());
-
-		const AEnemyAIController* AI = Cast<AEnemyAIController>(GetController());
-		if (AI && AI->HasAggro())
+		if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
 		{
-			Pacing->ReportEnemyAggro(-1);
+			Pacing->ReportEnemyKilled(GetActorLocation());
+
+			const AEnemyAIController* AI = Cast<AEnemyAIController>(GetController());
+			if (AI && AI->HasAggro())
+			{
+				Pacing->ReportEnemyAggro(-1);
+			}
 		}
 	}
 

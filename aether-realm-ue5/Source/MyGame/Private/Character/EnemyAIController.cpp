@@ -85,6 +85,18 @@ void AEnemyAIController::OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus
 			BB->ClearValue(BBKey_TargetActor);
 			BB->SetValueAsBool(BBKey_HasTarget, false);
 		}
+
+		// Lepas aggro — tanpa ini AggroCount director bocor naik permanen:
+		// musuh yang kabur/kehilangan pemain tetap terhitung "aggro" seumur
+		// hidupnya (satu-satunya decrement lain cuma di HandleDeath).
+		if (bHasAggro)
+		{
+			bHasAggro = false;
+			if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+			{
+				Pacing->ReportEnemyAggro(-1);
+			}
+		}
 	}
 }
 
