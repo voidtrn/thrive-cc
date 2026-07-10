@@ -2,7 +2,8 @@
 
 C++ tersedia: `UFootstepComponent` (surface detection + volume by speed +
 pitch ±5%), `UMusicManagerSubsystem` (state machine + crossfade + exit-combat
-delay 5s), delayed thunder (Phase 4), hit stop (CombatComponent).
+delay 5s), `ASFXManager` (auto-play reaction SFX, lihat C2 Elemental),
+delayed thunder (Phase 4), hit stop (CombatComponent).
 
 ## C1. Middleware
 
@@ -52,7 +53,15 @@ Audio/
 
 Hook: `OnDamageDealt` → play impact by weapon+surface; anim notify → swing.
 
-### Elemental (bind `OnReactionTriggered` + ability `OnActivate`)
+### Elemental — sudah C++ (`ASFXManager`)
+
+Pasangan audio dari `AVFXManager` (ART_B_VFX.md) — pola sama persis: place
+SATU `ASFXManager` di `L_OpenWorld`, isi `ReactionSFX` map (per `EReactionType`)
++ `CrystallizeShieldSFX` di detail panel. Auto-bind
+`ElementalReactionSubsystem::OnReactionTriggered`/`OnCrystallizeShield` saat
+`BeginPlay` — tak perlu BP wiring manual, tinggal isi asset. Skill/burst
+`OnActivate` (non-reaction, mis. cast sound) tetap di-hook manual per ability
+BP — di luar scope reaction-only manager ini.
 
 | Elemen | Karakter suara |
 |---|---|

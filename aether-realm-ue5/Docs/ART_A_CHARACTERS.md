@@ -86,6 +86,14 @@ Geometry: Apply Modifiers ✓, Smoothing: Edge, Include Shape Keys ✓ (Export M
 
 ## A2. Spec Sheet 3 Karakter Starter
 
+C++ tersedia: `APlayableCharacter` + `FCharacterDefinitionRow`
+(`Public/Character/PlayableCharacter.h`) — load identitas & base stats dari
+`DT_Characters`, pola sama persis dengan `AEnemyBase`/`FEnemyStatsRow`. Row
+name di tabel di bawah ("Char_Kagari" dst) langsung dipakai sebagai
+`CharacterRowName` di BP child. Model 3D/animasi tetap kerja editor (A1) —
+ini cuma nyambungin identitas ke kode supaya party roster/UI bisa query data
+karakter tanpa hardcode per BP.
+
 ### Karakter 1 — **KAGARI** · "Flamebound Wanderer"
 | | |
 |---|---|
