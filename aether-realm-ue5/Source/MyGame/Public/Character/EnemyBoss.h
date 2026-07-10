@@ -21,7 +21,13 @@ class MYGAME_API AEnemyBoss : public AEnemyBase
 public:
 	AEnemyBoss(const FObjectInitializer& ObjectInitializer);
 
-	virtual float GetPoiseThreshold() const override { return BossPoiseThreshold; }
+	/** DataTable (FEnemyStatsRow::PoiseThreshold) menang kalau di-isi designer;
+	 *  BossPoiseThreshold cuma fallback C++ kalau row-nya kosong (0). */
+	virtual float GetPoiseThreshold() const override
+	{
+		const float DataPoise = GetStats().PoiseThreshold;
+		return DataPoise > 0.f ? DataPoise : BossPoiseThreshold;
+	}
 
 	UFUNCTION(BlueprintPure, Category = "Boss")
 	int32 GetCurrentPhase() const { return CurrentPhase; }

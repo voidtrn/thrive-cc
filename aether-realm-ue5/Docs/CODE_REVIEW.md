@@ -120,7 +120,16 @@ seperti sisa codebase, jadi harapkan error kecil first-compile:
 
 Detail wiring lengkap: `COMBAT_COMPONENTS.md` (bagian Poise / Enemy shield /
 Ranged attack / Boss phase). Direview `ue5-reviewer` subagent sebelum commit —
-0 finding blocking (lihat commit history untuk detail).
+5 finding (0🔴 2🟡 3❓), semua sudah di-fix kecuali 1 didokumentasikan sebagai
+known limitation:
+
+| Finding | Fix |
+|---|---|
+| `AttackTarget`/`FireProjectileAt` tak ada `HasAuthority()` guard — anim notify jalan di tiap mesin, bukan cuma server | Ditambah guard di keduanya |
+| `AEnemyProjectile` tak `bReplicates` — invisible buat client co-op | Ditambah `bReplicates=true` + `SetReplicateMovement(true)` |
+| `CurrentHP` replicated tanpa `OnRep` — `OnHealthChanged` (dipakai trigger boss phase) tak pernah fire di client | Ditambah `ReplicatedUsing=OnRep_CurrentHP` |
+| `AEnemyBoss::GetPoiseThreshold` buang `FEnemyStatsRow::PoiseThreshold` dari DataTable | DataTable menang kalau diisi, `BossPoiseThreshold` jadi fallback |
+| `bInvulnerable` bool tunggal (bukan counter) — phase-transition invuln bisa clobber sumber invuln lain | **Belum di-fix** — didokumentasikan sebagai known limitation di kode (risiko rendah, cuma god-mode cheat yang share bool ini sekarang) |
 
 **Belum dikerjakan** (di luar scope pass ini, butuh asset/editor):
 - BP child buat HilichurlArcher/AbyssMage (assign `ProjectileClass`, animasi

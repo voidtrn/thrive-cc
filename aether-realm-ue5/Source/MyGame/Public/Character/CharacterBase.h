@@ -48,9 +48,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats", meta = (ClampMin = 1))
 	float MaxHP = 1000.f;
 
-	/** Replicated — co-op: guest melihat HP enemy/host character sinkron. */
-	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+	/**
+	 * Replicated — co-op: guest melihat HP enemy/host character sinkron.
+	 * OnRep broadcast OnHealthChanged di client juga (sebelumnya cuma
+	 * broadcast di mesin yang mengeksekusi ApplyDamage — di co-op guest
+	 * tak pernah dapat event ini walau CurrentHP sendiri sudah sinkron via
+	 * replikasi. Dibutuhkan AEnemyBoss buat trigger phase transition
+	 * client-side juga, bukan cuma host).
+	 */
+	UPROPERTY(ReplicatedUsing = OnRep_CurrentHP, VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
 	float CurrentHP = 1000.f;
+
+	UFUNCTION()
+	void OnRep_CurrentHP();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
 	float MaxStamina = 100.f;

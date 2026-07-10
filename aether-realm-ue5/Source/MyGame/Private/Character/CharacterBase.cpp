@@ -90,6 +90,13 @@ UOpenWorldMovementComponent* ACharacterBase::GetOpenWorldMovement() const
 	return Cast<UOpenWorldMovementComponent>(GetCharacterMovement());
 }
 
+void ACharacterBase::OnRep_CurrentHP()
+{
+	// Server sudah broadcast lewat ApplyDamage/Heal langsung — ini cuma buat
+	// remote client (co-op guest), yang tak pernah eksekusi fungsi itu sendiri.
+	OnHealthChanged.Broadcast(CurrentHP, MaxHP);
+}
+
 void ACharacterBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);

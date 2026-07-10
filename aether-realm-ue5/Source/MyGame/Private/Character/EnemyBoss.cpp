@@ -61,6 +61,12 @@ void AEnemyBoss::EnterPhase(int32 NewPhase)
 
 	ResetPoise();
 
+	// NOTE: bInvulnerable itu bool tunggal, bukan counter/ref-count. Kalau
+	// nanti ada sumber invuln lain yang bisa overlap sama phase-transition ini
+	// (mis. player-side i-frame sistem yang somehow nyentuh boss, atau ability
+	// lain yang toggle invuln di actor yang sama), EndPhaseInvulnerability bisa
+	// clobber invuln dari sumber lain. Saat ini cuma god-mode cheat (player-only)
+	// yang share bool ini — risiko rendah, belum perlu di-ref-count.
 	SetInvulnerable(true);
 	if (GetWorld())
 	{

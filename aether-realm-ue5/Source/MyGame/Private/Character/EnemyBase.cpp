@@ -115,6 +115,15 @@ float AEnemyBase::GetBaseResistance(EElement DamageElement) const
 void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
 	float GaugeUnits, EHitReaction Reaction)
 {
+	// Server-authoritative: dipanggil dari anim notify, yang di UE jalan di
+	// tiap mesin yang mensimulasikan animasi (bukan cuma server). Tanpa guard
+	// ini, client bisa independently hitung & apply damage ke CurrentHP
+	// (replicated) — lawan aturan "validasi selalu server-side" project ini.
+	if (!HasAuthority())
+	{
+		return;
+	}
+
 	if (!Target || !Target->IsAlive())
 	{
 		return;
@@ -147,6 +156,14 @@ void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
 void AEnemyBase::FireProjectileAt(ACharacterBase* Target, float DamageMultiplier,
 	float GaugeUnits, EHitReaction Reaction)
 {
+	// Server-authoritative — sama alasan dengan AttackTarget. Spawn actor dari
+	// client juga tak akan replicate ke pemain lain, jadi guard di sini juga
+	// mencegah "hantu" proyektil client-only yang tak sinkron.
+	if (!HasAuthority())
+	{
+		return;
+	}
+
 	if (!Target || !Target->IsAlive() || !ProjectileClass || !GetWorld())
 	{
 		return;
