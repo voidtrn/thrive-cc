@@ -131,6 +131,14 @@ known limitation:
 | `AEnemyBoss::GetPoiseThreshold` buang `FEnemyStatsRow::PoiseThreshold` dari DataTable | DataTable menang kalau diisi, `BossPoiseThreshold` jadi fallback |
 | `bInvulnerable` bool tunggal (bukan counter) — phase-transition invuln bisa clobber sumber invuln lain | **Belum di-fix** — didokumentasikan sebagai known limitation di kode (risiko rendah, cuma god-mode cheat yang share bool ini sekarang) |
 
+**Pass tambahan (presentation layer)** — 2 class baru, 0 finding di review:
+- `APlayableCharacter` + `FCharacterDefinitionRow` — identitas Kagari/Yukine/
+  Shiden (sebelumnya cuma di ART_A_CHARACTERS.md) sekarang punya representasi
+  kode, pola sama `AEnemyBase`/`FEnemyStatsRow`.
+- `ASFXManager` — pasangan audio `AVFXManager`, auto-play reaction SFX. Weapon
+  swing/impact tetap BP-hook per `OnDamageDealt` (di luar scope, sama kayak
+  VFXManager).
+
 **Belum dikerjakan** (di luar scope pass ini, butuh asset/editor):
 - BP child buat HilichurlArcher/AbyssMage (assign `ProjectileClass`, animasi
   ranged, mesh proyektil).
@@ -182,13 +190,14 @@ known limitation:
 
 | | Jumlah |
 |---|---|
-| C++ class | 51 |
-| Source file | 112 |
+| C++ class | 53 |
+| Source file | 116 |
 | Setup/review docs | 21 |
 | Automation test | 3 file (6 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
+| Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
 
 ## Rekomendasi urutan garap berikutnya
 
