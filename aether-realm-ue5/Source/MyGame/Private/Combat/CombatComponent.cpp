@@ -7,9 +7,8 @@
 #include "Character/EnemyBase.h"
 #include "Character/OpenWorldMovementComponent.h"
 #include "System/EnemyRegistrySubsystem.h"
-#include "UI/DamageNumberWidget.h"
+#include "UI/DamageNumberPoolSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
-#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyGame.h"
@@ -515,29 +514,9 @@ void UCombatComponent::SpawnDamageNumber(const FVector& Location, const FDamageR
 		return;
 	}
 
-	// Actor sementara dengan WidgetComponent screen-space, auto-destroy
-	AActor* NumberActor = GetWorld()->SpawnActor<AActor>(AActor::StaticClass(), Location, FRotator::ZeroRotator);
-	if (!NumberActor)
+	// Pooled (ANTISIPASI #4 CODE_REVIEW.md) — bukan spawn/destroy actor per hit.
+	if (UDamageNumberPoolSubsystem* Pool = GetWorld()->GetSubsystem<UDamageNumberPoolSubsystem>())
 	{
-		return;
+		Pool->Show(DamageNumberWidgetClass, Location, Result);
 	}
-
-	USceneComponent* SceneRoot = NewObject<USceneComponent>(NumberActor, TEXT("Root"));
-	SceneRoot->RegisterComponent();
-	NumberActor->SetRootComponent(SceneRoot);
-	NumberActor->SetActorLocation(Location);
-
-	UWidgetComponent* Widget = NewObject<UWidgetComponent>(NumberActor, TEXT("DamageNumber"));
-	Widget->SetupAttachment(SceneRoot);
-	Widget->SetWidgetSpace(EWidgetSpace::Screen);
-	Widget->SetWidgetClass(DamageNumberWidgetClass);
-	Widget->SetDrawAtDesiredSize(true);
-	Widget->RegisterComponent();
-
-	if (UDamageNumberWidget* NumberWidget = Cast<UDamageNumberWidget>(Widget->GetWidget()))
-	{
-		NumberWidget->SetDamageInfo(Result);
-	}
-
-	NumberActor->SetLifeSpan(1.2f);
 }

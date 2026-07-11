@@ -176,9 +176,28 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    Co-op: climb akan "karet"/desync di client. Wajib tambah SavedMove
    sebelum co-op serius.
 
-4. **Damage number spawn actor + widget component per hit.** Kalau ratusan
-   hit/detik (AOE besar, banyak musuh) → banyak alokasi. Pertimbangkan
-   object pool damage number saat profiling nanti.
+4. ~~**Damage number spawn actor + widget component per hit.** Kalau ratusan
+   hit/detik (AOE besar, banyak musuh) → banyak alokasi.~~ → **Fixed.**
+   `ADamageNumberCarrier` + `UDamageNumberPoolSubsystem` (`UI/`) — carrier
+   actor+`UWidgetComponent` dibuat sekali (`CreateDefaultSubobject`, pola
+   sama `UShieldComponent` di `EnemyBase`), di-hide & di-pool balik setelah
+   1.2s (`ReleaseSelf` → `Pool->Release`) bukan `Destroy()`. Pool grow-on-
+   demand (`SpawnActor` baru cuma kalau free-list kosong), gak ada cap —
+   cukup buat solo-dev scale sekarang, bisa ditambah max-size kalau
+   profiling nanti nunjukin perlu. Efek samping: nutup known limitation
+   BUILD_NOTES.md ("`GetWidget()` bisa null 1 frame setelah spawn") — carrier
+   panggil `InitWidget()` sinkron setelah `SetWidgetClass` (saran BUILD_NOTES
+   sendiri), dan carrier yang di-reuse udah punya widget dari aktivasi
+   pertama sama sekali.
+
+   Review `ue5-reviewer`: 1🔴 1🟡 2🔵, semua fixed:
+
+   | Finding | Fix |
+   |---|---|
+   | `UPROPERTY(VisibleAnywhere)` di member `private` tanpa `meta=(AllowPrivateAccess)` — UHT reject | Tambah `meta = (AllowPrivateAccess = "true")` |
+   | Screen-space `UWidgetComponent` render lewat viewport overlay, `SetActorHiddenInGame` doang gak selalu suppress — carrier ter-pool bisa "hantu" nomor keliatan | Tambah `Widget->SetHiddenInGame()` eksplisit di constructor/Activate/ReleaseSelf, gak cuma actor-level |
+   | `FreeList.Pop()` default `bAllowShrinking=true` — realloc backing buffer tiap pop, defeat sebagian tujuan pooling | `Pop(/*bAllowShrinking=*/false)` |
+   | `Release()` pakai `AddUnique` (O(n) scan) padahal desain udah jamin no-dup (satu-satunya jalur balik = timer one-shot) | Ganti `Add()` (O(1)) |
 
 5. ~~**`GetAllActorsWithTag("Enemy")` / `GetAllActorsOfClass`** dipakai di
    reaction AOE, plunge, cheat, minimap. Mahal kalau musuh banyak & dipanggil
@@ -323,8 +342,8 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 
 | | Jumlah |
 |---|---|
-| C++ class | 56 |
-| Source file | 120 |
+| C++ class | 58 |
+| Source file | 122 |
 | Setup/review docs | 23 |
 | Automation test | 3 file (10 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
@@ -334,6 +353,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
 | Content pass | prolog 2-quest chain + `CutsceneActor` — 2 class baru (`StarterContentLibrary`, `CutsceneActor`) |
 | Perf/security pass | `UEnemyRegistrySubsystem` (ganti 5 world-scan call site) + `AChest` interact-range anti-cheat — 1 class baru |
+| Damage number pooling pass | `ADamageNumberCarrier` + `UDamageNumberPoolSubsystem` — 2 class baru |
 
 ## Rekomendasi urutan garap berikutnya
 
