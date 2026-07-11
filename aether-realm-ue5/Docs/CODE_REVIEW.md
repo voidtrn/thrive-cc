@@ -306,6 +306,37 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
     pertanyaan ❓ di atas (pawn pemain pasti punya net connection valid,
     gak kayak Chest yang gak jelas ownership-nya).
 
+11. **`UResonanceComponent` 2 dari 3 efek query gak pernah dipanggil** —
+    `GetCritRateVsFrozenBonus()`/`IsHighVoltageActive()`/`GetShieldStrengthBonus()`
+    di-expose sejak awal (`RESONANCE_SYSTEM.md`), tapi audit grep nunjukin
+    cuma `GetShieldStrengthBonus` yang beneran ke-consume (`ResonanceComponent.cpp`
+    set `Shield->ExtraShieldStrength` langsung). Dua lainnya: getter ada,
+    party composition ke-compute bener, tapi 0 caller — resonance "aktif" di
+    UI/query tapi 0 dampak gameplay. Sama kelas bug kayak DMG%/HealingBonus
+    yang di-fix di pass sebelumnya (dihitung tapi gak nyampe ke damage).
+
+    - **Shattering Ice (crit vs frozen)**: ✅ **Fixed** — `UDamageCalculator::
+      CalculateDamage` sekarang cek `Victim->IsFrozen()` (API udah ada di
+      `CharacterBase`, cuma gak dibaca), tambah `GetCritRateVsFrozenBonus()`
+      ke crit rate via `Attacker->GetController()` → `AOpenWorldPlayerController::
+      GetResonance()`. Attacker non-player (enemy nyerang enemy — gak
+      kejadian di gameplay sekarang) gak punya controller tipe itu → `Cast`
+      gagal ke `nullptr`, no-op aman, bukan crash. Review `ue5-reviewer`:
+      0🔴 0🟡 0🔵 1❓ — math crit-rate-nya gak ada test coverage
+      (`CalculateDamage` sendiri butuh live actor, di luar scope harness
+      World-free). Di-fix: extract jadi `UDamageCalculator::EffectiveCritRate
+      (BaseCritRate, bVictimFrozen, CritVsFrozenBonus)` pure-static (pola
+      sama `DefReduction`), 3 test baru (`AetherRealm.Damage.EffectiveCritRate`)
+      — total 12 test.
+    - **High Voltage (energy dari reaction)**: ⚠️ **sengaja belum digarap**.
+      Beda dari Shattering Ice — formula-nya gak crisp di dokumen manapun
+      (berapa energy, reaction Electro mana yang trigger, ada cooldown apa
+      gak). Nebak angka sendiri = freelance game-design decision, bukan
+      "fix gap yang udah ke-spec". Didokumentasikan di `RESONANCE_SYSTEM.md`
+      sebagai TODO eksplisit dgn titik hook yang benar
+      (`ElementalReactionSubsystem::ResolveReaction` → `CombatComponent::
+      GainEnergyParticles`), tinggal isi angka begitu spec-nya ditentuin.
+
 ## 🆕 CONTENT PASS — storyline & cutscene (belum ada sebelumnya)
 
 Project ini 0 konten cerita sebelum pass ini — quest *engine* (Phase6) ada,
@@ -351,7 +382,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | C++ class | 58 |
 | Source file | 122 |
 | Setup/review docs | 23 |
-| Automation test | 3 file (11 test) |
+| Automation test | 3 file (12 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |

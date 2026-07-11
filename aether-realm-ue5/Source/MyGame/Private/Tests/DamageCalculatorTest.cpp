@@ -94,4 +94,26 @@ bool FDamageTransformativeBaseTest::RunTest(const FString&)
 	return true;
 }
 
+/** Shattering Ice resonance (2 Cryo): +crit rate vs frozen. RESONANCE_SYSTEM.md. */
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageEffectiveCritRateTest,
+	"AetherRealm.Damage.EffectiveCritRate",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FDamageEffectiveCritRateTest::RunTest(const FString&)
+{
+	// Victim tidak frozen → bonus resonance tidak berlaku, base rate saja.
+	TestEqual(TEXT("not frozen: base rate only"),
+		UDamageCalculator::EffectiveCritRate(0.05f, false, 0.15f), 0.05f, 0.001f);
+
+	// Victim frozen tapi resonance tidak aktif (bonus 0) → base rate saja.
+	TestEqual(TEXT("frozen, no resonance: base rate only"),
+		UDamageCalculator::EffectiveCritRate(0.05f, true, 0.f), 0.05f, 0.001f);
+
+	// Victim frozen + Shattering Ice aktif → base + 15%.
+	TestEqual(TEXT("frozen + resonance: base + bonus"),
+		UDamageCalculator::EffectiveCritRate(0.05f, true, 0.15f), 0.20f, 0.001f);
+
+	return true;
+}
+
 #endif // WITH_AUTOMATION_TESTS
