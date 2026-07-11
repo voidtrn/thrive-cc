@@ -561,6 +561,58 @@ so a WBP only needs to include the pieces its layout actually uses:
   GetPingInMilliseconds()`; `TimeOfDayIcon` swaps texture (`TimeOfDayIcons` map) off
   `ADayNightManager::GetTimeOfDay()`/`OnTimeOfDayChanged` if one exists in the level.
 
+## Audio system
+
+`UStickmanAudioManager` (GameInstanceSubsystem):
+
+- **Categories/volumes**: Master/BGM/SFX/Voice/UI are engine `USoundClass` assets (author in
+  `Content/Audio/Classes/` with Master as parent of the rest) mapped via `CategorySoundClasses`,
+  plus one `USoundMix` in `VolumeControlMix`. `SetCategoryVolume()` pushes a mix-class override
+  — every sound already routed to that class follows. The settings screen's volume sliders call
+  this directly.
+- **Concurrency**: assign a `USoundConcurrency` asset (Max Count = 10, resolution rule
+  "Stop Farthest Then Oldest") to `DefaultSFXConcurrency`; `PlaySFX()` applies it to every
+  spawned component.
+- **Occlusion**: `PlaySFX()` line-traces listener→source and enables a lowpass
+  (`OccludedLowpassFrequency`, default 800Hz) on the component when blocked. Single-trace,
+  spawn-time only — good enough for one-shots; looping ambient sounds wanting live occlusion
+  need the trace re-run on a timer (not built).
+- **BGM**: `SetCurrentRegion()` crossfades (`CrossfadeDuration` 2s) between per-region tracks;
+  `SetCombatIntensity(x, bBoss)` swaps to `CombatBGM`/`BossBGM` on entering combat and back to
+  the region track on leaving (call from AI/spawner aggro code); boss **phase** transitions:
+  bind `AEnemyElite::OnPhaseChanged` → `CrossfadeTo(PhaseTrack)`. `PlayNextInPlaylist()`
+  shuffles the freeform `Playlist`. True *layered* intensity blending (combat layer riding
+  under exploration at partial intensity) needs a MetaSound with an Intensity float input —
+  the manager does a discrete crossfade; see MetaSound notes below.
+- **Footsteps**: `UStickmanFootstepComponent` + `UAnimNotify_Footstep` (place on foot-plant
+  frames). Traces down with `bReturnPhysicalMaterial`, maps `EPhysicalSurface` → sound.
+  Setup: Project Settings → Physics → Physical Surface, define `Grass/Stone/Wood/Water/Sand/
+  Snow/Metal` as SurfaceType1-7; author one `PhysicalMaterial` per surface with its
+  SurfaceType set; assign to ground materials/landscape layers; fill the component's
+  `FootstepSounds` map.
+- **Voice**: `UStickmanVoiceComponent` — per-language `FVoiceLineSet` maps
+  (`SkillCast/BurstCast/HitReaction/Death/ChestOpen/WeatherComment/IdleChatter/StoryDialogue`),
+  static `SetVoiceLanguage()` switches every component at once, idle chatter self-schedules on
+  a random interval, weather comments fire off `UWeatherManager::OnWeatherChanged`. Combat
+  categories: call `PlayVoiceLine(SkillCast)` from ability activation (one line in
+  `OnAbilityActivated`) — not force-wired to keep abilities audio-agnostic. Story dialogue
+  normally plays through `FDialogueLine::VoiceLine` instead. Subtitles toggle: cutscene/dialogue
+  widgets read `USettingsScreenWidget::AreSubtitlesEnabled()`.
+
+### MetaSound setup (assets, author in-editor)
+
+1. Per-element cast/impact sounds: one MetaSound Source per element (`MS_Cast_Pyro`, ...) with
+   float inputs `Pitch` and `Velocity` — inside, a Wave Player (or synth) with pitch-shift node
+   driven by `Pitch`, gain by `Velocity`. Combat code passes them via
+   `UAudioComponent::SetFloatParameter(TEXT("Pitch"), ...)` on the component `PlaySFX` returns.
+2. Layered BGM: a MetaSound with two Wave Players (exploration + combat layers) and an
+   `Intensity` float crossfading their gains — assign as `CombatBGM` and drive `Intensity`
+   through `SetFloatParameter` for continuous blending.
+3. Reverb per environment: standard `AAudioVolume`s with reverb settings placed over
+   caves/interiors — engine-level, no code.
+4. Debug visualization: `au.Debug.Sounds 1` / `au.Debug.SoundWaves 1` console vars, plus
+   MetaSound Editor's built-in analyzer graphs — no custom tooling built.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
