@@ -7,6 +7,7 @@
 #include "Combat/StatusEffectComponent.h"
 #include "Character/CharacterBase.h"
 #include "Character/EnemyBase.h"
+#include "System/EnemyRegistrySubsystem.h"
 #include "World/Waypoint.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
@@ -179,16 +180,17 @@ void UOpenWorldCheatManager::KillNearbyEnemies(float Radius)
 		return;
 	}
 
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyBase::StaticClass(), Enemies);
-	for (AActor* Actor : Enemies)
+	UEnemyRegistrySubsystem* Registry = GetWorld() ? GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>() : nullptr;
+	if (!Registry)
 	{
-		if (FVector::Dist(Actor->GetActorLocation(), Player->GetActorLocation()) <= Radius)
+		return;
+	}
+
+	for (AEnemyBase* Enemy : Registry->GetAllEnemies())
+	{
+		if (Enemy && FVector::Dist(Enemy->GetActorLocation(), Player->GetActorLocation()) <= Radius)
 		{
-			if (ACharacterBase* Enemy = Cast<ACharacterBase>(Actor))
-			{
-				Enemy->ApplyDamage(Enemy->MaxHP * 10.f, EElement::None, EHitReaction::Heavy);
-			}
+			Enemy->ApplyDamage(Enemy->MaxHP * 10.f, EElement::None, EHitReaction::Heavy);
 		}
 	}
 }

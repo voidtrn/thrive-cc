@@ -9,7 +9,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLockTargetChanged, AActor*, NewTa
 /**
  * Combat lock-on (middle mouse): cari enemy terdekat yang terlihat,
  * kamera menghadap target selama lock aktif.
- * Enemy ditandai actor tag "Enemy" (Phase 3 ganti ke interface/team system).
+ * Kandidat dari UEnemyRegistrySubsystem (Phase 3 ganti ke interface/team
+ * system kalau nanti butuh target non-AEnemyBase juga, mis. destructible).
  */
 UCLASS(ClassGroup = (Combat), meta = (BlueprintSpawnableComponent))
 class MYGAME_API ULockOnComponent : public UActorComponent
@@ -48,9 +49,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "LockOn")
 	float CameraInterpSpeed = 6.f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "LockOn")
-	FName EnemyTag = TEXT("Enemy");
 
 private:
 	TWeakObjectPtr<AActor> Target;

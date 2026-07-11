@@ -88,6 +88,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Chest", meta = (EditCondition = "bStartLocked"))
 	float EnemyCheckRadius = 800.f;
 
+	/** Jarak maksimal buka valid (anti-cheat: cegah Server_TryOpen dipanggil dari jauh/actor lain). */
+	UPROPERTY(EditAnywhere, Category = "Chest")
+	float MaxInteractRangeCm = 400.f;
+
 	/** Event chest boleh respawn — tidak disimpan ke save. */
 	UPROPERTY(EditAnywhere, Category = "Chest")
 	bool bEventChest = false;

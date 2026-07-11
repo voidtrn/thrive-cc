@@ -1,7 +1,8 @@
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Character/CharacterBase.h"
-#include "Kismet/GameplayStatics.h"
+#include "Character/EnemyBase.h"
+#include "System/EnemyRegistrySubsystem.h"
 #include "MyGame.h"
 
 // ---------- Tick: decay, freeze/quicken expiry, EC DOT, dendro core ----------
@@ -371,12 +372,16 @@ void UElementalReactionSubsystem::DoTransformativeDamage(
 	const float Damage = UDamageCalculator::TransformativeBaseDamage(Instigator->Level, ReactionCoefficient)
 		* (1.f + UDamageCalculator::TransformativeEmBonus(Instigator->ElementalMastery));
 
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Enemy"), Enemies);
-
-	for (AActor* Actor : Enemies)
+	// Registry (ANTISIPASI #5 CODE_REVIEW.md) — bukan world-scan penuh tiap reaction
+	UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>();
+	if (!Registry)
 	{
-		if (FVector::Dist(Actor->GetActorLocation(), Center) > Radius)
+		return;
+	}
+
+	for (AEnemyBase* Actor : Registry->GetAllEnemies())
+	{
+		if (!Actor || FVector::Dist(Actor->GetActorLocation(), Center) > Radius)
 		{
 			continue;
 		}

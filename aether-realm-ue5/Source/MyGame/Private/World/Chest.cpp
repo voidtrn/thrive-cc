@@ -1,7 +1,9 @@
 #include "World/Chest.h"
 #include "Character/EnemyBase.h"
 #include "System/OpenWorldGameInstance.h"
-#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/Pawn.h"
+#include "System/EnemyRegistrySubsystem.h"
 #include "Net/UnrealNetwork.h"
 #include "MyGame.h"
 
@@ -70,6 +72,16 @@ bool AChest::TryOpen(APlayerController* Player)
 
 void AChest::Server_TryOpen_Implementation(APlayerController* Player)
 {
+	// RPC body cuma jalan di server, tapi bisa dipanggil client dgn referensi
+	// chest actor mana pun (bukan cuma yang lagi di-interact) — tanpa cek ini,
+	// cheater bisa buka chest di ujung map lain lewat RPC langsung. Distance
+	// check thd pawn si pemanggil sendiri (bukan trust posisi dari client).
+	const APawn* Pawn = Player ? Player->GetPawn() : nullptr;
+	if (!Pawn || FVector::Dist(Pawn->GetActorLocation(), GetActorLocation()) > MaxInteractRangeCm)
+	{
+		return;
+	}
+
 	TryOpen(Player);
 }
 
@@ -128,12 +140,14 @@ int32 AChest::RollPrimogems() const
 
 bool AChest::AreNearbyEnemiesDead() const
 {
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyBase::StaticClass(), Enemies);
-
-	for (const AActor* Actor : Enemies)
+	const UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>();
+	if (!Registry)
 	{
-		const AEnemyBase* Enemy = Cast<AEnemyBase>(Actor);
+		return true;
+	}
+
+	for (const AEnemyBase* Enemy : Registry->GetAllEnemies())
+	{
 		if (Enemy && Enemy->IsAlive()
 			&& FVector::Dist(Enemy->GetActorLocation(), GetActorLocation()) < EnemyCheckRadius)
 		{

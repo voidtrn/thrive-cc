@@ -4,7 +4,9 @@
 #include "Combat/DamageCalculator.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Character/CharacterBase.h"
+#include "Character/EnemyBase.h"
 #include "Character/OpenWorldMovementComponent.h"
+#include "System/EnemyRegistrySubsystem.h"
 #include "UI/DamageNumberWidget.h"
 #include "System/OpenWorldGameInstance.h"
 #include "Components/WidgetComponent.h"
@@ -247,18 +249,15 @@ void UCombatComponent::OnPlungeLand()
 	Params.bBluntHit = true; // plunge selalu blunt (shatter frozen)
 	Params.TalentSource = ETalentSource::NormalAttack; // plunge scale ikut talent Normal
 
-	// AOE landing
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Enemy"), Enemies);
+	// AOE landing — registry (ANTISIPASI #5 CODE_REVIEW.md), bukan world-scan penuh
 	const FVector Center = OwnerChar->GetActorLocation();
-
-	for (AActor* Actor : Enemies)
+	if (UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>())
 	{
-		if (FVector::Dist(Actor->GetActorLocation(), Center) <= PlungeAOERadius)
+		for (AEnemyBase* Enemy : Registry->GetAllEnemies())
 		{
-			if (ACharacterBase* Victim = Cast<ACharacterBase>(Actor))
+			if (Enemy && FVector::Dist(Enemy->GetActorLocation(), Center) <= PlungeAOERadius)
 			{
-				DealDamage(Victim, Params);
+				DealDamage(Enemy, Params);
 			}
 		}
 	}

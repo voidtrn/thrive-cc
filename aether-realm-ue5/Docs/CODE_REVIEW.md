@@ -159,7 +159,7 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
 | Aggro leak — `bHasAggro` tak pernah reset saat musuh kehilangan pemain → `AggroCount` director menggelembung permanen | ✅ Fixed — lost-sight branch reset flag + `ReportEnemyAggro(-1)` |
 | Pacing input bisa ke-feed dari mesin non-authoritative (lihat baris ANTISIPASI baru di bawah) | ✅ Mitigated — semua report call di-gate `HasAuthority()`; director efektif server-only |
 | `GetPlayerHPFraction` cuma baca player 0 — anggota co-op sekarat tak terhitung stress | ✅ Fixed — pakai HP fraction terendah semua player controller |
-| `AlertNearbyAllies` pakai `GetAllActorsOfClass` per aggro pertama | 📋 Pre-existing, sudah tercatat di ANTISIPASI #5 (threshold >50 musuh) |
+| `AlertNearbyAllies` pakai `GetAllActorsOfClass` per aggro pertama | ✅ Fixed — lihat ANTISIPASI #5, sekarang pakai `UEnemyRegistrySubsystem` |
 
 ## ⚠️ ANTISIPASI — yang akan menggigit nanti
 
@@ -180,9 +180,23 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    hit/detik (AOE besar, banyak musuh) → banyak alokasi. Pertimbangkan
    object pool damage number saat profiling nanti.
 
-5. **`GetAllActorsWithTag("Enemy")` / `GetAllActorsOfClass`** dipakai di
+5. ~~**`GetAllActorsWithTag("Enemy")` / `GetAllActorsOfClass`** dipakai di
    reaction AOE, plunge, cheat, minimap. Mahal kalau musuh banyak & dipanggil
-   sering. Ganti ke overlap query / spatial grid saat musuh > 50.
+   sering.~~ → **Fixed.** `UEnemyRegistrySubsystem` (`System/
+   EnemyRegistrySubsystem.h`) — `AEnemyBase` self-register `BeginPlay`/
+   unregister `EndPlay`, O(1) append/remove vs O(seluruh actor world) tiap
+   scan. Ganti di 5 call site: `CombatComponent::OnPlungeLand` (AOE landing),
+   `ElementalReactionSubsystem::DoTransformativeDamage` (reaction AOE),
+   `LockOnComponent::FindBestTarget` (+ sekalian filter `IsAlive()` yang
+   sebelumnya kelewat — gak lagi bisa lock ke mayat), `EnemyAIController::
+   AlertNearbyAllies`, `Chest::AreNearbyEnemiesDead`, `OpenWorldCheatManager::
+   KillNearbyEnemies`. `LockOnComponent::EnemyTag` dihapus (dead property
+   setelah migrasi — `AEnemyBase` udah auto-tag "Enemy" di constructor
+   sendiri, registry gak butuh tag sama sekali). Belum ke spatial grid (belum
+   perlu di skala solo-dev sekarang) — kalau nanti musuh > 50 concurrent,
+   `GetAllEnemies()` masih O(n) buat filter radius; upgrade ke spatial
+   partitioning tinggal ganti isi `UEnemyRegistrySubsystem`, call site gak
+   berubah.
 
 6. **Timestamp save tidak dimuat** (sengaja) — tapi kalau nanti bikin UI
    "save slot list dengan tanggal", pastikan baca `Save->Timestamp` langsung
@@ -232,6 +246,41 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    severity — didokumentasikan sebagai known limitation, pola sama dgn
    `bInvulnerable` single-bool di BUILD_NOTES.
 
+10. **`AChest::Server_TryOpen` gak validasi jarak** — celah sama kelas dgn
+    #9: RPC publik, client bisa panggil dgn referensi chest actor mana pun
+    (bukan cuma yang lagi di-interact), buka chest di ujung map lain tanpa
+    deket. **Fixed sebagian** — `Server_TryOpen_Implementation` sekarang cek
+    jarak `Player->GetPawn()` ke chest thd `MaxInteractRangeCm` (default
+    400cm) sebelum lanjut ke `TryOpen`.
+
+    Review `ue5-reviewer` nemu 1🟡+1❓ tambahan pas fix ini, **belum
+    di-fix** (didokumentasikan, bukan ditutup dgn tebakan):
+    - 🟡 Distance check pakai `Player` dari parameter RPC (client-supplied),
+      bukan identitas koneksi yang beneran manggil RPC — teorinya cheater
+      kirim referensi `APlayerController` pemain lain biar distance check
+      "lolos" pakai posisi orang lain. **Practically mitigated** oleh default
+      UE: `APlayerController` cuma replicate ke owning client sendiri
+      (`bOnlyRelevantToOwner`-style), jadi client lain gak punya referensi
+      valid buat di-exploit ini — tapi ini native networking default, bukan
+      proteksi dari kode Chest sendiri, jadi fragile kalau relevancy setting
+      itu berubah nanti (mis. spectator mode).
+    - ❓ `AChest` gak pernah `SetOwner()` ke PlayerController manapun di C++
+      (mungkin di-wire BP, gak kelihatan dari sini) — kalau beneran gak ada
+      owner, `GetNetConnection()` chest bisa null, artinya RPC `Server_TryOpen`
+      sendiri mungkin gak ke-deliver dari client non-host sama sekali (fail
+      silent, masalah terpisah dari anti-cheat di atas). Gak bisa dipastikan
+      tanpa compile+test — project ini belum pernah di-compile.
+
+    **Fix arsitektural yang bener** (belum dikerjakan, butuh keputusan +
+    testing nyata): pindah RPC dari `AChest` ke pemilik koneksi asli — pola
+    sama persis dgn `ACharacterBase::ServerRequestAttack` (#9 di atas):
+    `ACharacterBase::Server_InteractWithChest(AChest* Chest)` di pawn pemain
+    (yang beneran punya net ownership via PlayerController), server derive
+    "siapa yang manggil" dari `GetOwner()`/`GetController()` pawn itu sendiri
+    — bukan dari parameter yang dikirim client. Ini juga otomatis nutup
+    pertanyaan ❓ di atas (pawn pemain pasti punya net connection valid,
+    gak kayak Chest yang gak jelas ownership-nya).
+
 ## 🆕 CONTENT PASS — storyline & cutscene (belum ada sebelumnya)
 
 Project ini 0 konten cerita sebelum pass ini — quest *engine* (Phase6) ada,
@@ -274,8 +323,8 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 
 | | Jumlah |
 |---|---|
-| C++ class | 55 |
-| Source file | 118 |
+| C++ class | 56 |
+| Source file | 120 |
 | Setup/review docs | 23 |
 | Automation test | 3 file (10 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
@@ -284,6 +333,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
 | Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
 | Content pass | prolog 2-quest chain + `CutsceneActor` — 2 class baru (`StarterContentLibrary`, `CutsceneActor`) |
+| Perf/security pass | `UEnemyRegistrySubsystem` (ganti 5 world-scan call site) + `AChest` interact-range anti-cheat — 1 class baru |
 
 ## Rekomendasi urutan garap berikutnya
 

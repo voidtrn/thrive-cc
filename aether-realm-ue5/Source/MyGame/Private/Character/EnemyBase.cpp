@@ -1,6 +1,7 @@
 #include "Character/EnemyBase.h"
 #include "Character/EnemyAIController.h"
 #include "System/PacingDirectorSubsystem.h"
+#include "System/EnemyRegistrySubsystem.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Combat/ShieldComponent.h"
@@ -47,6 +48,23 @@ void AEnemyBase::BeginPlay()
 		EnemyShield->OnShieldBroken.AddDynamic(this, &AEnemyBase::OnEnemyShieldBroken);
 	}
 	ApplyElementalShield();
+
+	if (UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>())
+	{
+		Registry->RegisterEnemy(this);
+	}
+}
+
+void AEnemyBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (UEnemyRegistrySubsystem* Registry = World->GetSubsystem<UEnemyRegistrySubsystem>())
+		{
+			Registry->UnregisterEnemy(this);
+		}
+	}
+	Super::EndPlay(EndPlayReason);
 }
 
 void AEnemyBase::ApplyElementalShield()
