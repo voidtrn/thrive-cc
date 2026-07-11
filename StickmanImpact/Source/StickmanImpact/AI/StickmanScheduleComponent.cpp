@@ -4,6 +4,8 @@
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameFramework/Pawn.h"
+#include "World/DayNightManager.h"
+#include "Kismet/GameplayStatics.h"
 
 UStickmanScheduleComponent::UStickmanScheduleComponent()
 {
@@ -18,8 +20,13 @@ float UStickmanScheduleComponent::GetCurrentHour_Implementation() const
 		return FMath::Fmod(DebugOverrideHour, 24.f);
 	}
 
-	// Placeholder clock until ADayNightManager exists: a 24-real-minute day, matching that
-	// system's planned default cycle length.
+	if (const ADayNightManager* DayNight = Cast<ADayNightManager>(
+			UGameplayStatics::GetActorOfClass(this, ADayNightManager::StaticClass())))
+	{
+		return DayNight->GetCurrentHour();
+	}
+
+	// Fallback clock if no ADayNightManager is placed in the level: a 24-real-minute day.
 	const UWorld* World = GetWorld();
 	const float DayLengthSeconds = 24.f * 60.f;
 	const float SecondsIntoDay = World ? FMath::Fmod(World->GetTimeSeconds(), DayLengthSeconds) : 0.f;

@@ -4,6 +4,8 @@
 #include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "NavigationSystem.h"
 #include "TimerManager.h"
+#include "DayNightManager.h"
+#include "Kismet/GameplayStatics.h"
 
 AEnemySpawner::AEnemySpawner()
 {
@@ -20,20 +22,38 @@ void AEnemySpawner::BeginPlay()
 	}
 }
 
+const TArray<FEnemySpawnEntry>& AEnemySpawner::GetActiveSpawnPool() const
+{
+	if (NightSpawnPool.Num() > 0)
+	{
+		if (const ADayNightManager* DayNight = Cast<ADayNightManager>(
+				UGameplayStatics::GetActorOfClass(this, ADayNightManager::StaticClass())))
+		{
+			if (DayNight->IsNight())
+			{
+				return NightSpawnPool;
+			}
+		}
+	}
+	return SpawnPool;
+}
+
 TSubclassOf<AStickmanEnemyCharacter> AEnemySpawner::PickWeightedClass() const
 {
+	const TArray<FEnemySpawnEntry>& Pool = GetActiveSpawnPool();
+
 	float TotalWeight = 0.f;
-	for (const FEnemySpawnEntry& Entry : SpawnPool)
+	for (const FEnemySpawnEntry& Entry : Pool)
 	{
 		TotalWeight += FMath::Max(Entry.Weight, 0.f);
 	}
 	if (TotalWeight <= 0.f)
 	{
-		return SpawnPool.Num() > 0 ? SpawnPool[0].EnemyClass : nullptr;
+		return Pool.Num() > 0 ? Pool[0].EnemyClass : nullptr;
 	}
 
 	float Roll = FMath::FRandRange(0.f, TotalWeight);
-	for (const FEnemySpawnEntry& Entry : SpawnPool)
+	for (const FEnemySpawnEntry& Entry : Pool)
 	{
 		Roll -= FMath::Max(Entry.Weight, 0.f);
 		if (Roll <= 0.f)
@@ -41,12 +61,12 @@ TSubclassOf<AStickmanEnemyCharacter> AEnemySpawner::PickWeightedClass() const
 			return Entry.EnemyClass;
 		}
 	}
-	return SpawnPool.Last().EnemyClass;
+	return Pool.Last().EnemyClass;
 }
 
 void AEnemySpawner::SpawnOneEnemy()
 {
-	if (ActiveEnemies.Num() >= MaxActiveEnemies || SpawnPool.Num() == 0)
+	if (ActiveEnemies.Num() >= MaxActiveEnemies || GetActiveSpawnPool().Num() == 0)
 	{
 		return;
 	}

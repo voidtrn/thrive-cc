@@ -279,6 +279,92 @@ within `SpawnRadius`, scaling `FStickmanStats` by `BaseEnemyLevel`/`StatGrowthPe
 other member spawner's *currently alive* enemies get their Blackboard `TargetActor`/
 `CurrentState` set to investigate — a lightweight "the whole camp comes running" alert.
 
+## Open world infrastructure
+
+### World Partition / landscape / streaming (editor setup, no C++)
+
+World Partition, landscape layers, and streaming distances are engine/editor configuration,
+not code:
+
+1. **World Partition**: new level → tick "Enable World Partition" in the New Level dialog (or
+   existing level → `Tools > Convert Level to World Partition`). For a 4km×4km+ map, also
+   enable **Data Layers** (split content you want to load conditionally — e.g. interiors) and
+   **HLOD** (`Window > World Partition > HLOD Outliner`, build HLODs after laying out the level)
+   so distant geography renders as merged low-poly proxies instead of full detail.
+2. **Landscape layers**: create one Landscape with a Layer Info Object per material
+   (`LI_Grassland`, `LI_Forest`, `LI_Desert`, `LI_Snow`, `LI_Urban`), paint with the Landscape
+   sculpt/paint tools, blend via a landscape material's layer-blend node.
+3. **Streaming distance**: World Partition streams by **runtime grid cell** (`Project Settings >
+   World Partition`, or per-Data-Layer loading range) rather than a single "streaming distance"
+   knob — tune cell size + loading range there. For a AAA-style seamless world, avoid loading
+   screens entirely (World Partition streams in the background); reserve a loading screen only
+   for a hard cut between genuinely disconnected regions (e.g. a instanced dungeon), driven by
+   `UGameplayStatics::OpenLevel` + a simple `UUserWidget` shown just before the level change.
+
+### Stickman character LOD
+
+- **LOD0** (full mesh, <30m) and **LOD1** (simplified/reduced bones, 30-80m) are ordinary
+  `SkeletalMesh` LOD levels — set them up in the Skeletal Mesh Editor's LOD panel (auto-generate
+  or import custom reduced meshes), the engine switches between them by screen size
+  automatically, no C++ involved.
+- **LOD2** (billboard, 80-200m) / **LOD3** (culled, 200m+) aren't something `SkeletalMesh` LODs
+  can do on their own (a flat sprite isn't a mesh LOD), so `UStickmanLODComponent` handles those:
+  add it to any background stickman, assign `BillboardFlipbookMaterial` (a material sampling a
+  baked animation-flipbook atlas), tune `LOD2StartDistance`/`LOD3StartDistance`. At LOD3 it hides
+  everything and disables the owning actor's tick (the LOD component itself keeps ticking at a
+  cheap `CheckInterval` so it can un-cull later).
+
+### Crowd
+
+`AStickmanCrowdManager`: author `SpawnPoints` (with an `AreaType` FName each) and
+`DensityPerAreaType` (0-1 chance per refresh pass — sparse for a back alley, dense for a market).
+Pools/reuses `AStickmanNPC` instances (hidden + tick-disabled + collision-disabled while
+pooled) instead of spawning fresh ones, activating within `ActivationDistance` of the player and
+returning to the pool beyond `DeactivationDistance`, capped at `MaxActiveNPCs` (default 50).
+`ColorVariants` (material swap) and `SizeVariantRange` (uniform actor scale) give a crowd
+visual variety without needing dozens of unique NPC Blueprints.
+
+### Foliage
+
+- **Grass reacting to movement**: `UStickmanFoliageInteractionComponent` on the player writes
+  its world position into a `UMaterialParameterCollection` vector every tick; the grass
+  material reads that MPC vector and pushes vertices away via World Position Offset based on
+  distance — a pure material-side effect, no per-blade gameplay code.
+- **Tree LOD billboards at distance / density culling**: both are Foliage-tool settings per
+  `FoliageType` asset (`Cull Distance` min/max, and the LOD Billboard section on the source
+  Static Mesh) — no custom code needed.
+- **Interactive foliage (burn/cut/freeze)**: the Foliage tool's procedural instances don't
+  support per-instance reactions without a custom instance-tracking system, so
+  `AStickmanInteractiveFoliage` is a standalone placeable actor instead — call
+  `OnBurned()`/`OnFrozen()` (material swap) or `OnCut()` (VFX + destroy) from combat code
+  (e.g. `UStickmanGameplayAbility::ApplyDamageToTarget` checking `Cast<AStickmanInteractiveFoliage>(TargetActor)`
+  and the hit's element/type) wherever it's placed as a deliberate "cut this bush" set piece.
+
+### Day/Night cycle
+
+`ADayNightManager` (place one per level, reference the level's existing `ADirectionalLight`/
+`ASkyLight`/`AExponentialHeightFog`/`APostProcessVolume`): rotates the sun, lerps sky light
+intensity/fog color/post-process exposure across a `DayLengthMinutes`-long cycle (default 24
+real minutes), and exposes `GetTimeOfDay()` (`Dawn/Day/Dusk/Night`) plus `OnTimeOfDayChanged`/
+`OnHourChanged` delegates. `UStickmanScheduleComponent` and `AEnemySpawner` (via
+`NightSpawnPool`) both look this actor up automatically (`UGameplayStatics::GetActorOfClass`)
+and fall back gracefully if none exists in the level. Street lights: bind a Blueprint's own
+light component visibility to `OnTimeOfDayChanged` (`NewTimeOfDay == Night`) — no dedicated
+C++ class needed for something that simple.
+
+### Weather
+
+`UWeatherManager` (GameInstanceSubsystem): `SetWeather()` crossfades over `TransitionDuration`
+(default 30s), spawning `WeatherVFX[NewWeather]` attached to the player and lerping a
+`WeatherMPC` "WetSurface"/"WeatherBlend" scalar (wet-surface shaders read "WetSurface").
+During Rain/Storm it periodically calls `UElementalReactionManager::ApplyElement(Player, Hydro,
+...)` (spec: "Rain: Hydro applied to all characters periodically"); during Storm it also rolls
+random nearby "lightning strikes" applying Electro if the player's within
+`StormLightningRadius` of the roll ("Storm: Electro hazard zones"). `GetMoveSpeedMultiplier()`
+is exposed (Rain -5%, Storm -10%, Snow -8%) but not force-wired into `AStickmanCharacter`'s
+movement — that's one line in its Tick once you're ready, left as a hook rather than touching
+already-working movement code this late.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

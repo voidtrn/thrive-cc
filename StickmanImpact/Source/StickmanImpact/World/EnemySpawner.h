@@ -39,6 +39,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	TArray<FEnemySpawnEntry> SpawnPool;
 
+	// If set and a ADayNightManager in the level reports night, these replace SpawnPool.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
+	TArray<FEnemySpawnEntry> NightSpawnPool;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	float SpawnRadius = 500.f;
 
@@ -73,6 +77,7 @@ protected:
 
 private:
 	TSubclassOf<AStickmanEnemyCharacter> PickWeightedClass() const;
+	const TArray<FEnemySpawnEntry>& GetActiveSpawnPool() const;
 
 	UFUNCTION()
 	void HandleEnemyDestroyed(AActor* DestroyedActor);
