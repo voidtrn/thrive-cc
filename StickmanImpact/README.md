@@ -114,6 +114,26 @@ Cooldown/Cost GameplayEffect assets required:
 Elemental reactions (Vaporize, Melt, Crystallize, ...) are not implemented — `GA_GeoSkill`'s
 header notes where Crystallize would hook in once a reaction resolver exists.
 
+## Elemental gauge / damage number UI
+
+- `UEnemyElementalDisplayComponent` (a `UWidgetComponent` subclass) — add to any enemy Blueprint,
+  set its `WidgetClass` to a WBP subclass of `UStickmanElementalGaugeWidget`. It polls
+  `UElementalReactionManager::GetActiveElements()` every `PollInterval` seconds to update
+  element icon/bar visibility+color, and listens for `OnReactionTriggered` on that same actor
+  to show a "MELT"/"VAPORIZE"/... popup (author a `ReactionPopupAnim` Widget Animation in the
+  WBP for the scale-up-then-fade flourish — auto-bound and auto-played, no C++ needed).
+- `UStickmanDamageNumberManager` (GameInstanceSubsystem) pools `UWidgetComponent` + WBP-subclass-
+  of-`UStickmanDamageNumberWidget` pairs, attaching one to whichever actor was just hit; rise/fade
+  is driven natively in `NativeTick`, no Widget Animation required. Wired into
+  `UStickmanGameplayAbility::ApplyDamageToTarget` (normal hits) and
+  `UEnemyElementalDisplayComponent` (reaction damage) automatically — set
+  `DamageNumberWidgetClass` on the subsystem (via a Blueprint subclass, since subsystem CDOs
+  aren't Content-Browser assets) to enable it.
+- Colors are centralized in `UStickmanDamageNumberStatics` (`Combat/StickmanReactionTypes.h` +
+  `UI/StickmanDamageNumberTypes.h`): Physical=white, Pyro=red, Hydro/Cryo=blue, Electro=purple,
+  Critical=gold, Reaction=orange (bigger text); element gauge icons use Pyro=red, Cryo=cyan,
+  Hydro=blue, Electro=purple, Anemo=teal, Geo=yellow, Dendro=green per the design spec.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

@@ -3,6 +3,8 @@
 #include "StickmanGameplayAbility.h"
 #include "StickmanAttributeSet.h"
 #include "ElementalReactionManager.h"
+#include "UI/StickmanDamageNumberManager.h"
+#include "UI/StickmanDamageNumberTypes.h"
 #include "Character/StickmanGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
@@ -248,6 +250,15 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			TargetAttributes->GetMaxHealth());
 		TargetAttributes->SetHealth(NewHealth);
 		TargetAttributes->OnHealthChanged.Broadcast(NewHealth, TargetAttributes->GetMaxHealth());
+
+		if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+		{
+			if (UStickmanDamageNumberManager* DamageNumbers = GameInstance->GetSubsystem<UStickmanDamageNumberManager>())
+			{
+				const EDamageNumberType NumberType = UStickmanDamageNumberStatics::GetDamageNumberTypeForElement(SkillData.Element);
+				DamageNumbers->SpawnDamageNumber(TargetActor, FinalDamage, NumberType);
+			}
+		}
 	}
 
 	if (!StatusEffectClass || !TargetASC)
