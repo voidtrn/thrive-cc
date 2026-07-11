@@ -134,6 +134,51 @@ header notes where Crystallize would hook in once a reaction resolver exists.
   Critical=gold, Reaction=orange (bigger text); element gauge icons use Pyro=red, Cryo=cyan,
   Hydro=blue, Electro=purple, Anemo=teal, Geo=yellow, Dendro=green per the design spec.
 
+## Cutscene system
+
+`UCutsceneManager` (GameInstanceSubsystem) wraps `ULevelSequencePlayer`: `PlayCutscene()` /
+`SkipCutscene()` (no-op unless `bSkippable`) / `PauseCutscene()` / `ResumeCutscene()` /
+`SetPlaybackSpeed()`, broadcasts `OnLetterboxToggled(bool)` for a HUD-level letterbox widget,
+and polls a `TArray<FSubtitleEntry>` (`SetSubtitleTrack()`) against the player's own clock every
+0.1s to drive `USubtitleWidget` via `OnSubtitleChanged`. `PlaySound`/`SpawnVFX`/`ShowSubtitle`
+are meant to be called from a Sequencer **Event Track** (Call Function on a reference to the
+subsystem, or via a Blueprint function library wrapper) so a cutscene can trigger gameplay-side
+effects mid-playback. `ACutsceneTriggerVolume` plays a cutscene on player overlap, gated by
+`RequiredStoryFlags` (checked against `UDialogueManager`'s story flags) and `bOneShot` (tracked
+via `CutsceneManager->HasWatchedCutscene(CutsceneID)`); `RequiredPartyMembers` is a hook that
+always passes today since there's no party-roster system yet. `AStickmanCutsceneActor` is a
+non-playable SkeletalMesh actor with `Idle/Walk/Run/Attack/Cast/Hit/Die` montage slots,
+`Neutral/Happy/Sad/Angry/Surprised` emotion morph targets (author `Emotion_Happy` etc. as morph
+targets on the mesh), a `GetLookAtTargetLocation()` getter for the AnimBP's Look-At node to read
+(no C++ bone manipulation — that belongs in the AnimGraph), and a crude jittered-morph-target
+lip sync (`Mouth_Open`) with no real phoneme analysis.
+
+### Example: "OpeningScene" setup
+
+1. Create a Level Sequence asset `LS_OpeningScene` in `Content/Cutscenes/`.
+2. Add a **Camera Cut Track** with 3 shots: (a) wide establishing shot of the field, (b) a
+   push-in close-up as the player character (a `BP_StickmanCharacter` placed in the level,
+   `IdleMontage` playing, lying down/waking-up pose) sits up, (c) an over-the-shoulder shot
+   framing the guide character (an `AStickmanCutsceneActor` instance) approaching.
+3. Add both actors as **Possessable** tracks; keyframe their Transform tracks for the guide's
+   walk-in, and add an **Animation Track** on each referencing the relevant montage
+   (`WalkMontage` for the guide's approach, then `IdleMontage` once they stop).
+4. Add an **Event Track** with two Call-Function keys: one at the moment the guide starts
+   talking (`UCutsceneManager::ShowSubtitle`, or better, author the lines via
+   `SetSubtitleTrack()` before playback — see step 6), one under the guide's footsteps
+   (`UCutsceneManager::PlaySound` with a footstep cue) for a concrete "Events during cutscene"
+   example.
+5. Set the Camera Cuts track's cameras to 3 `CineCameraActor`s placed for each of the 3 shots.
+6. In the trigger Blueprint (`BP_OpeningSceneTrigger`, a child of `ACutsceneTriggerVolume`)
+   placed at the level's spawn point: set `CutsceneToPlay = LS_OpeningScene`, `CutsceneID =
+   "OpeningScene"`, `bOneShot = true`. On `BeginPlay`, call
+   `CutsceneManager->SetSubtitleTrack()` with entries like `{"...where am I?", 0.0, 2.5}`,
+   `{"You're finally awake.", 3.0, 5.5}` before the player can reach the trigger (or call it
+   immediately before `PlayCutscene` if driving the trigger via C++/Blueprint instead of relying
+   on `ACutsceneTriggerVolume`'s automatic overlap call).
+7. Add `WBP_Subtitle` (child of `USubtitleWidget`) and `WBP_Letterbox` (two black `Border`
+   widgets pinned top/bottom, shown/hidden via `OnLetterboxToggled`) to the persistent HUD.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

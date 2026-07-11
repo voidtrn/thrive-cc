@@ -22,6 +22,7 @@ public class StickmanImpact : ModuleRules
 			"GameplayTasks",
 			"UMG",
 			"LevelSequence",
+			"MovieScene",
 			"Niagara",
 			"MetasoundEngine",
 		});
@@ -30,6 +31,8 @@ public class StickmanImpact : ModuleRules
 		{
 			"Slate",
 			"SlateCore",
+			"AIModule",
+			"NavigationSystem",
 		});
 	}
 }
