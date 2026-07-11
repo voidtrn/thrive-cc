@@ -179,6 +179,27 @@ lip sync (`Mouth_Open`) with no real phoneme analysis.
 7. Add `WBP_Subtitle` (child of `USubtitleWidget`) and `WBP_Letterbox` (two black `Border`
    widgets pinned top/bottom, shown/hidden via `OnLetterboxToggled`) to the persistent HUD.
 
+## Quest/mission system
+
+`UQuestDataAsset` authors `FQuestStage`s (each with `FQuestObjective`s, optional start dialogue/
+cutscene, and a `FRewardData`). `UQuestManager` (GameInstanceSubsystem) copies a quest's stages
+into a runtime-only `FActiveQuestRuntime` on `AcceptQuest()` so progress never mutates the shared
+asset. Gameplay code reports progress through one generic entry point —
+`ReportProgress(EObjectiveType, TargetIdentifier, RelevantActor, Location, Count)` — instead of
+each objective type needing its own callback wiring; e.g. an enemy's death handler calls
+`ReportProgress(EObjectiveType::Kill, EnemyArchetypeTag, DeadEnemy, DeadEnemy->GetActorLocation())`
+and every active quest's current-stage Kill objectives matching that identifier/actor advance.
+Rewards auto-grant on stage/quest completion via `GrantReward()`; EXP/Currency/Items are
+logged only (no inventory/economy subsystem exists yet — wire that up before shipping), story
+unlock flags and ability grants (`TSoftClassPtr<UGameplayAbility>`, loaded synchronously and
+given to the player's ASC) already work. `UQuestTrackerWidget` shows the tracked quest
+(`SetTrackedQuest`/`GetTrackedQuestID`) with up to 5 objective rows (checkbox + progress count +
+distance for `ReachLocation`), refreshing distance every `DistanceRefreshInterval` seconds and
+immediately on any `OnQuestUpdated`/`OnObjectiveUpdated` event; author a `QuestUpdateSlideIn`
+Widget Animation for the slide-in flourish. A reward-preview (pre-accept) or reward-collection
+screen is just more UMG reading `FRewardData`/listening to `OnQuestCompleted` — no extra C++
+needed beyond what's here.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
