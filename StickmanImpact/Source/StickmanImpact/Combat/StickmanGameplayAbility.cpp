@@ -2,6 +2,7 @@
 
 #include "StickmanGameplayAbility.h"
 #include "StickmanAttributeSet.h"
+#include "ElementalReactionManager.h"
 #include "Character/StickmanGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
@@ -11,6 +12,7 @@
 #include "GameFramework/PlayerController.h"
 #include "NiagaraFunctionLibrary.h"
 #include "TimerManager.h"
+#include "Engine/GameInstance.h"
 
 UStickmanGameplayAbility::UStickmanGameplayAbility()
 {
@@ -224,7 +226,25 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 	if (UStickmanAttributeSet* TargetAttributes = TargetASC ? const_cast<UStickmanAttributeSet*>(
 			TargetASC->GetSet<UStickmanAttributeSet>()) : nullptr)
 	{
-		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - DamageAmount, 0.f,
+		float FinalDamage = DamageAmount;
+
+		// Route through the elemental reaction manager when this hit carries an element —
+		// this is what actually applies the aura and resolves Melt/Vaporize/Overload/etc.
+		// (SkillData.Element == None means a purely physical hit, so it's skipped there).
+		if (SkillData.Element != EStickmanElement::None)
+		{
+			if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+			{
+				if (UElementalReactionManager* ReactionManager = GameInstance->GetSubsystem<UElementalReactionManager>())
+				{
+					const UStickmanAttributeSet* CasterAttributes = GetStickmanAttributeSet();
+					const float CasterEM = CasterAttributes ? CasterAttributes->GetElementalMastery() : 0.f;
+					FinalDamage = ReactionManager->CalculateReactionDamage(TargetActor, DamageAmount, SkillData.Element, CasterEM);
+				}
+			}
+		}
+
+		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - FinalDamage, 0.f,
 			TargetAttributes->GetMaxHealth());
 		TargetAttributes->SetHealth(NewHealth);
 		TargetAttributes->OnHealthChanged.Broadcast(NewHealth, TargetAttributes->GetMaxHealth());

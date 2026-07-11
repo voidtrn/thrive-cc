@@ -9,6 +9,7 @@
 UGA_NormalAttack::UGA_NormalAttack()
 {
 	SkillData.SkillType = EStickmanSkillType::NormalAttack;
+	SkillData.Element = EStickmanElement::Pyro; // "Pyro Slash" combo infuses every hit.
 	SkillData.Cooldown = 0.f;
 	SkillData.EnergyCost = 0.f;
 }
