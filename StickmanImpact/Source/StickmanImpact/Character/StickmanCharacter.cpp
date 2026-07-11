@@ -12,6 +12,8 @@
 #include "InputActionValue.h"
 #include "Curves/CurveFloat.h"
 #include "Engine/Engine.h"
+#include "Combat/StickmanAbilitySystemComponent.h"
+#include "Combat/StickmanAttributeSet.h"
 
 AStickmanCharacter::AStickmanCharacter()
 {
@@ -50,6 +52,17 @@ AStickmanCharacter::AStickmanCharacter()
 	// Double jump: base ACharacter only allows one jump, so we track our own counter
 	// and gate it against MaxJumpCount instead of relying on JumpMaxCount (kept for clarity).
 	JumpMaxCount = MaxJumpCount;
+
+	AbilitySystemComponent = CreateDefaultSubobject<UStickmanAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+	AttributeSet = CreateDefaultSubobject<UStickmanAttributeSet>(TEXT("AttributeSet"));
+}
+
+UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
 
 void AStickmanCharacter::BeginPlay()
@@ -60,6 +73,23 @@ void AStickmanCharacter::BeginPlay()
 	CameraBoom->TargetArmLength = FMath::Clamp(CameraBoom->TargetArmLength, MinCameraBoomLength, MaxCameraBoomLength);
 	FollowCamera->SetFieldOfView(WalkFOV);
 	CurrentMovementTag = StickmanGameplayTags::State_Movement_Idle;
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		if (AttributeSet)
+		{
+			AttributeSet->InitHealth(Stats.MaxHealth);
+			AttributeSet->InitMaxHealth(Stats.MaxHealth);
+			AttributeSet->InitStamina(Stats.MaxStamina);
+			AttributeSet->InitMaxStamina(Stats.MaxStamina);
+			AttributeSet->InitAttack(Stats.Attack);
+			AttributeSet->InitDefense(Stats.Defense);
+			AttributeSet->InitElementalMastery(Stats.ElementalMastery);
+			AttributeSet->InitEnergyRecharge(Stats.EnergyRecharge);
+		}
+		AbilitySystemComponent->GrantDefaultAbilities(DefaultAbilities);
+	}
 
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
@@ -369,25 +399,34 @@ void AStickmanCharacter::UpdateMovementStateTag()
 
 void AStickmanCharacter::OnNormalAttack()
 {
-	if (GEngine)
+	if (!AbilitySystemComponent || !AbilitySystemComponent->ActivateOrQueueComboSkill(NormalAttackSkillTag))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::White, TEXT("NormalAttack"));
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::White, TEXT("NormalAttack (no ability granted for NormalAttackSkillTag)"));
+		}
 	}
 }
 
 void AStickmanCharacter::OnSkill1()
 {
-	if (GEngine)
+	if (!AbilitySystemComponent || !AbilitySystemComponent->ActivateSkillByTag(Skill1SkillTag))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TEXT("Skill1 (Elemental Skill)"));
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TEXT("Skill1 (no ability granted for Skill1SkillTag)"));
+		}
 	}
 }
 
 void AStickmanCharacter::OnSkill2()
 {
-	if (GEngine)
+	if (!AbilitySystemComponent || !AbilitySystemComponent->ActivateSkillByTag(Skill2SkillTag))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Magenta, TEXT("Skill2 (Elemental Burst)"));
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Magenta, TEXT("Skill2 (no ability granted for Skill2SkillTag)"));
+		}
 	}
 }
 

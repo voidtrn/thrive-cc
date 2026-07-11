@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameplayTagContainer.h"
+#include "AbilitySystemInterface.h"
 #include "StickmanStatTypes.h"
 #include "StickmanCharacter.generated.h"
 
@@ -14,15 +15,19 @@ class UInputMappingContext;
 class UInputAction;
 class UCameraShakeBase;
 class UCurveFloat;
+class UStickmanAbilitySystemComponent;
+class UStickmanAttributeSet;
+class UGameplayAbility;
 struct FInputActionValue;
 
 /**
  * Player-controlled stickman. Third-person character with movement (walk/sprint/dash/
- * double-jump), a stamina economy, gameplay-tag-driven movement state, and Enhanced Input
- * bindings for the RPG action set (attack / skills / burst).
+ * double-jump), a stamina economy, gameplay-tag-driven movement state, Enhanced Input
+ * bindings for the RPG action set (attack / skills / burst), and a GameplayAbilitySystem
+ * component that drives the actual skill activations.
  */
 UCLASS()
-class STICKMANIMPACT_API AStickmanCharacter : public ACharacter
+class STICKMANIMPACT_API AStickmanCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -32,6 +37,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -45,6 +51,38 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> FollowCamera;
+
+	// -------------------------------------------------------------------
+	// Ability System (GAS)
+	// -------------------------------------------------------------------
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStickmanAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStickmanAttributeSet> AttributeSet;
+
+	// Granted to the ASC on BeginPlay — assign the character's starting kit here
+	// (GA_NormalAttack, GA_PyroSlash, GA_PyroBurst, ...) in the character Blueprint.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
+
+	UFUNCTION(BlueprintPure, Category = "Abilities")
+	UStickmanAbilitySystemComponent* GetStickmanAbilitySystemComponent() const { return AbilitySystemComponent; }
+
+	UFUNCTION(BlueprintPure, Category = "Abilities")
+	UStickmanAttributeSet* GetStickmanAttributeSet() const { return AttributeSet; }
+
+	// SkillTag values routed to ActivateSkillByTag() by the matching Enhanced Input handler —
+	// must match the SkillTag of one of the abilities in DefaultAbilities to do anything.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
+	FGameplayTag NormalAttackSkillTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
+	FGameplayTag Skill1SkillTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
+	FGameplayTag Skill2SkillTag;
 
 	// -------------------------------------------------------------------
 	// Enhanced Input

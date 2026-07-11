@@ -11,4 +11,5 @@ namespace StickmanGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Dashing, "State.Movement.Dashing");
 	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Jumping, "State.Movement.Jumping");
 	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Falling, "State.Movement.Falling");
+	UE_DEFINE_GAMEPLAY_TAG(SetByCaller_Damage, "SetByCaller.Damage");
 }

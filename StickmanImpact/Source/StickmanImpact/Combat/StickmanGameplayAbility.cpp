@@ -1,0 +1,289 @@
+// Copyright StickmanImpact Project.
+
+#include "StickmanGameplayAbility.h"
+#include "StickmanAttributeSet.h"
+#include "Character/StickmanGameplayTags.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+#include "Kismet/GameplayStatics.h"
+#include "Camera/CameraShakeBase.h"
+#include "GameFramework/PlayerController.h"
+#include "NiagaraFunctionLibrary.h"
+#include "TimerManager.h"
+
+UStickmanGameplayAbility::UStickmanGameplayAbility()
+{
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
+}
+
+UStickmanAttributeSet* UStickmanGameplayAbility::GetStickmanAttributeSet() const
+{
+	if (UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo())
+	{
+		return const_cast<UStickmanAttributeSet*>(ASC->GetSet<UStickmanAttributeSet>());
+	}
+	return nullptr;
+}
+
+bool UStickmanGameplayAbility::CheckCooldown() const
+{
+	const UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC || !SkillData.SkillTag.IsValid())
+	{
+		return true;
+	}
+	return !ASC->HasMatchingGameplayTag(SkillData.SkillTag);
+}
+
+bool UStickmanGameplayAbility::CheckCost() const
+{
+	if (SkillData.EnergyCost <= 0.f)
+	{
+		return true;
+	}
+	const UStickmanAttributeSet* AttributeSet = GetStickmanAttributeSet();
+	return AttributeSet && AttributeSet->GetCurrentEnergy() >= SkillData.EnergyCost;
+}
+
+bool UStickmanGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
+	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+{
+	if (!Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags))
+	{
+		return false;
+	}
+	return CheckCooldown() && CheckCost();
+}
+
+void UStickmanGameplayAbility::CommitCooldown()
+{
+	if (!SkillData.SkillTag.IsValid() || SkillData.Cooldown <= 0.f)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
+	if (!ASC)
+	{
+		return;
+	}
+
+	ASC->AddLooseGameplayTag(SkillData.SkillTag);
+
+	FTimerDelegate CooldownEndDelegate = FTimerDelegate::CreateWeakLambda(ASC, [ASC, Tag = SkillData.SkillTag]()
+	{
+		ASC->RemoveLooseGameplayTag(Tag);
+	});
+	GetWorld()->GetTimerManager().SetTimer(CooldownTimerHandle, CooldownEndDelegate, SkillData.Cooldown, false);
+}
+
+void UStickmanGameplayAbility::CommitCost()
+{
+	if (SkillData.EnergyCost <= 0.f)
+	{
+		return;
+	}
+
+	if (UStickmanAttributeSet* AttributeSet = GetStickmanAttributeSet())
+	{
+		const float NewEnergy = FMath::Clamp(AttributeSet->GetCurrentEnergy() - SkillData.EnergyCost, 0.f,
+			AttributeSet->GetMaxEnergy());
+		AttributeSet->SetCurrentEnergy(NewEnergy);
+		AttributeSet->OnEnergyChanged.Broadcast(NewEnergy, AttributeSet->GetMaxEnergy());
+	}
+}
+
+void UStickmanGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	const FGameplayEventData* TriggerEventData)
+{
+	if (!CheckCooldown() || !CheckCost())
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		return;
+	}
+
+	CommitCooldown();
+	CommitCost();
+
+	OnAbilityActivated();
+}
+
+void UStickmanGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	bool bReplicateEndAbility, bool bWasCancelled)
+{
+	OnAbilityEnded(bWasCancelled);
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+}
+
+void UStickmanGameplayAbility::OnAbilityActivated()
+{
+	// Subclasses override this — base does nothing but immediately end so an ability
+	// forgetting to override doesn't hang around forever occupying its activation group.
+}
+
+void UStickmanGameplayAbility::OnAbilityEnded(bool bWasCancelled)
+{
+}
+
+UAbilityTask_PlayMontageAndWait* UStickmanGameplayAbility::PlayAbilityMontage(UAnimMontage* Montage, float PlayRate,
+	FName StartSection)
+{
+	if (!Montage)
+	{
+		return nullptr;
+	}
+
+	UAbilityTask_PlayMontageAndWait* Task = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+		this, NAME_None, Montage, PlayRate, StartSection);
+	Task->ReadyForActivation();
+	return Task;
+}
+
+void UStickmanGameplayAbility::PlayMontageThenEnd(UAnimMontage* Montage, float FallbackDuration)
+{
+	if (UAbilityTask_PlayMontageAndWait* Task = Montage ? PlayAbilityMontage(Montage) : nullptr)
+	{
+		Task->OnCompleted.AddDynamic(this, &UStickmanGameplayAbility::HandleGenericMontageEnd);
+		Task->OnInterrupted.AddDynamic(this, &UStickmanGameplayAbility::HandleGenericMontageEnd);
+		Task->OnCancelled.AddDynamic(this, &UStickmanGameplayAbility::HandleGenericMontageEnd);
+	}
+	else if (UWorld* World = GetWorld())
+	{
+		// No montage authored yet — still end on schedule so gameplay is testable pre-art.
+		World->GetTimerManager().SetTimer(GenericEndTimerHandle, this,
+			&UStickmanGameplayAbility::HandleGenericMontageEnd, FMath::Max(FallbackDuration, 0.05f), false);
+	}
+}
+
+void UStickmanGameplayAbility::HandleGenericMontageEnd()
+{
+	K2_EndAbility();
+}
+
+void UStickmanGameplayAbility::ApplyRadialElementalDamage(const FVector& Origin, const FVector& ForwardDir,
+	float Radius, float HalfAngleDegrees, float DamageMultiplier, TSubclassOf<UGameplayEffect> StatusEffectClass,
+	TArray<AActor*>& OutHitActors, const TArray<AActor*>* ExtraActorsToIgnore) const
+{
+	OutHitActors.Reset();
+
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
+	if (!AvatarActor)
+	{
+		return;
+	}
+
+	TArray<AActor*> Overlaps;
+	TArray<AActor*> ActorsToIgnore = { AvatarActor };
+	if (ExtraActorsToIgnore)
+	{
+		ActorsToIgnore.Append(*ExtraActorsToIgnore);
+	}
+	UGameplayStatics::SphereOverlapActors(this, Origin, Radius,
+		TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
+		ActorsToIgnore, Overlaps);
+
+	const float CosHalfAngle = FMath::Cos(FMath::DegreesToRadians(FMath::Min(HalfAngleDegrees, 180.f)));
+	const UStickmanAttributeSet* AttributeSet = GetStickmanAttributeSet();
+	const float CasterAttack = AttributeSet ? AttributeSet->GetAttack() : 20.f;
+
+	for (AActor* HitActor : Overlaps)
+	{
+		if (!HitActor)
+		{
+			continue;
+		}
+
+		if (HalfAngleDegrees < 180.f)
+		{
+			const FVector ToTarget = (HitActor->GetActorLocation() - Origin).GetSafeNormal();
+			if (FVector::DotProduct(ForwardDir, ToTarget) < CosHalfAngle)
+			{
+				continue;
+			}
+		}
+
+		ApplyDamageToTarget(HitActor, CasterAttack * DamageMultiplier, StatusEffectClass);
+		OutHitActors.Add(HitActor);
+	}
+}
+
+void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float DamageAmount,
+	TSubclassOf<UGameplayEffect> StatusEffectClass) const
+{
+	if (!TargetActor || DamageAmount <= 0.f)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if (UStickmanAttributeSet* TargetAttributes = TargetASC ? const_cast<UStickmanAttributeSet*>(
+			TargetASC->GetSet<UStickmanAttributeSet>()) : nullptr)
+	{
+		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - DamageAmount, 0.f,
+			TargetAttributes->GetMaxHealth());
+		TargetAttributes->SetHealth(NewHealth);
+		TargetAttributes->OnHealthChanged.Broadcast(NewHealth, TargetAttributes->GetMaxHealth());
+	}
+
+	if (!StatusEffectClass || !TargetASC)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
+	if (!SourceASC)
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle ContextHandle = SourceASC->MakeEffectContext();
+	ContextHandle.AddSourceObject(const_cast<UStickmanGameplayAbility*>(this));
+	FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(StatusEffectClass, GetAbilityLevel(), ContextHandle);
+	if (SpecHandle.IsValid())
+	{
+		// DoT tick amount per the design docs: 10% of the caster's Attack per second.
+		const UStickmanAttributeSet* AttributeSet = GetStickmanAttributeSet();
+		const float TickDamage = (AttributeSet ? AttributeSet->GetAttack() : 20.f) * 0.1f;
+		SpecHandle.Data->SetSetByCallerMagnitude(StickmanGameplayTags::SetByCaller_Damage, TickDamage);
+		SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, TargetASC);
+	}
+}
+
+void UStickmanGameplayAbility::PlayImpactCameraShake(TSubclassOf<UCameraShakeBase> ShakeClass) const
+{
+	if (!ShakeClass)
+	{
+		return;
+	}
+	if (const APawn* AvatarPawn = Cast<APawn>(GetAvatarActorFromActorInfo()))
+	{
+		if (APlayerController* PC = Cast<APlayerController>(AvatarPawn->GetController()))
+		{
+			PC->ClientStartCameraShake(ShakeClass);
+		}
+	}
+}
+
+void UStickmanGameplayAbility::PlayCastAudioVisuals() const
+{
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
+	if (!AvatarActor)
+	{
+		return;
+	}
+
+	if (SkillData.CastVFX)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAttached(SkillData.CastVFX, AvatarActor->GetRootComponent(), NAME_None,
+			FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset, true);
+	}
+	if (SkillData.CastSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(AvatarActor, SkillData.CastSound, AvatarActor->GetActorLocation());
+	}
+}

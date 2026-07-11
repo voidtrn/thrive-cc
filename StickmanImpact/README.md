@@ -8,9 +8,11 @@ Stickman open-world action RPG foundation, UE5.4+, C++ first.
 Source/StickmanImpact/
   Character/     AStickmanCharacter, FStickmanStats, movement gameplay tags
   SkillSystem/   EStickmanElement/EStickmanSkillType enums, FSkillData, UStickmanSkillDataAsset
-  Combat/        (empty — hit detection / damage / GameplayEffects go here next)
+  Combat/        GAS: AttributeSet, AbilitySystemComponent, base GameplayAbility, AnimNotifies,
+                 GameplayEffects, and Combat/Abilities/ (GA_NormalAttack, 7 elemental
+                 GA_*Skill classes, GA_ElementalBurst_Base + GA_PyroBurst)
   UI/            AStickmanHUD, UStickmanInputDebugWidget
-  World/         (empty — interactables, streaming volumes)
+  World/         AStickmanGeoWall (temporary blocking wall spawned by GA_GeoSkill)
   Data/          (empty — item/enemy/quest DataTables)
   SaveSystem/    (empty — USaveGame subclasses)
   Audio/         (empty — MetaSound managers)
@@ -49,7 +51,73 @@ Source/StickmanImpact/
 
 All exposed as `EditAnywhere` on `AStickmanCharacter`: `WalkSpeed=400`, `SprintSpeed=700`, `DashDistance=600`, `DashCooldown=1.5s`, `DashDuration=0.2s`, stamina drain/regen rates, camera lag/FOV/zoom range. Movement state is mirrored to native gameplay tags (`State.Movement.Idle|Walking|Sprinting|Dashing|Jumping|Falling`) via `StickmanGameplayTags.h`.
 
+## GameplayAbilitySystem (GAS)
+
+`AStickmanCharacter` implements `IAbilitySystemInterface` and owns a `UStickmanAbilitySystemComponent` +
+`UStickmanAttributeSet` (Health/MaxHealth/Stamina/MaxStamina/Attack/Defense/ElementalMastery/
+EnergyRecharge/CurrentEnergy/MaxEnergy, plus meta `Damage`/`Healing` attributes used internally
+by `PostGameplayEffectExecute`). Note: `AttributeSet::Stamina` mirrors GAS-facing resource state;
+the character's own `CurrentStamina` (movement task) still drives sprint/dash directly and isn't
+yet unified with it — fine for now, worth reconciling once a real stamina-costing ability exists.
+
+Every skill derives from `UStickmanGameplayAbility` (`Source/StickmanImpact/Combat/StickmanGameplayAbility.h`),
+which is fully data-driven off one `FSkillData SkillData` struct per ability — no hand-authored
+Cooldown/Cost GameplayEffect assets required:
+
+- **Cooldown**: `SkillData.SkillTag` itself is applied as a loose ASC tag for `SkillData.Cooldown`
+  seconds (`CommitCooldown`/`CheckCooldown`) — so every skill's `FSkillData.SkillTag` must be a
+  unique, registered `FGameplayTag` (add project skill tags under `Config/Tags/` or a native
+  tags file alongside `StickmanGameplayTags.h`).
+- **Cost**: `SkillData.EnergyCost` is deducted straight from `UStickmanAttributeSet::CurrentEnergy`
+  (`CommitCost`/`CheckCost`).
+- **Damage**: `ApplyRadialElementalDamage()` overlaps a sphere/cone and hits everyone found for
+  `CasterAttack * DamageMultiplier`, applied as the meta `Damage` attribute on the target's own
+  `UStickmanAttributeSet`. `ApplyDamageToTarget()` additionally applies an optional
+  `TSubclassOf<UGameplayEffect> StatusEffectClass` (a `UGE_ElementalStatusBase` subclass, e.g.
+  `UGE_PyroStatus`) as a real, timed GameplayEffect for sustained DoT — the applying ability sets
+  the per-tick amount via `SetByCaller(StickmanGameplayTags::SetByCaller_Damage)`.
+
+### Skills implemented
+
+| Ability | Type | Element | Cooldown | Notes |
+|---|---|---|---|---|
+| `UGA_NormalAttack` | Normal Attack | Pyro (infused) | — | 5-hit combo chain via `FNormalAttackChain`; combo continuation is buffered through `UStickmanAbilitySystemComponent::QueueComboInput`/`ConsumeQueuedComboInput`, driven by `AN_ComboCheck`/`AN_AttackHitCheck`/`AN_AttackEnd` AnimNotifies |
+| `UGA_PyroSlash` | Elemental Skill | Pyro | 6s | 400u/180° spin slash, 150% ATK |
+| `UGA_PyroSkill` ("Flame Surge") | Elemental Skill | Pyro | 6s | forward cone, 180% ATK |
+| `UGA_CryoSkill` ("Frost Wave") | Elemental Skill | Cryo | 8s | narrow forward path, 140% ATK, 40% slow for 3s |
+| `UGA_HydroSkill` ("Aqua Vortex") | Elemental Skill | Hydro | 7s | 360° pull-to-center, 120% ATK |
+| `UGA_ElectroSkill` ("Lightning Strike") | Elemental Skill | Electro | 5s | blink forward then AoE, 160% ATK |
+| `UGA_AnemoSkill` ("Wind Blade") | Elemental Skill | Anemo | 6s | stepped sphere-sweep projectile that drags hit actors along, 130% ATK |
+| `UGA_GeoSkill` ("Stone Wall") | Elemental Skill | Geo | 10s | shockwave (100% ATK) + spawns `AStickmanGeoWall` |
+| `UGA_DendroSkill` ("Thorn Field") | Elemental Skill | Dendro | 8s | persistent ticking field, 90% ATK/sec for 6s |
+| `UGA_ElementalBurst_Base` | Elemental Burst | — (abstract) | 20s | 300% ATK, 60 Energy, full-screen slow-mo + camera shake |
+| `UGA_PyroBurst` ("Phoenix Dive") | Elemental Burst | Pyro | 20s | launches up, delayed larger-radius slam explosion |
+
+### Wiring abilities onto the character
+
+1. Assign `DefaultAbilities` on `BP_StickmanCharacter` (or the C++ default object) to the ability
+   classes above — they're granted to the ASC in `BeginPlay`.
+2. Set `NormalAttackSkillTag` / `Skill1SkillTag` / `Skill2SkillTag` on the character to the same
+   `FGameplayTag` values used in each granted ability's `SkillData.SkillTag` — `OnNormalAttack()`
+   routes through `ActivateOrQueueComboSkill()` (combo-aware), `OnSkill1()`/`OnSkill2()` through
+   plain `ActivateSkillByTag()`.
+3. Per-ability content to assign in the ability Blueprint defaults: `MontageToPlay` (or the
+   combo's `NormalAttackCombo.AttackMontages`), `*StatusEffectClass` (assign `GE_PyroStatus` /
+   author more `UGE_ElementalStatusBase` subclasses for the other elements), `*CameraShakeClass`,
+   and `SkillData.CastVFX` / `SkillData.CastSound` (Niagara system + sound cue, author in Content).
+4. `UGA_NormalAttack`'s combo montages need three AnimNotifies placed on them: `AN_AttackHitCheck`
+   on the impact frame, `AN_ComboCheck` near the end of the combo window, `AN_AttackEnd` on the
+   last frame of the final hit.
+5. `UGA_GeoSkill::WallClass` needs a Blueprint subclass of `AStickmanGeoWall` with a rock
+   `StaticMesh` assigned to `WallMesh`.
+
+Elemental reactions (Vaporize, Melt, Crystallize, ...) are not implemented — `GA_GeoSkill`'s
+header notes where Crystallize would hook in once a reaction resolver exists.
+
 ## Notes
 
-- Normal Attack / Skill1 / Skill2 / Interact currently just print on-screen debug messages — real GAS `UGameplayAbility` wiring plugs in via `FSkillData::AbilityClass` once the Combat module lands.
-- Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed.
+- Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
+  for the ones already in `StickmanGameplayTags.h`; add more there for per-skill `SkillTag`s.
+- This has not been compiled against an actual UE 5.4 engine checkout in this session (no engine
+  toolchain available) — do a first compile pass in the Editor and expect to fix minor API
+  mismatches (GAS internals shift slightly between engine point releases).
