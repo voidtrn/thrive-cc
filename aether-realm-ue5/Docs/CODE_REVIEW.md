@@ -232,7 +232,13 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
 
 8. **Localization**: kalau text sudah terlanjur di-hardcode di BP yang dibuat
    nanti, retrofit mahal. Disiplin FText + String Table dari awal (course
-   Bagian 36).
+   Bagian 36). **Sebagian dipraktikkan** — `StarterContentLibrary.cpp`
+   (konten prolog, CONTENT PASS di atas) awalnya ditulis pakai
+   `FText::FromString` mentah (gak localizable, gathering pipeline gak bisa
+   nemu), langsung dikonversi ke `LOCTEXT("Key", "...")` + `LOCTEXT_NAMESPACE
+   "StarterContent"` sebelum jadi kebiasaan/nyebar ke file lain. Ini cuma
+   nutup 1 file yang gue tulis sendiri — disiplin ini masih harus dijaga
+   manual di konten BP masa depan (course Bagian 36 tetep relevan).
 
 9. ~~**`UCombatComponent::DealDamage` belum server-gated** (player→enemy path).~~
    → **Fixed.** `DealDamage` sekarang guard `!OwnerChar->HasAuthority()` di

@@ -3,6 +3,11 @@
 #include "System/DialogueTypes.h"
 #include "Engine/DataTable.h"
 
+// ANTISIPASI #8 (CODE_REVIEW.md): disiplin FText + String Table dari awal,
+// bukan FText::FromString mentah — biar retrofit localization nanti gak
+// mahal. LOCTEXT butuh key unik per literal dalam namespace ini.
+#define LOCTEXT_NAMESPACE "StarterContent"
+
 const FName UStarterContentLibrary::Quest1_ID = TEXT("Quest_Prologue01_Tremors");
 const FName UStarterContentLibrary::Quest2_ID = TEXT("Quest_Prologue02_Stormchaser");
 
@@ -13,11 +18,11 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 	// ---------- Quest 1: Tremors in Duskvale ----------
 	UQuestDataAsset* Quest1 = NewObject<UQuestDataAsset>(Home);
 	Quest1->QuestID = Quest1_ID;
-	Quest1->QuestName = FText::FromString(TEXT("Tremors in Duskvale"));
-	Quest1->QuestDescription = FText::FromString(TEXT(
+	Quest1->QuestName = LOCTEXT("Quest1_Name", "Tremors in Duskvale");
+	Quest1->QuestDescription = LOCTEXT("Quest1_Desc",
 		"The ground near Duskvale's old ruins has been trembling for three "
 		"nights straight — and each tremor pulses faintly with Resonance. "
-		"Investigate before it spreads to the village."));
+		"Investigate before it spreads to the village.");
 	Quest1->QuestType = EQuestType::ArchonQuest;
 	Quest1->ARRequirement = 1;
 	Quest1->bAutoStart = true;
@@ -25,7 +30,7 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 	{
 		FQuestStep Step1;
 		Step1.StepID = TEXT("GoToTremorSite");
-		Step1.StepDescription = FText::FromString(TEXT("Investigate the tremor site."));
+		Step1.StepDescription = LOCTEXT("Quest1_Step1", "Investigate the tremor site.");
 		Step1.ObjectiveType = EObjectiveType::GoToLocation;
 		Step1.TargetID = TEXT("Prologue_TremorSite");
 		Step1.TargetLocation = FVector(2000.f, 1500.f, 200.f); // placeholder — reposisi saat level dibuat
@@ -34,7 +39,7 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 
 		FQuestStep Step2;
 		Step2.StepID = TEXT("ClearHilichurl");
-		Step2.StepDescription = FText::FromString(TEXT("Clear the Hilichurl blocking the ruins."));
+		Step2.StepDescription = LOCTEXT("Quest1_Step2", "Clear the Hilichurl blocking the ruins.");
 		Step2.ObjectiveType = EObjectiveType::KillEnemy;
 		Step2.TargetID = TEXT("Hilichurl_Melee");
 		Step2.RequiredCount = 3;
@@ -42,7 +47,7 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 
 		FQuestStep Step3;
 		Step3.StepID = TEXT("TalkYukine");
-		Step3.StepDescription = FText::FromString(TEXT("Speak with the scholar at the ruins."));
+		Step3.StepDescription = LOCTEXT("Quest1_Step3", "Speak with the scholar at the ruins.");
 		Step3.ObjectiveType = EObjectiveType::TalkToNPC;
 		Step3.TargetID = TEXT("NPC_Yukine");
 		Step3.RequiredCount = 1;
@@ -57,10 +62,10 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 	// ---------- Quest 2: The Stormchaser's Warning ----------
 	UQuestDataAsset* Quest2 = NewObject<UQuestDataAsset>(Home);
 	Quest2->QuestID = Quest2_ID;
-	Quest2->QuestName = FText::FromString(TEXT("The Stormchaser's Warning"));
-	Quest2->QuestDescription = FText::FromString(TEXT(
+	Quest2->QuestName = LOCTEXT("Quest2_Name", "The Stormchaser's Warning");
+	Quest2->QuestDescription = LOCTEXT("Quest2_Desc",
 		"Yukine's notes point to a cracked Vision shard near the tremor site — "
-		"and to someone else already tracking the same disturbance: Shiden."));
+		"and to someone else already tracking the same disturbance: Shiden.");
 	Quest2->QuestType = EQuestType::ArchonQuest;
 	Quest2->Prerequisites.Add(Quest1_ID);
 	Quest2->ARRequirement = 2;
@@ -69,7 +74,7 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 	{
 		FQuestStep Step1;
 		Step1.StepID = TEXT("CollectShard");
-		Step1.StepDescription = FText::FromString(TEXT("Recover the cracked Vision shard."));
+		Step1.StepDescription = LOCTEXT("Quest2_Step1", "Recover the cracked Vision shard.");
 		Step1.ObjectiveType = EObjectiveType::CollectItem;
 		Step1.TargetID = TEXT("Item_CrackedVisionShard");
 		Step1.RequiredCount = 1;
@@ -77,7 +82,7 @@ TArray<UQuestDataAsset*> UStarterContentLibrary::BuildPrologueQuests(UObject* Ou
 
 		FQuestStep Step2;
 		Step2.StepID = TEXT("TalkShiden");
-		Step2.StepDescription = FText::FromString(TEXT("Report your findings to Shiden."));
+		Step2.StepDescription = LOCTEXT("Quest2_Step2", "Report your findings to Shiden.");
 		Step2.ObjectiveType = EObjectiveType::TalkToNPC;
 		Step2.TargetID = TEXT("NPC_Shiden");
 		Step2.RequiredCount = 1;
@@ -98,41 +103,41 @@ UDataTable* UStarterContentLibrary::BuildYukineIntroDialogue(UObject* Outer)
 	Table->RowStruct = FDialogueNode::StaticStruct();
 
 	FDialogueNode Start;
-	Start.SpeakerName = FText::FromString(TEXT("Yukine"));
+	Start.SpeakerName = LOCTEXT("Yukine_SpeakerName", "Yukine");
 	Start.bPortraitLeft = true;
-	Start.DialogueText = FText::FromString(TEXT(
+	Start.DialogueText = LOCTEXT("Yukine_Start",
 		"...Another tremor. The Resonance here isn't settling — it's fraying, "
-		"like a thread pulled too tight. You felt it too, didn't you?"));
+		"like a thread pulled too tight. You felt it too, didn't you?");
 
 	FDialogueChoice ChoiceAsk;
-	ChoiceAsk.ChoiceText = FText::FromString(TEXT("What do you mean, \"fraying\"?"));
+	ChoiceAsk.ChoiceText = LOCTEXT("Yukine_Choice_Ask", "What do you mean, \"fraying\"?");
 	ChoiceAsk.NextNodeID = TEXT("Explain");
 	Start.Choices.Add(ChoiceAsk);
 
 	FDialogueChoice ChoiceHelp;
-	ChoiceHelp.ChoiceText = FText::FromString(TEXT("I'm just here to help. What do you need?"));
+	ChoiceHelp.ChoiceText = LOCTEXT("Yukine_Choice_Help", "I'm just here to help. What do you need?");
 	ChoiceHelp.NextNodeID = TEXT("Thanks");
 	Start.Choices.Add(ChoiceHelp);
 
 	Table->AddRow(TEXT("Start"), Start);
 
 	FDialogueNode Explain;
-	Explain.SpeakerName = FText::FromString(TEXT("Yukine"));
+	Explain.SpeakerName = LOCTEXT("Yukine_SpeakerName2", "Yukine");
 	Explain.bPortraitLeft = true;
-	Explain.DialogueText = FText::FromString(TEXT(
+	Explain.DialogueText = LOCTEXT("Yukine_Explain",
 		"Resonance is supposed to flow between elements like breath — steady, "
 		"cyclical. What I'm reading here spikes, then goes silent, then spikes "
-		"again. Something is drawing on it unevenly. I don't like it."));
+		"again. Something is drawing on it unevenly. I don't like it.");
 	Explain.NextNodeID = TEXT("Thanks");
 	Table->AddRow(TEXT("Explain"), Explain);
 
 	FDialogueNode Thanks;
-	Thanks.SpeakerName = FText::FromString(TEXT("Yukine"));
+	Thanks.SpeakerName = LOCTEXT("Yukine_SpeakerName3", "Yukine");
 	Thanks.bPortraitLeft = true;
-	Thanks.DialogueText = FText::FromString(TEXT(
+	Thanks.DialogueText = LOCTEXT("Yukine_Thanks",
 		"Thank you for clearing the path. I've sent word to Shiden — they've "
 		"seen this pattern before, further east. Find them; I'll keep studying "
-		"the shard fragments here."));
+		"the shard fragments here.");
 
 	FDialogueAction ReportTalk;
 	ReportTalk.Type = EDialogueActionType::ReportTalkObjective;
@@ -150,20 +155,20 @@ UDataTable* UStarterContentLibrary::BuildShidenIntroDialogue(UObject* Outer)
 	Table->RowStruct = FDialogueNode::StaticStruct();
 
 	FDialogueNode Start;
-	Start.SpeakerName = FText::FromString(TEXT("Shiden"));
+	Start.SpeakerName = LOCTEXT("Shiden_SpeakerName", "Shiden");
 	Start.bPortraitLeft = false;
-	Start.DialogueText = FText::FromString(TEXT(
+	Start.DialogueText = LOCTEXT("Shiden_Start",
 		"Cracked shard, uneven Resonance spikes near old ruins. Same signature "
-		"I tracked two regions back. It didn't stop on its own then, either."));
+		"I tracked two regions back. It didn't stop on its own then, either.");
 	Start.NextNodeID = TEXT("Warning");
 	Table->AddRow(TEXT("Start"), Start);
 
 	FDialogueNode Warning;
-	Warning.SpeakerName = FText::FromString(TEXT("Shiden"));
+	Warning.SpeakerName = LOCTEXT("Shiden_SpeakerName2", "Shiden");
 	Warning.bPortraitLeft = false;
-	Warning.DialogueText = FText::FromString(TEXT(
+	Warning.DialogueText = LOCTEXT("Shiden_Warning",
 		"Whatever's doing this isn't finished. Stay sharp — next time it won't "
-		"just be Hilichurl standing between us and it."));
+		"just be Hilichurl standing between us and it.");
 
 	FDialogueAction ReportTalk;
 	ReportTalk.Type = EDialogueActionType::ReportTalkObjective;
@@ -174,3 +179,5 @@ UDataTable* UStarterContentLibrary::BuildShidenIntroDialogue(UObject* Outer)
 
 	return Table;
 }
+
+#undef LOCTEXT_NAMESPACE
