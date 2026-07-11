@@ -45,3 +45,5 @@
 {"ts":"2026-07-11T09:16:26Z",  "summary": {    "total_commands": 8,    "total_input": 2357,    "total_output": 468,    "total_saved": 1907,    "avg_savings_pct": 80.90793381417055,    "total_time_ms": 1642,    "avg_time_ms": 205  }}
 {"ts":"2026-07-11T09:16:37Z",  "summary": {    "total_commands": 12,    "total_input": 2515,    "total_output": 549,    "total_saved": 2002,    "avg_savings_pct": 79.60238568588468,    "total_time_ms": 3033,    "avg_time_ms": 252  }}
 {"ts":"2026-07-11T10:18:22Z",  "summary": {    "total_commands": 17,    "total_input": 4086,    "total_output": 1060,    "total_saved": 3085,    "avg_savings_pct": 75.5017131669114,    "total_time_ms": 5527,    "avg_time_ms": 325  }}
+{"ts":"2026-07-11T10:18:33Z",  "summary": {    "total_commands": 21,    "total_input": 4244,    "total_output": 1141,    "total_saved": 3180,    "avg_savings_pct": 74.92931196983977,    "total_time_ms": 6956,    "avg_time_ms": 331  }}
+{"ts":"2026-07-11T13:28:49Z",  "summary": {    "total_commands": 46,    "total_input": 7542,    "total_output": 1798,    "total_saved": 5985,    "avg_savings_pct": 79.35560859188544,    "total_time_ms": 19459,    "avg_time_ms": 423  }}
