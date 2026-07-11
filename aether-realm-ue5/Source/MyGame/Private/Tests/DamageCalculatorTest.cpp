@@ -73,4 +73,25 @@ bool FDamageEmBonusTest::RunTest(const FString&)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageTransformativeBaseTest,
+	"AetherRealm.Damage.TransformativeBase",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FDamageTransformativeBaseTest::RunTest(const FString&)
+{
+	// TransformativeBaseDamage = 17.17 * Level * ReactionCoefficient
+	TestEqual(TEXT("level 0 = 0 damage"),
+		UDamageCalculator::TransformativeBaseDamage(0, 1.f), 0.f, 0.001f);
+	TestEqual(TEXT("coefficient 0 = 0 damage"),
+		UDamageCalculator::TransformativeBaseDamage(90, 0.f), 0.f, 0.001f);
+	TestEqual(TEXT("level 90, coefficient 1 = 17.17*90"),
+		UDamageCalculator::TransformativeBaseDamage(90, 1.f), 17.17f * 90.f, 0.01f);
+	TestTrue(TEXT("monoton naik thd level"),
+		UDamageCalculator::TransformativeBaseDamage(90, 1.f) > UDamageCalculator::TransformativeBaseDamage(50, 1.f));
+	TestTrue(TEXT("monoton naik thd coefficient"),
+		UDamageCalculator::TransformativeBaseDamage(90, 2.f) > UDamageCalculator::TransformativeBaseDamage(90, 1.f));
+
+	return true;
+}
+
 #endif // WITH_AUTOMATION_TESTS

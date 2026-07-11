@@ -351,7 +351,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | C++ class | 58 |
 | Source file | 122 |
 | Setup/review docs | 23 |
-| Automation test | 3 file (10 test) |
+| Automation test | 3 file (11 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
