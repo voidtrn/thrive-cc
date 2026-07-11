@@ -119,6 +119,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	float InteractRange = 200.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	float InteractSphereRadius = 50.f;
+
 	// Optional: mouse wheel / gamepad stick axis for camera zoom (not in the base IA list,
 	// bind an IA_Zoom asset here if you want zoom; safe to leave unset).
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")

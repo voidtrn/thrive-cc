@@ -5,6 +5,7 @@
 #include "ElementalReactionManager.h"
 #include "UI/StickmanDamageNumberManager.h"
 #include "UI/StickmanDamageNumberTypes.h"
+#include "AI/Enemies/EnemyShieldGuard.h"
 #include "Character/StickmanGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
@@ -229,6 +230,14 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			TargetASC->GetSet<UStickmanAttributeSet>()) : nullptr)
 	{
 		float FinalDamage = DamageAmount;
+
+		if (const AEnemyShieldGuard* ShieldGuard = Cast<AEnemyShieldGuard>(TargetActor))
+		{
+			if (const AActor* Avatar = GetAvatarActorFromActorInfo())
+			{
+				FinalDamage *= ShieldGuard->GetIncomingDamageMultiplier(Avatar->GetActorLocation());
+			}
+		}
 
 		// Route through the elemental reaction manager when this hit carries an element —
 		// this is what actually applies the aura and resolves Melt/Vaporize/Overload/etc.

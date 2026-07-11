@@ -200,6 +200,85 @@ Widget Animation for the slide-in flourish. A reward-preview (pre-accept) or rew
 screen is just more UMG reading `FRewardData`/listening to `OnQuestCompleted` — no extra C++
 needed beyond what's here.
 
+## NPC AI system
+
+### Town NPCs
+
+`AStickmanNPC` owns `UStickmanScheduleComponent` (time-of-day routine — `Idle/Walk/Work/Eat/
+Sleep`, keyed by 24-hour `FNPCScheduleEntry` ranges; pulls the clock from `ADayNightManager`
+once that exists, `DebugOverrideHour` lets you test it standalone today) and
+`UStickmanDialogueTriggerComponent` (implements `IStickmanInteractable`, starts a
+`UDialogueSequence` on interact). `IStickmanInteractable` (`StickmanInteractable.h`, module
+root) is the shared "F to interact" contract — implement it on an Actor directly or on one of
+its Components; `AStickmanCharacter::OnInteract()` sphere-sweeps `InteractRange` and calls
+whichever it finds. NPCs greet the player on approach (`GreetRadius`) and flee if any
+`AStickmanEnemyCharacter` within `FleeFromCombatRadius` is in `EEnemyCombatState::Combat`.
+
+### Enemy AI
+
+`AStickmanEnemyCharacter` is the shared base for all 5 archetypes below — it owns the same GAS
+plumbing as the player (`UStickmanAbilitySystemComponent`/`UStickmanAttributeSet`, so enemies
+use the same abilities/reactions) plus the tuning the shared BT nodes read: `WeightedAttacks`,
+`OptimalCombatDistance`, `RetreatHealthPercent`, `DodgeChance`. **One `BT_StickmanEnemy` asset
+can drive all 5 archetypes** since the C++ tasks read tuning from the possessed pawn rather than
+hardcoding it in the graph — duplicate the BT only if an archetype needs genuinely different
+branching (a boss's phase-based mechanics, say).
+
+Build `BT_StickmanEnemy` in the editor as:
+
+```
+Selector (root)
+├─ Sequence "Retreat"          [Decorator: BTDecorator_HealthBelowThreshold]
+│   └─ BTTask_MoveToSafeLocation
+├─ Sequence "Combat"           [Decorator: BTDecorator_LineOfSightToTarget]
+│   ├─ BTTask_ApproachTarget
+│   ├─ BTTask_TryDodge          (fails silently if the roll misses — see task comment)
+│   └─ BTTask_SelectWeightedAttack
+└─ Sequence "Patrol"
+    ├─ BTTask_FindRandomPatrolPoint
+    ├─ BTTask_MoveTo             (built-in, target = TargetLocation)
+    └─ BTTask_Wait               (built-in)
+```
+
+Blackboard `BB_StickmanEnemy` keys (names in `StickmanBlackboardKeys`, `AI/StickmanAITypes.h`):
+`TargetActor` (Object), `TargetLocation` (Vector), `CurrentState` (Enum → `EEnemyCombatState`),
+`AlertLevel` (Float). `AStickmanAIController` populates `TargetActor`/`CurrentState`/`AlertLevel`
+automatically from an `AIPerceptionComponent` (sight) it owns — assign your `BehaviorTree` on
+the controller (or its Blueprint subclass) and possess the enemy with it.
+
+**EQS**: cover points / flanking positions use the engine's built-in nodes, not custom C++ —
+`EnvQueryGenerator_OnCircle` around `TargetActor` (radius = `OptimalCombatDistance`), filtered
+by `EnvQueryTest_Trace` (line-of-sight to target — "cover" = points that FAIL this test) and/or
+`EnvQueryTest_Dot` (flanking = points off the target's forward axis). Run the query from a
+custom BT task if/when an archetype needs it; none of the 5 base archetypes require it yet.
+
+### The 5 enemy archetypes (`AI/Enemies/`)
+
+| Class | Role | Notable tuning |
+|---|---|---|
+| `AEnemyMeleeGrunt` | Rush down, basic combo | Short `OptimalCombatDistance`, fast, barely retreats |
+| `AEnemyRangedArcher` | Keeps distance, charged shot | Long `OptimalCombatDistance`, `ChargeTime` read by its own charged-shot ability |
+| `AEnemyShieldGuard` | Blocks frontal hits, slow/tanky | `GetIncomingDamageMultiplier()` — wired into `UStickmanGameplayAbility::ApplyDamageToTarget`, 80% reduction inside `BlockArcHalfAngleDegrees` of its forward vector |
+| `AEnemyMage` | Elemental caster | High `ElementalMastery`, `WeightedAttacks` should favor teleport-style skills (e.g. `GA_ElectroSkill`) |
+| `AEnemyElite` | Boss, multi-phase | `PhaseHealthThresholds` + `PhaseAttackOverrides`, auto-detects transitions off `OnHealthChanged`, `OnPhaseChanged` for phase-transition VFX/mechanics |
+
+### Wildlife
+
+`AStickmanWildlife` is deliberately *not* BT-driven — a full AI stack is overkill for "flee when
+the player gets close" — it's a plain `Tick` state machine (Grazing ⇄ Fleeing), with
+`HerdTag`/`HerdAlertRadius` so one spooked animal alerts its herd, a `GrazeMontage` on a timer,
+and `OnDefeated()` spawning `ResourceDropClass` before self-destroying.
+
+### Spawning
+
+`AEnemySpawner` (place in world) spawns up to `MaxActiveEnemies` from a weighted `SpawnPool`
+within `SpawnRadius`, scaling `FStickmanStats` by `BaseEnemyLevel`/`StatGrowthPerLevel` via
+`SpawnActorDeferred`, and respawns `RespawnTime` seconds after each death.
+`AEnemyCamp` groups several spawners: when one spawner's enemy enters combat
+(`AStickmanAIController` calls back through `AStickmanEnemyCharacter::SpawningSpawner`), every
+other member spawner's *currently alive* enemies get their Blackboard `TargetActor`/
+`CurrentState` set to investigate — a lightweight "the whole camp comes running" alert.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

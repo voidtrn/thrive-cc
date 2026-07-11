@@ -14,6 +14,7 @@
 #include "Engine/Engine.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
 #include "Combat/StickmanAttributeSet.h"
+#include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
 {
@@ -432,9 +433,30 @@ void AStickmanCharacter::OnSkill2()
 
 void AStickmanCharacter::OnInteract()
 {
-	if (GEngine)
+	FVector TraceStart = GetActorLocation();
+	FVector TraceEnd = TraceStart + GetActorForwardVector() * InteractRange;
+
+	FHitResult Hit;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	const bool bHit = GetWorld()->SweepSingleByChannel(Hit, TraceStart, TraceEnd, FQuat::Identity, ECC_Pawn,
+		FCollisionShape::MakeSphere(InteractSphereRadius), QueryParams);
+
+	AActor* HitActor = bHit ? Hit.GetActor() : nullptr;
+	if (!HitActor)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, TEXT("Interact"));
+		return;
+	}
+
+	if (HitActor->Implements<UStickmanInteractable>())
+	{
+		IStickmanInteractable::Execute_Interact(HitActor, this);
+		return;
+	}
+
+	if (UActorComponent* InteractableComponent = HitActor->FindComponentByInterface(UStickmanInteractable::StaticClass()))
+	{
+		IStickmanInteractable::Execute_Interact(InteractableComponent, this);
 	}
 }
 
