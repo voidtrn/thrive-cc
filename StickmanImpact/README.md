@@ -667,6 +667,55 @@ so Blueprint subclasses choose their own WBP classes).
 4. Debug visualization: `au.Debug.Sounds 1` / `au.Debug.SoundWaves 1` console vars, plus
    MetaSound Editor's built-in analyzer graphs — no custom tooling built.
 
+## VFX system
+
+`UVFXManager` (`VFX/`, ActorComponent — add to `BP_StickmanCharacter` alongside
+`UStickmanCharacterVFXComponent`): every spawn goes through one path applying, in order,
+**cull** (beyond `CullDistance` or behind the camera past a 500u keep-alive radius — cheap
+dot-product test, no render query), **LOD** (past `LODDistance`, the spawned component's
+`SpawnRateScale` float User parameter is scaled by `LODSpawnRateScale`), **quality** (global
+`SetVFXQuality` maps Low/Medium/High/Ultra onto both `SpawnRateScale` — 0.4/0.7/1/1 — and the
+engine's `fx.Niagara.QualityLevel` CVar; wire to the settings screen's quality preset), and
+**pooling** (finished components deactivate back into a `MaxPoolSize` pool via
+`OnSystemFinished` instead of destroy/respawn). **Authoring contract**: give Niagara systems a
+float User parameter named `SpawnRateScale` multiplying their spawn-rate modules — systems
+without it still play, just don't scale.
+
+`UStickmanCharacterVFXComponent` drives character state VFX off the existing movement tag:
+dash trail / sprint wind / glide wind-lines / swim splash as state loops, landing impact as a
+one-shot on the airborne→grounded transition, plus `SetElement()` (call on party switch)
+tinting an elemental aura loop + weapon trail via an `ElementColor` linear-color User parameter.
+
+### Niagara authoring guide (assets, in-editor — naming convention `NS_<Category>_<Name>`)
+
+**Per-element templates** (`Content/VFX/Elements/`): one cast + one impact system per element,
+all exposing `SpawnRateScale` + `ElementColor`. Suggested recipes (all start from the engine's
+Fountain/Omnidirectional Burst templates):
+- Pyro: sprite embers (up-drift + curl noise), a heat-distortion material sprite, dark smoke
+  ribbon. | Cryo: mesh ice-shard burst, ground frost decal sprite, drifting snowflake sprites.
+- Hydro: splash sprite sheet burst, rising bubble sprites, expanding ripple decal.
+- Electro: beam-renderer arcs with jitter, spark burst, one-frame white flash sprite.
+- Anemo: ribbon wind-lines orbiting a vortex velocity field, leaf mesh particles.
+- Geo: rock mesh chunk burst (gravity + collision), dust cloud, crystal growth mesh scale-up.
+- Dendro: vine ribbon growth, leaf/petal sprites, thorn mesh spikes scaling from ground.
+
+Wire into gameplay by assigning them to what already consumes Niagara assets:
+`FSkillData::CastVFX` (per-skill cast), `UStickmanReactionEffectsDataAsset` (per-reaction),
+`UWeatherManager::WeatherVFX` (rain/snow/storm), waypoint/chest/collectible actors' VFX slots.
+
+**Environment** (`Content/VFX/Env/`): weather particles already route through
+`UWeatherManager`; ambient fireflies/dust/leaves are placed `NiagaraActor`s (no code);
+water-surface interaction + grass ripple are material effects (the grass MPC pipeline from
+the foliage system section); waypoint glow / chest sparkle assign to those actors' existing
+`UnlockVFX`/`CollectVFX` properties.
+
+**UI VFX** (`Content/VFX/UI/`): button hover glow, level-up burst, item-obtain shine, quest-
+complete celebration are **UMG-side** — Widget Animations + material-based `UImage` brushes
+(UI can't render world Niagara directly; UI-space particle materials or animated flipbook
+brushes are the standard approach). Hook points already exist: `OnMemberLeveledUp`
+(PartyManager), `OnItemChanged` (InventoryManager), `OnQuestCompleted` (QuestManager),
+`OnWishRevealed` (Gacha).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
