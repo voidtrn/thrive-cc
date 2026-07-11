@@ -18,6 +18,7 @@ class UCurveFloat;
 class UStickmanAbilitySystemComponent;
 class UStickmanAttributeSet;
 class UGameplayAbility;
+class UEquipmentManager;
 struct FInputActionValue;
 
 /**
@@ -61,6 +62,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStickmanAttributeSet> AttributeSet;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UEquipmentManager> EquipmentManager;
+
+	UFUNCTION(BlueprintPure, Category = "Equipment")
+	UEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
 
 	// Granted to the ASC on BeginPlay — assign the character's starting kit here
 	// (GA_NormalAttack, GA_PyroSlash, GA_PyroBurst, ...) in the character Blueprint.

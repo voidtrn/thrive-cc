@@ -17,6 +17,7 @@
 #include "Combat/Abilities/GA_NormalAttack.h"
 #include "SkillSystem/StickmanSkillDataAsset.h"
 #include "Party/StickmanPartyTypes.h"
+#include "Equipment/EquipmentManager.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -62,6 +63,8 @@ AStickmanCharacter::AStickmanCharacter()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<UStickmanAttributeSet>(TEXT("AttributeSet"));
+
+	EquipmentManager = CreateDefaultSubobject<UEquipmentManager>(TEXT("EquipmentManager"));
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -87,6 +90,10 @@ void AStickmanCharacter::ApplyCharacterData(const FStickmanCharacterData& Charac
 		AttributeSet->InitDefense(Stats.Defense);
 		AttributeSet->InitElementalMastery(Stats.ElementalMastery);
 		AttributeSet->InitEnergyRecharge(Stats.EnergyRecharge);
+		if (EquipmentManager)
+		{
+			EquipmentManager->ApplyTotalsToAttributeSet(AttributeSet, Stats.Attack, Stats.Defense, Stats.MaxHealth);
+		}
 	}
 
 	if (!AbilitySystemComponent || !CharacterData.SkillData)
@@ -170,6 +177,10 @@ void AStickmanCharacter::BeginPlay()
 			AttributeSet->InitDefense(Stats.Defense);
 			AttributeSet->InitElementalMastery(Stats.ElementalMastery);
 			AttributeSet->InitEnergyRecharge(Stats.EnergyRecharge);
+			if (EquipmentManager)
+			{
+				EquipmentManager->ApplyTotalsToAttributeSet(AttributeSet, Stats.Attack, Stats.Defense, Stats.MaxHealth);
+			}
 		}
 		AbilitySystemComponent->GrantDefaultAbilities(DefaultAbilities);
 	}

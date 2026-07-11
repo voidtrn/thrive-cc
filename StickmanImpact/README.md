@@ -466,6 +466,46 @@ by hold duration) — grant it alongside `GA_NormalAttack` on Bow characters. Ho
 for Catalyst and true long-range hitscan for Bow (currently just a big `HitCheckRadius`) are
 noted as follow-up work rather than built now.
 
+## Equipment / artifact system
+
+`FArtifactData` (one instance, slot `Flower/Plume/Sands/Goblet/Circlet`, a single `MainStat`
+roll, up to 4 `SubStats`, `Level` 0-20, `Rarity` 1-5, `SetName`) and `FWeaponData` (ATK/sub-stat/
+refinement/level/ascension/passive) both use `FArtifactSubStat { EArtifactStat Stat; float
+Value; }` rather than the spec's `TArray<TPair<EArtifactStat, float>>` — `TPair` isn't
+UPROPERTY/UHT-reflectable, so it can't appear in a `TArray` that Blueprint/DataTable needs to
+see; `FArtifactSubStat` is the direct substitute. Likewise `FArtifactData::MainStat` is a single
+`FArtifactSubStat`, not a `TMap<EArtifactStat, float>` — a map for exactly one entry added
+nothing.
+
+`UEquipmentManager` (`ActorComponent`, one per `AStickmanCharacter`, already wired up and applied
+to the AttributeSet in `BeginPlay`/`ApplyCharacterData`): one weapon slot + a
+`TMap<EArtifactSlot, FArtifactData>` for the 5 artifact slots. `GetTotalStats()` sums weapon +
+artifact main/sub-stats into `FEquipmentStatTotals` (everything `UStickmanAttributeSet` doesn't
+already track natively: CRIT Rate/DMG, DMG%, Healing Bonus, plus flat/% HP/ATK/DEF and EM/ER),
+folding in any 2pc/4pc `FArtifactSetBonus` rows (looked up by `SetName` from
+`ArtifactSetBonusTable`, a DataTable using `FArtifactSetBonus` as its row struct) whose piece-
+count threshold is met. Conditional 4pc bonuses (reaction DMG, crit vs. a status, ...) are
+exposed as a `FGameplayTag` + magnitude rather than auto-applied — combat code that can actually
+evaluate the condition checks for the tag. `PreviewArtifactSwap()` computes totals as if one
+artifact were swapped, without equipping it, for a comparison UI.
+`SaveEquipmentPreset`/`GetEquipmentPreset` store weapon/artifact **IDs** per slot — resolving an
+ID back into full `FWeaponData`/`FArtifactData` needs an inventory system (not built yet).
+
+### 10 example artifact sets (author as DataTable rows, `RowName` = `SetName`)
+
+| Set | 2pc | 4pc |
+|---|---|---|
+| Crimson Witch of Flames | +15% Pyro DMG | +40% DMG for Overload/Burning/Vaporize/Melt reactions (conditional tag) |
+| Blizzard Strayer | +15% Cryo DMG | +40% CRIT Rate against Frozen/Superconduct-afflicted enemies (conditional tag) |
+| Heart of Depth | +15% Hydro DMG | After using an Elemental Skill, +30% ATK and Hydro DMG for 15s (conditional tag) |
+| Thundersoother | +35% DMG against Electro-afflicted enemies (conditional tag) | +45% DMG against Electro-afflicted enemies (conditional tag, stacks with 2pc) |
+| Crystallize | +80 Elemental Mastery (flat stat) | Gaining a Crystallize shield grants nearby party +35% DMG for that element for 10s (conditional tag) |
+| Viridescent Venerer | +15% Anemo DMG | Swirl reactions shred enemy elemental RES by 40% for 10s (conditional tag) |
+| Archaic Petra | +15% Geo DMG | Crystallize shield's element grants +35% that element's DMG (conditional tag) |
+| Wanderer's Troupe | +80 Elemental Mastery (flat stat) | +35% charged-attack DMG (Bow) (conditional tag) |
+| Gladiator's Finale | +18% ATK (flat/percent stat) | +35% Normal Attack DMG if a Sword/Claymore/Polearm is wielded (conditional tag) |
+| Noblesse Oblige | +20% Elemental Burst DMG (conditional tag) | Using an Elemental Burst grants the whole party +20% ATK for 12s (conditional tag) |
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
