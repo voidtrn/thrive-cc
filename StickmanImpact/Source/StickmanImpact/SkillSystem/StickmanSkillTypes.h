@@ -35,6 +35,16 @@ enum class EStickmanSkillType : uint8
 	Dodge
 };
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	Sword,
+	Claymore,
+	Polearm,
+	Bow,
+	Catalyst
+};
+
 /**
  * A normal-attack combo chain: N montages played back to back, each with its own damage
  * multiplier, as long as the player keeps attacking inside ComboWindowTime of the last hit.

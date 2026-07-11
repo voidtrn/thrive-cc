@@ -13,6 +13,7 @@ Source/StickmanImpact/
                  GA_*Skill classes, GA_ElementalBurst_Base + GA_PyroBurst)
   UI/            AStickmanHUD, UStickmanInputDebugWidget
   World/         AStickmanGeoWall (temporary blocking wall spawned by GA_GeoSkill)
+  Party/         FStickmanCharacterData (DataTable row), UPartyManager
   Data/          (empty — item/enemy/quest DataTables)
   SaveSystem/    (empty — USaveGame subclasses)
   Audio/         (empty — MetaSound managers)
@@ -418,6 +419,52 @@ bolted-on component would've just meant more back-and-forth into the character a
   `UCollectibleManager` (GameInstanceSubsystem) tracks collected IDs and per-`Region` progress
   (`RegisterRegionTotal`/`GetRegionProgress`) for a regional-completion readout. Highlight-on-
   look-at for any of these is a post-process/custom-depth outline concern, not gameplay code.
+
+## Party system
+
+`FStickmanCharacterData` (DataTable row, `Content/Data/DT_Characters`) is one playable
+character's static design: element/weapon type, base stats, `UStickmanSkillDataAsset` (reused
+from the SkillSystem module — same asset type the single-character prototype used), ascension
+breakpoints, 6-level constellation data, story text. `UPartyManager` (GameInstanceSubsystem)
+holds up to 4 `FPartyMemberState` (a DataTable row + runtime level/EXP/ascension/equipped-IDs)
+and reconfigures **one** `AStickmanCharacter` pawn in place on switch
+(`AStickmanCharacter::ApplyCharacterData` — mesh, stats, re-granted abilities from
+`SkillData.ElementalSkill`/`ElementalBurst`/`PassiveSkills`, `Skill1SkillTag`/`Skill2SkillTag`
+set from the new kit's `FSkillData::SkillTag`) rather than spawning/possessing a separate actor
+per character. `SwitchToIndex()` is gated by `SwitchCooldownDuration` (2s default), broadcasts
+`OnPartySwitched` (bind here for "on-switch passive" reactions — no separate passive-trigger
+system needed, just listen to this delegate), and optionally auto-activates the incoming
+character's Burst if `bAutoBurstOnSwitchUnlocked` is set. Switching mid-air/mid-combat needs no
+special handling — it's just a data/ability swap on the same physics body, so whatever movement
+state (climbing/gliding/dashing/...) it was already in continues uninterrupted.
+
+**Elemental Resonance** (`GetActiveResonanceBonuses()`, recalculated on any roster change):
+2 Pyro +25% ATK, 2 Cryo +15% CRIT Rate, 2 Hydro +20% Healing, 2 Electro +25% Energy Recharge,
+2 Anemo +10% Move Speed, 2 Geo +15% Shield Strength, 2 Dendro +80 Elemental Mastery, or (a full
+4-member party with 4 different elements) +15% all Elemental DMG. These are computed values
+exposed to read — actually *applying* the ATK/CritRate/etc. bonuses to `UStickmanAttributeSet`
+is a couple of `ApplyModToAttribute` calls in whatever damage-calc path reads them next
+(`UStickmanGameplayAbility::ApplyRadialElementalDamage` doesn't consume them yet).
+
+**Leveling/ascension**: `GrantEXP()` levels a member up (quadratic EXP curve, cap
+`MaxCharacterLevel = 90`) and reapplies stats if they're the active member; `TryAscend()`
+checks `FCharacterAscension::RequiredCharacterLevel` (20/40/50/60/70/80 — author these per
+character in the DataTable) and applies `StatBonus`, logging (not consuming — no inventory
+system yet) `RequiredMaterials`.
+
+**Weapon types** (`EWeaponType`, moved into `SkillSystem/StickmanSkillTypes.h` since both Party
+and Combat need it): hit-count/speed differences (Sword 5-hit, Claymore 4-hit, Polearm 6-hit)
+are expressed entirely as data on each character's `FNormalAttackChain` — no per-weapon-type
+C++ branching needed for that part. `GA_NormalAttack::WeaponType` (set from
+`ApplyCharacterData`) drives the two behaviors that *do* need code: Claymore hits deal a flat
+`ClaymoreShieldBreakBonus` (a real "vs. shielded targets only" check needs a generic shield/
+absorb system that doesn't exist yet); Catalyst normal attacks are elemental
+(`SkillData.Element` set to the character's element) instead of physical. `GA_BowAimedShot`
+demonstrates the charged-shot/aimed-mode half of Bow (hold to charge via
+`UAbilityTask_WaitInputRelease`, damage scales `MinDamageMultiplier` → full `DamageMultiplier`
+by hold duration) — grant it alongside `GA_NormalAttack` on Bow characters. Homing projectiles
+for Catalyst and true long-range hitscan for Bow (currently just a big `HitCheckRadius`) are
+noted as follow-up work rather than built now.
 
 ## Notes
 

@@ -77,9 +77,17 @@ void UGA_NormalAttack::PlayComboHit(int32 ComboIndex)
 
 void UGA_NormalAttack::HandleAttackHitCheckNotify()
 {
-	const float DamageMultiplier = NormalAttackCombo.DamageMultipliers.IsValidIndex(CurrentComboIndex)
+	float DamageMultiplier = NormalAttackCombo.DamageMultipliers.IsValidIndex(CurrentComboIndex)
 		? NormalAttackCombo.DamageMultipliers[CurrentComboIndex]
 		: 1.f;
+
+	// Claymore flavor: hits harder than the other weapon types. (Bonus vs an actual "shielded"
+	// status is a hook for once a generic shield/absorb system exists — see
+	// AStickmanElementalShard's TODO — applied flat here in the meantime.)
+	if (WeaponType == EWeaponType::Claymore)
+	{
+		DamageMultiplier *= 1.f + ClaymoreShieldBreakBonus;
+	}
 
 	AActor* Avatar = GetAvatarActorFromActorInfo();
 	if (!Avatar)

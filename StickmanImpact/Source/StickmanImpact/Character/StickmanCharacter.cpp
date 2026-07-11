@@ -14,6 +14,9 @@
 #include "Engine/Engine.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
 #include "Combat/StickmanAttributeSet.h"
+#include "Combat/Abilities/GA_NormalAttack.h"
+#include "SkillSystem/StickmanSkillDataAsset.h"
+#include "Party/StickmanPartyTypes.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -64,6 +67,84 @@ AStickmanCharacter::AStickmanCharacter()
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void AStickmanCharacter::ApplyCharacterData(const FStickmanCharacterData& CharacterData)
+{
+	if (USkeletalMesh* Mesh = CharacterData.CharacterMesh.LoadSynchronous())
+	{
+		GetMesh()->SetSkeletalMesh(Mesh);
+	}
+
+	Stats = CharacterData.BaseStats;
+	if (AttributeSet)
+	{
+		AttributeSet->InitHealth(Stats.MaxHealth);
+		AttributeSet->InitMaxHealth(Stats.MaxHealth);
+		AttributeSet->InitStamina(Stats.MaxStamina);
+		AttributeSet->InitMaxStamina(Stats.MaxStamina);
+		AttributeSet->InitAttack(Stats.Attack);
+		AttributeSet->InitDefense(Stats.Defense);
+		AttributeSet->InitElementalMastery(Stats.ElementalMastery);
+		AttributeSet->InitEnergyRecharge(Stats.EnergyRecharge);
+	}
+
+	if (!AbilitySystemComponent || !CharacterData.SkillData)
+	{
+		return;
+	}
+
+	// Swap the granted kit: clear whatever the previous character had, grant this one's — but
+	// keep GA_NormalAttack granted (it's the same class for every character; only its combo
+	// data changes, pushed into the retained instance below).
+	UGA_NormalAttack* RetainedNormalAttack = nullptr;
+	TArray<FGameplayAbilitySpecHandle> HandlesToClear;
+	for (const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if (UGA_NormalAttack* NormalAttack = Cast<UGA_NormalAttack>(Spec.Ability))
+		{
+			RetainedNormalAttack = NormalAttack;
+			continue;
+		}
+		HandlesToClear.Add(Spec.Handle);
+	}
+	for (const FGameplayAbilitySpecHandle& Handle : HandlesToClear)
+	{
+		AbilitySystemComponent->ClearAbility(Handle);
+	}
+
+	DefaultAbilities.Reset();
+	if (UClass* SkillClass = CharacterData.SkillData->ElementalSkill.AbilityClass.LoadSynchronous())
+	{
+		DefaultAbilities.Add(SkillClass);
+	}
+	if (UClass* BurstClass = CharacterData.SkillData->ElementalBurst.AbilityClass.LoadSynchronous())
+	{
+		DefaultAbilities.Add(BurstClass);
+	}
+	for (const FSkillData& Passive : CharacterData.SkillData->PassiveSkills)
+	{
+		if (UClass* PassiveClass = Passive.AbilityClass.LoadSynchronous())
+		{
+			DefaultAbilities.Add(PassiveClass);
+		}
+	}
+
+	Skill1SkillTag = CharacterData.SkillData->ElementalSkill.SkillTag;
+	Skill2SkillTag = CharacterData.SkillData->ElementalBurst.SkillTag;
+
+	AbilitySystemComponent->GrantDefaultAbilities(DefaultAbilities);
+
+	if (RetainedNormalAttack)
+	{
+		RetainedNormalAttack->NormalAttackCombo = CharacterData.SkillData->NormalAttackCombo;
+		RetainedNormalAttack->WeaponType = CharacterData.WeaponType;
+		// Catalyst normal attacks are elemental; every other weapon type's normal attack is
+		// physical unless a specific character/weapon passive infuses it (set that on
+		// RetainedNormalAttack->SkillData.Element afterwards from Blueprint if so).
+		RetainedNormalAttack->SkillData.Element =
+			(CharacterData.WeaponType == EWeaponType::Catalyst) ? CharacterData.Element : EStickmanElement::None;
+	}
 }
 
 void AStickmanCharacter::BeginPlay()

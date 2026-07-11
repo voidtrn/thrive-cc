@@ -29,6 +29,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo")
 	FNormalAttackChain NormalAttackCombo;
 
+	// Set by AStickmanCharacter::ApplyCharacterData from the active party member's weapon.
+	// Claymore hits deal bonus damage to shielded targets; Catalyst normal attacks are
+	// elemental (SkillData.Element set to the character's element) instead of physical.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combo")
+	EWeaponType WeaponType = EWeaponType::Sword;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combo")
+	float ClaymoreShieldBreakBonus = 0.5f;
+
 	// Forward lunge distance applied on each hit (units).
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo")
 	float LungeDistance = 200.f;

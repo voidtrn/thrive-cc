@@ -73,6 +73,12 @@ protected:
 	UFUNCTION(BlueprintPure, Category = "Abilities")
 	UStickmanAttributeSet* GetStickmanAttributeSet() const { return AttributeSet; }
 
+	// Reconfigures this same pawn to play as a different party member: mesh, base stats, and
+	// abilities (re-granted from CharacterData.SkillData). Used by UPartyManager::SwitchToIndex
+	// instead of spawning a separate actor per character.
+	UFUNCTION(BlueprintCallable, Category = "Party")
+	void ApplyCharacterData(const struct FStickmanCharacterData& CharacterData);
+
 	// SkillTag values routed to ActivateSkillByTag() by the matching Enhanced Input handler —
 	// must match the SkillTag of one of the abilities in DefaultAbilities to do anything.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
