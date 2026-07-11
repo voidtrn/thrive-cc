@@ -48,3 +48,4 @@
 {"ts":"2026-07-11T09:36:06Z",  "summary": {    "total_commands": 88,    "total_input": 17937,    "total_output": 14521,    "total_saved": 3646,    "avg_savings_pct": 20.326699002062774,    "total_time_ms": 30491,    "avg_time_ms": 346  }}
 {"ts":"2026-07-11T09:36:09Z",  "summary": {    "total_commands": 88,    "total_input": 17937,    "total_output": 14521,    "total_saved": 3646,    "avg_savings_pct": 20.326699002062774,    "total_time_ms": 30491,    "avg_time_ms": 346  }}
 {"ts":"2026-07-11T09:41:24Z",  "summary": {    "total_commands": 93,    "total_input": 18061,    "total_output": 14653,    "total_saved": 3672,    "avg_savings_pct": 20.33110016056697,    "total_time_ms": 32971,    "avg_time_ms": 354  }}
+{"ts":"2026-07-11T10:05:54Z",  "summary": {    "total_commands": 130,    "total_input": 20838,    "total_output": 16651,    "total_saved": 4598,    "avg_savings_pct": 22.06545733755639,    "total_time_ms": 62760,    "avg_time_ms": 482  }}
