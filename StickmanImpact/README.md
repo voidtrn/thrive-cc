@@ -365,6 +365,60 @@ is exposed (Rain -5%, Storm -10%, Snow -8%) but not force-wired into `AStickmanC
 movement — that's one line in its Tick once you're ready, left as a hook rather than touching
 already-working movement code this late.
 
+## Exploration mechanics
+
+All added directly to `AStickmanCharacter` (climb/glide/swim are movement states as tightly
+coupled to the existing stamina/camera/movement-tag code as sprint/dash already were — a
+bolted-on component would've just meant more back-and-forth into the character anyway).
+
+- **Climbing**: auto-starts when airborne and facing (within `WallCheckDistance`) a wall whose
+  Actor has the `ClimbableTag` Actor Tag (Actor Tags, not a physical material, since it's a
+  single checkbox-equivalent in the editor rather than a whole physical-material asset per
+  climbable surface). Moves via `MOVE_Flying` at `ClimbSpeed`, drains `ClimbStaminaDrainRate`/sec,
+  stops automatically on running out of stamina or losing the wall trace. `JumpOffWall()`
+  (bound to the Jump input while climbing) launches backward+up; `SlideDownWall()` is exposed
+  BlueprintCallable but not bound to an input by default — wire it to whichever button fits
+  your control scheme (e.g. Crouch-while-climbing). Ledge-grab-and-pull-up is an animation
+  concern (a montage root-motion transition into standing once `TraceForClimbableWall` stops
+  finding a wall above the character) — not modeled as separate C++ state.
+- **Gliding**: deploys on a 3rd Jump press while airborne (`Jump()` now checks
+  `CurrentJumpCount >= MaxJumpCount && IsFalling()`). Forward Move input (Y axis) pitches the
+  glide — push forward to dive (faster, more descent), pull back to flatten out — drains
+  `GlideStaminaDrainRate`/sec, ends on landing (plays `LandingRollMontage`) or running out of
+  stamina. `GliderVFXVariants`/`SelectedGliderVariant` are exposed for unlockable elemental
+  glider trails; actually attaching/switching the trail Niagara component is a couple of lines
+  in a Blueprint `OnRep`/`BeginPlay` reading `SelectedGliderVariant`. Wind currents (upward
+  boost, free) aren't modeled yet — add a trigger volume that calls
+  `GetCharacterMovement()->Velocity.Z += Boost` while overlapping.
+- **Swimming**: rides `UCharacterMovementComponent`'s built-in swimming mode — place a
+  `APhysicsVolume` (or Blueprint subclass) over the water with `bWaterVolume = true` and it
+  auto-detects and switches movement mode, no custom detection code needed.
+  `AStickmanCharacter` layers a 60s breath meter (`MaxBreath`/`CurrentBreath`,
+  `GetBreathPercent()`), stamina drain, and drowning damage (once breath hits 0 while diving)
+  on top of that. `ToggleDive()` (bound to `DiveAction`, only reachable while already swimming)
+  flips `UCharacterMovementComponent::Buoyancy` between `DiveBuoyancy` (sinks) and
+  `SurfaceBuoyancy` (floats) — river current effects are a `APhysicsVolume::TerminalVelocity`/
+  custom force volume, not separate code here. Water surface shader interaction is a material
+  concern (Distance Field / depth-fade foam), not C++.
+- **Teleport waypoints**: `AWaypointActor` (implements `IStickmanInteractable`) unlocks on first
+  overlap (`ActivationRadius`) via `UWaypointManager` (tracks unlocked IDs — build the map UI's
+  waypoint list off `GetUnlockedWaypoints()`). Interacting with an already-unlocked waypoint (or
+  selecting one on the map) calls `TeleportTo()`; beyond `LoadingScreenDistanceThreshold` it
+  fires `OnTeleportRequested` instead of teleporting immediately so a loading-screen widget can
+  cover the screen first and call `FinishTeleport()` once ready — under the threshold it
+  teleports immediately (no loading screen for a "seamless" nearby jump).
+- **Collectibles**: `AStickmanCollectible` (Oculi-style — bobs/rotates, auto-collects on touch,
+  no interact prompt), `AStickmanChest` (`EChestRarity` Common/Rare/Luxurious, opens on interact,
+  grants a `FRewardData` once), `AResourceNode` (ore/plant, gather on interact, hides + respawns
+  after `RespawnTime`), and two puzzle pieces: `AStickmanPressurePlate` (`OnActivated`/
+  `OnDeactivated` delegates while something's standing on it — a door Blueprint binds to both)
+  and `AStickmanTorch` (`TryAffectWithElement()` — lights on Pyro, extinguishes on Hydro/Cryo;
+  wired automatically from `UStickmanGameplayAbility::ApplyDamageToTarget`, which now early-outs
+  to `Torch->TryAffectWithElement()` before touching health/ASC when the hit target is a torch).
+  `UCollectibleManager` (GameInstanceSubsystem) tracks collected IDs and per-`Region` progress
+  (`RegisterRegionTotal`/`GetRegionProgress`) for a regional-completion readout. Highlight-on-
+  look-at for any of these is a post-process/custom-depth outline concern, not gameplay code.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

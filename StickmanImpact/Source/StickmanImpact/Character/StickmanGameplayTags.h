@@ -16,6 +16,9 @@ namespace StickmanGameplayTags
 	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Dashing);
 	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Jumping);
 	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Falling);
+	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Climbing);
+	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Gliding);
+	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Movement_Swimming);
 
 	// SetByCaller magnitude key for periodic-damage GameplayEffects (elemental DoT statuses):
 	// the applying ability sets this to the per-tick damage, the GE's modifier reads it back.

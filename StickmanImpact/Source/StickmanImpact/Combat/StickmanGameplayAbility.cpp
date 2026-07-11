@@ -6,6 +6,7 @@
 #include "UI/StickmanDamageNumberManager.h"
 #include "UI/StickmanDamageNumberTypes.h"
 #include "AI/Enemies/EnemyShieldGuard.h"
+#include "World/StickmanTorch.h"
 #include "Character/StickmanGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
@@ -223,6 +224,12 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 	if (!TargetActor || DamageAmount <= 0.f)
 	{
 		return;
+	}
+
+	if (AStickmanTorch* Torch = Cast<AStickmanTorch>(TargetActor))
+	{
+		Torch->TryAffectWithElement(SkillData.Element);
+		return; // Torches have no health/ASC — hitting one is a puzzle interaction, not damage.
 	}
 
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);

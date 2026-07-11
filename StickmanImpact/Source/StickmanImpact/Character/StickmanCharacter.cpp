@@ -71,6 +71,7 @@ void AStickmanCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentStamina = Stats.MaxStamina;
+	CurrentBreath = MaxBreath;
 	CameraBoom->TargetArmLength = FMath::Clamp(CameraBoom->TargetArmLength, MinCameraBoomLength, MaxCameraBoomLength);
 	FollowCamera->SetFieldOfView(WalkFOV);
 	CurrentMovementTag = StickmanGameplayTags::State_Movement_Idle;
@@ -112,6 +113,9 @@ void AStickmanCharacter::Tick(float DeltaSeconds)
 	TickDash(DeltaSeconds);
 	TickStaminaRegen(DeltaSeconds);
 	TickCamera(DeltaSeconds);
+	TickClimbing(DeltaSeconds);
+	TickGliding(DeltaSeconds);
+	TickSwimming(DeltaSeconds);
 	UpdateMovementStateTag();
 	ShowDebugOnScreen();
 }
@@ -164,6 +168,10 @@ void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		{
 			EIC->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &AStickmanCharacter::Zoom);
 		}
+		if (DiveAction)
+		{
+			EIC->BindAction(DiveAction, ETriggerEvent::Started, this, &AStickmanCharacter::ToggleDive);
+		}
 
 		if (GEngine)
 		{
@@ -188,6 +196,26 @@ void AStickmanCharacter::Move(const FInputActionValue& Value)
 	CachedMoveInput = Axis;
 	if (!Controller || (Axis.X == 0.f && Axis.Y == 0.f))
 	{
+		return;
+	}
+
+	if (bIsClimbing)
+	{
+		// On the wall: Y = up/down the wall face, X = sideways along it.
+		const FVector ClimbUp = FVector::UpVector;
+		const FVector ClimbRight = FVector::CrossProduct(ClimbWallNormal, ClimbUp).GetSafeNormal();
+		AddMovementInput(ClimbUp, Axis.Y);
+		AddMovementInput(ClimbRight, Axis.X);
+		return;
+	}
+
+	if (bIsGliding)
+	{
+		// While gliding, forward/back pitches the glide (handled in TickGliding via
+		// CachedMoveInput.Y); left/right still steers normally.
+		const FRotator YawRotation(0.f, Controller->GetControlRotation().Yaw, 0.f);
+		const FVector RightDir = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(RightDir, Axis.X);
 		return;
 	}
 
@@ -233,10 +261,21 @@ void AStickmanCharacter::StopSprint()
 
 void AStickmanCharacter::Jump()
 {
+	if (bIsClimbing)
+	{
+		JumpOffWall();
+		return;
+	}
+
 	// ACharacter's built-in jump only fires while airborne if bIsCrouched/movement mode allows
 	// a single jump. We add a manual counter so a second press mid-air launches an extra jump.
 	if (CurrentJumpCount >= MaxJumpCount)
 	{
+		// A third press while still airborne deploys the glider instead of doing nothing.
+		if (!bIsGliding && GetCharacterMovement()->IsFalling())
+		{
+			DeployGlider();
+		}
 		return;
 	}
 
@@ -359,6 +398,206 @@ void AStickmanCharacter::TickCamera(float DeltaSeconds)
 }
 
 // -------------------------------------------------------------------
+// Exploration: Climbing
+// -------------------------------------------------------------------
+
+bool AStickmanCharacter::TraceForClimbableWall(FHitResult& OutHit) const
+{
+	const FVector Start = GetActorLocation();
+	const FVector End = Start + GetActorForwardVector() * WallCheckDistance;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	if (!GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_WorldStatic, QueryParams))
+	{
+		return false;
+	}
+	return OutHit.GetActor() && OutHit.GetActor()->ActorHasTag(ClimbableTag);
+}
+
+void AStickmanCharacter::TickClimbing(float DeltaSeconds)
+{
+	if (bIsClimbing)
+	{
+		// Stop climbing if the wall's gone, we've run out of stamina, or drifted off it.
+		FHitResult WallHit;
+		if (CurrentStamina <= 0.f || !TraceForClimbableWall(WallHit))
+		{
+			StopClimbing();
+			return;
+		}
+		ClimbWallNormal = WallHit.Normal;
+
+		GetCharacterMovement()->Velocity.Z = 0.f; // Suppress gravity while glued to the wall.
+		ConsumeStamina(ClimbStaminaDrainRate * DeltaSeconds);
+		return;
+	}
+
+	// Auto-start: airborne (jumping/falling) and facing a climbable wall closely.
+	if (!GetCharacterMovement()->IsFalling() || CurrentStamina <= 0.f)
+	{
+		return;
+	}
+	FHitResult WallHit;
+	if (TraceForClimbableWall(WallHit))
+	{
+		StartClimbing(WallHit);
+	}
+}
+
+void AStickmanCharacter::StartClimbing(const FHitResult& WallHit)
+{
+	bIsClimbing = true;
+	ClimbWallNormal = WallHit.Normal;
+	CurrentJumpCount = 0; // A fresh climb resets the jump/glide chain for when they let go.
+	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
+	GetCharacterMovement()->MaxFlySpeed = ClimbSpeed;
+}
+
+void AStickmanCharacter::StopClimbing()
+{
+	if (!bIsClimbing)
+	{
+		return;
+	}
+	bIsClimbing = false;
+	GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+}
+
+void AStickmanCharacter::JumpOffWall()
+{
+	if (!bIsClimbing)
+	{
+		return;
+	}
+	const FVector LaunchVelocity = ClimbWallNormal * WallJumpOffForce + FVector(0.f, 0.f, WallJumpOffForce * 0.6f);
+	StopClimbing();
+	LaunchCharacter(LaunchVelocity, true, true);
+}
+
+void AStickmanCharacter::SlideDownWall()
+{
+	if (!bIsClimbing)
+	{
+		return;
+	}
+	// Fast, stamina-free descent: just drop straight down at SlideDownSpeed until they let go
+	// (TickClimbing's normal exit conditions — losing the wall trace — end the slide).
+	GetCharacterMovement()->Velocity = FVector(0.f, 0.f, -SlideDownSpeed);
+}
+
+// -------------------------------------------------------------------
+// Exploration: Gliding
+// -------------------------------------------------------------------
+
+void AStickmanCharacter::DeployGlider()
+{
+	if (bIsClimbing || GetCharacterMovement()->IsMovingOnGround())
+	{
+		return;
+	}
+	bIsGliding = true;
+	GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+	GetCharacterMovement()->GravityScale = 0.15f;
+	GetCharacterMovement()->Velocity.Z = FMath::Max(GetCharacterMovement()->Velocity.Z, -GlideDescentRate);
+}
+
+void AStickmanCharacter::StopGliding()
+{
+	if (!bIsGliding)
+	{
+		return;
+	}
+	bIsGliding = false;
+	GetCharacterMovement()->GravityScale = 1.f;
+
+	if (LandingRollMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->Montage_Play(LandingRollMontage);
+	}
+}
+
+void AStickmanCharacter::TickGliding(float DeltaSeconds)
+{
+	if (!bIsGliding)
+	{
+		return;
+	}
+
+	if (GetCharacterMovement()->IsMovingOnGround())
+	{
+		StopGliding();
+		return;
+	}
+	if (CurrentStamina <= 0.f)
+	{
+		StopGliding();
+		return;
+	}
+
+	ConsumeStamina(GlideStaminaDrainRate * DeltaSeconds);
+
+	// Pitch control: forward/back Move input dives (faster descent, more forward speed) or
+	// pulls up (slower descent) — CachedMoveInput.Y reuses the same axis as ground movement.
+	const float PitchInput = CachedMoveInput.Y;
+	const float DescentRate = GlideDescentRate * (1.f - PitchInput * 0.5f);
+	const float ForwardSpeed = GlideForwardSpeed * (1.f + FMath::Max(PitchInput, 0.f) * 0.5f);
+
+	const FVector Forward = GetActorForwardVector();
+	FVector NewVelocity = Forward * ForwardSpeed;
+	NewVelocity.Z = -DescentRate;
+	GetCharacterMovement()->Velocity = FVector(NewVelocity.X, NewVelocity.Y, NewVelocity.Z);
+}
+
+// -------------------------------------------------------------------
+// Exploration: Swimming
+// -------------------------------------------------------------------
+
+void AStickmanCharacter::ToggleDive()
+{
+	if (!GetCharacterMovement()->IsSwimming())
+	{
+		return;
+	}
+	bWantsToDive = !bWantsToDive;
+	GetCharacterMovement()->Buoyancy = bWantsToDive ? DiveBuoyancy : SurfaceBuoyancy;
+}
+
+void AStickmanCharacter::TickSwimming(float DeltaSeconds)
+{
+	const bool bIsSwimmingNow = GetCharacterMovement()->IsSwimming();
+
+	if (bIsSwimmingNow)
+	{
+		ConsumeStamina(SwimStaminaDrainRate * DeltaSeconds);
+
+		if (bWantsToDive)
+		{
+			CurrentBreath = FMath::Max(CurrentBreath - DeltaSeconds, 0.f);
+			if (CurrentBreath <= 0.f && AttributeSet)
+			{
+				const float NewHealth = FMath::Max(AttributeSet->GetHealth() - DrowningDamagePerSecond * DeltaSeconds, 0.f);
+				AttributeSet->SetHealth(NewHealth);
+				AttributeSet->OnHealthChanged.Broadcast(NewHealth, AttributeSet->GetMaxHealth());
+			}
+		}
+		else
+		{
+			CurrentBreath = FMath::Min(CurrentBreath + DeltaSeconds * 2.f, MaxBreath); // Recover breath fast at the surface.
+		}
+	}
+	else if (bWasSwimmingLastTick)
+	{
+		// Just left the water — reset for next time rather than leaving stale dive state.
+		bWantsToDive = false;
+		CurrentBreath = MaxBreath;
+	}
+
+	bWasSwimmingLastTick = bIsSwimmingNow;
+}
+
+// -------------------------------------------------------------------
 // Movement state (GameplayTags)
 // -------------------------------------------------------------------
 
@@ -372,6 +611,18 @@ void AStickmanCharacter::UpdateMovementStateTag()
 	if (bIsDashing)
 	{
 		NewTag = State_Movement_Dashing;
+	}
+	else if (bIsClimbing)
+	{
+		NewTag = State_Movement_Climbing;
+	}
+	else if (bIsGliding)
+	{
+		NewTag = State_Movement_Gliding;
+	}
+	else if (Movement->IsSwimming())
+	{
+		NewTag = State_Movement_Swimming;
 	}
 	else if (Movement->IsFalling())
 	{

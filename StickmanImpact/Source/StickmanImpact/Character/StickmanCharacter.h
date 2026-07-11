@@ -208,6 +208,85 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TSubclassOf<UCameraShakeBase> DashCameraShakeClass;
 
+	// -------------------------------------------------------------------
+	// Exploration: Climbing
+	// -------------------------------------------------------------------
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Climbing")
+	float ClimbSpeed = 200.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Climbing")
+	float ClimbStaminaDrainRate = 15.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Climbing")
+	float WallCheckDistance = 100.f;
+
+	// Actor Tag a climbable wall must have (Actor > Tags in the editor) to be climbable.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Climbing")
+	FName ClimbableTag = TEXT("Climbable");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Climbing")
+	float SlideDownSpeed = 400.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Climbing")
+	float WallJumpOffForce = 600.f;
+
+	// -------------------------------------------------------------------
+	// Exploration: Gliding
+	// -------------------------------------------------------------------
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	float GlideForwardSpeed = 800.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	float GlideDescentRate = 150.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	float GlideStaminaDrainRate = 5.f;
+
+	// Degrees/sec the pitch (via Look Y while gliding) changes dive/climb rate by.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	float GlidePitchInfluence = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	TObjectPtr<UAnimMontage> LandingRollMontage;
+
+	// Elemental-themed unlockable glider trail VFX — index selected via SelectedGliderVariant.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	TArray<TObjectPtr<class UNiagaraSystem>> GliderVFXVariants;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Gliding")
+	int32 SelectedGliderVariant = 0;
+
+	// -------------------------------------------------------------------
+	// Exploration: Swimming
+	// -------------------------------------------------------------------
+	// Surface/dive movement itself rides on ACharacterMovementComponent's built-in swimming
+	// mode (auto-enters when overlapping a APhysicsVolume with bWaterVolume=true) — this class
+	// only layers the breath meter, stamina drain, and drowning damage on top of that.
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Swimming")
+	float MaxBreath = 60.f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Exploration|Swimming")
+	float CurrentBreath = 60.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Swimming")
+	float SwimStaminaDrainRate = 6.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Swimming")
+	float DrowningDamagePerSecond = 20.f;
+
+	// Buoyancy while diving vs surface swimming (UCharacterMovementComponent::Buoyancy: <1 sinks, >1 floats).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Swimming")
+	float DiveBuoyancy = 0.6f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Exploration|Swimming")
+	float SurfaceBuoyancy = 1.05f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> DiveAction;
+
 public:
 	// -------------------------------------------------------------------
 	// Input handlers
@@ -223,6 +302,33 @@ public:
 	void OnSkill1();
 	void OnSkill2();
 	void OnInteract();
+
+	// -------------------------------------------------------------------
+	// Exploration
+	// -------------------------------------------------------------------
+
+	UFUNCTION(BlueprintCallable, Category = "Exploration|Climbing")
+	void JumpOffWall();
+
+	UFUNCTION(BlueprintCallable, Category = "Exploration|Climbing")
+	void SlideDownWall();
+
+	UFUNCTION(BlueprintCallable, Category = "Exploration|Gliding")
+	void DeployGlider();
+
+	UFUNCTION(BlueprintCallable, Category = "Exploration|Gliding")
+	void StopGliding();
+
+	void ToggleDive();
+
+	UFUNCTION(BlueprintPure, Category = "Exploration")
+	bool IsClimbing() const { return bIsClimbing; }
+
+	UFUNCTION(BlueprintPure, Category = "Exploration")
+	bool IsGliding() const { return bIsGliding; }
+
+	UFUNCTION(BlueprintPure, Category = "Exploration")
+	float GetBreathPercent() const { return MaxBreath > 0.f ? CurrentBreath / MaxBreath : 1.f; }
 
 	UFUNCTION(BlueprintPure, Category = "Stamina")
 	float GetStaminaPercent() const { return Stats.MaxStamina > 0.f ? CurrentStamina / Stats.MaxStamina : 0.f; }
@@ -246,6 +352,15 @@ private:
 	void UpdateMovementStateTag();
 	void ShowDebugOnScreen() const;
 
+	void TickClimbing(float DeltaSeconds);
+	bool TraceForClimbableWall(FHitResult& OutHit) const;
+	void StartClimbing(const FHitResult& WallHit);
+	void StopClimbing();
+
+	void TickGliding(float DeltaSeconds);
+
+	void TickSwimming(float DeltaSeconds);
+
 	FGameplayTag CurrentMovementTag;
 
 	bool bWantsToSprint = false;
@@ -266,4 +381,15 @@ private:
 
 	FVector2D CachedMoveInput = FVector2D::ZeroVector;
 	FVector2D CachedLookInput = FVector2D::ZeroVector;
+
+	// Climbing runtime state.
+	bool bIsClimbing = false;
+	FVector ClimbWallNormal = FVector::ZeroVector;
+
+	// Gliding runtime state.
+	bool bIsGliding = false;
+
+	// Swimming runtime state.
+	bool bWantsToDive = false;
+	bool bWasSwimmingLastTick = false;
 };
