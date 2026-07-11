@@ -232,21 +232,58 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    severity — didokumentasikan sebagai known limitation, pola sama dgn
    `bInvulnerable` single-bool di BUILD_NOTES.
 
+## 🆕 CONTENT PASS — storyline & cutscene (belum ada sebelumnya)
+
+Project ini 0 konten cerita sebelum pass ini — quest *engine* (Phase6) ada,
+tapi 0 quest/dialogue nyata, dan 0 sistem cutscene sama sekali.
+
+- **Prolog 2-quest chain** (`System/StarterContentLibrary.h`) — "Tremors in
+  Duskvale" → "The Stormchaser's Warning", dibangun via `NewObject`/
+  `UDataTable::AddRow` murni C++ (bukan Data Asset/DataTable editor), jadi
+  testable & jalan tanpa Unreal Editor. Plot hook: anomali Elemental
+  Resonance (nyambung ke `UResonanceComponent` yang udah ada) — Kagari
+  investigasi, ketemu Yukine lalu Shiden. `AOpenWorldGameMode::BeginPlay`
+  auto-register lewat `QuestManager->RegisterQuests` (pola sama persis dgn
+  yang didokumentasikan PHASE6_SETUP.md, cuma sumbernya C++ bukan BP array).
+  BP masih bisa nambah quest lain via jalur Data Asset normal — map
+  `RegisteredQuests` digabung per-QuestID, bukan ditimpa.
+- **`ACutsceneActor`** (`World/CutsceneActor.h`) — cutscene tanpa Sequencer:
+  array `FCutsceneShot` (posisi/rotasi/FOV/hold/blend relatif ke transform
+  actor), spawn `ACameraActor` & `SetViewTargetWithBlend` per shot via timer,
+  reuse `EInputContextMode::Dialog` buat lock input (belum ada mode
+  "Cutscene" terpisah), opsional auto-trigger `UDialogueManager::StartDialogue`
+  di akhir. Presentation client-local murni (viewport/input, bukan gameplay
+  state replicated) — sengaja TIDAK pakai `HasAuthority()` guard, beda kelas
+  masalah dari `CombatComponent`.
+- Sisa kerja (NPC BP wiring, trigger volume, level placement, IMC gamepad,
+  platform build, SFX/VFX asset): `Docs/EDITOR_WORK_CHECKLIST.md` — actionable
+  checklist, bukan hasil kerjaan (butuh editor yang gak ada di environment ini).
+
+Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
+
+| Finding | Fix |
+|---|---|
+| `CutsceneActor.h`: `TObjectPtr<APawn> CachedPawn` tanpa forward-declare `APawn` — undeclared identifier | Tambah `class APawn;` |
+| Gak ada `EndPlay()` override — cutscene diputus paksa (level streamed out) → `ShotCamera` nyangkut di world, input mode stuck di `Dialog` | Tambah `EndPlay()` override, panggil `EndCutscene()` kalau masih `IsPlaying()` |
+| `EndCutscene()` pakai raw non-null check (`if (CachedPC)`) bukan `IsValid()` — PC/Pawn destroyed eksternal mid-cutscene (disconnect) = pointer non-null tapi pending-kill | Ganti semua check jadi `IsValid()` (`IsPlaying()`, `ApplyShot`, `EndCutscene`) |
+| ❓ `EndCutscene()` manggil `DialogueManager::StartDialogue()` tanpa `HasAuthority()` — dialogue node bawa `ReportTalkObjective` yang nulis progress quest, apa butuh guard? | **Gak butuh** — dicek `QuestManager::ReportObjective`/`DialogueManager::ExecuteActions`, 0 `HasAuthority()` di manapun di sistem quest/dialogue. Ini `GameInstanceSubsystem` per-machine (state di GameInstance, bukan replicated actor), pola konsisten sama NPC interact existing (`BP_NPC` interact langsung panggil `StartDialogue` tanpa guard). Cutscene ikut pola yang sudah ada, bukan nambah gap baru. |
+
 ---
 
 ## Ringkasan angka
 
 | | Jumlah |
 |---|---|
-| C++ class | 53 |
-| Source file | 116 |
-| Setup/review docs | 21 |
-| Automation test | 3 file (6 test) |
+| C++ class | 55 |
+| Source file | 118 |
+| Setup/review docs | 23 |
+| Automation test | 3 file (10 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
 | Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
 | Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
+| Content pass | prolog 2-quest chain + `CutsceneActor` — 2 class baru (`StarterContentLibrary`, `CutsceneActor`) |
 
 ## Rekomendasi urutan garap berikutnya
 
