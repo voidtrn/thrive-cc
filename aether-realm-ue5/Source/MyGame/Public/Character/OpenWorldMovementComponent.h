@@ -40,7 +40,33 @@ public:
 	bool IsGliding() const { return bIsGliding; }
 
 	// ---------- Climbing ----------
-	/** Cek dinding di depan (angle > 45°) lalu masuk mode climb. */
+	/**
+	 * Set intent "mau climb" — dikonsumsi `UpdateCharacterStateBeforeMovement`
+	 * tiap tick (sama pola `bPressedJump` engine), lewat compressed flag jadi
+	 * server independen mutusin sama kayak client predict (ANTISIPASI #3,
+	 * CODE_REVIEW.md — sebelum ini gak ada FSavedMove custom sama sekali,
+	 * jadi `bWantsToSprint`/climb-entry gak pernah nyampe ke server di co-op).
+	 * Pakai ini (bukan panggil TryStartClimbing langsung) dari input BP biar
+	 * predict/replay konsisten.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Movement|Climb")
+	void RequestClimb() { bPressedClimb = true; }
+
+	/**
+	 * Batalin climb request yang belum terpenuhi (mis. player lepas tombol
+	 * climb sebelum nemu dinding). Tanpa ini, `bPressedClimb` retry trace
+	 * tiap tick tanpa batas sampai nemu dinding — gak salah, tapi buang
+	 * cost trace + gak ada cara keluar dari intent itu.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Movement|Climb")
+	void CancelClimbRequest() { bPressedClimb = false; }
+
+	/**
+	 * Cek dinding di depan (angle > 45°) lalu masuk mode climb. Tetap
+	 * BlueprintCallable buat backward-compat (single-player/listen-host
+	 * aman dipanggil langsung), tapi utk co-op yang bener pakai
+	 * `RequestClimb()` — lihat komentar di sana.
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Movement|Climb")
 	bool TryStartClimbing();
 
@@ -102,6 +128,45 @@ public:
 
 	virtual void PhysFalling(float deltaTime, int32 Iterations) override;
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
+	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
+
+	// ---------- Network prediction (FSavedMove) ----------
+	// bWantsToSprint & bPressedClimb sekarang jadi bagian compressed move flags
+	// (FLAG_Custom_0/1) — server independen replay keputusan yang sama dgn
+	// client predict, bukan cuma percaya MovementMode yang datang belakangan.
+	virtual FNetworkPredictionData_Client* GetPredictionData_Client() const override;
+	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
+
+	/**
+	 * "Sticky" sampai tick BERIKUTNYA setelah entry berhasil (baru di-clear
+	 * di `UpdateCharacterStateBeforeMovement`, via `bClimbJustEntered` —
+	 * bukan poll `IsClimbing()` langsung, lihat komentar situ), BUKAN
+	 * di-clear langsung di `TryStartClimbing()` pas berhasil. Alasan:
+	 * `SetMoveFor` (capture buat compressed move yang dikirim ke server)
+	 * selalu jalan SETELAH `UpdateCharacterStateBeforeMovement` di tick yang
+	 * sama — clear di tick yang sama dgn keputusan climb bikin compressed
+	 * move tick itu kekirim dgn flag false, server gak pernah lihat true,
+	 * gak pernah mutusin sama (silent desync, ke-tangkep review round 1).
+	 * Clear 1 tick kemudian aman karena capture tick sebelumnya udah lewat.
+	 */
+	bool bPressedClimb = false;
+
+private:
+	/**
+	 * Internal bookkeeping — TIDAK bagian compressed flag, gak perlu (server
+	 * replay `TryStartClimbing()` sendiri set ini juga, deterministic, gak
+	 * butuh transmit). Set true HANYA di `UpdateCharacterStateBeforeMovement`,
+	 * pas `TryStartClimbing()` yang dipanggil DARI SITU (hasil konsumsi
+	 * `bPressedClimb`) berhasil — SENGAJA BUKAN di dalam `TryStartClimbing()`
+	 * itu sendiri (round 3 review: kalau di situ, direct-call dari luar
+	 * jalur request bisa nyabut climb-request lain yang gak related).
+	 * Dikonsumsi tick berikutnya buat clear `bPressedClimb` — dipisah dari
+	 * `IsClimbing()` karena `IsClimbing()` bisa udah stale kalau climb masuk
+	 * LALU keluar lagi di tick yang sama (mis. `PhysClimb` trace-fail
+	 * instan): polling `IsClimbing()` doang bakal kelewat clear-nya, retry
+	 * re-entry gak diinginkan padahal baru aja keluar (round 2 review finding).
+	 */
+	bool bClimbJustEntered = false;
 
 protected:
 	bool bWantsToSprint = false;

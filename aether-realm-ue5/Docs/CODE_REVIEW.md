@@ -172,9 +172,115 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
    AttributeSet + GameplayEffect saat itu terasa. ASC sudah terpasang =
    migrasi mulus.
 
-3. **Climb custom movement tanpa `FSavedMove`.** Single-player mulus.
-   Co-op: climb akan "karet"/desync di client. Wajib tambah SavedMove
-   sebelum co-op serius.
+3. ~~**Climb custom movement tanpa `FSavedMove`.**~~ → **Digarap** (bukan
+   "closed" — beda level confidence dari fix lain di doc ini, baca sampai
+   habis sebelum anggap selesai).
+
+   Audit nemu scope-nya lebih luas dari yang didokumentasikan: bukan cuma
+   climb, `bWantsToSprint` JUGA gak pernah nyampe ke server (gak ada RPC/
+   compressed-flag apa pun buat itu sebelumnya) — jadi sprint speed pun
+   udah desync di co-op sungguhan (bukan listen-server-host, yang skip
+   jalur `SavedMove` ini sepenuhnya karena `ROLE_Authority` lokal).
+
+   Fix: `UOpenWorldMovementComponent` sekarang punya custom
+   `FSavedMove_OpenWorld`/`FNetworkPredictionData_Client_OpenWorld`
+   (`GetPredictionData_Client`/`UpdateFromCompressedFlags` override), pola
+   `FLAG_Custom_0`/`FLAG_Custom_1` sama persis `bPressedJump` bawaan engine
+   — `bWantsToSprint` (persistent) & climb-entry (`bPressedClimb`, baru:
+   `RequestClimb()` API) sekarang bagian compressed move, server independen
+   replay keputusan yang sama dgn client predict, bukan cuma percaya
+   `MovementMode` yang telat nyampe.
+
+   **Round 1 review nemu bug nyata di desain awal** (bukan cuma hipotetis —
+   ke-trace exact call order): draft pertama clear `bPressedClimb` DI DALAM
+   `TryStartClimbing()` pas berhasil. Tapi `SetMoveFor` (capture buat
+   compressed move yang dikirim ke server) SELALU jalan setelah
+   `UpdateCharacterStateBeforeMovement` di tick yang sama (`PerformMovement`:
+   `UpdateCharacterStateBeforeMovement` → physics → `UpdateCharacterStateAfterMovement`
+   → `ReplicateMoveToServer`/`SetMoveFor`) — jadi clear di dalam
+   `TryStartClimbing` (dipanggil dari `UpdateCharacterStateBeforeMovement`)
+   selalu terjadi SEBELUM `SetMoveFor` tick yang sama capture nilainya.
+   Compressed move tick climb BERHASIL malah ke-kirim dgn flag **false** —
+   server gak pernah lihat true, gak pernah mutusin sama → desync
+   deterministic (bukan race/kadang-kadang) di SETIAP climb entry sukses.
+   Ironis: persis failure mode yang mau ditutup fix ini.
+
+   **Fix**: `bPressedClimb` gak di-clear di `TryStartClimbing()` sama
+   sekali. Clear-nya pindah ke `UpdateCharacterStateBeforeMovement`, TAPI
+   satu tick KEMUDIAN — begitu `IsClimbing()` keliatan true (artinya
+   compressed move tick sebelumnya, yang capture flag=true, udah lewat
+   `SetMoveFor` dgn benar). Clear di titik ini aman karena kejadiannya di
+   awal tick N+1, sebelum `SetMoveFor` tick N+1 (yang nilainya udah gak
+   penting lagi buat korektnes). Ditambah `CancelClimbRequest()` (finding
+   🔵 review: gak ada cara batalin request yang gak nemu dinding — sebelum
+   ini retry trace tanpa batas selamanya).
+
+   **Round 2 review** (verifikasi fix round 1): bug asli dikonfirmasi
+   tertutup (ditelusuri tick-by-tick, cocok sama call order UE). Tapi nemu
+   edge case baru: kalau `TryStartClimbing()` berhasil TERUS `StopClimbing()`
+   kepanggil di tick yang SAMA (mis. `PhysClimb` trace-fail instan begitu
+   masuk climb — dinding sempit/sudut), `IsClimbing()` gak pernah keliatan
+   true di batas tick manapun → `bPressedClimb` gak pernah ke-clear via gate
+   lama → retry re-entry gak diinginkan tiap tick padahal baru aja keluar.
+   **Bukan desync** (client-server tetap deterministic sama), tapi logic/UX
+   gap. **Fixed**: tambah `bClimbJustEntered` (bookkeeping internal, BUKAN
+   bagian compressed flag — server replay `TryStartClimbing()` sendiri, set
+   sendiri, deterministic, gak perlu transmit) — di-set di `TryStartClimbing()`
+   pas berhasil (independen dari apa yang kejadian ke `MovementMode`
+   setelahnya di tick yang sama), dikonsumsi tick berikutnya buat clear
+   `bPressedClimb`. Ganti basis clear dari "poll `IsClimbing()`" (bisa stale
+   kalau entry+exit sama-tick) ke "one-shot event flag" (immune dari itu).
+
+   **Round 3 review** (verifikasi fix round 2): edge case entry+exit-sama-tick
+   dikonfirmasi tertutup (ditelusuri tick-by-tick). Tapi nemu 1 hal lebih
+   penting dari bug C++ manapun sejauh ini: **`Docs/PHASE4_SETUP.md` (langkah
+   editor Phase 4) justru nginstruksiin wiring `IA_Jump` → `Move->
+   TryStartClimbing()` LANGSUNG** — kontradiksi total sama komentar
+   `RequestClimb()` yang bilang "pakai ini, bukan panggil TryStartClimbing
+   langsung". Kalau BP beneran di-wire sesuai dok lama, `bPressedClimb` gak
+   pernah ke-set dari input asli sama sekali — SELURUH mekanisme
+   `FSavedMove`/compressed-flag round 1-3 jadi dead code buat jalur
+   climb-entry utama, bug asli balik lagi tapi di layer BP, bukan C++. **Fixed**
+   — `PHASE4_SETUP.md` diupdate ke `RequestClimb()` + alasan singkat. Ini
+   pengingat penting: fix C++ doang gak cukup kalau instruksi wiring-nya
+   sendiri nunjuk ke jalur yang salah — dokumentasi editor SAMA pentingnya
+   buat diaudit, bukan cuma kode.
+
+   Review round 3 juga nemu 1🟡: `bClimbJustEntered` di-set unconditional di
+   `TryStartClimbing()` (independen dari SIAPA yang manggil), jadi kalau
+   `TryStartClimbing()` dipanggil dari luar jalur `bPressedClimb` (backward-compat
+   direct call) barengan sama request lain yang legit numpuk di window
+   1 tick, clear-nya bisa nyabut request yang gak related. **Fixed** — scope
+   `bClimbJustEntered` diperketat: cuma di-set di `UpdateCharacterStateBeforeMovement`
+   sendiri, DAN cuma kalau `TryStartClimbing()` yang dipanggil dari situ (hasil
+   konsumsi `bPressedClimb`) yang berhasil — bukan lagi di dalam
+   `TryStartClimbing()` itu sendiri, jadi direct-call dari luar gak pernah
+   nyentuh bookkeeping ini sama sekali.
+
+   **Kenapa "digarap" bukan "closed":** ini pola `FSavedMove` kanonik UE
+   (`FLAG_Custom_0/1`, sama persis `bPressedJump` bawaan engine — dikonfirmasi
+   masih fully-supported di 5.4, bukan legacy), tapi project ini belum
+   pernah di-compile — 3 putaran review nangkep 1 desync bug, 1 edge-case
+   logic gap, DAN 1 dokumentasi-wiring yang salah arah. Confidence tinggi
+   tapi eksplisit "belum 100% tanpa compile" per reviewer sendiri berkali-kali.
+   **Round 4 review** (verifikasi fix round 3): edge case + scoping
+   dikonfirmasi tetap benar setelah `bClimbJustEntered` dipindah (sekarang
+   di-set di `UpdateCharacterStateBeforeMovement`, bukan di dalam
+   `TryStartClimbing()`). Nemu 1🟡 kecil — komentar header `bClimbJustEntered`
+   ketinggalan update (masih bilang "set di TryStartClimbing()", udah gak
+   akurat). Fixed — komentar disamain sama behavior kode.
+
+   4 putaran review — 1 desync bug, 1 edge-case logic gap, 1 dokumentasi
+   editor yang nunjuk ke jalur salah, 1 stale comment — semua closed.
+   Reviewer eksplisit: **"code-review-complete"** buat mekanisme ini
+   (dibaca tangan tick-by-tick 4x, gak ada logic/desync gap baru ke-4).
+
+   **Wajib tetap**: first-compile pass (prioritas #1 project ini) + verifikasi
+   ordering di atas langsung ke `CharacterMovementComponent.cpp` engine +
+   co-op playtest 2 mesin nyata (sprint speed, climb entry, exit-lalu-
+   re-entry, kasus entry+exit-sama-tick di dinding sempit/sudut) sebelum
+   dianggap benar-benar closed — "code-review-complete" bukan "compile-
+   verified", 2 hal beda yang project ini sendiri selalu tegasin bedanya.
 
 4. ~~**Damage number spawn actor + widget component per hit.** Kalau ratusan
    hit/detik (AOE besar, banyak musuh) → banyak alokasi.~~ → **Fixed.**
