@@ -3,6 +3,7 @@
 #include "PartyManager.h"
 #include "Character/StickmanCharacter.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
+#include "Data/InventoryManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 
@@ -152,8 +153,16 @@ bool UPartyManager::TryAscend(int32 MemberIndex)
 		return false;
 	}
 
-	// No inventory system exists yet to actually consume RequiredMaterials — logged only.
-	UE_LOG(LogTemp, Log, TEXT("[PartyManager] Ascending %s to ascension %d (materials check skipped, no inventory system)"),
+	if (NextAscension.RequiredMaterials.Num() > 0)
+	{
+		UInventoryManager* Inventory = GetGameInstance()->GetSubsystem<UInventoryManager>();
+		if (!Inventory || !Inventory->ConsumeItems(NextAscension.RequiredMaterials))
+		{
+			return false; // Missing ascension materials.
+		}
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("[PartyManager] Ascending %s to ascension %d"),
 		*Member.CharacterData.CharacterName.ToString(), NextAscension.AscensionLevel);
 
 	Member.CurrentAscension = NextAscension.AscensionLevel;

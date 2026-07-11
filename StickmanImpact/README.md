@@ -561,6 +561,60 @@ so a WBP only needs to include the pieces its layout actually uses:
   GetPingInMilliseconds()`; `TimeOfDayIcon` swaps texture (`TimeOfDayIcons` map) off
   `ADayNightManager::GetTimeOfDay()`/`OnTimeOfDayChanged` if one exists in the level.
 
+## Menu screens
+
+All screens live in `UI/Menus/` and are opened through `UMenuNavigationManager`
+(GameInstanceSubsystem, stack-based): `PushMenu(WBP class)` opens on top (first push pauses the
+game + frees the cursor), `PopMenu()` backs out (last pop unpauses), `PopToRoot()` closes
+everything. Bind Pause/Escape to `PopMenu` once and every screen gets "back" for free —
+`AStickmanPlayerController`'s existing Inventory/Map/Pause handlers should call
+`PushMenu(WBP_Inventory/WBP_Map/WBP_Pause)` instead of their current debug prints (left as-is
+so Blueprint subclasses choose their own WBP classes).
+
+- **Character screen** (`UCharacterScreenWidget` + `ACharacterPreviewStage`): rotatable 3D
+  preview via an off-screen stage actor (separate scene root so the capture doesn't spin with
+  the mesh; spawned at Z=-100000, `ShowOnlyList` so only the preview mesh renders), full
+  computed-stat panel (base × equipment totals, same math as `UEquipmentManager::
+  ApplyTotalsToAttributeSet`), weapon+5 artifact slot icons, skill/burst showcase, constellation
+  opacity states, level/EXP bar, 4 party tabs. **Equip entry points are click-based**
+  (`EquipWeaponOnSelected`/`EquipArtifactOnSelected`); drag-drop is a WBP-side
+  `OnDragDetected`/`OnDrop` override that ends up calling the same functions — UMG drag-drop
+  visuals can't be authored from C++.
+- **Inventory** (`UInventoryScreenWidget` + `UInventorySlotWidget` + **new
+  `UInventoryManager`** in `Data/`): grid with pooled slots, 5 category tabs, 4 sort modes
+  (cycle), selection-driven detail panel (hover = forward `OnMouseEnter` → `SelectItem` in the
+  WBP; selection also serves gamepad), destroy-with-confirmation (quest items exempt), count
+  badges, rarity border colors, "new" highlight cleared on first view. `UInventoryManager` also
+  closes the old "rewards log-only" gap: quest `ItemRewards` now deposit as real items (+EXP now
+  routes to the active party member), `AResourceNode` gathers deposit, and
+  `UPartyManager::TryAscend` now *actually consumes* `RequiredMaterials` (fails without them).
+  Currency still has no wallet — logged only.
+- **Map screen** (`UMapScreenWidget`): pre-authored map texture (an open-world full map is a
+  painted image, not a live capture) with zoom/pan, region labels + exploration % (from
+  `UCollectibleManager::GetRegionProgress`), waypoint markers + teleport button
+  (`UWaypointManager::TeleportTo`, closes menus after), tracked-quest markers, underground
+  layers via `MapLayers` texture swap. Marker click-to-select needs the WBP to wrap markers in
+  buttons (plain `UImage`s from C++) calling `SelectWaypoint`.
+- **Quest journal** (`UQuestJournalWidget`): active list (tracked quest starred), completed
+  archive (IDs only — completion drops the asset reference; keep a QuestID→asset DataTable if
+  archived detail views are needed), objective checklist detail, reward preview from
+  `FRewardData`, Track button (the HUD tracker + map markers already follow the tracked quest —
+  that *is* "navigate to objective" here), Abandon (Main quests exempt).
+- **Settings** (`USettingsScreenWidget`): graphics → `UGameUserSettings`
+  (resolution/quality/FPS cap/VSync, engine-persisted); audio sliders → `UStickmanAudioManager`;
+  the rest (sensitivity/language/auto-save interval/subtitles/colorblind mode/screen shake) →
+  a custom `GConfig` section in `GameUserSettings.ini`, with static read points
+  (`IsScreenShakeEnabled()` etc.) other systems consult. Colorblind modes apply engine
+  `r.ColorCorrect.Deficiency*` CVars. **Key rebinding is not hardcoded**: Enhanced Input user
+  settings are already enabled (`DefaultEngine.ini`); build rebind rows in the WBP against
+  `UEnhancedInputUserSettings` — too asset-coupled for a generic C++ screen.
+- **Gacha** (`UGachaScreenWidget`): banner pool DataTable (`FGachaPoolEntry` rows), Genshin-like
+  pity (hard 5★ at 90, soft ramp from 75, 4★ every 10th), reveal queue the WBP steps through
+  (`OnWishRevealed` per item → play rarity-colored reveal animation → `AdvanceRevealQueue`),
+  results deposited into `UInventoryManager`. **Pulls are free** — no currency/wallet system
+  exists to charge; pulled "characters" deposit as inventory tokens until an owned-characters
+  roster feeding `UPartyManager` exists.
+
 ## Audio system
 
 `UStickmanAudioManager` (GameInstanceSubsystem):

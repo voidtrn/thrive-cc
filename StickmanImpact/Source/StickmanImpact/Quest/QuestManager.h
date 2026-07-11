@@ -64,6 +64,13 @@ public:
 	TArray<UQuestDataAsset*> GetActiveQuests() const;
 
 	UFUNCTION(BlueprintPure, Category = "Quest")
+	TArray<FString> GetCompletedQuestIDs() const { return CompletedQuestIDs.Array(); }
+
+	// The full asset for an active quest (null if not active) — for journal detail views.
+	UFUNCTION(BlueprintPure, Category = "Quest")
+	UQuestDataAsset* GetActiveQuestAsset(const FString& QuestID) const;
+
+	UFUNCTION(BlueprintPure, Category = "Quest")
 	FQuestStage GetCurrentStage(const FString& QuestID) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Quest")

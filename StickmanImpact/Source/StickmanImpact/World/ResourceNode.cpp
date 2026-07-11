@@ -2,6 +2,7 @@
 
 #include "ResourceNode.h"
 #include "Components/StaticMeshComponent.h"
+#include "Data/InventoryManager.h"
 #include "TimerManager.h"
 
 AResourceNode::AResourceNode()
@@ -19,8 +20,17 @@ void AResourceNode::Interact_Implementation(AActor* Instigator)
 		return;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("[ResourceNode] Gathered %d x %s (no inventory system yet — logged only)"),
-		GatherAmount, *ResourceType.ToString());
+	if (UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (UInventoryManager* Inventory = GameInstance->GetSubsystem<UInventoryManager>())
+		{
+			FInventoryItem Item;
+			Item.ItemID = ResourceType;
+			Item.DisplayName = FText::FromName(ResourceType);
+			Item.Category = EInventoryCategory::Materials;
+			Inventory->AddItem(Item, GatherAmount);
+		}
+	}
 
 	bIsAvailable = false;
 	SetActorHiddenInGame(true);

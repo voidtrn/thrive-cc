@@ -3,6 +3,8 @@
 #include "QuestManager.h"
 #include "QuestDataAsset.h"
 #include "Dialogue/DialogueManager.h"
+#include "Data/InventoryManager.h"
+#include "Party/PartyManager.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -157,8 +159,26 @@ void UQuestManager::GrantReward(const FRewardData& Reward) const
 {
 	UE_LOG(LogTemp, Log, TEXT("[QuestManager] Granting reward: %d EXP, %d Currency, %d item type(s)"),
 		Reward.EXP, Reward.Currency, Reward.ItemRewards.Num());
-	// No inventory/currency subsystem exists yet — EXP/Currency/Items are logged only.
-	// Wire this up to a real economy system before shipping.
+
+	if (UInventoryManager* Inventory = GetGameInstance()->GetSubsystem<UInventoryManager>())
+	{
+		for (const auto& Pair : Reward.ItemRewards)
+		{
+			FInventoryItem Item;
+			Item.ItemID = Pair.Key;
+			Item.DisplayName = FText::FromName(Pair.Key); // Real name/icon come from an item DataTable later.
+			Item.Category = EInventoryCategory::Materials;
+			Inventory->AddItem(Item, Pair.Value);
+		}
+	}
+	// EXP goes to the party's active member; Currency still has no wallet system — logged only.
+	if (Reward.EXP > 0)
+	{
+		if (UPartyManager* Party = GetGameInstance()->GetSubsystem<UPartyManager>())
+		{
+			Party->GrantEXP(Party->GetActiveIndex(), static_cast<float>(Reward.EXP));
+		}
+	}
 
 	if (Reward.StoryUnlockFlag.IsValid())
 	{
@@ -201,6 +221,12 @@ TArray<UQuestDataAsset*> UQuestManager::GetActiveQuests() const
 		}
 	}
 	return Result;
+}
+
+UQuestDataAsset* UQuestManager::GetActiveQuestAsset(const FString& QuestID) const
+{
+	const FActiveQuestRuntime* Runtime = ActiveQuests.Find(QuestID);
+	return Runtime ? Runtime->QuestAsset : nullptr;
 }
 
 FQuestStage UQuestManager::GetCurrentStage(const FString& QuestID) const
