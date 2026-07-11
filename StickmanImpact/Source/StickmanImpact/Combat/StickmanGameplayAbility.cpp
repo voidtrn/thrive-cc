@@ -7,6 +7,9 @@
 #include "UI/StickmanDamageNumberTypes.h"
 #include "AI/Enemies/EnemyShieldGuard.h"
 #include "World/StickmanTorch.h"
+#include "CombatFeedbackSubsystem.h"
+#include "Character/StickmanCharacter.h"
+#include "Equipment/EquipmentManager.h"
 #include "Character/StickmanGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
@@ -41,6 +44,15 @@ bool UStickmanGameplayAbility::CheckCooldown() const
 		return true;
 	}
 	return !ASC->HasMatchingGameplayTag(SkillData.SkillTag);
+}
+
+float UStickmanGameplayAbility::GetCooldownTimeRemaining() const
+{
+	if (!GetWorld() || !CooldownTimerHandle.IsValid())
+	{
+		return 0.f;
+	}
+	return FMath::Max(GetWorld()->GetTimerManager().GetTimerRemaining(CooldownTimerHandle), 0.f);
 }
 
 bool UStickmanGameplayAbility::CheckCost() const
@@ -262,6 +274,22 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			}
 		}
 
+		// Crit roll off the caster's equipped CRIT Rate/DMG (UEquipmentManager, if any —
+		// enemies/NPCs without one just use the FEquipmentStatTotals defaults: 5%/50%).
+		bool bIsCritical = false;
+		if (const AStickmanCharacter* CasterCharacter = Cast<AStickmanCharacter>(GetAvatarActorFromActorInfo()))
+		{
+			if (const UEquipmentManager* CasterEquipment = CasterCharacter->GetEquipmentManager())
+			{
+				const FEquipmentStatTotals CasterTotals = CasterEquipment->GetTotalStats();
+				bIsCritical = FMath::FRand() * 100.f < CasterTotals.CritRatePercent;
+				if (bIsCritical)
+				{
+					FinalDamage *= 1.f + CasterTotals.CritDMGPercent / 100.f;
+				}
+			}
+		}
+
 		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - FinalDamage, 0.f,
 			TargetAttributes->GetMaxHealth());
 		TargetAttributes->SetHealth(NewHealth);
@@ -271,8 +299,18 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		{
 			if (UStickmanDamageNumberManager* DamageNumbers = GameInstance->GetSubsystem<UStickmanDamageNumberManager>())
 			{
-				const EDamageNumberType NumberType = UStickmanDamageNumberStatics::GetDamageNumberTypeForElement(SkillData.Element);
+				const EDamageNumberType NumberType = bIsCritical ? EDamageNumberType::Critical
+					: UStickmanDamageNumberStatics::GetDamageNumberTypeForElement(SkillData.Element);
 				DamageNumbers->SpawnDamageNumber(TargetActor, FinalDamage, NumberType);
+			}
+
+			if (UCombatFeedbackSubsystem* CombatFeedback = GameInstance->GetSubsystem<UCombatFeedbackSubsystem>())
+			{
+				CombatFeedback->NotifyHitLanded(TargetActor, FinalDamage, bIsCritical);
+				if (NewHealth <= 0.f)
+				{
+					CombatFeedback->NotifyKillConfirmed(TargetActor);
+				}
 			}
 		}
 	}

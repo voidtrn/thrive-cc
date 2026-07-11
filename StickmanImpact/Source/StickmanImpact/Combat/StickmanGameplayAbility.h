@@ -58,6 +58,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Skill")
 	bool CheckCost() const;
 
+	// Seconds left on cooldown (0 if ready) — for a UI radial fill to poll.
+	UFUNCTION(BlueprintPure, Category = "Skill")
+	float GetCooldownTimeRemaining() const;
+
 protected:
 	// Called once cost + cooldown have both been committed — subclasses do their real work
 	// here (play montage, spawn VFX, apply damage) instead of overriding ActivateAbility.

@@ -28,6 +28,11 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Abilities")
 	bool CanActivateSkill(FGameplayTag SkillTag) const;
 
+	// For UI polling (cooldown radial fill, etc.) — the granted ability instance whose
+	// FSkillData::SkillTag matches, or null if nothing's granted for that tag.
+	UFUNCTION(BlueprintPure, Category = "Abilities")
+	class UStickmanGameplayAbility* FindGrantedAbilityForSkillTag(FGameplayTag SkillTag) const;
+
 	// For combo-style skills (normal attack): activates the ability if it's not running yet,
 	// or queues the input as the next combo hit if it's already mid-chain.
 	UFUNCTION(BlueprintCallable, Category = "Abilities")

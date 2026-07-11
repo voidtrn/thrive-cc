@@ -506,6 +506,61 @@ ID back into full `FWeaponData`/`FArtifactData` needs an inventory system (not b
 | Gladiator's Finale | +18% ATK (flat/percent stat) | +35% Normal Attack DMG if a Sword/Claymore/Polearm is wielded (conditional tag) |
 | Noblesse Oblige | +20% Elemental Burst DMG (conditional tag) | Using an Elemental Burst grants the whole party +20% ATK for 12s (conditional tag) |
 
+## Main HUD
+
+`UHUDWidget` aggregates everything below — every sub-widget reference is `BindWidgetOptional`,
+so a WBP only needs to include the pieces its layout actually uses:
+
+- **Vitals**: `HealthBar` (color-lerps to `LowHealthColor` under `LowHealthThreshold`),
+  `StaminaBar`, `EnergyBar` (use a radial-fill material/Fill Type on the bound `UProgressBar`
+  for the "circular" look — that's a WBP styling choice, not C++), all driven by
+  `UStickmanAttributeSet`'s existing `OnHealthChanged`/`OnStaminaChanged`/`OnEnergyChanged`.
+- **Party**: up to 4 portrait+health-bar pairs, refreshed from `UPartyManager::GetPartyMembers()`
+  on `OnPartySwitched` (burst-ready icons: bind `PartyBurstReadyIconN` and drive its visibility
+  from each member's ability cooldown state in a WBP graph, or extend `RefreshPartyList()`).
+- **Skills**: 3 `USkillCooldownWidget` (radial cooldown fill + text + ready-glow + a
+  `ShakeAnim` Widget Animation auto-played on a failed `TryCast()`) — their `SkillTag` is set
+  automatically from the player's `NormalAttackSkillTag`/`Skill1SkillTag`/`Skill2SkillTag` on
+  construct and on every party switch. Cooldown data comes from
+  `UStickmanGameplayAbility::GetCooldownTimeRemaining()` (new) polled via
+  `UStickmanAbilitySystemComponent::FindGrantedAbilityForSkillTag()` (new).
+- **Minimap** (`UMinimapWidget` + `UMinimapCaptureComponent`, add the component to the player):
+  north-up orthographic top-down `SceneCaptureComponent2D` render target, a player-icon
+  rotation, pooled dynamic markers (quest/waypoint/enemy/NPC/resource, gathered from the
+  systems already built — `UQuestManager`, `UWaypointManager`, `TActorIterator` over
+  `AStickmanEnemyCharacter`/`AStickmanNPC`/`AResourceNode`), zoom levels (`CycleZoom()`), and a
+  fog-of-war reveal render target accumulated via `UKismetRenderingLibrary::
+  DrawMaterialToRenderTarget` every tick. **Two materials must be authored in-editor**:
+  - `FogRevealMaterial`: unlit, params `RevealCenter` (vector, world-space UV 0-1) and
+    `RevealRadius` (scalar) — draws a soft white circle at `RevealCenter`, transparent/black
+    elsewhere, drawn additively onto a never-cleared RT so revealed areas accumulate.
+  - `CompositeMaterial`: params `MapCapture`/`FogReveal` (textures), `PlayerWorldUV` (vector),
+    `OrthoWidthUVFraction` (scalar) — per output pixel at local capture UV `L`, sample
+    `FogReveal` at `PlayerWorldUV + (L - 0.5) * OrthoWidthUVFraction` (maps the player-centered
+    local view into the fixed-world-space fog texture) and blend `MapCapture` toward black
+    where that sample is dark.
+- **Quest tracker**: embeds the existing `UQuestTrackerWidget` as-is.
+- **Buffs/debuffs**: reuses the existing `UStickmanElementalGaugeWidget` (built for enemies) for
+  the *player's own* active elemental auras — same data (`UElementalReactionManager::
+  GetActiveElements`), same widget class, zero new code needed.
+- **Combat feedback**: `UCombatFeedbackSubsystem` (GameInstanceSubsystem) decouples "a hit
+  landed / a kill happened / the combo count changed" from the HUD — `UStickmanGameplayAbility::
+  ApplyDamageToTarget` now rolls CRIT off the attacker's `UEquipmentManager` totals (defaults
+  5%/50% if it doesn't have one) and calls `NotifyHitLanded`/`NotifyKillConfirmed`;
+  `GA_NormalAttack` calls `NotifyComboCountChanged`. `UHUDWidget` flashes `HitMarkerImage` /
+  `KillConfirmImage` for their configured durations, updates `ComboCounterText`, and shows
+  `ReactionPopupText` off the same `UElementalReactionManager::OnReactionTriggered` the enemy
+  gauge widget already listens to (damage-type icon next to damage numbers: already color-coded
+  via `UStickmanDamageNumberStatics`, an icon is an extra `UImage` in `UStickmanDamageNumberWidget`
+  keyed the same way).
+- **Interaction prompt**: `ShowInteractionPrompt()`/`HideInteractionPrompt()` are ready to call,
+  but nothing calls them continuously yet — `AStickmanCharacter::OnInteract()` only traces
+  on the button press. Driving the prompt off a continuous per-tick trace (so it appears
+  *before* pressing) is a small follow-up, not yet wired.
+- **Ping / time of day**: `PingText` refreshes every second from `APlayerState::
+  GetPingInMilliseconds()`; `TimeOfDayIcon` swaps texture (`TimeOfDayIcons` map) off
+  `ADayNightManager::GetTimeOfDay()`/`OnTimeOfDayChanged` if one exists in the level.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

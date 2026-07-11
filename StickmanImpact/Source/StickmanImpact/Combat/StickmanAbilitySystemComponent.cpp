@@ -44,6 +44,19 @@ bool UStickmanAbilitySystemComponent::ActivateSkillByTag(FGameplayTag SkillTag)
 	return TryActivateAbility(Handle);
 }
 
+UStickmanGameplayAbility* UStickmanAbilitySystemComponent::FindGrantedAbilityForSkillTag(FGameplayTag SkillTag) const
+{
+	for (const FGameplayAbilitySpec& Spec : GetActivatableAbilities())
+	{
+		UStickmanGameplayAbility* StickmanAbility = Cast<UStickmanGameplayAbility>(Spec.Ability);
+		if (StickmanAbility && StickmanAbility->SkillData.SkillTag == SkillTag)
+		{
+			return StickmanAbility;
+		}
+	}
+	return nullptr;
+}
+
 bool UStickmanAbilitySystemComponent::CanActivateSkill(FGameplayTag SkillTag) const
 {
 	const FGameplayAbilitySpecHandle Handle = FindSpecHandleForSkillTag(SkillTag);

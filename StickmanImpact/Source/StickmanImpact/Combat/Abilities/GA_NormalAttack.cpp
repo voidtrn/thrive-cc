@@ -2,6 +2,7 @@
 
 #include "GA_NormalAttack.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
+#include "Combat/CombatFeedbackSubsystem.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
@@ -60,6 +61,14 @@ void UGA_NormalAttack::PlayComboHit(int32 ComboIndex)
 	{
 		const FVector LungeTarget = Avatar->GetActorLocation() + Avatar->GetActorForwardVector() * LungeDistance;
 		Avatar->SetActorLocation(LungeTarget, true);
+	}
+
+	if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+	{
+		if (UCombatFeedbackSubsystem* CombatFeedback = GameInstance->GetSubsystem<UCombatFeedbackSubsystem>())
+		{
+			CombatFeedback->NotifyComboCountChanged(ComboIndex + 1);
+		}
 	}
 
 	if (UAbilityTask_PlayMontageAndWait* Task = PlayAbilityMontage(NormalAttackCombo.AttackMontages[ComboIndex]))
@@ -126,6 +135,13 @@ void UGA_NormalAttack::HandleAttackEndNotify()
 	if (UStickmanAbilitySystemComponent* ASC = Cast<UStickmanAbilitySystemComponent>(GetAbilitySystemComponentFromActorInfo()))
 	{
 		ASC->ClearQueuedComboInput();
+	}
+	if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+	{
+		if (UCombatFeedbackSubsystem* CombatFeedback = GameInstance->GetSubsystem<UCombatFeedbackSubsystem>())
+		{
+			CombatFeedback->NotifyComboCountChanged(0);
+		}
 	}
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
