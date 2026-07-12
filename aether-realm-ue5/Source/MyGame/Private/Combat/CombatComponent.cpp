@@ -6,6 +6,7 @@
 #include "Character/CharacterBase.h"
 #include "Character/EnemyBase.h"
 #include "Character/OpenWorldMovementComponent.h"
+#include "System/ElementAdaptationSubsystem.h"
 #include "System/EnemyRegistrySubsystem.h"
 #include "UI/DamageNumberPoolSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
@@ -425,6 +426,21 @@ FDamageResult UCombatComponent::DealDamage(ACharacterBase* Victim, const FAttack
 		Reaction.AmpMultiplier, Reaction.FlatBonus, bCrit);
 
 	Victim->ApplyDamage(Damage, Params.Element, Params.HitReaction);
+
+	// Enemy Elemental Adaptation: musuh "belajar" elemen yang di-spam player.
+	// Cuma jalur player→enemy elemental (enemy→player lewat AttackTarget,
+	// bukan sini). Udah pasti server-side — DealDamage di-gate HasAuthority
+	// di atas. IsPlayerControlled: CombatComponent sekarang cuma dipasang di
+	// BP_PlayerCharacter, tapi itu konvensi BP (gak di-enforce C++) — guard
+	// ini nutup drift masa depan (ally/summon NPC bawa CombatComponent gak
+	// boleh nge-feed data "player belajar elemen").
+	if (Params.Element != EElement::None && Cast<AEnemyBase>(Victim) && OwnerChar->IsPlayerControlled())
+	{
+		if (UElementAdaptationSubsystem* Adaptation = GetWorld()->GetSubsystem<UElementAdaptationSubsystem>())
+		{
+			Adaptation->ReportElementalDamage(Params.Element, Damage);
+		}
+	}
 
 	Result.FinalDamage = Damage;
 	Result.bCrit = bCrit;

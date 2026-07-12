@@ -485,10 +485,10 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 
 | | Jumlah |
 |---|---|
-| C++ class | 58 |
-| Source file | 122 |
+| C++ class | 59 |
+| Source file | 125 |
 | Setup/review docs | 23 |
-| Automation test | 3 file (12 test) |
+| Automation test | 4 file (14 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
@@ -497,6 +497,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | Content pass | prolog 2-quest chain + `CutsceneActor` — 2 class baru (`StarterContentLibrary`, `CutsceneActor`) |
 | Perf/security pass | `UEnemyRegistrySubsystem` (ganti 5 world-scan call site) + `AChest` interact-range anti-cheat — 1 class baru |
 | Damage number pooling pass | `ADamageNumberCarrier` + `UDamageNumberPoolSubsystem` — 2 class baru |
+| Emergent systems pass | Weather×Element gauge + `UElementAdaptationSubsystem` (enemy belajar elemen player) — 1 class baru, test di `EmergentSystemsTest.cpp`. Review: 1🔴 (`Super::Tick` di `UTickableWorldSubsystem` = PURE_VIRTUAL, crash tiap tick — removed, pola disamain subsystem existing) + 2❓ (instigator guard di-harden `IsPlayerControlled()`; lokasi test gauge-math di `EmergentSystemsTest.cpp` bukan `DamageCalculatorTest.cpp` = accepted, weather multiplier itu gauge math bukan formula damage/RES) — semua closed |
 
 ## Rekomendasi urutan garap berikutnya
 
