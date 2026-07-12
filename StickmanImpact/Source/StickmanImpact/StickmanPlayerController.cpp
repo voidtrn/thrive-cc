@@ -1,6 +1,7 @@
 // Copyright StickmanImpact Project.
 
 #include "StickmanPlayerController.h"
+#include "GameFlow/StickmanCheatManager.h"
 #include "EnhancedInputComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/Engine.h"
@@ -8,6 +9,7 @@
 AStickmanPlayerController::AStickmanPlayerController()
 {
 	bShowMouseCursor = false;
+	CheatClass = UStickmanCheatManager::StaticClass();
 }
 
 void AStickmanPlayerController::BeginPlay()

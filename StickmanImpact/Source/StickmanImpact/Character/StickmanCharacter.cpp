@@ -18,6 +18,7 @@
 #include "SkillSystem/StickmanSkillDataAsset.h"
 #include "Party/StickmanPartyTypes.h"
 #include "Equipment/EquipmentManager.h"
+#include "GameFlow/StickmanCheatManager.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -452,6 +453,10 @@ void AStickmanCharacter::TickDash(float DeltaSeconds)
 
 void AStickmanCharacter::ConsumeStamina(float Amount)
 {
+	if (UStickmanCheatManager::IsInfiniteStaminaEnabled())
+	{
+		return;
+	}
 	CurrentStamina = FMath::Clamp(CurrentStamina - Amount, 0.f, Stats.MaxStamina);
 	TimeSinceStaminaUse = 0.f;
 }

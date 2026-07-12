@@ -7,6 +7,7 @@
 #include "UI/StickmanDamageNumberTypes.h"
 #include "AI/Enemies/EnemyShieldGuard.h"
 #include "World/StickmanTorch.h"
+#include "GameFlow/StickmanCheatManager.h"
 #include "CombatFeedbackSubsystem.h"
 #include "Character/StickmanCharacter.h"
 #include "Equipment/EquipmentManager.h"
@@ -242,6 +243,11 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 	{
 		Torch->TryAffectWithElement(SkillData.Element);
 		return; // Torches have no health/ASC — hitting one is a puzzle interaction, not damage.
+	}
+
+	if (UStickmanCheatManager::IsGodModeEnabled() && TargetActor == UGameplayStatics::GetPlayerPawn(this, 0))
+	{
+		return; // Player is invulnerable under GodMode.
 	}
 
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);

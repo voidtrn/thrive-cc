@@ -3,6 +3,7 @@
 #include "ElementalReactionManager.h"
 #include "StickmanReactionEffectsDataAsset.h"
 #include "StickmanAttributeSet.h"
+#include "GameFlow/StickmanCheatManager.h"
 #include "World/StickmanElementalShard.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
@@ -433,6 +434,10 @@ FStickmanReactionResult UElementalReactionManager::ResolveReaction(AActor* Targe
 void UElementalReactionManager::ApplyDirectDamage(AActor* Target, float Damage) const
 {
 	if (!Target || Damage <= 0.f)
+	{
+		return;
+	}
+	if (UStickmanCheatManager::IsGodModeEnabled() && Target == UGameplayStatics::GetPlayerPawn(Target, 0))
 	{
 		return;
 	}

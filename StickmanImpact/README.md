@@ -781,6 +781,40 @@ Console commands: `Stickman.ShowFPS`, `Stickman.ShowMemory`, `Stickman.ProfileCo
   this automatically); skeletal LODs per the character-LOD section; particle budget =
   `fx.Niagara.QualityLevel` via `UVFXManager::SetVFXQuality`, already driven by dynamic quality.
 
+## Game flow / tutorials / achievements / cheats
+
+`UStickmanGameFlow` (GameInstanceSubsystem, `GameFlow/`): state machine
+`Splash→TitleScreen→Loading→Playing` with `Paused/Cutscene/Dialogue` as Playing-adjacent states.
+Cutscene/Dialogue enter/exit **automatically** off `UCutsceneManager`/`UDialogueManager`
+delegates — nothing else reports them. Transitions validate against a legal-move table (illegal
+requests log + refuse). Fades: `OnFadeRequested` for a HUD fade widget, with
+`APlayerCameraManager::StartCameraFade` as the built-in fallback. `StartGame(slot)` runs
+TitleScreen→Loading→(async load)→Playing; new game (`INDEX_NONE`) runs first-time setup
+(grants `InitialCharacterRow` from the config-pointed character DataTable). Crash recovery: a
+`session.lock` sentinel written on init/cleared on clean shutdown — still present on next
+launch means unclean exit, `DidLastSessionCrash()` tells the title screen to offer the
+auto-save. Engine-level crash *handling* is external (Crash Reporter, see PACKAGING.md).
+
+`UTutorialManager`: gameplay code calls `TriggerTutorial(Tag)` at teachable moments; entries
+live in a DataTable (`FTutorialEntry`, **row name = the tag string** for O(1) lookup), one-time
+entries persist as seen in the user config (per-install, survives save wipes). Popup display =
+a WBP bound to `OnTutorialTriggered`. Practice domain = level content (a Data Layer with
+non-respawning dummy spawners + a waypoint), no dedicated code.
+
+`UAchievementManager`: `FAchievementEntry` DataTable rows advanced entirely off delegates other
+systems already broadcast (kills/quests/collectibles/reactions/waypoints — zero new
+instrumentation in gameplay code). `OnAchievementUnlocked` for the popup,
+`GetAllAchievements()`+`GetProgress()` for the tracking UI, state persists in user config.
+Platform upload (Steam/GOG/console `IOnlineAchievements`) hooks in `UnlockInternal`.
+
+`UStickmanCheatManager` (set as `CheatClass` on `AStickmanPlayerController`; **auto-stripped
+from Shipping builds** — that's UCheatManager's builtin behavior, no extra work):
+`AddItem <ID> <Count>`, `SetLevel <N>`, `UnlockAllSkills` (clears every skill cooldown tag),
+`Teleport <WaypointID>`, `CompleteQuest <QuestID>` (pumps ReportProgress through every stage),
+`GodMode`, `InfiniteStamina` — the last two are static flags consumed by
+`ApplyDamageToTarget`/`UElementalReactionManager::ApplyDirectDamage` and
+`AStickmanCharacter::ConsumeStamina`.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
