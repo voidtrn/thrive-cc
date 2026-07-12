@@ -67,19 +67,25 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UEquipmentManager> EquipmentManager;
 
+public:
 	UFUNCTION(BlueprintPure, Category = "Equipment")
 	UEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
+
+protected:
 
 	// Granted to the ASC on BeginPlay — assign the character's starting kit here
 	// (GA_NormalAttack, GA_PyroSlash, GA_PyroBurst, ...) in the character Blueprint.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
+public:
 	UFUNCTION(BlueprintPure, Category = "Abilities")
 	UStickmanAbilitySystemComponent* GetStickmanAbilitySystemComponent() const { return AbilitySystemComponent; }
 
 	UFUNCTION(BlueprintPure, Category = "Abilities")
 	UStickmanAttributeSet* GetStickmanAttributeSet() const { return AttributeSet; }
+
+protected:
 
 	// Reconfigures this same pawn to play as a different party member: mesh, base stats, and
 	// abilities (re-granted from CharacterData.SkillData). Used by UPartyManager::SwitchToIndex
@@ -459,6 +465,15 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Locomotion")
 	bool IsWallRunning() const { return bIsWallRunning; }
+
+	UFUNCTION(BlueprintPure, Category = "Abilities")
+	FGameplayTag GetNormalAttackSkillTag() const { return NormalAttackSkillTag; }
+
+	UFUNCTION(BlueprintPure, Category = "Abilities")
+	FGameplayTag GetSkill1Tag() const { return Skill1SkillTag; }
+
+	UFUNCTION(BlueprintPure, Category = "Abilities")
+	FGameplayTag GetSkill2Tag() const { return Skill2SkillTag; }
 
 	UFUNCTION(BlueprintCallable, Category = "Stamina")
 	void DrainStamina(float Amount) { ConsumeStamina(Amount); }

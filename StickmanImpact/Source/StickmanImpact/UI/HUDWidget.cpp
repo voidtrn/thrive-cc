@@ -43,9 +43,9 @@ void UHUDWidget::NativeConstruct()
 			HandleEnergyChanged(AttributeSet->GetCurrentEnergy(), AttributeSet->GetMaxEnergy());
 		}
 
-		if (NormalAttackIcon) NormalAttackIcon->SkillTag = PlayerCharacter->NormalAttackSkillTag;
-		if (Skill1Icon) Skill1Icon->SkillTag = PlayerCharacter->Skill1SkillTag;
-		if (Skill2Icon) Skill2Icon->SkillTag = PlayerCharacter->Skill2SkillTag;
+		if (NormalAttackIcon) NormalAttackIcon->SkillTag = PlayerCharacter->GetNormalAttackSkillTag();
+		if (Skill1Icon) Skill1Icon->SkillTag = PlayerCharacter->GetSkill1Tag();
+		if (Skill2Icon) Skill2Icon->SkillTag = PlayerCharacter->GetSkill2Tag();
 	}
 
 	if (UGameInstance* GameInstance = GetGameInstance())
@@ -200,9 +200,9 @@ void UHUDWidget::HandlePartySwitched(int32 NewIndex, int32 OldIndex)
 		{
 			if (const UPartyManager* PartyManager = GameInstance->GetSubsystem<UPartyManager>())
 			{
-				if (NormalAttackIcon) NormalAttackIcon->SkillTag = PlayerCharacter->NormalAttackSkillTag;
-				if (Skill1Icon) Skill1Icon->SkillTag = PlayerCharacter->Skill1SkillTag;
-				if (Skill2Icon) Skill2Icon->SkillTag = PlayerCharacter->Skill2SkillTag;
+				if (NormalAttackIcon) NormalAttackIcon->SkillTag = PlayerCharacter->GetNormalAttackSkillTag();
+				if (Skill1Icon) Skill1Icon->SkillTag = PlayerCharacter->GetSkill1Tag();
+				if (Skill2Icon) Skill2Icon->SkillTag = PlayerCharacter->GetSkill2Tag();
 				if (CurrentCharacterPortrait)
 				{
 					CurrentCharacterPortrait->SetBrushFromTexture(PartyManager->GetActiveMember().CharacterData.CharacterIcon);

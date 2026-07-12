@@ -10,7 +10,9 @@
 #include "GameFlow/StickmanCheatManager.h"
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
+#include "ComboMeterSubsystem.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Character/StickmanCharacter.h"
 #include "Equipment/EquipmentManager.h"
 #include "Character/StickmanGameplayTags.h"
@@ -257,6 +259,35 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			TargetASC->GetSet<UStickmanAttributeSet>()) : nullptr)
 	{
 		float FinalDamage = DamageAmount;
+
+		const bool bPlayerIsAttacker = GetAvatarActorFromActorInfo() == UGameplayStatics::GetPlayerPawn(this, 0);
+
+		// Juggle gate: an air-recovering (teched/capped) enemy is hit-immune; landing an air
+		// hit re-floats them and counts toward the juggle limit.
+		if (AStickmanEnemyCharacter* JuggleTarget = Cast<AStickmanEnemyCharacter>(TargetActor))
+		{
+			if (JuggleTarget->IsJuggled() || JuggleTarget->GetCharacterMovement()->IsFalling())
+			{
+				if (!JuggleTarget->RegisterJuggleHit())
+				{
+					return; // Whiffs into recovery frames.
+				}
+			}
+		}
+
+		// Combo meter: player hits build style/rank; rank (+ armed elemental tag bonus)
+		// multiplies damage.
+		if (bPlayerIsAttacker)
+		{
+			if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+			{
+				if (UComboMeterSubsystem* ComboMeter = GI->GetSubsystem<UComboMeterSubsystem>())
+				{
+					ComboMeter->RegisterHit(SkillData.SkillTag);
+					FinalDamage *= ComboMeter->ConsumeDamageMultiplier();
+				}
+			}
+		}
 
 		if (const AEnemyShieldGuard* ShieldGuard = Cast<AEnemyShieldGuard>(TargetActor))
 		{

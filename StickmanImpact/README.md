@@ -884,6 +884,24 @@ numbers now **merge multi-hits** (same target + type within `AccumulationWindow`
 number instead of stacking); crit styling (bigger/gold) already existed — outline is a WBP
 font-outline setting.
 
+## Expressive combo system
+
+- **Branching**: `GA_NormalAttack` re-reads directional input at hits 2/3 — neutral = standard
+  string, forward = gap closer (double lunge), back = launcher (knocks enemies airborne via
+  `LaunchIntoAir`), side = sweep (160° arc). Empty branch chains fall through to neutral;
+  `OnBranchWindow` broadcast for the branch-point character glow.
+- **Air combat**: `GA_AirAttack` (3-hit float string), air dash = the ordinary Dash already
+  works airborne, plunge finisher = `GA_PlungeAttack`. Full chain: launcher branch → air string
+  → air skill → plunge.
+- **Combo meter** (`UComboMeterSubsystem`): style points weight *variety* (first use of a skill
+  = 3 pts, repeats = 1), rank D→SS by thresholds, +5% damage per rank consumed in
+  `ApplyDamageToTarget`, 3s decay, `OnComboRankChanged` drives UI + aura intensity.
+- **Juggle**: launched enemies count air hits — hard cap `MaxJuggleHits`, tech roll after
+  `AirTechAfterHits` (flip-out montage + hit-immune recovery frames — further hits *whiff*),
+  `JuggleWeight` scales launch/float on heavies, counters reset on landing.
+- **Team combo**: switching mid-combo keeps the meter alive, auto-fires the incoming
+  character's tag attack, and arms a one-shot +25% elemental tag bonus when the elements differ.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

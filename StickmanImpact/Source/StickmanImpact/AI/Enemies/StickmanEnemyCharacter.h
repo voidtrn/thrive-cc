@@ -110,6 +110,36 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Hit Reaction")
 	bool IsStaggered() const { return bIsStaggered; }
 
+	// --- Juggle system --------------------------------------------------------
+
+	// 0 = feather (full launch), 1 = unliftable. Heavies resist launch velocity by this much.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Juggle", meta = (ClampMin = "0", ClampMax = "1"))
+	float JuggleWeight = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Juggle")
+	int32 MaxJuggleHits = 3;
+
+	// After this many air hits, the enemy may tech (flip out) instead of eating the rest.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Juggle")
+	int32 AirTechAfterHits = 2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Juggle")
+	float AirTechChance = 0.4f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Juggle")
+	TObjectPtr<UAnimMontage> AirRecoveryMontage;
+
+	UFUNCTION(BlueprintCallable, Category = "Juggle")
+	void LaunchIntoAir(float KnockupVelocity);
+
+	// Called per air hit; returns false when the enemy teched/juggle-capped (hit whiffs into
+	// their recovery invulnerability instead).
+	UFUNCTION(BlueprintCallable, Category = "Juggle")
+	bool RegisterJuggleHit();
+
+	UFUNCTION(BlueprintPure, Category = "Juggle")
+	bool IsJuggled() const;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStickmanAbilitySystemComponent> AbilitySystemComponent;
@@ -125,5 +155,14 @@ protected:
 	bool bIsStaggered = false;
 	FTimerHandle StaggerRecoverTimerHandle;
 
+	// Juggle runtime state.
+	int32 JuggleHitCount = 0;
+	bool bAirRecovering = false;
+
 	void ActivateRagdoll(const FVector& ForceDirection, float Damage);
+
+public:
+	virtual void Landed(const FHitResult& Hit) override;
+	// Needed by IsJuggled()'s inline body.
+	// (GetCharacterMovement is public on ACharacter — nothing extra required.)
 };

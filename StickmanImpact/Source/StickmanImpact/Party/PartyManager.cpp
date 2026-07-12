@@ -81,7 +81,7 @@ bool UPartyManager::SwitchToIndex(int32 Index)
 		{
 			if (UStickmanAbilitySystemComponent* ASC = PlayerCharacter->GetStickmanAbilitySystemComponent())
 			{
-				ASC->ActivateSkillByTag(PlayerCharacter->Skill2SkillTag);
+				ASC->ActivateSkillByTag(PlayerCharacter->GetSkill2Tag());
 			}
 		}
 	}

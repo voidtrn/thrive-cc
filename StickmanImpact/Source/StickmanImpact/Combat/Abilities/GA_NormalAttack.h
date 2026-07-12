@@ -29,6 +29,26 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo")
 	FNormalAttackChain NormalAttackCombo;
 
+	// --- Directional branches (checked at hits 2 and 3's combo windows) --------------
+	// Forward + attack: gap-closer string (bigger lunge). Back + attack: launcher (knocks
+	// enemies airborne for juggles). Side + attack: horizontal sweep (wider hit arc).
+	// Empty branch chains fall through to the neutral string.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo|Branch")
+	FNormalAttackChain ForwardBranchCombo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo|Branch")
+	FNormalAttackChain LauncherBranchCombo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo|Branch")
+	FNormalAttackChain SweepBranchCombo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combo|Branch")
+	float LauncherKnockupVelocity = 700.f;
+
+	// Broadcast true at branch-point hits (2 and 3) — bind the character glow here.
+	DECLARE_MULTICAST_DELEGATE_OneParam(FOnBranchWindow, bool);
+	FOnBranchWindow OnBranchWindow;
+
 	// Set by AStickmanCharacter::ApplyCharacterData from the active party member's weapon.
 	// Claymore hits deal bonus damage to shielded targets; Catalyst normal attacks are
 	// elemental (SkillData.Element set to the character's element) instead of physical.
@@ -72,6 +92,11 @@ protected:
 
 private:
 	void PlayComboHit(int32 ComboIndex);
+	const FNormalAttackChain& GetActiveChain() const;
+	void SelectBranchFromInput();
+
+	enum class EComboBranch : uint8 { Neutral, Forward, Launcher, Sweep };
+	EComboBranch ActiveBranch = EComboBranch::Neutral;
 
 	int32 CurrentComboIndex = 0;
 };

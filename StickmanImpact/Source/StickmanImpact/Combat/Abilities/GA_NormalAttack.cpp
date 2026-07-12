@@ -3,6 +3,8 @@
 #include "GA_NormalAttack.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
 #include "Combat/CombatFeedbackSubsystem.h"
+#include "Character/StickmanCharacter.h"
+#include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
@@ -45,23 +47,71 @@ UGA_NormalAttack* UGA_NormalAttack::GetActiveInstance(AActor* AvatarActor)
 void UGA_NormalAttack::OnAbilityActivated()
 {
 	CurrentComboIndex = 0;
+	ActiveBranch = EComboBranch::Neutral;
 	PlayComboHit(CurrentComboIndex);
+}
+
+const FNormalAttackChain& UGA_NormalAttack::GetActiveChain() const
+{
+	// Empty branch chains fall through to neutral so unauthored branches never dead-end.
+	switch (ActiveBranch)
+	{
+		case EComboBranch::Forward:
+			return ForwardBranchCombo.AttackMontages.Num() > 0 ? ForwardBranchCombo : NormalAttackCombo;
+		case EComboBranch::Launcher:
+			return LauncherBranchCombo.AttackMontages.Num() > 0 ? LauncherBranchCombo : NormalAttackCombo;
+		case EComboBranch::Sweep:
+			return SweepBranchCombo.AttackMontages.Num() > 0 ? SweepBranchCombo : NormalAttackCombo;
+		default:
+			return NormalAttackCombo;
+	}
+}
+
+void UGA_NormalAttack::SelectBranchFromInput()
+{
+	const AStickmanCharacter* Character = Cast<AStickmanCharacter>(GetAvatarActorFromActorInfo());
+	if (!Character)
+	{
+		return;
+	}
+	const FVector2D Input = Character->GetLastMoveInput();
+	if (Input.IsNearlyZero(0.3f))
+	{
+		ActiveBranch = EComboBranch::Neutral;
+	}
+	else if (FMath::Abs(Input.X) > FMath::Abs(Input.Y))
+	{
+		ActiveBranch = EComboBranch::Sweep;      // Side + attack.
+	}
+	else if (Input.Y > 0.f)
+	{
+		ActiveBranch = EComboBranch::Forward;    // Forward + attack: gap closer.
+	}
+	else
+	{
+		ActiveBranch = EComboBranch::Launcher;   // Back + attack: knock-up.
+	}
 }
 
 void UGA_NormalAttack::PlayComboHit(int32 ComboIndex)
 {
-	if (!NormalAttackCombo.AttackMontages.IsValidIndex(ComboIndex))
+	const FNormalAttackChain& Chain = GetActiveChain();
+	if (!Chain.AttackMontages.IsValidIndex(ComboIndex))
 	{
 		HandleAttackEndNotify();
 		return;
 	}
 
-	// Lunge forward slightly on each hit for weight/reach, exactly like a Genshin combo swing.
+	// Lunge forward slightly on each hit for weight/reach; the forward branch lunges double.
 	if (AActor* Avatar = GetAvatarActorFromActorInfo())
 	{
-		const FVector LungeTarget = Avatar->GetActorLocation() + Avatar->GetActorForwardVector() * LungeDistance;
+		const float Lunge = LungeDistance * (ActiveBranch == EComboBranch::Forward ? 2.f : 1.f);
+		const FVector LungeTarget = Avatar->GetActorLocation() + Avatar->GetActorForwardVector() * Lunge;
 		Avatar->SetActorLocation(LungeTarget, true);
 	}
+
+	// Branch-point glow at hits 2 and 3 (indices 1/2).
+	OnBranchWindow.Broadcast(ComboIndex == 1 || ComboIndex == 2);
 
 	if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
 	{
@@ -71,7 +121,7 @@ void UGA_NormalAttack::PlayComboHit(int32 ComboIndex)
 		}
 	}
 
-	if (UAbilityTask_PlayMontageAndWait* Task = PlayAbilityMontage(NormalAttackCombo.AttackMontages[ComboIndex]))
+	if (UAbilityTask_PlayMontageAndWait* Task = PlayAbilityMontage(Chain.AttackMontages[ComboIndex]))
 	{
 		Task->OnCompleted.AddDynamic(this, &UGA_NormalAttack::HandleAttackEndNotify);
 		Task->OnInterrupted.AddDynamic(this, &UGA_NormalAttack::HandleAttackEndNotify);
@@ -86,8 +136,9 @@ void UGA_NormalAttack::PlayComboHit(int32 ComboIndex)
 
 void UGA_NormalAttack::HandleAttackHitCheckNotify()
 {
-	float DamageMultiplier = NormalAttackCombo.DamageMultipliers.IsValidIndex(CurrentComboIndex)
-		? NormalAttackCombo.DamageMultipliers[CurrentComboIndex]
+	const FNormalAttackChain& Chain = GetActiveChain();
+	float DamageMultiplier = Chain.DamageMultipliers.IsValidIndex(CurrentComboIndex)
+		? Chain.DamageMultipliers[CurrentComboIndex]
 		: 1.f;
 
 	// Claymore flavor: hits harder than the other weapon types. (Bonus vs an actual "shielded"
@@ -104,10 +155,24 @@ void UGA_NormalAttack::HandleAttackHitCheckNotify()
 		return;
 	}
 
+	// Sweep branch = wider horizontal arc; everything else a forward hemisphere.
+	const float HitArcHalfAngle = ActiveBranch == EComboBranch::Sweep ? 160.f : 90.f;
 	TArray<AActor*> HitActors;
-	// Normal attacks are a forward hemisphere in front of the character, not a full sphere.
 	ApplyRadialElementalDamage(Avatar->GetActorLocation() + Avatar->GetActorForwardVector() * (HitCheckRadius * 0.5f),
-		Avatar->GetActorForwardVector(), HitCheckRadius, 90.f, DamageMultiplier, HitStatusEffectClass, HitActors);
+		Avatar->GetActorForwardVector(), HitCheckRadius, HitArcHalfAngle, DamageMultiplier, HitStatusEffectClass,
+		HitActors);
+
+	// Launcher branch: knock hit enemies airborne (feeds the juggle system).
+	if (ActiveBranch == EComboBranch::Launcher)
+	{
+		for (AActor* HitActor : HitActors)
+		{
+			if (AStickmanEnemyCharacter* Enemy = Cast<AStickmanEnemyCharacter>(HitActor))
+			{
+				Enemy->LaunchIntoAir(LauncherKnockupVelocity);
+			}
+		}
+	}
 }
 
 void UGA_NormalAttack::HandleComboCheckNotify()
@@ -119,10 +184,15 @@ void UGA_NormalAttack::HandleComboCheckNotify()
 	}
 
 	FGameplayTag QueuedTag;
-	const bool bHasNextHit = NormalAttackCombo.AttackMontages.IsValidIndex(CurrentComboIndex + 1);
+	const bool bHasNextHit = GetActiveChain().AttackMontages.IsValidIndex(CurrentComboIndex + 1);
 	if (bHasNextHit && ASC->ConsumeQueuedComboInput(QueuedTag) && QueuedTag == SkillData.SkillTag)
 	{
 		++CurrentComboIndex;
+		// Branch points: hits 2 and 3 re-read directional input to pick the string.
+		if (CurrentComboIndex == 1 || CurrentComboIndex == 2)
+		{
+			SelectBranchFromInput();
+		}
 		PlayComboHit(CurrentComboIndex);
 	}
 	// Otherwise: no buffered input, or no more hits in the chain — let the montage play out
@@ -149,4 +219,6 @@ void UGA_NormalAttack::HandleAttackEndNotify()
 void UGA_NormalAttack::OnAbilityEnded(bool bWasCancelled)
 {
 	CurrentComboIndex = 0;
+	ActiveBranch = EComboBranch::Neutral;
+	OnBranchWindow.Broadcast(false);
 }

@@ -154,6 +154,63 @@ void AStickmanEnemyCharacter::ActivateRagdoll(const FVector& ForceDirection, flo
 	SetLifeSpan(6.f); // Corpse cleanup; AEnemySpawner's OnDestroyed respawn hook still fires.
 }
 
+void AStickmanEnemyCharacter::LaunchIntoAir(float KnockupVelocity)
+{
+	// Heavies resist: weight scales the launch down; a 1.0-weight enemy doesn't lift at all.
+	const float EffectiveVelocity = KnockupVelocity * (1.f - JuggleWeight);
+	if (EffectiveVelocity < 100.f)
+	{
+		return;
+	}
+	JuggleHitCount = 0;
+	bAirRecovering = false;
+	LaunchCharacter(FVector(0.f, 0.f, EffectiveVelocity), false, true);
+}
+
+bool AStickmanEnemyCharacter::RegisterJuggleHit()
+{
+	if (bAirRecovering)
+	{
+		return false; // Teched — recovery frames are hit-immune.
+	}
+
+	++JuggleHitCount;
+
+	// Air tech: past the tech threshold the enemy may flip out and land safely.
+	if (JuggleHitCount > AirTechAfterHits && FMath::FRand() < AirTechChance)
+	{
+		bAirRecovering = true;
+		if (AirRecoveryMontage && GetMesh() && GetMesh()->GetAnimInstance())
+		{
+			GetMesh()->GetAnimInstance()->Montage_Play(AirRecoveryMontage);
+		}
+		GetCharacterMovement()->Velocity = FVector(0.f, 0.f, 300.f); // Small pop out of the combo.
+		return false;
+	}
+
+	if (JuggleHitCount > MaxJuggleHits)
+	{
+		bAirRecovering = true; // Hard cap: recovery regardless of tech roll.
+		return false;
+	}
+
+	// Each juggle hit re-floats the enemy slightly, keeping the combo airborne.
+	GetCharacterMovement()->Velocity = FVector(GetVelocity().X * 0.5f, GetVelocity().Y * 0.5f, 250.f * (1.f - JuggleWeight));
+	return true;
+}
+
+bool AStickmanEnemyCharacter::IsJuggled() const
+{
+	return JuggleHitCount > 0 && GetCharacterMovement()->IsFalling();
+}
+
+void AStickmanEnemyCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+	JuggleHitCount = 0;
+	bAirRecovering = false;
+}
+
 float AStickmanEnemyCharacter::GetHealthPercent() const
 {
 	if (!AttributeSet || AttributeSet->GetMaxHealth() <= 0.f)
