@@ -748,6 +748,39 @@ on the game thread. `ULoadingScreenWidget` shows rotating tips + a progress bar 
 ~90% on a timer, snaps to 100% on `OnLoadCompleted` — no granular progress exists for a single
 background read; standard fake-smooth bar, labeled as such).
 
+## Performance
+
+`UPerformanceManager` (GameInstanceSubsystem + `FTickableGameObject`): exponential-smoothed FPS
+tracking, and **dynamic quality** — below `TargetFPS` (default 30) for `DowngradeGraceSeconds`
+drops one overall scalability level (+ VFX quality with it), recovers after sustained 1.25×
+headroom, never auto-drops more than `MaxAutoStepsDown` below the user's chosen setting.
+Budgets (CPU/GPU 33ms = the 30 FPS floor) are what `TargetFPS` enforces indirectly; per-category
+profiling deliberately points at the engine's real tools (`stat unit/game/gpu/Niagara`, Unreal
+Insights) instead of reimplementing profilers.
+
+Console commands: `Stickman.ShowFPS`, `Stickman.ShowMemory`, `Stickman.ProfileCombat`
+(combat snapshot: enemy counts + which stat commands to run), `Stickman.ToggleLOD` (force all
+`UStickmanLODComponent`s to max detail / back to auto).
+
+### Optimization settings (editor/config, not code — where each lives)
+
+- **Distance culling per type**: Cull Distance Volumes (place one over the map, per-size cull
+  distances), plus each Foliage Type's own cull range; `UStickmanLODComponent` already culls
+  background stickmen at LOD3.
+- **Frustum culling**: automatic; verify with `freezerendering` + fly the camera.
+- **Occlusion**: hardware occlusion queries are on by default; `r.VisualizeOccludedPrimitives 1`
+  to verify. **Precomputed Visibility Volumes** only help small/indoor spaces — for a 4km World
+  Partition map rely on HLOD + streaming instead (already documented in the open-world section).
+- **Memory**: texture streaming is on by default (`r.Streaming.PoolSize` per platform in
+  `DefaultDeviceProfiles.ini`); audio uses Stream Caching (project settings); GC scheduling:
+  `gc.TimeBetweenPurgingPendingKillObjects` + trigger `ForceGarbageCollection` on menu-open/
+  teleport (natural hitching points). Pool sizes already exist where they matter
+  (`UVFXManager::MaxPoolSize`, damage numbers, crowd NPCs).
+- **Draw calls**: shared master materials + Material Instances per variant (the crowd's
+  `ColorVariants` already assume this); ISM/HISM for repeated static meshes (foliage tool does
+  this automatically); skeletal LODs per the character-LOD section; particle budget =
+  `fx.Niagara.QualityLevel` via `UVFXManager::SetVFXQuality`, already driven by dynamic quality.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
