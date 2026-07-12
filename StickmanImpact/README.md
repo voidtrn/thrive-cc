@@ -824,6 +824,34 @@ corrupt-save fallback test and the honest "this code has never met a real UE 5.4
 budget a fix pass first" line item), pak-patching for updates, crash reporter + opt-in
 analytics wiring, and the Steam/console save + achievement integration seams.
 
+## Advanced locomotion
+
+All on `AStickmanCharacter` (tunables under `Locomotion|*` / `Camera|Dynamics` categories):
+
+- **Momentum/inertia**: soft `GroundFriction`/`BrakingDeceleration` + separate braking friction
+  (drift-on-stop), `MaxAcceleration` 1500 (gradual ramp — pair with accel/decel blend curves in
+  the AnimBP), sprint turning radius via lowered `RotationRate` while sprinting,
+  `Landed()` keeps `LandingMomentumKeepFraction` of horizontal velocity.
+- **Parkour-lite**: auto-step (`MaxStepHeight` 55), auto-vault <1m obstacles while sprinting
+  (3-trace waist/head/top check, momentum carried through), wall-run (sprint + airborne + side
+  wall, max 2s, reduced gravity, jump-off launches away+up), slide (`TrySlide()` — bind a
+  crouch IA; half-height capsule fits under obstacles), roll landing above
+  `RollLandingMinFallHeight` (montage optional, never locks up without one).
+- **Movement tech**: bunny hop (jump buffered within `BunnyHopWindow` on landing = full
+  momentum re-jump), dash cancel (dash cuts any active montage), jump cancel (jump cuts a
+  montage past 70% = recovery frames; earlier presses buffer instead), wave dash (jump during
+  dash = long slide at `WaveDashSlideMultiplier`), plunge attack (attack while airborne routes
+  to `PlungeAttackSkillTag` — grant `GA_PlungeAttack`, slam + fall-speed-scaled radial impact).
+- **Input buffer**: 200ms window, priority Dash > Jump > Attack (higher never overwritten by
+  lower), consumed the instant the blocking condition clears.
+- **Camera dynamics**: velocity-based FOV (on top of the sprint lerp), turn tilt (roll opposite
+  yaw input at speed), speed-based boom length, landing camera punch (decays fast), auto
+  recenter behind the character after `CameraRecenterDelay` of no look input while moving.
+- **Animation** (editor work): 2D blendspace speed×direction, start/stop transition anims, lean
+  additive from yaw rate, fatigue locomotion blend when `GetStaminaPercent() < 0.2`, per-weapon
+  sprint anims keyed off the party member's `EWeaponType` — all AnimBP graph wiring reading
+  getters that already exist; no C++ needed beyond what's here.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

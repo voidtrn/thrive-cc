@@ -38,10 +38,19 @@ AStickmanCharacter::AStickmanCharacter()
 
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	Movement->bOrientRotationToMovement = true;
-	Movement->RotationRate = FRotator(0.f, 500.f, 0.f);
+	Movement->RotationRate = FRotator(0.f, WalkRotationRate, 0.f);
 	Movement->JumpZVelocity = 500.f;
 	Movement->AirControl = 0.35f;
 	Movement->MaxWalkSpeed = WalkSpeed;
+
+	// Momentum & inertia: soft friction/braking gives drift-on-stop instead of a hard snap;
+	// separate braking friction so acceleration feel and stopping feel tune independently.
+	Movement->GroundFriction = GroundFrictionValue;
+	Movement->BrakingDecelerationWalking = BrakingDeceleration;
+	Movement->bUseSeparateBrakingFriction = true;
+	Movement->BrakingFriction = 1.5f;
+	Movement->MaxAcceleration = 1500.f; // Gradual ramp-up; pair with an accel curve in the AnimBP.
+	Movement->MaxStepHeight = 55.f; // Auto-step small ledges without a vault.
 
 	// Third-person spring arm + camera.
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -206,11 +215,23 @@ void AStickmanCharacter::Tick(float DeltaSeconds)
 	TickDash(DeltaSeconds);
 	TickStaminaRegen(DeltaSeconds);
 	TickCamera(DeltaSeconds);
+	TickCameraDynamics(DeltaSeconds);
 	TickClimbing(DeltaSeconds);
 	TickGliding(DeltaSeconds);
 	TickSwimming(DeltaSeconds);
+	TickInputBuffer(DeltaSeconds);
+	TickAutoVault();
+	TickWallRun(DeltaSeconds);
+	TickSlide(DeltaSeconds);
 	UpdateMovementStateTag();
 	ShowDebugOnScreen();
+
+	TimeSinceLanded += DeltaSeconds;
+	TimeSinceLookInput += DeltaSeconds;
+	if (GetCharacterMovement()->IsFalling() && GetVelocity().Z >= 0.f)
+	{
+		FallStartHeight = GetActorLocation().Z; // Track apex for roll-landing fall height.
+	}
 }
 
 void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -325,6 +346,10 @@ void AStickmanCharacter::Look(const FInputActionValue& Value)
 {
 	const FVector2D Axis = Value.Get<FVector2D>();
 	CachedLookInput = Axis;
+	if (!Axis.IsNearlyZero())
+	{
+		TimeSinceLookInput = 0.f; // Manual look defers the auto-recenter.
+	}
 	AddControllerYawInput(Axis.X);
 	AddControllerPitchInput(Axis.Y);
 }
@@ -344,12 +369,15 @@ void AStickmanCharacter::StartSprint()
 	}
 	bWantsToSprint = true;
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	// Turning radius: sprinting characters can't spin on the spot.
+	GetCharacterMovement()->RotationRate = FRotator(0.f, SprintRotationRate, 0.f);
 }
 
 void AStickmanCharacter::StopSprint()
 {
 	bWantsToSprint = false;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, WalkRotationRate, 0.f);
 }
 
 void AStickmanCharacter::Jump()
@@ -358,6 +386,43 @@ void AStickmanCharacter::Jump()
 	{
 		JumpOffWall();
 		return;
+	}
+
+	if (bIsWallRunning)
+	{
+		// Wall-run jump-off: away from the wall + up, keeps run momentum.
+		bIsWallRunning = false;
+		GetCharacterMovement()->GravityScale = 1.f;
+		LaunchCharacter(WallRunNormal * 500.f + FVector(0.f, 0.f, GetCharacterMovement()->JumpZVelocity), false, true);
+		return;
+	}
+
+	if (bIsDashing)
+	{
+		// Wave dash: dash + jump together = long ground slide carrying dash speed.
+		bIsDashing = false;
+		GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+		StartSlide(WaveDashSlideMultiplier);
+		return;
+	}
+
+	// Jump cancel: a jump input during a montage's recovery cuts the montage. Buffered
+	// instead if pressed mid-active-frames (montage still under 70% complete).
+	if (UAnimInstance* AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr)
+	{
+		if (UAnimMontage* Current = AnimInstance->GetCurrentActiveMontage())
+		{
+			const float Position = AnimInstance->Montage_GetPosition(Current);
+			if (Position / FMath::Max(Current->GetPlayLength(), 0.01f) > 0.7f)
+			{
+				AnimInstance->Montage_Stop(0.1f, Current);
+			}
+			else
+			{
+				BufferAction(EBufferedAction::Jump);
+				return;
+			}
+		}
 	}
 
 	// ACharacter's built-in jump only fires while airborne if bIsCrouched/movement mode allows
@@ -388,8 +453,22 @@ void AStickmanCharacter::Dash()
 {
 	if (bIsDashing || bDashOnCooldown || CurrentStamina < DashStaminaCost)
 	{
+		if (bDashOnCooldown)
+		{
+			BufferAction(EBufferedAction::Dash); // Fires the instant cooldown clears (200ms window).
+		}
 		return;
 	}
+
+	// Dash cancel: dashing cuts any current attack montage — core of the movement-tech kit.
+	if (UAnimInstance* AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr)
+	{
+		if (UAnimMontage* Current = AnimInstance->GetCurrentActiveMontage())
+		{
+			AnimInstance->Montage_Stop(0.05f, Current);
+		}
+	}
+	StopSlide();
 
 	FVector DashDirection = GetLastMovementInputVector();
 	if (DashDirection.IsNearlyZero())
@@ -444,6 +523,280 @@ void AStickmanCharacter::TickDash(float DeltaSeconds)
 	{
 		bIsDashing = false;
 		GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+	}
+}
+
+// -------------------------------------------------------------------
+// Locomotion: landing, buffer, parkour, camera dynamics
+// -------------------------------------------------------------------
+
+void AStickmanCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+	TimeSinceLanded = 0.f;
+
+	const float FallHeight = FallStartHeight - GetActorLocation().Z;
+	const FVector HorizontalVelocity = FVector(GetVelocity().X, GetVelocity().Y, 0.f);
+
+	// Bunny hop: jump buffered within the window = immediate re-jump, FULL momentum kept.
+	if (BufferedAction == EBufferedAction::Jump && BufferedActionAge <= BunnyHopWindow)
+	{
+		BufferedAction = EBufferedAction::None;
+		CurrentJumpCount = 0;
+		LaunchCharacter(HorizontalVelocity + FVector(0.f, 0.f, GetCharacterMovement()->JumpZVelocity), true, true);
+		return;
+	}
+
+	// Normal landing keeps a fraction of horizontal momentum instead of engine-default braking.
+	GetCharacterMovement()->Velocity = HorizontalVelocity * LandingMomentumKeepFraction;
+
+	if (FallHeight >= RollLandingMinFallHeight)
+	{
+		// Roll landing eats the recovery; without a montage it still functions (no lockup).
+		if (RollLandingMontage && GetMesh() && GetMesh()->GetAnimInstance())
+		{
+			GetMesh()->GetAnimInstance()->Montage_Play(RollLandingMontage);
+		}
+		CameraPunchOffset = FMath::Min(FallHeight * LandingCameraPunchScale, 60.f);
+	}
+	else if (FallHeight > 150.f)
+	{
+		CameraPunchOffset = FMath::Min(FallHeight * LandingCameraPunchScale * 0.5f, 25.f);
+	}
+}
+
+void AStickmanCharacter::BufferAction(EBufferedAction Action)
+{
+	// Priority: Dash > Jump > Attack — a higher-priority buffered action is never overwritten
+	// by a lower one inside the same window.
+	if (BufferedAction != EBufferedAction::None && Action > BufferedAction)
+	{
+		return;
+	}
+	BufferedAction = Action;
+	BufferedActionAge = 0.f;
+}
+
+void AStickmanCharacter::TickInputBuffer(float DeltaSeconds)
+{
+	if (BufferedAction == EBufferedAction::None)
+	{
+		return;
+	}
+	BufferedActionAge += DeltaSeconds;
+	if (BufferedActionAge > InputBufferWindow)
+	{
+		BufferedAction = EBufferedAction::None;
+		return;
+	}
+
+	// Try to consume: only when the blocking condition cleared.
+	const bool bMontageActive = GetMesh() && GetMesh()->GetAnimInstance()
+		&& GetMesh()->GetAnimInstance()->GetCurrentActiveMontage() != nullptr;
+
+	switch (BufferedAction)
+	{
+		case EBufferedAction::Dash:
+			if (!bDashOnCooldown && !bIsDashing)
+			{
+				BufferedAction = EBufferedAction::None;
+				Dash();
+			}
+			break;
+		case EBufferedAction::Jump:
+			if (!bMontageActive && GetCharacterMovement()->IsMovingOnGround())
+			{
+				BufferedAction = EBufferedAction::None;
+				Jump();
+			}
+			break;
+		case EBufferedAction::Attack:
+			if (!bMontageActive)
+			{
+				BufferedAction = EBufferedAction::None;
+				OnNormalAttack();
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+void AStickmanCharacter::TickAutoVault()
+{
+	if (!bEnableAutoVault || !GetCharacterMovement()->IsMovingOnGround()
+		|| GetVelocity().Size2D() < WalkSpeed * 0.8f || bIsSliding)
+	{
+		return;
+	}
+
+	// Waist-height trace hits an obstacle AND head-height is clear AND the top has landing room.
+	const FVector Forward = GetActorForwardVector();
+	const FVector Feet = GetActorLocation() - FVector(0.f, 0.f, 60.f);
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	FHitResult WaistHit;
+	if (!GetWorld()->LineTraceSingleByChannel(WaistHit, Feet + FVector(0.f, 0.f, 40.f),
+			Feet + FVector(0.f, 0.f, 40.f) + Forward * 80.f, ECC_WorldStatic, QueryParams))
+	{
+		return;
+	}
+	FHitResult HeadHit;
+	const FVector HeadStart = Feet + FVector(0.f, 0.f, MaxVaultHeight + 20.f);
+	if (GetWorld()->LineTraceSingleByChannel(HeadHit, HeadStart, HeadStart + Forward * 120.f,
+			ECC_WorldStatic, QueryParams))
+	{
+		return; // Too tall to vault.
+	}
+	FHitResult TopHit;
+	const FVector TopStart = HeadStart + Forward * 100.f;
+	if (!GetWorld()->LineTraceSingleByChannel(TopHit, TopStart, TopStart - FVector(0.f, 0.f, MaxVaultHeight + 40.f),
+			ECC_WorldStatic, QueryParams))
+	{
+		return; // Nothing to land on behind the lip.
+	}
+
+	if (VaultMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->Montage_Play(VaultMontage);
+	}
+	SetActorLocation(TopHit.ImpactPoint + FVector(0.f, 0.f, 90.f), false, nullptr, ETeleportType::TeleportPhysics);
+	GetCharacterMovement()->Velocity = Forward * GetVelocity().Size2D(); // Momentum through the vault.
+}
+
+void AStickmanCharacter::TickWallRun(float DeltaSeconds)
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+
+	if (bIsWallRunning)
+	{
+		WallRunTimeRemaining -= DeltaSeconds;
+
+		// Wall still there? Re-trace toward it.
+		FHitResult WallHit;
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(this);
+		const bool bWallStillThere = GetWorld()->LineTraceSingleByChannel(WallHit, GetActorLocation(),
+			GetActorLocation() - WallRunNormal * 80.f, ECC_WorldStatic, QueryParams);
+
+		if (WallRunTimeRemaining <= 0.f || !bWallStillThere || Movement->IsMovingOnGround())
+		{
+			bIsWallRunning = false;
+			Movement->GravityScale = 1.f;
+			return;
+		}
+
+		// Run along the wall: velocity = wall-tangent direction closest to current facing.
+		const FVector AlongWall = FVector::CrossProduct(WallRunNormal, FVector::UpVector).GetSafeNormal();
+		const float Direction = FVector::DotProduct(AlongWall, GetActorForwardVector()) >= 0.f ? 1.f : -1.f;
+		Movement->Velocity = AlongWall * Direction * WallRunSpeed + FVector(0.f, 0.f, Movement->Velocity.Z * 0.4f);
+		return;
+	}
+
+	// Start: sprinting, airborne, side wall within reach, not climbing/gliding.
+	if (!bWantsToSprint || !Movement->IsFalling() || bIsClimbing || bIsGliding)
+	{
+		return;
+	}
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	for (const float Side : { 1.f, -1.f })
+	{
+		FHitResult SideHit;
+		if (GetWorld()->LineTraceSingleByChannel(SideHit, GetActorLocation(),
+				GetActorLocation() + GetActorRightVector() * Side * 70.f, ECC_WorldStatic, QueryParams)
+			&& FMath::Abs(SideHit.Normal.Z) < 0.2f) // Near-vertical wall only.
+		{
+			bIsWallRunning = true;
+			WallRunNormal = SideHit.Normal;
+			WallRunTimeRemaining = WallRunMaxDuration;
+			Movement->GravityScale = 0.25f;
+			return;
+		}
+	}
+}
+
+void AStickmanCharacter::TrySlide()
+{
+	if (bWantsToSprint && GetCharacterMovement()->IsMovingOnGround() && !bIsSliding)
+	{
+		StartSlide(SlideSpeedBoost);
+	}
+}
+
+void AStickmanCharacter::StartSlide(float SpeedMultiplier)
+{
+	bIsSliding = true;
+	SlideTimeRemaining = SlideDuration;
+
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->GroundFriction = 0.5f; // Near-frictionless while sliding.
+	Movement->Velocity = GetActorForwardVector() * FMath::Max(GetVelocity().Size2D(), WalkSpeed) * SpeedMultiplier;
+
+	// Half-height capsule = fits under obstacles ("slide under").
+	GetCapsuleComponent()->SetCapsuleHalfHeight(44.f);
+
+	if (SlideMontage && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		GetMesh()->GetAnimInstance()->Montage_Play(SlideMontage);
+	}
+}
+
+void AStickmanCharacter::TickSlide(float DeltaSeconds)
+{
+	if (!bIsSliding)
+	{
+		return;
+	}
+	SlideTimeRemaining -= DeltaSeconds;
+	if (SlideTimeRemaining <= 0.f || GetVelocity().Size2D() < WalkSpeed * 0.5f)
+	{
+		StopSlide();
+	}
+}
+
+void AStickmanCharacter::StopSlide()
+{
+	if (!bIsSliding)
+	{
+		return;
+	}
+	bIsSliding = false;
+	GetCharacterMovement()->GroundFriction = GroundFrictionValue;
+	GetCapsuleComponent()->SetCapsuleHalfHeight(88.f);
+}
+
+void AStickmanCharacter::TickCameraDynamics(float DeltaSeconds)
+{
+	const float Speed = GetVelocity().Size2D();
+	const float SpeedAlpha = FMath::Clamp(Speed / FMath::Max(SprintSpeed, 1.f), 0.f, 1.f);
+
+	// Velocity-based FOV on top of the sprint FOV TickCamera already lerps.
+	FollowCamera->SetFieldOfView(FollowCamera->FieldOfView + MaxVelocityFOVBonus * SpeedAlpha * DeltaSeconds * 4.f
+		- MaxVelocityFOVBonus * (1.f - SpeedAlpha) * DeltaSeconds * 4.f);
+	FollowCamera->SetFieldOfView(FMath::Clamp(FollowCamera->FieldOfView, WalkFOV, SprintFOV + MaxVelocityFOVBonus));
+
+	// Turn tilt: roll opposite the yaw input while moving fast (motorbike lean).
+	const float TargetRoll = -CachedLookInput.X * TurnCameraTiltDegrees * SpeedAlpha;
+	FRotator BoomRotation = CameraBoom->GetRelativeRotation();
+	BoomRotation.Roll = FMath::FInterpTo(BoomRotation.Roll, TargetRoll, DeltaSeconds, 6.f);
+	CameraBoom->SetRelativeRotation(BoomRotation);
+
+	// Speed-based boom length + landing punch (punch decays fast).
+	CameraPunchOffset = FMath::FInterpTo(CameraPunchOffset, 0.f, DeltaSeconds, 8.f);
+	const float BaseLength = FMath::Clamp(CameraBoom->TargetArmLength, MinCameraBoomLength, MaxCameraBoomLength);
+	CameraBoom->TargetArmLength = BaseLength + MaxSpeedBoomBonus * SpeedAlpha * DeltaSeconds * 2.f
+		- MaxSpeedBoomBonus * (1.f - SpeedAlpha) * DeltaSeconds * 2.f - CameraPunchOffset * DeltaSeconds * 10.f;
+	CameraBoom->TargetArmLength = FMath::Clamp(CameraBoom->TargetArmLength, MinCameraBoomLength,
+		MaxCameraBoomLength + MaxSpeedBoomBonus);
+
+	// Auto-recenter: idle look input while moving = camera drifts back behind the character.
+	if (TimeSinceLookInput >= CameraRecenterDelay && Speed > WalkSpeed * 0.5f && Controller)
+	{
+		const FRotator Current = Controller->GetControlRotation();
+		const FRotator Target(Current.Pitch, GetActorRotation().Yaw, 0.f);
+		Controller->SetControlRotation(FMath::RInterpTo(Current, Target, DeltaSeconds, CameraRecenterSpeed));
 	}
 }
 
@@ -748,6 +1101,13 @@ void AStickmanCharacter::UpdateMovementStateTag()
 
 void AStickmanCharacter::OnNormalAttack()
 {
+	// Plunge attack: attack while airborne slams to ground (routes to GA_PlungeAttack).
+	if (GetCharacterMovement()->IsFalling() && !bIsGliding && PlungeAttackSkillTag.IsValid()
+		&& AbilitySystemComponent && AbilitySystemComponent->ActivateSkillByTag(PlungeAttackSkillTag))
+	{
+		return;
+	}
+
 	if (!AbilitySystemComponent || !AbilitySystemComponent->ActivateOrQueueComboSkill(NormalAttackSkillTag))
 	{
 		if (GEngine)

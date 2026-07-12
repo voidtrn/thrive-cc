@@ -38,6 +38,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
+	virtual void Landed(const FHitResult& Hit) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
@@ -300,6 +301,112 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> DiveAction;
 
+	// -------------------------------------------------------------------
+	// Locomotion: momentum & inertia
+	// -------------------------------------------------------------------
+
+	// Lower friction/braking = drift on stop instead of a hard snap (AAA momentum feel).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Momentum")
+	float GroundFrictionValue = 4.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Momentum")
+	float BrakingDeceleration = 800.f;
+
+	// Yaw rate while sprinting — lower = real turning radius, no instant 180s at speed.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Momentum")
+	float SprintRotationRate = 220.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Momentum")
+	float WalkRotationRate = 500.f;
+
+	// Fraction of horizontal velocity kept when landing (momentum preservation).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Momentum")
+	float LandingMomentumKeepFraction = 0.7f;
+
+	// -------------------------------------------------------------------
+	// Locomotion: parkour-lite
+	// -------------------------------------------------------------------
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	bool bEnableAutoVault = true;
+
+	// Obstacles lower than this vault automatically when sprinting into them (<1m per spec).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	float MaxVaultHeight = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	TObjectPtr<UAnimMontage> VaultMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	float WallRunMaxDuration = 2.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	float WallRunSpeed = 650.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	float SlideDuration = 0.8f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	float SlideSpeedBoost = 1.15f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	TObjectPtr<UAnimMontage> SlideMontage;
+
+	// Falls taller than this trigger the landing roll (input-timed: jump pressed in the
+	// buffer window on touch-down = perfect roll, zero recovery).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	float RollLandingMinFallHeight = 500.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Parkour")
+	TObjectPtr<UAnimMontage> RollLandingMontage;
+
+	// -------------------------------------------------------------------
+	// Locomotion: movement tech
+	// -------------------------------------------------------------------
+
+	// Jump pressed within this window of landing = bunny hop (full momentum preserved).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Tech")
+	float BunnyHopWindow = 0.2f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Tech")
+	float WaveDashSlideMultiplier = 1.6f;
+
+	// Attack while airborne routes to this skill tag (grant GA_PlungeAttack with it).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Tech")
+	FGameplayTag PlungeAttackSkillTag;
+
+	// -------------------------------------------------------------------
+	// Locomotion: input buffer
+	// -------------------------------------------------------------------
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Locomotion|Buffer")
+	float InputBufferWindow = 0.2f;
+
+	// -------------------------------------------------------------------
+	// Camera dynamics
+	// -------------------------------------------------------------------
+
+	// FOV widens with actual velocity (not just the sprint flag) up to this bonus.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Dynamics")
+	float MaxVelocityFOVBonus = 12.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Dynamics")
+	float TurnCameraTiltDegrees = 3.f;
+
+	// Boom lengthens with speed up to this bonus (pulled-back sense of velocity).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Dynamics")
+	float MaxSpeedBoomBonus = 120.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Dynamics")
+	float LandingCameraPunchScale = 0.06f;
+
+	// Seconds without look input (while moving) before the camera recenters behind the character.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Dynamics")
+	float CameraRecenterDelay = 2.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Dynamics")
+	float CameraRecenterSpeed = 1.5f;
+
 public:
 	// -------------------------------------------------------------------
 	// Input handlers
@@ -343,6 +450,23 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Exploration")
 	float GetBreathPercent() const { return MaxBreath > 0.f ? CurrentBreath / MaxBreath : 1.f; }
 
+	// -------------------------------------------------------------------
+	// Locomotion queries + external stamina drain (for components)
+	// -------------------------------------------------------------------
+
+	UFUNCTION(BlueprintPure, Category = "Locomotion")
+	bool IsSliding() const { return bIsSliding; }
+
+	UFUNCTION(BlueprintPure, Category = "Locomotion")
+	bool IsWallRunning() const { return bIsWallRunning; }
+
+	UFUNCTION(BlueprintCallable, Category = "Stamina")
+	void DrainStamina(float Amount) { ConsumeStamina(Amount); }
+
+	// Crouch input while sprinting = slide; bind a crouch/slide IA to this.
+	UFUNCTION(BlueprintCallable, Category = "Locomotion")
+	void TrySlide();
+
 	UFUNCTION(BlueprintPure, Category = "Stamina")
 	float GetStaminaPercent() const { return Stats.MaxStamina > 0.f ? CurrentStamina / Stats.MaxStamina : 0.f; }
 
@@ -373,6 +497,17 @@ private:
 	void TickGliding(float DeltaSeconds);
 
 	void TickSwimming(float DeltaSeconds);
+
+	// Locomotion internals.
+	enum class EBufferedAction : uint8 { None, Dash, Jump, Attack };
+	void BufferAction(EBufferedAction Action);
+	void TickInputBuffer(float DeltaSeconds);
+	void TickAutoVault();
+	void TickWallRun(float DeltaSeconds);
+	void TickSlide(float DeltaSeconds);
+	void TickCameraDynamics(float DeltaSeconds);
+	void StartSlide(float SpeedMultiplier);
+	void StopSlide();
 
 	FGameplayTag CurrentMovementTag;
 
@@ -405,4 +540,18 @@ private:
 	// Swimming runtime state.
 	bool bWantsToDive = false;
 	bool bWasSwimmingLastTick = false;
+
+	// Locomotion runtime state.
+	EBufferedAction BufferedAction = EBufferedAction::None;
+	float BufferedActionAge = 0.f;
+	bool bIsSliding = false;
+	float SlideTimeRemaining = 0.f;
+	bool bIsWallRunning = false;
+	float WallRunTimeRemaining = 0.f;
+	FVector WallRunNormal = FVector::ZeroVector;
+	float FallStartHeight = 0.f;
+	float TimeSinceLanded = 999.f;
+	float TimeSinceLookInput = 0.f;
+	float CameraPunchOffset = 0.f;
+	bool bPlungeQueued = false;
 };
