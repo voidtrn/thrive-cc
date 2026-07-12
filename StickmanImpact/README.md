@@ -953,6 +953,38 @@ font-outline setting.
   exists), `Absorb(Electro)` = +25% move speed; per-element internal cooldown + VFX +
   delegate. Call from world element sources (burning zones, crystals, lit torches).
 
+## Living world
+
+- **Dynamic world events** (`UWorldEventManager` + `AWorldEventActor`): every 5-15 min one
+  random event spawns from a weighted DataTable (`FWorldEventEntry`) — Caravan Under Attack,
+  Meteor Shower, Enemy Raid, Wandering Boss, Treasure Hunt, Elemental Storm. Spawn point is
+  navmesh-projected 2000-5000 units from the player; one event at a time; auto-fails when
+  its duration expires, `CompleteEvent()` grants the row's `FRewardData` through
+  `UCollectibleManager`. `AWorldEventActor::OnEventBegin` is a BlueprintImplementableEvent —
+  the C++ base owns lifecycle/reward, per-event content (the actual caravan, the meteor
+  spawner) is BP on top.
+- **NPC memory + context dialogue** (`UStickmanDialogueTriggerComponent`): NPCs count your
+  interactions and pick dialogue via `FNPCDialogueVariant` filters — story flag, night-only,
+  rain-only, minimum previous interactions ("back again?"), or which party character is
+  active. Top-down first-match, so author variants most-specific-first. Interaction counts
+  are session-only (not written into save files yet).
+- **Ecosystem**: wildlife flees monsters (`AStickmanEnemyCharacter` proximity, 1s throttled
+  scan), not just the player — predator/prey without a food-chain sim. Resource nodes track
+  over-harvest pressure: re-harvesting the same node within 2 min stretches its respawn up
+  to 3x, and nodes regrow visibly (scale 0.2 → 1.0) instead of popping in.
+- **Foliage regrowth**: burned/frozen foliage recovers its material after `RegrowTime`
+  (default 3 min); cut foliage now hides instead of destroying itself and grows back with
+  the same scale-up. `RegrowTime = 0` keeps the old permanent behavior.
+- **Weather depth**: `UWeatherManager` gained a forecast queue (`GetForecast(3)` for an NPC
+  or item that predicts weather; `AdvanceForecast()` consumes it — wire to day rollover for
+  scheduled weather). `AEnemySpawner` gained `RainSpawnPool`/`SnowSpawnPool` mirroring the
+  night pool (night > weather > base priority) so rain surfaces Hydro slimes without code.
+- **Scope honesty**: world-state persistence (destroyed camps staying destroyed across
+  save/load, NPC memory surviving relog) is *not* serialized — everything above is
+  session-lived. Doing it properly means an actor-ID registry in `UStickmanSaveManager`'s
+  save format (a versioned format change), deferred rather than half-done. NPC-to-NPC
+  ambient chatter is also out — needs authored barks + audio to not feel worse than silence.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

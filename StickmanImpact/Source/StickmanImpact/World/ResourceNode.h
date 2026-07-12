@@ -42,4 +42,7 @@ private:
 
 	bool bIsAvailable = true;
 	FTimerHandle RespawnTimerHandle;
+	FTimerHandle RegrowTimerHandle;
+	double LastHarvestTime = -999.0;
+	float HarvestPressure = 0.f;
 };

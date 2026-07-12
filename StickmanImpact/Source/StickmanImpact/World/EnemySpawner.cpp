@@ -5,6 +5,7 @@
 #include "NavigationSystem.h"
 #include "TimerManager.h"
 #include "DayNightManager.h"
+#include "WeatherManager.h"
 #include "Kismet/GameplayStatics.h"
 
 AEnemySpawner::AEnemySpawner()
@@ -35,6 +36,27 @@ const TArray<FEnemySpawnEntry>& AEnemySpawner::GetActiveSpawnPool() const
 			}
 		}
 	}
+
+	if (RainSpawnPool.Num() > 0 || SnowSpawnPool.Num() > 0)
+	{
+		if (const UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (const UWeatherManager* Weather = GameInstance->GetSubsystem<UWeatherManager>())
+			{
+				const EStickmanWeatherType Current = Weather->GetCurrentWeather();
+				if (RainSpawnPool.Num() > 0 &&
+					(Current == EStickmanWeatherType::Rain || Current == EStickmanWeatherType::Storm))
+				{
+					return RainSpawnPool;
+				}
+				if (SnowSpawnPool.Num() > 0 && Current == EStickmanWeatherType::Snow)
+				{
+					return SnowSpawnPool;
+				}
+			}
+		}
+	}
+
 	return SpawnPool;
 }
 

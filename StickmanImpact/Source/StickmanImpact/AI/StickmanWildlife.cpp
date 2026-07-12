@@ -3,6 +3,7 @@
 #include "StickmanWildlife.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Enemies/StickmanEnemyCharacter.h"
 #include "EngineUtils.h"
 
 AStickmanWildlife::AStickmanWildlife()
@@ -31,7 +32,25 @@ void AStickmanWildlife::UpdateFleeState(float DeltaSeconds)
 	}
 
 	const float DistanceToPlayer = FVector::Dist(GetActorLocation(), PlayerPawn->GetActorLocation());
-	const bool bShouldFlee = DistanceToPlayer <= FleeTriggerDistance;
+	bool bShouldFlee = DistanceToPlayer <= FleeTriggerDistance;
+
+	// Predator-prey: wildlife also flees nearby monsters, not just the player (throttled scan).
+	if (!bShouldFlee)
+	{
+		PredatorCheckTimer += DeltaSeconds;
+		if (PredatorCheckTimer >= 1.f)
+		{
+			PredatorCheckTimer = 0.f;
+			for (TActorIterator<AStickmanEnemyCharacter> It(GetWorld()); It; ++It)
+			{
+				if (FVector::Dist(GetActorLocation(), It->GetActorLocation()) <= FleeTriggerDistance)
+				{
+					bShouldFlee = true;
+					break;
+				}
+			}
+		}
+	}
 
 	if (bShouldFlee && !bIsFleeing)
 	{

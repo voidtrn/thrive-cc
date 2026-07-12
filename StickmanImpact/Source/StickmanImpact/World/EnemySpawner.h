@@ -40,8 +40,18 @@ public:
 	TArray<FEnemySpawnEntry> SpawnPool;
 
 	// If set and a ADayNightManager in the level reports night, these replace SpawnPool.
+	// Night takes priority over weather pools.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	TArray<FEnemySpawnEntry> NightSpawnPool;
+
+	// If set and UWeatherManager reports Rain or Storm, these replace SpawnPool
+	// (e.g. Hydro slimes surface during rain).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
+	TArray<FEnemySpawnEntry> RainSpawnPool;
+
+	// If set and UWeatherManager reports Snow, these replace SpawnPool.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
+	TArray<FEnemySpawnEntry> SnowSpawnPool;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	float SpawnRadius = 500.f;

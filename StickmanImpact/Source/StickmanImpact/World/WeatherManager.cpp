@@ -135,6 +135,28 @@ void UWeatherManager::TickStormLightning()
 	}
 }
 
+TArray<EStickmanWeatherType> UWeatherManager::GetForecast(int32 Count)
+{
+	while (ForecastQueue.Num() < Count)
+	{
+		ForecastQueue.Add(static_cast<EStickmanWeatherType>(FMath::RandRange(0, 4)));
+	}
+	TArray<EStickmanWeatherType> Result;
+	for (int32 Index = 0; Index < Count; ++Index)
+	{
+		Result.Add(ForecastQueue[Index]);
+	}
+	return Result;
+}
+
+void UWeatherManager::AdvanceForecast()
+{
+	GetForecast(1); // Ensure non-empty.
+	const EStickmanWeatherType Next = ForecastQueue[0];
+	ForecastQueue.RemoveAt(0);
+	SetWeather(Next);
+}
+
 float UWeatherManager::GetMoveSpeedMultiplier() const
 {
 	switch (CurrentWeather)

@@ -62,7 +62,18 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Weather")
 	FOnWeatherChanged OnWeatherChanged;
 
+	// --- Forecast: upcoming weather queue (NPC/item "weather forecast" reads this) --------
+	// Auto-refills randomly; SetWeather consumes from the front when AdvanceForecast() is
+	// called (wire to a day/night hour change or a timer for scheduled weather).
+	UFUNCTION(BlueprintPure, Category = "Weather")
+	TArray<EStickmanWeatherType> GetForecast(int32 Count = 3);
+
+	UFUNCTION(BlueprintCallable, Category = "Weather")
+	void AdvanceForecast();
+
 private:
+	TArray<EStickmanWeatherType> ForecastQueue;
+
 	void TickTransition();
 	void TickRainHydro();
 	void TickStormLightning();

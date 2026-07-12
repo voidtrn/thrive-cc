@@ -59,4 +59,5 @@ private:
 
 	bool bIsFleeing = false;
 	float TimeSinceLastGraze = 0.f;
+	float PredatorCheckTimer = 0.f;
 };
