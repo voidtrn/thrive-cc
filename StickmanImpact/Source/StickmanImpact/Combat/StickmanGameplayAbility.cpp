@@ -11,6 +11,7 @@
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
 #include "ComboMeterSubsystem.h"
+#include "AI/AdaptiveDifficultySubsystem.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Character/StickmanCharacter.h"
@@ -249,9 +250,20 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		return; // Torches have no health/ASC — hitting one is a puzzle interaction, not damage.
 	}
 
-	if (UStickmanCheatManager::IsGodModeEnabled() && TargetActor == UGameplayStatics::GetPlayerPawn(this, 0))
+	if (TargetActor == UGameplayStatics::GetPlayerPawn(this, 0))
 	{
-		return; // Player is invulnerable under GodMode.
+		if (UStickmanCheatManager::IsGodModeEnabled())
+		{
+			return; // Player is invulnerable under GodMode.
+		}
+		// Adaptive difficulty: reset the "player untouched" aggression clock.
+		if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+		{
+			if (UAdaptiveDifficultySubsystem* Difficulty = GI->GetSubsystem<UAdaptiveDifficultySubsystem>())
+			{
+				Difficulty->NotifyPlayerWasHit();
+			}
+		}
 	}
 
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);

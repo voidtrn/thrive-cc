@@ -8,7 +8,9 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISense_Sight.h"
+#include "Perception/AISense_Hearing.h"
 
 AStickmanAIController::AStickmanAIController()
 {
@@ -22,7 +24,14 @@ AStickmanAIController::AStickmanAIController()
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
 
+	UAISenseConfig_Hearing* HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
+	HearingConfig->HearingRange = 2500.f;
+	HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
+	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
+	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
+
 	PerceptionComponent->ConfigureSense(*SightConfig);
+	PerceptionComponent->ConfigureSense(*HearingConfig);
 	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
 	SetPerceptionComponent(*PerceptionComponent);
 }
@@ -51,6 +60,21 @@ void AStickmanAIController::HandlePerceptionUpdated(AActor* Actor, FAIStimulus S
 {
 	if (!Blackboard || !Actor)
 	{
+		return;
+	}
+
+	// Hearing only makes the enemy Suspicious (investigate the noise) — sight escalates to Combat.
+	if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
+	{
+		if (Stimulus.WasSuccessfullySensed()
+			&& Blackboard->GetValueAsEnum(StickmanBlackboardKeys::CurrentState)
+				== static_cast<uint8>(EEnemyCombatState::Patrol))
+		{
+			Blackboard->SetValueAsVector(StickmanBlackboardKeys::TargetLocation, Stimulus.StimulusLocation);
+			Blackboard->SetValueAsEnum(StickmanBlackboardKeys::CurrentState,
+				static_cast<uint8>(EEnemyCombatState::Suspicious));
+			Blackboard->SetValueAsFloat(StickmanBlackboardKeys::AlertLevel, 0.5f);
+		}
 		return;
 	}
 

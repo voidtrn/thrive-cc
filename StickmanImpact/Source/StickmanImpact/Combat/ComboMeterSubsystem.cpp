@@ -1,6 +1,7 @@
 // Copyright StickmanImpact Project.
 
 #include "ComboMeterSubsystem.h"
+#include "AI/AdaptiveDifficultySubsystem.h"
 #include "Party/PartyManager.h"
 #include "Character/StickmanCharacter.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
@@ -26,6 +27,12 @@ void UComboMeterSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 void UComboMeterSubsystem::RegisterHit(FGameplayTag SkillTag)
 {
 	++HitCount;
+
+	// Learning-AI input: track which skills the player leans on.
+	if (UAdaptiveDifficultySubsystem* Difficulty = GetGameInstance()->GetSubsystem<UAdaptiveDifficultySubsystem>())
+	{
+		Difficulty->RecordPlayerSkillUse(SkillTag);
+	}
 
 	// Style: variety over mashing — first use of a skill this combo is worth 3, repeats 1.
 	const FString TagString = SkillTag.IsValid() ? SkillTag.ToString() : TEXT("Untagged");

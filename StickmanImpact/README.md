@@ -902,6 +902,30 @@ font-outline setting.
 - **Team combo**: switching mid-combo keeps the meter alive, auto-fires the incoming
   character's tag attack, and arms a one-shot +25% elemental tag bonus when the elements differ.
 
+## Enemy AI "dance partner" upgrade
+
+- **Telegraphs** (`UEnemyTelegraphComponent`): `BTTask_SelectWeightedAttack` is now latent —
+  request attack token → run the tell (mesh "TellFlash" material scalar ramp, tell sound,
+  ground indicator decal, consistent per-enemy duration) → attack, unless it rolled a rare
+  feint. Player dash inside the final `PerfectDodgeWindow` = perfect dodge (micro slow-mo).
+- **Personalities** (`EEnemyPersonality` on the enemy): Aggressive (closer/faster/fragile),
+  Defensive (longer tells, harder stagger, more dodges), Tactical (keeps range, repositions),
+  Cowardly (retreats at 50% HP), Berserker (`GetAttackSpeedMultiplier()` up to +60% as HP
+  falls) — each a distinct learnable rhythm layered over the 5 archetypes.
+- **Group AI** (`UAttackTokenSubsystem`, WorldSubsystem): max 2 concurrent attackers, others
+  circle (denied token fails the BT branch → repositioning); auto-expiring tokens prevent
+  deadlock; `OpenComboAttackWindow()` briefly allows a simultaneous 2-enemy attack; leader
+  enemies (`bIsLeader`) periodically buff nearby allies' Attack. Flanking/ranged-melee
+  coordination = EQS Dot/Distance tests per the earlier BT section (data, not new C++).
+- **Adaptive difficulty** (`UAdaptiveDifficultySubsystem`): unhit-for-30s ramps aggression
+  (shorter tells), low player HP triggers mercy (longer cooldowns), every player hit feeds a
+  skill-usage histogram (`GetPlayerFavoriteSkill()` for counter-play branches), and a global
+  `DifficultyScale` knob for the GameInstance/settings.
+- **States**: `Suspicious` added — hearing stimuli send patrolling enemies to investigate the
+  noise location before sight escalates to Combat; `Staggered` state came with the hit-reaction
+  work. State-dependent music: bind combat state changes to
+  `UStickmanAudioManager::SetCombatIntensity` (hook exists).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

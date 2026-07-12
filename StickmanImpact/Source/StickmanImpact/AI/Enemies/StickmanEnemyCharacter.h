@@ -38,6 +38,26 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
 	TArray<FStickmanWeightedAttack> WeightedAttacks;
 
+	// Combat personality: applied over the archetype's base tuning in BeginPlay — each type
+	// has a distinct rhythm the player can learn (see ApplyPersonality for the exact deltas).
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	EEnemyPersonality Personality = EEnemyPersonality::Aggressive;
+
+	// Attack tell length passed to the telegraph component (per-personality adjusted).
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	float AttackTellDuration = 0.8f;
+
+	// Leader: buffs nearby allies' Attack while alive (group AI "leader enemy").
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	bool bIsLeader = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
+	float LeaderBuffRadius = 1200.f;
+
+	// Berserker: montage/attack play-rate multiplier read by BT/abilities.
+	UFUNCTION(BlueprintPure, Category = "Combat")
+	float GetAttackSpeedMultiplier() const;
+
 	// Distance BTTask_ApproachTarget tries to hold from TargetActor.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")
 	float OptimalCombatDistance = 200.f;

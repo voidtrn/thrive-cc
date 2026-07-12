@@ -17,6 +17,16 @@ enum class EEnemyCombatState : uint8
 	Retreat
 };
 
+UENUM(BlueprintType)
+enum class EEnemyPersonality : uint8
+{
+	Aggressive,	// rushdown: short optimal distance, frequent attacks, fragile
+	Defensive,	// waits for openings, longer telegraphs but harder stagger
+	Tactical,	// repositions often, longer optimal distance
+	Cowardly,	// attacks then retreats, flees earlier
+	Berserker	// attack speed rises as HP falls
+};
+
 /** One entry in an enemy's weighted random attack table (see AStickmanEnemyCharacter::WeightedAttacks). */
 USTRUCT(BlueprintType)
 struct FStickmanWeightedAttack

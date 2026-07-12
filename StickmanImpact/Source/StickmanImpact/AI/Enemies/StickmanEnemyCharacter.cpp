@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "EngineUtils.h"
 #include "TimerManager.h"
 
 AStickmanEnemyCharacter::AStickmanEnemyCharacter()
@@ -23,6 +24,53 @@ void AStickmanEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	PatrolOrigin = GetActorLocation();
+
+	// Personality deltas over the archetype base — each type gets a distinct, learnable rhythm.
+	switch (Personality)
+	{
+		case EEnemyPersonality::Aggressive:
+			OptimalCombatDistance *= 0.7f;
+			AttackTellDuration *= 0.85f;
+			Stats.MaxHealth *= 0.8f;
+			break;
+		case EEnemyPersonality::Defensive:
+			AttackTellDuration *= 1.3f;
+			StaggerDamageThreshold *= 1.6f;
+			DodgeChance += 0.15f;
+			break;
+		case EEnemyPersonality::Tactical:
+			OptimalCombatDistance *= 1.4f;
+			DodgeChance += 0.1f;
+			break;
+		case EEnemyPersonality::Cowardly:
+			RetreatHealthPercent = FMath::Max(RetreatHealthPercent, 0.5f);
+			OptimalCombatDistance *= 1.2f;
+			break;
+		case EEnemyPersonality::Berserker:
+			// Speed scaling lives in GetAttackSpeedMultiplier(); nothing static to change.
+			break;
+	}
+
+	// Leader aura: periodic Attack buff to allies in radius while this enemy lives.
+	if (bIsLeader)
+	{
+		FTimerHandle LeaderBuffHandle;
+		GetWorldTimerManager().SetTimer(LeaderBuffHandle, FTimerDelegate::CreateWeakLambda(this, [this]()
+		{
+			for (TActorIterator<AStickmanEnemyCharacter> It(GetWorld()); It; ++It)
+			{
+				if (*It != this && !It->bIsLeader
+					&& FVector::Dist(It->GetActorLocation(), GetActorLocation()) <= LeaderBuffRadius)
+				{
+					if (UStickmanAttributeSet* AllyAttributes = const_cast<UStickmanAttributeSet*>(
+							It->GetAbilitySystemComponent()->GetSet<UStickmanAttributeSet>()))
+					{
+						AllyAttributes->SetAttack(It->Stats.Attack * 1.15f);
+					}
+				}
+			}
+		}), 2.f, true);
+	}
 
 	if (AbilitySystemComponent)
 	{
@@ -209,6 +257,16 @@ void AStickmanEnemyCharacter::Landed(const FHitResult& Hit)
 	Super::Landed(Hit);
 	JuggleHitCount = 0;
 	bAirRecovering = false;
+}
+
+float AStickmanEnemyCharacter::GetAttackSpeedMultiplier() const
+{
+	if (Personality != EEnemyPersonality::Berserker)
+	{
+		return 1.f;
+	}
+	// Berserker: up to +60% attack speed as HP approaches zero.
+	return 1.f + (1.f - GetHealthPercent()) * 0.6f;
 }
 
 float AStickmanEnemyCharacter::GetHealthPercent() const
