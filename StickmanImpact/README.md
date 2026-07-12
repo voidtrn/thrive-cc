@@ -716,6 +716,38 @@ brushes are the standard approach). Hook points already exist: `OnMemberLeveledU
 (PartyManager), `OnItemChanged` (InventoryManager), `OnQuestCompleted` (QuestManager),
 `OnWishRevealed` (Gacha).
 
+## Save/load system
+
+`USaveManager` (GameInstanceSubsystem) + `UStickmanSaveGame` (`SaveSystem/`). 4 slots: slot 0 =
+auto-save, 1-3 manual (call `SaveToSlot` from the waypoint interact UI for "manual save at
+waypoints"). Auto-save triggers: quest progress (`OnQuestUpdated`), waypoint unlock (the "area
+transition" proxy — one seamless world, no hard level transitions to hook), and the interval
+from the settings screen's auto-save setting.
+
+**What's saved**: player transform, full party state (`FPartyMemberState` covers level/stats/
+equipment IDs), inventory, active-quest runtime (asset resolved back via `FSoftObjectPath`;
+current-stage objective counts only — earlier stages are complete by definition), completed
+quest IDs, tracked quest, story flags, played dialogue/watched cutscene IDs, unlocked waypoints
+(re-resolved to world actors by ID on load), collected item IDs, world-time hour, and fog-of-war
+as periodically-sampled player positions (`VisitedFogPoints` — the reveal render target itself
+isn't serializable; the minimap re-stamps these on load. Approximation, honest limitation).
+**Settings deliberately excluded** — they persist globally via `GameUserSettings.ini` already;
+per-slot settings would be wrong.
+
+**File format**: `[magic][version][CRC32][zlib-compressed, XOR-obfuscated payload]` written via
+raw file IO. The XOR pass is tamper-**deterrence**, not security — single-player saves can't be
+truly protected without server authority, so it's labeled honestly. CRC32 catches corruption;
+every write backs up the previous file to `.bak`; load falls back file → `.bak` → auto-save
+slot. Versioning: header int, migrations hook in `ReadSlotFile` (none at v1).
+**Cloud saves**: files live in the standard `Saved/SaveGames/` dir — Steam Auto-Cloud/GOG
+Galaxy sync it by path config, no code; consoles swap the file IO for their `ISaveGameSystem`
+(see `Docs/PACKAGING.md`).
+
+**Load**: `LoadFromSlotAsync` does file IO + decompress on a background task, applies UObjects
+on the game thread. `ULoadingScreenWidget` shows rotating tips + a progress bar (animates to
+~90% on a timer, snaps to 100% on `OnLoadCompleted` — no granular progress exists for a single
+background read; standard fake-smooth bar, labeled as such).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

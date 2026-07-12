@@ -87,6 +87,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Cutscene")
 	void MarkCutsceneWatched(const FString& CutsceneID) { WatchedCutsceneIDs.Add(CutsceneID); }
 
+	// --- Save/load -----------------------------------------------------------
+	TArray<FString> GetWatchedCutsceneIDs() const { return WatchedCutsceneIDs.Array(); }
+	void RestoreWatchedCutsceneIDs(const TArray<FString>& IDs) { WatchedCutsceneIDs = TSet<FString>(IDs); }
+
 private:
 	UFUNCTION()
 	void HandleSequenceFinished();

@@ -102,6 +102,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnInventoryItemChanged OnItemChanged;
 
+	// --- Save/load -----------------------------------------------------------
+	TArray<FInventoryItem> ExportItems() const;
+	void ImportItems(const TArray<FInventoryItem>& SavedItems);
+
 private:
 	UPROPERTY()
 	TMap<FName, FInventoryItem> Items;

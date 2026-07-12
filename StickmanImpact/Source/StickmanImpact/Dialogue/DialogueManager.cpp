@@ -199,3 +199,23 @@ void UDialogueManager::ResetAllPlayedDialogue()
 {
 	PlayedDialogueIDs.Reset();
 }
+
+void UDialogueManager::ExportSaveState(TArray<FGameplayTag>& OutFlags, TArray<FString>& OutPlayedIDs) const
+{
+	OutFlags.Reset();
+	for (const FGameplayTag& Flag : StoryFlags)
+	{
+		OutFlags.Add(Flag);
+	}
+	OutPlayedIDs = PlayedDialogueIDs.Array();
+}
+
+void UDialogueManager::ImportSaveState(const TArray<FGameplayTag>& Flags, const TArray<FString>& PlayedIDs)
+{
+	StoryFlags.Reset();
+	for (const FGameplayTag& Flag : Flags)
+	{
+		StoryFlags.AddTag(Flag);
+	}
+	PlayedDialogueIDs = TSet<FString>(PlayedIDs);
+}

@@ -5,6 +5,7 @@
 #include "Dialogue/DialogueManager.h"
 #include "Data/InventoryManager.h"
 #include "Party/PartyManager.h"
+#include "SaveSystem/StickmanSaveGame.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -227,6 +228,64 @@ UQuestDataAsset* UQuestManager::GetActiveQuestAsset(const FString& QuestID) cons
 {
 	const FActiveQuestRuntime* Runtime = ActiveQuests.Find(QuestID);
 	return Runtime ? Runtime->QuestAsset : nullptr;
+}
+
+void UQuestManager::ExportSaveState(TArray<FQuestSaveState>& OutActive, TArray<FString>& OutCompleted,
+	FString& OutTracked) const
+{
+	OutActive.Reset();
+	for (const auto& Pair : ActiveQuests)
+	{
+		const FActiveQuestRuntime& Runtime = Pair.Value;
+		FQuestSaveState State;
+		State.QuestID = Pair.Key;
+		State.QuestAssetPath = FSoftObjectPath(Runtime.QuestAsset);
+		State.CurrentStageIndex = Runtime.CurrentStageIndex;
+		if (Runtime.RuntimeStages.IsValidIndex(Runtime.CurrentStageIndex))
+		{
+			for (const FQuestObjective& Objective : Runtime.RuntimeStages[Runtime.CurrentStageIndex].Objectives)
+			{
+				State.CurrentStageObjectiveCounts.Add(Objective.CurrentCount);
+			}
+		}
+		OutActive.Add(State);
+	}
+	OutCompleted = CompletedQuestIDs.Array();
+	OutTracked = TrackedQuestID;
+}
+
+void UQuestManager::ImportSaveState(const TArray<FQuestSaveState>& Active, const TArray<FString>& Completed,
+	const FString& Tracked)
+{
+	ActiveQuests.Reset();
+	CompletedQuestIDs = TSet<FString>(Completed);
+	TrackedQuestID = Tracked;
+
+	for (const FQuestSaveState& State : Active)
+	{
+		UQuestDataAsset* Asset = Cast<UQuestDataAsset>(State.QuestAssetPath.TryLoad());
+		if (!Asset)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("[QuestManager] Save references missing quest asset %s — dropping."),
+				*State.QuestAssetPath.ToString());
+			continue;
+		}
+
+		FActiveQuestRuntime Runtime;
+		Runtime.QuestAsset = Asset;
+		Runtime.RuntimeStages = Asset->Stages;
+		Runtime.CurrentStageIndex = FMath::Clamp(State.CurrentStageIndex, 0, Runtime.RuntimeStages.Num() - 1);
+
+		if (Runtime.RuntimeStages.IsValidIndex(Runtime.CurrentStageIndex))
+		{
+			TArray<FQuestObjective>& Objectives = Runtime.RuntimeStages[Runtime.CurrentStageIndex].Objectives;
+			for (int32 Index = 0; Index < Objectives.Num() && Index < State.CurrentStageObjectiveCounts.Num(); ++Index)
+			{
+				Objectives[Index].CurrentCount = State.CurrentStageObjectiveCounts[Index];
+			}
+		}
+		ActiveQuests.Add(State.QuestID, Runtime);
+	}
 }
 
 FQuestStage UQuestManager::GetCurrentStage(const FString& QuestID) const

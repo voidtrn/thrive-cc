@@ -89,6 +89,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Dialogue")
 	const TArray<FDialogueLine>& GetHistory() const { return HistoryLog; }
 
+	// --- Save/load ---------------------------------------------------------
+	void ExportSaveState(TArray<FGameplayTag>& OutFlags, TArray<FString>& OutPlayedIDs) const;
+	void ImportSaveState(const TArray<FGameplayTag>& Flags, const TArray<FString>& PlayedIDs);
+
 private:
 	void EndDialogue();
 	bool IsLineEligible(const FDialogueLine& Line) const;

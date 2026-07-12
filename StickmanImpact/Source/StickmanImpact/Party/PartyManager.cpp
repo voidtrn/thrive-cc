@@ -175,6 +175,17 @@ bool UPartyManager::TryAscend(int32 MemberIndex)
 	return true;
 }
 
+void UPartyManager::ImportSaveState(const TArray<FPartyMemberState>& Members, int32 ActiveMemberIndex)
+{
+	PartyMembers = Members;
+	ActiveIndex = PartyMembers.IsValidIndex(ActiveMemberIndex) ? ActiveMemberIndex : 0;
+	RecalculateResonance();
+	if (PartyMembers.Num() > 0)
+	{
+		ApplyActiveMemberToPawn();
+	}
+}
+
 void UPartyManager::RecalculateResonance()
 {
 	TMap<EStickmanElement, int32> ElementCounts;

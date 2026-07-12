@@ -104,6 +104,24 @@ bool UInventoryManager::HasItems(const TMap<FName, int32>& Requirements) const
 	return true;
 }
 
+TArray<FInventoryItem> UInventoryManager::ExportItems() const
+{
+	TArray<FInventoryItem> Result;
+	Items.GenerateValueArray(Result);
+	return Result;
+}
+
+void UInventoryManager::ImportItems(const TArray<FInventoryItem>& SavedItems)
+{
+	Items.Reset();
+	NextAcquiredSequence = 0;
+	for (const FInventoryItem& Item : SavedItems)
+	{
+		Items.Add(Item.ItemID, Item);
+		NextAcquiredSequence = FMath::Max(NextAcquiredSequence, Item.AcquiredSequence + 1);
+	}
+}
+
 bool UInventoryManager::ConsumeItems(const TMap<FName, int32>& Requirements)
 {
 	if (!HasItems(Requirements))

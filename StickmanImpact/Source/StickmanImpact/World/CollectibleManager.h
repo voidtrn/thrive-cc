@@ -34,6 +34,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Collectibles")
 	FOnCollectibleCollected OnCollectibleCollected;
 
+	// --- Save/load. Region counts rebuild lazily: totals re-register on level load, and
+	// restored IDs re-count against whichever regions re-report them; per-region counts are
+	// derived data, safe to reset. -------------------------------------------------
+	TArray<FString> GetCollectedIDs() const { return CollectedIDs.Array(); }
+	void RestoreCollectedIDs(const TArray<FString>& IDs) { CollectedIDs = TSet<FString>(IDs); }
+
 private:
 	TSet<FString> CollectedIDs;
 	TMap<FName, int32> RegionTotals;

@@ -44,6 +44,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Waypoint")
 	FOnTeleportRequested OnTeleportRequested;
 
+	// --- Save/load: IDs out; restore re-resolves world actors by WaypointID. --
+	TArray<FString> GetUnlockedWaypointIDs() const { return UnlockedWaypointIDs.Array(); }
+	void RestoreUnlockedFromIDs(const TArray<FString>& IDs, UWorld* World);
+
 private:
 	UPROPERTY()
 	TArray<TObjectPtr<AWaypointActor>> UnlockedWaypoints;

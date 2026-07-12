@@ -70,6 +70,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Quest")
 	UQuestDataAsset* GetActiveQuestAsset(const FString& QuestID) const;
 
+	// --- Save/load -----------------------------------------------------------
+	void ExportSaveState(TArray<struct FQuestSaveState>& OutActive, TArray<FString>& OutCompleted,
+		FString& OutTracked) const;
+	void ImportSaveState(const TArray<struct FQuestSaveState>& Active, const TArray<FString>& Completed,
+		const FString& Tracked);
+
 	UFUNCTION(BlueprintPure, Category = "Quest")
 	FQuestStage GetCurrentStage(const FString& QuestID) const;
 

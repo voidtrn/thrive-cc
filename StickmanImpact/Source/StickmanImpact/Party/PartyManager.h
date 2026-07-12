@@ -96,6 +96,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Party")
 	FOnResonanceChanged OnResonanceChanged;
 
+	// --- Save/load -----------------------------------------------------------
+	void ImportSaveState(const TArray<FPartyMemberState>& Members, int32 ActiveMemberIndex);
+
 private:
 	float GetEXPRequiredForLevel(int32 Level) const;
 	void RecalculateResonance();

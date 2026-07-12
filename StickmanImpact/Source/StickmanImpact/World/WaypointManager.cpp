@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "GameFramework/Character.h"
+#include "EngineUtils.h"
 
 void UWaypointManager::UnlockWaypoint(AWaypointActor* Waypoint)
 {
@@ -29,6 +30,23 @@ TArray<AWaypointActor*> UWaypointManager::GetUnlockedWaypoints() const
 		}
 	}
 	return Result;
+}
+
+void UWaypointManager::RestoreUnlockedFromIDs(const TArray<FString>& IDs, UWorld* World)
+{
+	UnlockedWaypointIDs = TSet<FString>(IDs);
+	UnlockedWaypoints.Reset();
+	if (!World)
+	{
+		return;
+	}
+	for (TActorIterator<AWaypointActor> It(World); It; ++It)
+	{
+		if (UnlockedWaypointIDs.Contains(It->WaypointID))
+		{
+			UnlockedWaypoints.Add(*It);
+		}
+	}
 }
 
 void UWaypointManager::TeleportTo(AWaypointActor* Destination)
