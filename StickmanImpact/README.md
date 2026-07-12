@@ -852,6 +852,20 @@ All on `AStickmanCharacter` (tunables under `Locomotion|*` / `Camera|Dynamics` c
   sprint anims keyed off the party member's `EWeaponType` — all AnimBP graph wiring reading
   getters that already exist; no C++ needed beyond what's here.
 
+## Movement game feel
+
+`UGameFeelComponent` (add to the player alongside the VFX components): velocity-scaled wind
+loop (volume + pitch), motion blur amount riding velocity on the follow camera's post-process,
+tiered whoosh SFX (once per upward threshold crossing), low-stamina package (heavy-breathing
+loop, controller vibration pulse, post-process desaturation, `OnExhaustionChanged` for the
+HUD's red vignette + stamina-bar shake animation), footstep micro camera shake (honors the
+screen-shake setting), and `NotifyPerfectDodge()` (0.05× dilation for a real-time blink —
+called by the enemy telegraph system when a dash beats an attack window). Footstep upgrades in
+`UStickmanFootstepComponent`: per-surface footprint decals, shallow-water ripple VFX,
+speed-weighted volume/pitch (walk vs sprint pattern comes from anim notify spacing). Dash-start
+burst one-shot added to `UStickmanCharacterVFXComponent`; speed lines = author the existing
+`SprintWindVFX` as peripheral lines; grass bend already rides the foliage MPC pipeline.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

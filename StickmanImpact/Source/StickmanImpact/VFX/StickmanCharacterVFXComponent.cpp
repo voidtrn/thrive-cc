@@ -49,6 +49,15 @@ void UStickmanCharacterVFXComponent::TickComponent(float DeltaTime, ELevelTick T
 	using namespace StickmanGameplayTags;
 	const FGameplayTag Tag = Character->GetCurrentMovementTag();
 
+	// Dash-start burst: one-shot on the frame the Dashing state begins.
+	if (Tag == State_Movement_Dashing && LastMovementTag != State_Movement_Dashing && DashBurstVFX)
+	{
+		if (UVFXManager* VFX = GetOwner()->FindComponentByClass<UVFXManager>())
+		{
+			VFX->SpawnVFX(DashBurstVFX, Character->GetActorLocation(), Character->GetActorRotation());
+		}
+	}
+
 	UpdateStateLoop(DashTrailComponent, DashTrailVFX, Tag == State_Movement_Dashing);
 	UpdateStateLoop(SprintWindComponent, SprintWindVFX, Tag == State_Movement_Sprinting);
 	UpdateStateLoop(GlideWindComponent, GlideWindLinesVFX, Tag == State_Movement_Gliding);

@@ -46,6 +46,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX|Movement")
 	TObjectPtr<UNiagaraSystem> LandingImpactVFX;
 
+	// One-shot burst at dash start (dust kick + particles).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX|Movement")
+	TObjectPtr<UNiagaraSystem> DashBurstVFX;
+
 	// Element-colored loops: aura swirl around the character + weapon trail. Author one
 	// Niagara system each with a "ElementColor" linear color User parameter.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VFX|Element")

@@ -32,6 +32,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps")
 	float TraceDistance = 150.f;
 
+	// --- Game feel upgrades -------------------------------------------------
+
+	// Footprint decal (soft surfaces: assign per-surface; unlisted surfaces leave no print).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps|Feel")
+	TMap<TEnumAsByte<EPhysicalSurface>, TObjectPtr<UMaterialInterface>> FootprintDecals;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps|Feel")
+	float DecalLifetime = 12.f;
+
+	// Ripple VFX on the Water surface type (shallow water).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps|Feel")
+	TObjectPtr<class UNiagaraSystem> WaterRippleVFX;
+
+	// Volume/pitch weight by speed: walking = soft; sprinting = heavier, slightly lower pitch.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps|Feel")
+	float SprintVolumeMultiplier = 1.4f;
+
 	UFUNCTION(BlueprintCallable, Category = "Footsteps")
 	void PlayFootstep();
 };
