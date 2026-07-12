@@ -30,6 +30,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Damage Numbers")
 	void SpawnDamageNumber(AActor* Target, float Damage, EDamageNumberType Type);
 
+	// Hits on the same target within this window merge into one accumulating number instead
+	// of stacking overlapping widgets (multi-hit readability). 0 disables merging.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage Numbers")
+	float AccumulationWindow = 0.4f;
+
 	virtual void Deinitialize() override;
 
 private:
@@ -41,4 +46,14 @@ private:
 
 	UPROPERTY()
 	TArray<TObjectPtr<UWidgetComponent>> InactivePool;
+
+	// Accumulation state per target.
+	struct FAccumulatingNumber
+	{
+		TWeakObjectPtr<UStickmanDamageNumberWidget> Widget;
+		float Total = 0.f;
+		double LastHitTime = 0.0;
+		EDamageNumberType Type = EDamageNumberType::Physical;
+	};
+	TMap<TWeakObjectPtr<AActor>, FAccumulatingNumber> Accumulating;
 };

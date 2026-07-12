@@ -10,8 +10,10 @@ UENUM(BlueprintType)
 enum class EEnemyCombatState : uint8
 {
 	Patrol,
+	Suspicious,	// heard something — investigate before full alert
 	Alert,
 	Combat,
+	Staggered,
 	Retreat
 };
 

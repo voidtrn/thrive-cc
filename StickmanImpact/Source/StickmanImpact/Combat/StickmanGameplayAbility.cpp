@@ -9,6 +9,8 @@
 #include "World/StickmanTorch.h"
 #include "GameFlow/StickmanCheatManager.h"
 #include "CombatFeedbackSubsystem.h"
+#include "CombatJuiceSubsystem.h"
+#include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "Character/StickmanCharacter.h"
 #include "Equipment/EquipmentManager.h"
 #include "Character/StickmanGameplayTags.h"
@@ -310,13 +312,27 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 				DamageNumbers->SpawnDamageNumber(TargetActor, FinalDamage, NumberType);
 			}
 
+			const bool bKilled = NewHealth <= 0.f;
+			const AActor* Avatar = GetAvatarActorFromActorInfo();
+			const FVector HitDirection = Avatar
+				? (TargetActor->GetActorLocation() - Avatar->GetActorLocation()).GetSafeNormal()
+				: FVector::ForwardVector;
+
 			if (UCombatFeedbackSubsystem* CombatFeedback = GameInstance->GetSubsystem<UCombatFeedbackSubsystem>())
 			{
 				CombatFeedback->NotifyHitLanded(TargetActor, FinalDamage, bIsCritical);
-				if (NewHealth <= 0.f)
+				if (bKilled)
 				{
 					CombatFeedback->NotifyKillConfirmed(TargetActor);
 				}
+			}
+			if (UCombatJuiceSubsystem* Juice = GameInstance->GetSubsystem<UCombatJuiceSubsystem>())
+			{
+				Juice->NotifyHit(TargetActor, FinalDamage, bIsCritical, SkillData.Element, HitDirection, bKilled);
+			}
+			if (AStickmanEnemyCharacter* Enemy = Cast<AStickmanEnemyCharacter>(TargetActor))
+			{
+				Enemy->ReceiveHitFeedback(HitDirection, FinalDamage, bKilled);
 			}
 		}
 	}

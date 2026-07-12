@@ -77,6 +77,39 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Combat")
 	EEnemyCombatState GetCombatState() const { return CurrentCombatState; }
 
+	// --- Hit reaction polish (called by UStickmanGameplayAbility::ApplyDamageToTarget) -----
+
+	// Accumulated damage inside StaggerWindow above this = stagger (flinch montage + brief stop).
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	float StaggerDamageThreshold = 120.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	float StaggerWindow = 2.f;
+
+	// Interruptible flinch — play as an upper-body-slot montage so locomotion blends under it.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	TObjectPtr<UAnimMontage> FlinchMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	TObjectPtr<UAnimMontage> StaggerMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	float KnockbackForce = 350.f;
+
+	// "Seeing stars" loop while stunned/staggered.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	TObjectPtr<class UNiagaraSystem> StunnedStarsVFX;
+
+	// >= 3 variants per spec; SoundCue random node inside each also works.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Hit Reaction")
+	TArray<TObjectPtr<USoundBase>> PainSounds;
+
+	UFUNCTION(BlueprintCallable, Category = "Hit Reaction")
+	void ReceiveHitFeedback(const FVector& HitDirection, float Damage, bool bKilled);
+
+	UFUNCTION(BlueprintPure, Category = "Hit Reaction")
+	bool IsStaggered() const { return bIsStaggered; }
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStickmanAbilitySystemComponent> AbilitySystemComponent;
@@ -85,4 +118,12 @@ protected:
 	TObjectPtr<UStickmanAttributeSet> AttributeSet;
 
 	EEnemyCombatState CurrentCombatState = EEnemyCombatState::Patrol;
+
+	// Hit-reaction runtime state.
+	float StaggerAccumulatedDamage = 0.f;
+	float LastHitTime = -999.f;
+	bool bIsStaggered = false;
+	FTimerHandle StaggerRecoverTimerHandle;
+
+	void ActivateRagdoll(const FVector& ForceDirection, float Damage);
 };

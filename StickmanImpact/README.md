@@ -866,6 +866,24 @@ speed-weighted volume/pitch (walk vs sprint pattern comes from anim notify spaci
 burst one-shot added to `UStickmanCharacterVFXComponent`; speed lines = author the existing
 `SprintWindVFX` as peripheral lines; grass bend already rides the foliage MPC pipeline.
 
+## Combat hit feedback
+
+`UCombatJuiceSubsystem` — one full-context `NotifyHit()` call from `ApplyDamageToTarget` fans
+out: **hit stop** (0.05-0.15s by damage, crit = max, multi-hit guard freezes only the first hit
+in a flurry, toggleable), **camera shake** (damage-scaled, camera-distance falloff, world-space
+directional from the hit vector, per-element patterns — author with the engine's
+`UPerlinNoiseCameraShakePattern`, honors the screen-shake setting), **impact VFX** (per-element
+spark aligned against the hit direction, impact ring, damage-scaled, ground-crack decal on heavy
+hits), **layered audio** (physical base + element layer, ±10% pitch, distinct kill sound;
+priority = the concurrency asset's resolution rule; material layer = a SoundCue surface switch
+inside the base sound). Enemy side (`ReceiveHitFeedback` on `AStickmanEnemyCharacter`):
+window-decayed **stagger accumulation** (threshold = stagger montage + `Staggered` state +
+seeing-stars VFX; below = interruptible flinch), directional knockback, ≥3 pain-sound variants,
+and **ragdoll on the killing blow** with damage-scaled impulse along the final hit. Damage
+numbers now **merge multi-hits** (same target + type within `AccumulationWindow` grow one
+number instead of stacking); crit styling (bigger/gold) already existed — outline is a WBP
+font-outline setting.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
