@@ -815,6 +815,15 @@ from Shipping builds** — that's UCheatManager's builtin behavior, no extra wor
 `ApplyDamageToTarget`/`UElementalReactionManager::ApplyDirectDamage` and
 `AStickmanCharacter::ConsumeStamina`.
 
+## Packaging
+
+Full guide in `Docs/PACKAGING.md`: build configs (Shipping strips console + cheat manager
+automatically), cook settings (never-cook dev folders, per-platform texture/audio compression),
+icon/splash/version, a RunUAT automation script, a distribution checklist (including the
+corrupt-save fallback test and the honest "this code has never met a real UE 5.4 compiler —
+budget a fix pass first" line item), pak-patching for updates, crash reporter + opt-in
+analytics wiring, and the Steam/console save + achievement integration seams.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
