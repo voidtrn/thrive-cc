@@ -6,6 +6,7 @@
 #include "ElementalReactionSubsystem.generated.h"
 
 class ACharacterBase;
+enum class EWeatherType : uint8;
 
 /** Aura elemen aktif di satu target. */
 USTRUCT()
@@ -103,6 +104,18 @@ public:
 	/** Aura aktif target (buat UI debuff icon / VFX loop). */
 	UFUNCTION(BlueprintPure, Category = "Elemental")
 	EElement GetPrimaryAura(AActor* Target) const;
+
+	/**
+	 * Weather × Element: multiplier gauge unit per cuaca (GAME_LONGEVITY
+	 * PATTERNS.md §1c — "cuaca belum mempengaruhi gauge secara sistemik",
+	 * sekarang iya). Pure static, testable tanpa World:
+	 *   Rain: Hydro/Dendro 1.25/1.15, Electro 1.15, Pyro 0.75
+	 *   Thunderstorm: Electro 1.3, Hydro 1.25, Pyro 0.6
+	 *   Snow: Cryo 1.25, Pyro 0.8 · Fog: Hydro 1.1 · lainnya 1.0
+	 * Dipakai ApplyElement — hujan bikin dunia "basah" (Hydro nempel lebih
+	 * kuat, api susah nyala), badai bikin Electro chain lebih ganas.
+	 */
+	static float GetWeatherGaugeMultiplier(EWeatherType Weather, EElement Element);
 
 	UPROPERTY(BlueprintAssignable, Category = "Elemental")
 	FOnReactionTriggered OnReactionTriggered;

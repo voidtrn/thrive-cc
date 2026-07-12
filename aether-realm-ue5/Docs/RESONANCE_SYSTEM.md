@@ -29,10 +29,20 @@ Multiple resonance bisa aktif bersamaan (party of 4).
 
 ## Integrasi ke sistem lain (kondisional)
 
-Efek query belum di-hook otomatis — sistem yang relevan tinggal baca:
-- **Shattering Ice**: damage crit roll vs musuh frozen tambah `GetCritRateVsFrozenBonus()`.
-- **Enduring Rock**: shield system (belum ada di C++, BP) kali `1 + GetShieldStrengthBonus()`.
-- **High Voltage**: Electro-Charged / Superconduct reaction generate energy kalau `IsHighVoltageActive()`.
+- **Shattering Ice**: ✅ wired — `UDamageCalculator::CalculateDamage` cek
+  `Victim->IsFrozen()`, tambah `GetCritRateVsFrozenBonus()` ke crit rate lewat
+  `Attacker->GetController()` → `AOpenWorldPlayerController::GetResonance()`.
+  Attacker non-player (gak punya controller tipe itu) no-op aman.
+- **Enduring Rock**: ✅ wired — `ResonanceComponent.cpp` set
+  `Shield->ExtraShieldStrength` langsung (lihat `UShieldComponent`).
+- **High Voltage**: ⚠️ **masih belum di-hook**. `IsHighVoltageActive()` query
+  ada tapi 0 caller. Beda dari 2 di atas — ini butuh keputusan desain yang
+  gak ke-spec di sini (berapa energy per reaction, reaction mana yang
+  trigger, ada cooldown apa gak), jadi sengaja gak ditebak asal comot pas
+  pass ini. Kalau mau digarap: tentuin dulu angka pastinya, baru hook di
+  `UElementalReactionSubsystem::ResolveReaction` (Electro-Charged/
+  Superconduct branch) panggil `CombatComponent::GainEnergyParticles` ke
+  instigator.
 
 ## Setup editor
 

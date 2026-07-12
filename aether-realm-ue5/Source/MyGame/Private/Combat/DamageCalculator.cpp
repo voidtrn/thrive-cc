@@ -1,5 +1,7 @@
 #include "Combat/DamageCalculator.h"
 #include "Character/CharacterBase.h"
+#include "System/OpenWorldPlayerController.h"
+#include "System/ResonanceComponent.h"
 
 float UDamageCalculator::CalculateDamage(
 	const ACharacterBase* Attacker,
@@ -22,7 +24,25 @@ float UDamageCalculator::CalculateDamage(
 	// DMGBonus% per elemen (physical/elemental terpisah, di-set progression + goblet).
 	const float DmgBonus = 1.f + Attacker->GetDMGBonus(Element);
 
-	bOutCrit = FMath::FRand() < Attacker->CritRate;
+	// Shattering Ice resonance (2 Cryo, RESONANCE_SYSTEM.md): +crit rate vs
+	// musuh frozen. Query ada di UResonanceComponent sejak awal tapi gak
+	// pernah dibaca di mana pun — 0 dampak gameplay walau resonance-nya
+	// "aktif". Attacker non-player (enemy attacking enemy — gak ada di
+	// gameplay sekarang, tapi AEnemyBase juga ACharacterBase) gak punya
+	// AOpenWorldPlayerController → Cast gagal ke nullptr, no-op aman.
+	float ResonanceCritBonus = 0.f;
+	if (Victim->IsFrozen())
+	{
+		if (const AOpenWorldPlayerController* PC = Cast<AOpenWorldPlayerController>(Attacker->GetController()))
+		{
+			if (const UResonanceComponent* Resonance = PC->GetResonance())
+			{
+				ResonanceCritBonus = Resonance->GetCritRateVsFrozenBonus();
+			}
+		}
+	}
+
+	bOutCrit = FMath::FRand() < EffectiveCritRate(Attacker->CritRate, Victim->IsFrozen(), ResonanceCritBonus);
 	const float CritMult = bOutCrit ? (1.f + Attacker->CritDMG) : 1.f;
 
 	const float Def = DefReduction(Attacker->Level, Victim->Level);
@@ -62,4 +82,9 @@ float UDamageCalculator::TransformativeBaseDamage(int32 Level, float ReactionCoe
 	// Aproksimasi linear kurva level Genshin — cukup untuk prototype, tuning via curve asset nanti.
 	const float LevelMultiplier = 17.17f * Level;
 	return LevelMultiplier * ReactionCoefficient;
+}
+
+float UDamageCalculator::EffectiveCritRate(float BaseCritRate, bool bVictimFrozen, float CritVsFrozenBonus)
+{
+	return bVictimFrozen ? BaseCritRate + CritVsFrozenBonus : BaseCritRate;
 }

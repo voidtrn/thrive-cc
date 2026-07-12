@@ -6,7 +6,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "System/PacingDirectorSubsystem.h"
-#include "Kismet/GameplayStatics.h"
+#include "System/EnemyRegistrySubsystem.h"
 
 namespace
 {
@@ -115,19 +115,21 @@ void AEnemyAIController::SetCombatTarget(AActor* Target)
 
 void AEnemyAIController::AlertNearbyAllies(AActor* Target)
 {
-	TArray<AActor*> Allies;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyBase::StaticClass(), Allies);
+	UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>();
+	if (!Registry)
+	{
+		return;
+	}
 
 	const FVector MyLocation = GetPawn() ? GetPawn()->GetActorLocation() : FVector::ZeroVector;
 
-	for (AActor* Ally : Allies)
+	for (AEnemyBase* Ally : Registry->GetAllEnemies())
 	{
-		if (Ally == GetPawn() || FVector::Dist(Ally->GetActorLocation(), MyLocation) > TeamAggroRadius)
+		if (!Ally || Ally == GetPawn() || FVector::Dist(Ally->GetActorLocation(), MyLocation) > TeamAggroRadius)
 		{
 			continue;
 		}
-		if (AEnemyAIController* AllyController =
-			Cast<AEnemyAIController>(Cast<APawn>(Ally)->GetController()))
+		if (AEnemyAIController* AllyController = Cast<AEnemyAIController>(Ally->GetController()))
 		{
 			AllyController->SetCombatTarget(Target);
 		}

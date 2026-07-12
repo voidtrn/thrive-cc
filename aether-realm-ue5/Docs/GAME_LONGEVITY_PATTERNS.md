@@ -42,9 +42,18 @@ Retensi jangka panjang datang dari **sistem yang berinteraksi**, bukan konten
 scripted. Konten scripted habis ditonton sekali; sistem menghasilkan momen
 baru terus. Ini juga yang bikin klip viral (lihat §2c).
 
-**Penerapan: ✅ fondasi ada** — elemen × cuaca × reaksi × AI (mis. hujan =
-semua basah = Electro AOE chain). Gap yang bisa digarap nanti: cuaca belum
-mempengaruhi gauge elemental musuh secara sistemik.
+**Penerapan: ✅ DIIMPLEMENTASI** — dua sistem emergent baru:
+- **Weather × Element** (`UElementalReactionSubsystem::GetWeatherGaugeMultiplier`)
+  — cuaca modulasi gauge sistemik: hujan buff Hydro/Electro/Dendro & nerf
+  Pyro, badai buff Electro 1.3× & nerf Pyro 0.6×, salju buff Cryo. Cuaca
+  sekarang variabel taktis combat, bukan cuma visual. Gap lama closed.
+- **Enemy Elemental Adaptation** (`UElementAdaptationSubsystem`) — musuh
+  se-dunia belajar elemen yang di-spam player → attuned (RES naik, cap 30%,
+  decay ~45s). Nemesis-lite versi elemental — gak ada di Genshin/ARPG
+  open-world lain. Anti-spam, maksa variasi reaksi. Cuma aktif kalau 1
+  elemen >50% porsi damage DAN volume cukup — main variatif = gak pernah
+  kena. RES-shred (superconduct) tetap valid sebagai counter.
+Keduanya punya pure-math core + automation test (`EmergentSystemsTest.cpp`).
 
 ### 1d. Modding & community content (L4D2/TF2/Dota workshop)
 
