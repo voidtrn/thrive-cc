@@ -259,6 +259,18 @@ void AStickmanEnemyCharacter::Landed(const FHitResult& Hit)
 	bAirRecovering = false;
 }
 
+float AStickmanEnemyCharacter::GetElementDamageMultiplier(EStickmanElement Element) const
+{
+	const float* Multiplier = ElementDamageMultipliers.Find(Element);
+	return Multiplier ? *Multiplier : 1.f;
+}
+
+float AStickmanEnemyCharacter::GetReactionDamageMultiplier(EStickmanReactionType Reaction) const
+{
+	const float* Multiplier = ReactionDamageMultipliers.Find(Reaction);
+	return Multiplier ? *Multiplier : 1.f;
+}
+
 float AStickmanEnemyCharacter::GetAttackSpeedMultiplier() const
 {
 	if (Personality != EEnemyPersonality::Berserker)

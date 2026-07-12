@@ -26,7 +26,14 @@ enum class EStickmanReactionType : uint8
 	Crystallize,	// Geo + Pyro/Hydro/Cryo/Electro
 	Quicken,		// Electro + Dendro (aura, not a burst)
 	Aggravate,		// Electro hits a Quicken'd target
-	Spread			// Dendro hits a Quicken'd target
+	Spread,			// Dendro hits a Quicken'd target
+
+	// Triple reactions (two existing auras + the incoming element).
+	Shatterfrost,		// Pyro + Hydro + Cryo: AoE freeze + physical shatter
+	Wildfire,			// Pyro + Electro + Dendro: spreading AoE, damages player too
+	SuperconductFreeze,	// Hydro + Cryo + Electro: frozen + defense shred combined
+	ElectroChargedSteam,// Electro + Pyro + Hydro: blinding fog AoE
+	ElementalStorm		// Anemo + any 2 others: massive swirl AoE
 };
 
 /** One element "aura" currently active on an actor. Decays to nothing after Duration seconds. */

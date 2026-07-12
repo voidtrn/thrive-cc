@@ -84,6 +84,28 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Reactions")
 	FStickmanElementApplied OnElementApplied;
 
+	// --- Reaction chains ---------------------------------------------------
+	// Reactions within ChainWindow of each other chain: +15% reaction damage per link,
+	// broadcast for the "reaction chain x3!" UI. A chain that consumes all 7 elements =
+	// Grand Reaction (massive AoE at the last target).
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reactions|Chain")
+	float ChainWindow = 4.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reactions|Chain")
+	float ChainDamageBonusPerLink = 0.15f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reactions|Chain")
+	float GrandReactionDamage = 800.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reactions|Chain")
+	float GrandReactionRadius = 900.f;
+
+	UFUNCTION(BlueprintPure, Category = "Reactions|Chain")
+	int32 GetCurrentChainCount() const { return ReactionChainCount; }
+
+	DECLARE_MULTICAST_DELEGATE_OneParam(FOnReactionChain, int32);
+	FOnReactionChain OnReactionChain;
+
 	// Data asset holding VFX/SFX/camera shake per reaction. Point ReactionEffectsAssetPath at
 	// it in DefaultGame.ini under [/Script/StickmanImpact.ElementalReactionManager], or assign
 	// directly if you subclass this subsystem in Blueprint.
@@ -94,6 +116,11 @@ public:
 	TSubclassOf<AStickmanElementalShard> ElementalShardClass;
 
 private:
+	EStickmanReactionType DetermineTripleReaction(EStickmanElement A, EStickmanElement B, EStickmanElement Incoming) const;
+	void TrackReactionChain(AActor* Target, EStickmanElement ConsumedA, EStickmanElement ConsumedB);
+	float GetChainDamageMultiplier() const;
+	float GetTargetReactionDamageScale(AActor* Target, EStickmanReactionType Reaction) const;
+
 	EStickmanReactionType DetermineReaction(EStickmanElement Existing, EStickmanElement Incoming) const;
 	static bool IsSwirlable(EStickmanElement Element);
 	static bool IsCrystallizable(EStickmanElement Element);
@@ -119,6 +146,11 @@ private:
 
 	TMap<TWeakObjectPtr<AActor>, TArray<FActiveElement>> ActiveElementsMap;
 	TMap<TWeakObjectPtr<AActor>, FStickmanReactionState> ReactionStateMap;
+
+	// Chain runtime state.
+	int32 ReactionChainCount = 0;
+	double LastReactionTime = -999.0;
+	TSet<uint8> ElementsConsumedThisChain;
 
 	IConsoleCommand* ShowReactionLogCommand = nullptr;
 	IConsoleCommand* DisplayElementalGaugeCommand = nullptr;

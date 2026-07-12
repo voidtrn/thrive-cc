@@ -7,6 +7,7 @@
 #include "UI/StickmanDamageNumberTypes.h"
 #include "AI/Enemies/EnemyShieldGuard.h"
 #include "World/StickmanTorch.h"
+#include "World/StickmanInteractiveFoliage.h"
 #include "GameFlow/StickmanCheatManager.h"
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
@@ -207,8 +208,11 @@ void UStickmanGameplayAbility::ApplyRadialElementalDamage(const FVector& Origin,
 	{
 		ActorsToIgnore.Append(*ExtraActorsToIgnore);
 	}
+	// Pawns + world objects: torches/interactive foliage react to elemental hits too.
 	UGameplayStatics::SphereOverlapActors(this, Origin, Radius,
-		TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
+		TArray<TEnumAsByte<EObjectTypeQuery>>{
+			UEngineTypes::ConvertToObjectType(ECC_Pawn),
+			UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) }, nullptr,
 		ActorsToIgnore, Overlaps);
 
 	const float CosHalfAngle = FMath::Cos(FMath::DegreesToRadians(FMath::Min(HalfAngleDegrees, 180.f)));
@@ -248,6 +252,19 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 	{
 		Torch->TryAffectWithElement(SkillData.Element);
 		return; // Torches have no health/ASC — hitting one is a puzzle interaction, not damage.
+	}
+
+	// Interactive foliage: burn (Pyro), freeze (Cryo), cut (physical) — environment interaction.
+	if (AStickmanInteractiveFoliage* Foliage = Cast<AStickmanInteractiveFoliage>(TargetActor))
+	{
+		switch (SkillData.Element)
+		{
+			case EStickmanElement::Pyro: Foliage->OnBurned(); break;
+			case EStickmanElement::Cryo: Foliage->OnFrozen(); break;
+			case EStickmanElement::None: Foliage->OnCut(); break;
+			default: break;
+		}
+		return;
 	}
 
 	if (TargetActor == UGameplayStatics::GetPlayerPawn(this, 0))
@@ -306,6 +323,16 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			if (const AActor* Avatar = GetAvatarActorFromActorInfo())
 			{
 				FinalDamage *= ShieldGuard->GetIncomingDamageMultiplier(Avatar->GetActorLocation());
+			}
+		}
+
+		// Elemental resistance/immunity/weakness on the target (elite 0.5, boss-own-element 0, ...).
+		if (const AStickmanEnemyCharacter* ResistTarget = Cast<AStickmanEnemyCharacter>(TargetActor))
+		{
+			FinalDamage *= ResistTarget->GetElementDamageMultiplier(SkillData.Element);
+			if (FinalDamage <= 0.f)
+			{
+				return; // Immune.
 			}
 		}
 

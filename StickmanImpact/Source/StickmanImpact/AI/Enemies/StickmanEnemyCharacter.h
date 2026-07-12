@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "AI/StickmanAITypes.h"
 #include "Character/StickmanStatTypes.h"
+#include "Combat/StickmanReactionTypes.h"
 #include "StickmanEnemyCharacter.generated.h"
 
 class UStickmanAbilitySystemComponent;
@@ -57,6 +58,23 @@ public:
 	// Berserker: montage/attack play-rate multiplier read by BT/abilities.
 	UFUNCTION(BlueprintPure, Category = "Combat")
 	float GetAttackSpeedMultiplier() const;
+
+	// --- Elemental resistance / immunity ---------------------------------------
+	// Elites: one element at 0.5 (50% reduced). Bosses: their own element at 0 (immune).
+	// Values are damage multipliers (1 = normal, 0 = immune, 2 = weakness).
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Resistance")
+	TMap<EStickmanElement, float> ElementDamageMultipliers;
+
+	// Reactions this enemy takes bonus/reduced damage from (e.g. 2.0 = "takes 200% from
+	// Overload"); unlisted reactions = 1.0.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Resistance")
+	TMap<EStickmanReactionType, float> ReactionDamageMultipliers;
+
+	UFUNCTION(BlueprintPure, Category = "Resistance")
+	float GetElementDamageMultiplier(EStickmanElement Element) const;
+
+	UFUNCTION(BlueprintPure, Category = "Resistance")
+	float GetReactionDamageMultiplier(EStickmanReactionType Reaction) const;
 
 	// Distance BTTask_ApproachTarget tries to hold from TargetActor.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat")

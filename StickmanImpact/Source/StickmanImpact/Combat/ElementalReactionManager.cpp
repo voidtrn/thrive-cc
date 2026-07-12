@@ -4,6 +4,7 @@
 #include "StickmanReactionEffectsDataAsset.h"
 #include "StickmanAttributeSet.h"
 #include "GameFlow/StickmanCheatManager.h"
+#include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "World/StickmanElementalShard.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
@@ -144,6 +145,90 @@ bool UElementalReactionManager::IsCrystallizable(EStickmanElement Element)
 		|| Element == EStickmanElement::Cryo || Element == EStickmanElement::Electro;
 }
 
+EStickmanReactionType UElementalReactionManager::DetermineTripleReaction(EStickmanElement A, EStickmanElement B,
+	EStickmanElement Incoming) const
+{
+	auto Has = [&](EStickmanElement E) { return A == E || B == E || Incoming == E; };
+	const bool bHasAnemo = Has(EStickmanElement::Anemo);
+
+	// Anemo + any 2 swirlable elements = Elemental Storm.
+	if (bHasAnemo)
+	{
+		int32 Swirlable = 0;
+		for (EStickmanElement E : { A, B, Incoming })
+		{
+			if (IsSwirlable(E))
+			{
+				++Swirlable;
+			}
+		}
+		if (Swirlable >= 2)
+		{
+			return EStickmanReactionType::ElementalStorm;
+		}
+	}
+
+	if (Has(EStickmanElement::Pyro) && Has(EStickmanElement::Hydro) && Has(EStickmanElement::Cryo))
+		return EStickmanReactionType::Shatterfrost;
+	if (Has(EStickmanElement::Pyro) && Has(EStickmanElement::Electro) && Has(EStickmanElement::Dendro))
+		return EStickmanReactionType::Wildfire;
+	if (Has(EStickmanElement::Hydro) && Has(EStickmanElement::Cryo) && Has(EStickmanElement::Electro))
+		return EStickmanReactionType::SuperconductFreeze;
+	if (Has(EStickmanElement::Electro) && Has(EStickmanElement::Pyro) && Has(EStickmanElement::Hydro))
+		return EStickmanReactionType::ElectroChargedSteam;
+
+	return EStickmanReactionType::None;
+}
+
+void UElementalReactionManager::TrackReactionChain(AActor* Target, EStickmanElement ConsumedA, EStickmanElement ConsumedB)
+{
+	const double Now = GetWorld()->GetTimeSeconds();
+	if (Now - LastReactionTime > ChainWindow)
+	{
+		ReactionChainCount = 0;
+		ElementsConsumedThisChain.Reset();
+	}
+	LastReactionTime = Now;
+	++ReactionChainCount;
+	ElementsConsumedThisChain.Add(static_cast<uint8>(ConsumedA));
+	ElementsConsumedThisChain.Add(static_cast<uint8>(ConsumedB));
+
+	if (ReactionChainCount > 1)
+	{
+		OnReactionChain.Broadcast(ReactionChainCount); // "Reaction chain x3!" UI hook.
+	}
+
+	// Grand Reaction: all 7 elements consumed within one chain.
+	if (ElementsConsumedThisChain.Num() >= 7 && Target)
+	{
+		TArray<AActor*> Overlaps;
+		UGameplayStatics::SphereOverlapActors(Target, Target->GetActorLocation(), GrandReactionRadius,
+			TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
+			TArray<AActor*>(), Overlaps);
+		for (AActor* Nearby : Overlaps)
+		{
+			ApplyDirectDamage(Nearby, GrandReactionDamage);
+		}
+		UE_LOG(LogTemp, Display, TEXT("[Reactions] GRAND REACTION! All 7 elements chained."));
+		ElementsConsumedThisChain.Reset();
+		ReactionChainCount = 0;
+	}
+}
+
+float UElementalReactionManager::GetChainDamageMultiplier() const
+{
+	return 1.f + ChainDamageBonusPerLink * FMath::Max(ReactionChainCount - 1, 0);
+}
+
+float UElementalReactionManager::GetTargetReactionDamageScale(AActor* Target, EStickmanReactionType Reaction) const
+{
+	if (const AStickmanEnemyCharacter* Enemy = Cast<AStickmanEnemyCharacter>(Target))
+	{
+		return Enemy->GetReactionDamageMultiplier(Reaction);
+	}
+	return 1.f;
+}
+
 EStickmanReactionType UElementalReactionManager::DetermineReaction(EStickmanElement Existing, EStickmanElement Incoming) const
 {
 	if (Incoming == EStickmanElement::Anemo && IsSwirlable(Existing)) return EStickmanReactionType::Swirl;
@@ -210,6 +295,32 @@ FStickmanReactionResult UElementalReactionManager::ApplyElement(AActor* Target, 
 
 	TArray<FActiveElement>& Auras = ActiveElementsMap.FindOrAdd(Target);
 
+	// Triple reactions first: two distinct existing auras + the incoming element.
+	if (Auras.Num() >= 2)
+	{
+		for (int32 IndexA = 0; IndexA < Auras.Num(); ++IndexA)
+		{
+			for (int32 IndexB = IndexA + 1; IndexB < Auras.Num(); ++IndexB)
+			{
+				const EStickmanElement ElementA = Auras[IndexA].Element;
+				const EStickmanElement ElementB = Auras[IndexB].Element;
+				const EStickmanReactionType Triple = DetermineTripleReaction(ElementA, ElementB, Element);
+				if (Triple == EStickmanReactionType::None)
+				{
+					continue;
+				}
+				// Consume both auras.
+				Auras.RemoveAt(IndexB);
+				Auras.RemoveAt(IndexA);
+				TrackReactionChain(Target, ElementA, ElementB);
+				ElementsConsumedThisChain.Add(static_cast<uint8>(Element));
+				Result = ResolveReaction(Target, Triple, ElementA, Element, AttackerElementalMastery, true);
+				Result.ReactionDamage *= GetChainDamageMultiplier();
+				return Result;
+			}
+		}
+	}
+
 	int32 ReactingIndex = INDEX_NONE;
 	for (int32 Index = 0; Index < Auras.Num(); ++Index)
 	{
@@ -226,7 +337,9 @@ FStickmanReactionResult UElementalReactionManager::ApplyElement(AActor* Target, 
 		const EStickmanReactionType Reaction = DetermineReaction(ExistingElement, Element);
 		Auras.RemoveAt(ReactingIndex);
 
+		TrackReactionChain(Target, ExistingElement, Element);
 		Result = ResolveReaction(Target, Reaction, ExistingElement, Element, AttackerElementalMastery, true);
+		Result.ReactionDamage *= GetChainDamageMultiplier() * GetTargetReactionDamageScale(Target, Reaction);
 	}
 	else
 	{
@@ -415,6 +528,78 @@ FStickmanReactionResult UElementalReactionManager::ResolveReaction(AActor* Targe
 		{
 			Result.ReactionDamage = ElementalMastery * 0.6f;
 			ApplyDirectDamage(Target, Result.ReactionDamage);
+			break;
+		}
+
+		// --- Triple reactions ------------------------------------------------
+		case EStickmanReactionType::Shatterfrost:
+		{
+			// AoE freeze + physical shatter burst.
+			Result.ReactionDamage = ElementalMastery * 2.5f;
+			TArray<AActor*> Overlaps;
+			UGameplayStatics::SphereOverlapActors(Target, TargetLocation, 400.f,
+				TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
+				TArray<AActor*>(), Overlaps);
+			for (AActor* Nearby : Overlaps)
+			{
+				FreezeTarget(Nearby, 2.f);
+				ApplyDirectDamage(Nearby, Result.ReactionDamage);
+			}
+			break;
+		}
+		case EStickmanReactionType::Wildfire:
+		{
+			// Spreading burn that hits EVERYONE in radius — including the player. Dual-use
+			// by design: risk/reward for triggering it close.
+			Result.ReactionDamage = ElementalMastery * 1.5f;
+			TArray<AActor*> Overlaps;
+			UGameplayStatics::SphereOverlapActors(Target, TargetLocation, 500.f,
+				TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
+				TArray<AActor*>(), Overlaps);
+			for (AActor* Nearby : Overlaps)
+			{
+				StartBurningDoT(Nearby, ElementalMastery);
+			}
+			break;
+		}
+		case EStickmanReactionType::SuperconductFreeze:
+		{
+			Result.ReactionDamage = ElementalMastery * 1.2f;
+			ApplyDirectDamage(Target, Result.ReactionDamage);
+			FreezeTarget(Target, 3.f);
+			if (FStickmanReactionState* State = ReactionStateMap.Find(Target))
+			{
+				State->bDefenseShredded = true;
+				State->DefenseShredEndTime = GetWorld()->GetTimeSeconds() + 12.f;
+				State->DefenseShredFraction = 0.4f;
+			}
+			break;
+		}
+		case EStickmanReactionType::ElectroChargedSteam:
+		{
+			// Blinding fog: damage + the fog visual is the reaction's authored VFX; "blind"
+			// on enemies = drop their sight briefly (Alert level dip handled AI-side via the
+			// Suspicious fallback when they lose the target in fog).
+			Result.ReactionDamage = ElementalMastery * 1.8f;
+			ApplyDirectDamage(Target, Result.ReactionDamage);
+			break;
+		}
+		case EStickmanReactionType::ElementalStorm:
+		{
+			// Massive swirl: heavy AoE + spreads BOTH consumed elements outward.
+			Result.ReactionDamage = ElementalMastery * 3.f;
+			TArray<AActor*> Overlaps;
+			UGameplayStatics::SphereOverlapActors(Target, TargetLocation, 700.f,
+				TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
+				TArray<AActor*>(), Overlaps);
+			for (AActor* Nearby : Overlaps)
+			{
+				ApplyDirectDamage(Nearby, Result.ReactionDamage * 0.5f);
+				if (IsSwirlable(ExistingElement))
+				{
+					ApplyElement(Nearby, ExistingElement, 40.f, ElementalMastery);
+				}
+			}
 			break;
 		}
 		default:

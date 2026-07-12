@@ -926,6 +926,33 @@ font-outline setting.
   work. State-dependent music: bind combat state changes to
   `UStickmanAudioManager::SetCombatIntensity` (hook exists).
 
+## Elemental depth
+
+- **Triple reactions** (two existing auras + incoming, both auras consumed): Shatterfrost
+  (Pyro+Hydro+Cryo — AoE freeze + shatter), Wildfire (Pyro+Electro+Dendro — spreading burn
+  that hits the player too, by design), Superconduct Freeze (Hydro+Cryo+Electro — frozen +
+  40% defense shred), Electro-Charged Steam (Electro+Pyro+Hydro — fog AoE; "blind" = the
+  authored fog VFX + enemies losing sight into the Suspicious fallback), Elemental Storm
+  (Anemo + any 2 swirlables — heavy AoE spreading both consumed elements).
+- **Reaction chains**: reactions within 4s chain (+15% reaction damage per link,
+  `OnReactionChain` for the "chain x3!" UI); a chain consuming all 7 elements = **Grand
+  Reaction** (massive AoE at the last target).
+- **Resistance/immunity**: per-enemy `ElementDamageMultipliers` (elite 0.5, boss own-element
+  0 = immune, weakness 2.0) applied to elemental hits, and `ReactionDamageMultipliers` per
+  reaction type. Breakable "elemental armor" = a high-multiplier entry swapped out by a boss
+  phase change (data, not new code).
+- **Environment**: radial damage now also overlaps WorldDynamic — torches AND
+  `AStickmanInteractiveFoliage` react (Pyro burns, Cryo freezes, physical cuts).
+  `AElementalTerrainZone` covers terrain effects: Burning (Pyro DoT), Frozen (slippery), Wet
+  (applies Hydro — Electro conduction then rides the aura system), Electrified (Electro +
+  paralyze proc), Overgrown (slow + Dendro), Crystallized; zones are placeable *or* spawnable
+  from skills/reactions with a lifetime (freeze-water platform / crystallized-sand bridge =
+  a Frozen/Crystallized zone actor with a walkable mesh — level content on this foundation).
+- **Absorption** (`UElementAbsorptionComponent` on the player): `Absorb(Pyro)` = 10s weapon
+  infusion, `Absorb(Cryo)` = defense buff (standing in for a shield until a Shield attribute
+  exists), `Absorb(Electro)` = +25% move speed; per-element internal cooldown + VFX +
+  delegate. Call from world element sources (burning zones, crystals, lit torches).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
