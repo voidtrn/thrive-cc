@@ -1069,6 +1069,27 @@ font-outline setting.
   honesty (flashbacks/investigations/branching cutscenes are conventions over existing
   systems, not new code).
 
+## Co-op foundations
+
+- **`UCoopSessionSubsystem`**: Solo/Hosting/Joined state machine over direct-IP listen
+  hosting (`?listen` reopen; `ClientTravel` to join; LAN/direct IP only — no online
+  subsystem/matchmaking). Host's world is authoritative by construction; guest
+  progression (EXP, bonds, items) lives in the guest's own subsystems and travels home.
+  `GetEnemyHPScale()` (+50% per extra player) is multiplied into `AEnemySpawner` spawns.
+- **`UReviveComponent`**: lethal damage → downed (crawl speed) instead of death;
+  bleed-out timer, ally hold-to-revive (range-checked, progress delegate), optional
+  slower solo second wind, revive restores 40% HP via the AttributeSet. `OnBledOut` is
+  where the real death flow listens.
+- **`UPingComponent`**: camera-trace ping auto-classified (enemy/item/location) +
+  explicit danger ping; marker VFX/sound + `OnPingIssued` for minimap/HUD. Useful solo
+  as self-notes; multicast comes with the RPC pass.
+- **`Docs/COOP_REPLICATION.md`** — the honest part: the codebase is single-player C++,
+  and this doc is the dependency-ordered refactor checklist for real networking
+  (server-authoritative damage funnel, GAS replication modes, subsystem state audit,
+  RPC pass, custom-locomotion proxy states, host-simulated world systems) plus the
+  design for team reactions/synergy/puzzles layered on top. Nothing half-replicated was
+  shipped — the three components above are correct solo today and RPC-ready by design.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

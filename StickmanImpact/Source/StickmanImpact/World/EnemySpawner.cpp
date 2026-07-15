@@ -6,6 +6,7 @@
 #include "TimerManager.h"
 #include "DayNightManager.h"
 #include "WeatherManager.h"
+#include "Coop/CoopSessionSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 
 AEnemySpawner::AEnemySpawner()
@@ -117,7 +118,18 @@ void AEnemySpawner::SpawnOneEnemy()
 	}
 
 	const float LevelMultiplier = 1.f + FMath::Max(BaseEnemyLevel - 1, 0) * StatGrowthPerLevel;
-	NewEnemy->Stats.MaxHealth *= LevelMultiplier;
+
+	// Co-op world scaling: +50% HP per extra player (1.0 solo).
+	float CoopHPScale = 1.f;
+	if (const UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (const UCoopSessionSubsystem* Coop = GameInstance->GetSubsystem<UCoopSessionSubsystem>())
+		{
+			CoopHPScale = Coop->GetEnemyHPScale();
+		}
+	}
+
+	NewEnemy->Stats.MaxHealth *= LevelMultiplier * CoopHPScale;
 	NewEnemy->Stats.Attack *= LevelMultiplier;
 	NewEnemy->Stats.Defense *= LevelMultiplier;
 	NewEnemy->SpawningSpawner = this;
