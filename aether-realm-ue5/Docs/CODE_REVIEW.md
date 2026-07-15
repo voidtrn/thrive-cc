@@ -456,6 +456,19 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
       (`ElementalReactionSubsystem::ResolveReaction` → `CombatComponent::
       GainEnergyParticles`), tinggal isi angka begitu spec-nya ditentuin.
 
+12. **`OnWorldAttuned` toast host-only di co-op** — pengumuman "dunia attuned
+    vs elemen-mu" (`UElementAdaptationSubsystem`) broadcast server-side saja.
+    Seluruh sistem adaptation memang server-only by design (`ElementWeights`
+    cuma diisi `DealDamage` server-gated; map instance client selamanya
+    kosong, tak pernah compute dominant → tak pernah fire delegate). Chronicle
+    write ikut server (persist di save host yang otentikatif — benar). Tapi
+    remote client yang bind `OnWorldAttuned` di instance subsystem-nya sendiri
+    tak akan lihat toast. **Diterima host/listen-server-only untuk sekarang**,
+    konsisten dgn data model adaptation yang emang server-only. Fix penuh =
+    relay eksplisit ke client (Actor-owned Multicast RPC / trigger replicated)
+    — garap bareng co-op serius (barengan #9 `FSavedMove` climb & DealDamage
+    Server RPC). Chronicle/gameplay tak terpengaruh; cuma layer notifikasi UI.
+
 ## 🆕 CONTENT PASS — storyline & cutscene (belum ada sebelumnya)
 
 Project ini 0 konten cerita sebelum pass ini — quest *engine* (Phase6) ada,
@@ -501,7 +514,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | C++ class | 61 |
 | Source file | 135 |
 | Setup/review docs | 23 |
-| Automation test | 6 file (16 test) |
+| Automation test | 6 file (17 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |

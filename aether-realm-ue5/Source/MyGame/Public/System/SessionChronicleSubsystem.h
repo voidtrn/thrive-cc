@@ -7,8 +7,8 @@
 /**
  * Satu momen tercatat di memoar. Type = FName event ("ClutchKill",
  * "ChainReaction", "BossPhase", "BossSlain", "Fallen", "DomainUnfinished",
- * dst — UI yang memetakan ke teks terlokalisasi, C++ tak menyimpan FText,
- * disiplin ANTISIPASI #8).
+ * "WorldAttuned" [ContextId = nama elemen], dst — UI yang memetakan ke teks
+ * terlokalisasi, C++ tak menyimpan FText, disiplin ANTISIPASI #8).
  */
 USTRUCT(BlueprintType)
 struct FChronicleEntry

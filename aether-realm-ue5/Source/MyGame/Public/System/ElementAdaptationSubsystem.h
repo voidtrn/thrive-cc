@@ -5,6 +5,17 @@
 #include "Combat/CombatTypes.h"
 #include "ElementAdaptationSubsystem.generated.h"
 
+/** Transisi latch pengumuman attunement (hysteresis, anti-spam). */
+UENUM()
+enum class EAttunementEdge : uint8
+{
+	None,     // tak ada perubahan
+	Rising,   // baru lewat ambang tinggi → umumkan "dunia attuned"
+	Falling   // turun di bawah ambang rendah → reset latch
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWorldAttuned, EElement, Element);
+
 /**
  * Enemy Elemental Adaptation — musuh se-dunia pelan-pelan "belajar" elemen
  * yang paling sering dipakai player dan jadi attuned (RES naik vs elemen itu,
@@ -53,6 +64,29 @@ public:
 	EElement GetDominantElement() const;
 
 	/**
+	 * Broadcast sekali saat dunia BARU jadi attuned signifikan vs elemen player
+	 * (rising edge, hysteresis) — BP pasang toast "musuh mulai kebal Pyro-mu".
+	 * Momen ini juga ditulis ke SessionChronicle ("WorldAttuned") = memoar
+	 * "dunia belajar gayamu", reinforce twist self-reference (FOUNDATIONS §2c).
+	 *
+	 * CO-OP: broadcast HOST-ONLY. Seluruh sistem adaptation ini server-only
+	 * by design (ElementWeights cuma diisi DealDamage server-side, map client
+	 * selamanya kosong), jadi instance client tak pernah fire delegate ini.
+	 * Toast di remote client butuh relay eksplisit (multicast) — di luar scope,
+	 * diterima host-only untuk sekarang (lihat ANTISIPASI #10, CODE_REVIEW.md).
+	 */
+	UPROPERTY(BlueprintAssignable, Category = "Adaptation")
+	FOnWorldAttuned OnWorldAttuned;
+
+	/**
+	 * Keputusan edge pure (testable tanpa World): rasio CurrentRES/MaxRES lewat
+	 * ambang tinggi (0.6) sambil belum diumumkan = Rising; turun di bawah ambang
+	 * rendah (0.25) sambil sudah diumumkan = Falling. Hysteresis lebar supaya
+	 * decay/regain kecil di sekitar ambang gak spam.
+	 */
+	static EAttunementEdge EvaluateAttunementEdge(float CurrentRES, float MaxRES, bool bAnnounced);
+
+	/**
 	 * Math inti — pure static, testable tanpa World:
 	 * dominance factor ((share-0.5)*2, clamp 0-1: mulai kerasa begitu satu
 	 * elemen lewat 50% porsi) × volume factor (Total/Activation, clamp 0-1:
@@ -78,5 +112,11 @@ private:
 	/** Bobot damage berjalan per elemen (decay eksponensial di Tick). */
 	TMap<EElement, float> ElementWeights;
 
+	/** Latch pengumuman: elemen yang sedang diumumkan attuned (None = belum). */
+	EElement AnnouncedElement = EElement::None;
+
 	float GetTotalWeight() const;
+
+	/** Cek rising/falling edge tiap Tick, broadcast + tulis chronicle sekali. */
+	void UpdateAttunementAnnouncement();
 };
