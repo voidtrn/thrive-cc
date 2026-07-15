@@ -53,7 +53,13 @@ baru terus. Ini juga yang bikin klip viral (lihat §2c).
   open-world lain. Anti-spam, maksa variasi reaksi. Cuma aktif kalau 1
   elemen >50% porsi damage DAN volume cukup — main variatif = gak pernah
   kena. RES-shred (superconduct) tetap valid sebagai counter.
-Keduanya punya pure-math core + automation test (`EmergentSystemsTest.cpp`).
+  **Nyambung ke memoar:** saat dunia BARU jadi attuned signifikan (rising
+  edge, hysteresis) → `OnWorldAttuned` broadcast (BP toast) + entri chronicle
+  "WorldAttuned" ("dunia belajar gayamu"). Emergent → memoar self-reference
+  (GAME_PSYCHOLOGY_FOUNDATIONS §2c) — momen "dunia noticed gue" yang bikin
+  twist kerasa personal, bukan cuma angka RES naik diam-diam.
+Keduanya punya pure-math core + automation test (`EmergentSystemsTest.cpp`) —
+edge pengumuman attunement juga (`EvaluateAttunementEdge`, hysteresis).
 
 ### 1d. Modding & community content (L4D2/TF2/Dota workshop)
 

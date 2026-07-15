@@ -131,6 +131,9 @@ private:
 	void Update();
 	void SetState(EPacingState NewState);
 
+	/** Broadcast highlight + teruskan ke SessionChronicle (memoar). */
+	void EmitHighlight(FName Reason, const FVector& Location, float Intensity);
+
 	/** HP fraction TERENDAH di antara semua player pawn (co-op fair). 1.0 kalau tak ada. */
 	float GetPlayerHPFraction() const;
 };

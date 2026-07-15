@@ -14,6 +14,17 @@ git add . && git commit -m "msg" && git push
 rtk git add . && rtk git commit -m "msg" && rtk git push
 ```
 
+Same rule inside multi-line scripts, loops, and subshells — `rtk discover`
+shows raw `find`/`grep`/`head`/`ls` buried in compound Bash scripts are the
+biggest missed-savings source (~4K tokens/week):
+```bash
+# ❌ Wrong (inside a for-loop or script block)
+for f in ...; do grep -n "pattern" "$f"; done
+
+# ✅ Correct
+for f in ...; do rtk grep "pattern" "$f"; done
+```
+
 ## RTK Commands by Workflow
 
 ### Build & Compile (80-90% savings)

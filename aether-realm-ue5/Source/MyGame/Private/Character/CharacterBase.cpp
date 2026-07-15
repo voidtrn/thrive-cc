@@ -6,6 +6,7 @@
 #include "Combat/StatusEffectComponent.h"
 #include "System/OpenWorldGameInstance.h"
 #include "System/PacingDirectorSubsystem.h"
+#include "System/SessionChronicleSubsystem.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "AbilitySystemComponent.h"
@@ -378,6 +379,19 @@ void ACharacterBase::HandleDeath()
 {
 	UE_LOG(LogAetherRealm, Log, TEXT("%s died"), *CharacterID.ToString());
 	OnDied.Broadcast(this);
+
+	// Chronicle: kematian pemain = momen memoar ("Fallen") — bagian cerita,
+	// bukan cuma fail state (GAME_PSYCHOLOGY_FOUNDATIONS §2c).
+	if (HasAuthority() && IsPlayerControlled())
+	{
+		if (UGameInstance* GI = GetGameInstance())
+		{
+			if (USessionChronicleSubsystem* Chronicle = GI->GetSubsystem<USessionChronicleSubsystem>())
+			{
+				Chronicle->RecordMoment(TEXT("Fallen"), CharacterID, GetActorLocation(), 0.6f);
+			}
+		}
+	}
 	// Phase 3: ragdoll/dissolve VFX + auto-swap ke anggota party hidup.
 }
 

@@ -97,4 +97,40 @@ bool FElementAdaptationMathTest::RunTest(const FString&)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAttunementEdgeTest,
+	"AetherRealm.Emergent.AttunementEdge",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FAttunementEdgeTest::RunTest(const FString&)
+{
+	using A = UElementAdaptationSubsystem;
+	const float MaxRES = 0.30f;
+
+	// Belum diumumkan + lewat ambang tinggi (0.6 × 0.30 = 0.18) → Rising
+	TestTrue(TEXT("rising saat lewat ambang tinggi"),
+		A::EvaluateAttunementEdge(0.20f, MaxRES, false) == EAttunementEdge::Rising);
+
+	// Belum diumumkan + di bawah ambang tinggi → None (belum kerasa)
+	TestTrue(TEXT("none saat di bawah ambang tinggi, belum announced"),
+		A::EvaluateAttunementEdge(0.15f, MaxRES, false) == EAttunementEdge::None);
+
+	// Sudah diumumkan + turun di bawah ambang rendah (0.25 × 0.30 = 0.075) → Falling
+	TestTrue(TEXT("falling saat luntur di bawah ambang rendah"),
+		A::EvaluateAttunementEdge(0.05f, MaxRES, true) == EAttunementEdge::Falling);
+
+	// Sudah diumumkan + masih di zona hysteresis (antara low & high) → None (gak kedip)
+	TestTrue(TEXT("none di zona hysteresis, sudah announced"),
+		A::EvaluateAttunementEdge(0.12f, MaxRES, true) == EAttunementEdge::None);
+
+	// MaxRES 0 = rasio 0, gak pernah rising
+	TestTrue(TEXT("MaxRES 0 = tak pernah rising"),
+		A::EvaluateAttunementEdge(0.f, 0.f, false) == EAttunementEdge::None);
+
+	// Tepat di ambang tinggi = rising (>=)
+	TestTrue(TEXT("tepat 0.6 ratio = rising"),
+		A::EvaluateAttunementEdge(0.18f, MaxRES, false) == EAttunementEdge::Rising);
+
+	return true;
+}
+
 #endif // WITH_AUTOMATION_TESTS

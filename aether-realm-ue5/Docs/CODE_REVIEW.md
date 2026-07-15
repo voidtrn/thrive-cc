@@ -161,6 +161,19 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
 | `GetPlayerHPFraction` cuma baca player 0 — anggota co-op sekarat tak terhitung stress | ✅ Fixed — pakai HP fraction terendah semua player controller |
 | `AlertNearbyAllies` pakai `GetAllActorsOfClass` per aggro pertama | ✅ Fixed — lihat ANTISIPASI #5, sekarang pakai `UEnemyRegistrySubsystem` |
 
+## 🆕 PSYCHOLOGY PASS — Session Chronicle (memoar)
+
+`USessionChronicleSubsystem` — teori & rasional di
+`GAME_PSYCHOLOGY_FOUNDATIONS.md`. Review `ue5-reviewer`: 4 finding
+(0🔴 2🟡 0🔵 2❓), status:
+
+| Finding | Status |
+|---|---|
+| Phase-skip: satu hit lompat >1 threshold → `EnterPhase(1)` tak pernah jalan → thread "BossUnfinished" tak kebuka | ✅ Fixed — gate pakai `PreviousPhase == 0` (dicapture sebelum overwrite), bukan `NewPhase == 1` |
+| `ImportFromSave` tak trim over-cap (cap turun di update / save korup) → drain 1 entri per RecordMoment | ✅ Fixed — trim penuh saat import |
+| `EmitHighlight` forward ke chronicle tanpa authority gate → client bisa persist entri dari pacing state lokal non-authoritative | ✅ Fixed — skip di `NM_Client`; broadcast presentasi tetap semua mesin |
+| BossId pakai archetype (`StatsRowName`) — 2 boss archetype sama hidup bersamaan share 1 thread | 📋 Diterima sebagai asumsi konten (1 archetype = 1 encounter aktif), didokumentasikan di kode. Ganti per-instance id kalau desain berubah |
+
 ## ⚠️ ANTISIPASI — yang akan menggigit nanti
 
 1. **Belum pernah di-compile.** Harapkan error kecil build pertama
@@ -443,6 +456,19 @@ Review `ue5-reviewer`: 4 finding (0🔴 2🟡 1🔵 1❓), status:
       (`ElementalReactionSubsystem::ResolveReaction` → `CombatComponent::
       GainEnergyParticles`), tinggal isi angka begitu spec-nya ditentuin.
 
+12. **`OnWorldAttuned` toast host-only di co-op** — pengumuman "dunia attuned
+    vs elemen-mu" (`UElementAdaptationSubsystem`) broadcast server-side saja.
+    Seluruh sistem adaptation memang server-only by design (`ElementWeights`
+    cuma diisi `DealDamage` server-gated; map instance client selamanya
+    kosong, tak pernah compute dominant → tak pernah fire delegate). Chronicle
+    write ikut server (persist di save host yang otentikatif — benar). Tapi
+    remote client yang bind `OnWorldAttuned` di instance subsystem-nya sendiri
+    tak akan lihat toast. **Diterima host/listen-server-only untuk sekarang**,
+    konsisten dgn data model adaptation yang emang server-only. Fix penuh =
+    relay eksplisit ke client (Actor-owned Multicast RPC / trigger replicated)
+    — garap bareng co-op serius (barengan #9 `FSavedMove` climb & DealDamage
+    Server RPC). Chronicle/gameplay tak terpengaruh; cuma layer notifikasi UI.
+
 ## 🆕 CONTENT PASS — storyline & cutscene (belum ada sebelumnya)
 
 Project ini 0 konten cerita sebelum pass ini — quest *engine* (Phase6) ada,
@@ -485,15 +511,16 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 
 | | Jumlah |
 |---|---|
-| C++ class | 59 |
-| Source file | 125 |
+| C++ class | 61 |
+| Source file | 135 |
 | Setup/review docs | 23 |
-| Automation test | 4 file (14 test) |
+| Automation test | 6 file (17 test) |
 | Gap fungsional fixed | 3 + P1 (3) + P2 (3) + P3 (3) |
 | Gap tersisa | 0 (semua P1-P3 selesai) |
 | Gameplay depth pass | poise/shield/ranged/boss — 2 class baru (`EnemyProjectile`, `EnemyBoss`) |
 | Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
 | Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
+| Psychology pass | Session Chronicle / memoar (`SessionChronicleSubsystem`) — teori lintas ilmu di `GAME_PSYCHOLOGY_FOUNDATIONS.md` |
 | Content pass | prolog 2-quest chain + `CutsceneActor` — 2 class baru (`StarterContentLibrary`, `CutsceneActor`) |
 | Perf/security pass | `UEnemyRegistrySubsystem` (ganti 5 world-scan call site) + `AChest` interact-range anti-cheat — 1 class baru |
 | Damage number pooling pass | `ADamageNumberCarrier` + `UDamageNumberPoolSubsystem` — 2 class baru |
