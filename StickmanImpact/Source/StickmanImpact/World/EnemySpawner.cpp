@@ -1,0 +1,164 @@
+// Copyright StickmanImpact Project.
+
+#include "EnemySpawner.h"
+#include "AI/Enemies/StickmanEnemyCharacter.h"
+#include "NavigationSystem.h"
+#include "TimerManager.h"
+#include "DayNightManager.h"
+#include "WeatherManager.h"
+#include "Coop/CoopSessionSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+
+AEnemySpawner::AEnemySpawner()
+{
+	PrimaryActorTick.bCanEverTick = false;
+}
+
+void AEnemySpawner::BeginPlay()
+{
+	Super::BeginPlay();
+
+	for (int32 Index = 0; Index < MaxActiveEnemies; ++Index)
+	{
+		SpawnOneEnemy();
+	}
+}
+
+const TArray<FEnemySpawnEntry>& AEnemySpawner::GetActiveSpawnPool() const
+{
+	if (NightSpawnPool.Num() > 0)
+	{
+		if (const ADayNightManager* DayNight = Cast<ADayNightManager>(
+				UGameplayStatics::GetActorOfClass(this, ADayNightManager::StaticClass())))
+		{
+			if (DayNight->IsNight())
+			{
+				return NightSpawnPool;
+			}
+		}
+	}
+
+	if (RainSpawnPool.Num() > 0 || SnowSpawnPool.Num() > 0)
+	{
+		if (const UGameInstance* GameInstance = GetGameInstance())
+		{
+			if (const UWeatherManager* Weather = GameInstance->GetSubsystem<UWeatherManager>())
+			{
+				const EStickmanWeatherType Current = Weather->GetCurrentWeather();
+				if (RainSpawnPool.Num() > 0 &&
+					(Current == EStickmanWeatherType::Rain || Current == EStickmanWeatherType::Storm))
+				{
+					return RainSpawnPool;
+				}
+				if (SnowSpawnPool.Num() > 0 && Current == EStickmanWeatherType::Snow)
+				{
+					return SnowSpawnPool;
+				}
+			}
+		}
+	}
+
+	return SpawnPool;
+}
+
+TSubclassOf<AStickmanEnemyCharacter> AEnemySpawner::PickWeightedClass() const
+{
+	const TArray<FEnemySpawnEntry>& Pool = GetActiveSpawnPool();
+
+	float TotalWeight = 0.f;
+	for (const FEnemySpawnEntry& Entry : Pool)
+	{
+		TotalWeight += FMath::Max(Entry.Weight, 0.f);
+	}
+	if (TotalWeight <= 0.f)
+	{
+		return Pool.Num() > 0 ? Pool[0].EnemyClass : nullptr;
+	}
+
+	float Roll = FMath::FRandRange(0.f, TotalWeight);
+	for (const FEnemySpawnEntry& Entry : Pool)
+	{
+		Roll -= FMath::Max(Entry.Weight, 0.f);
+		if (Roll <= 0.f)
+		{
+			return Entry.EnemyClass;
+		}
+	}
+	return Pool.Last().EnemyClass;
+}
+
+void AEnemySpawner::SpawnOneEnemy()
+{
+	if (ActiveEnemies.Num() >= MaxActiveEnemies || GetActiveSpawnPool().Num() == 0)
+	{
+		return;
+	}
+
+	TSubclassOf<AStickmanEnemyCharacter> EnemyClass = PickWeightedClass();
+	if (!EnemyClass)
+	{
+		return;
+	}
+
+	FVector SpawnLocation = GetActorLocation();
+	if (UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld()))
+	{
+		FNavLocation NavLocation;
+		if (NavSystem->GetRandomReachablePointInRadius(GetActorLocation(), SpawnRadius, NavLocation))
+		{
+			SpawnLocation = NavLocation.Location;
+		}
+	}
+
+	const FTransform SpawnTransform(GetActorRotation(), SpawnLocation);
+	AStickmanEnemyCharacter* NewEnemy = GetWorld()->SpawnActorDeferred<AStickmanEnemyCharacter>(EnemyClass, SpawnTransform);
+	if (!NewEnemy)
+	{
+		return;
+	}
+
+	const float LevelMultiplier = 1.f + FMath::Max(BaseEnemyLevel - 1, 0) * StatGrowthPerLevel;
+
+	// Co-op world scaling: +50% HP per extra player (1.0 solo).
+	float CoopHPScale = 1.f;
+	if (const UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (const UCoopSessionSubsystem* Coop = GameInstance->GetSubsystem<UCoopSessionSubsystem>())
+		{
+			CoopHPScale = Coop->GetEnemyHPScale();
+		}
+	}
+
+	NewEnemy->Stats.MaxHealth *= LevelMultiplier * CoopHPScale;
+	NewEnemy->Stats.Attack *= LevelMultiplier;
+	NewEnemy->Stats.Defense *= LevelMultiplier;
+	NewEnemy->SpawningSpawner = this;
+	NewEnemy->OnDestroyed.AddDynamic(this, &AEnemySpawner::HandleEnemyDestroyed);
+
+	NewEnemy->FinishSpawning(SpawnTransform);
+	ActiveEnemies.Add(NewEnemy);
+}
+
+void AEnemySpawner::HandleEnemyDestroyed(AActor* DestroyedActor)
+{
+	ActiveEnemies.RemoveAll([](const TWeakObjectPtr<AStickmanEnemyCharacter>& Weak) { return !Weak.IsValid(); });
+	ScheduleRespawn();
+}
+
+void AEnemySpawner::ScheduleRespawn()
+{
+	GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &AEnemySpawner::SpawnOneEnemy, RespawnTime, false);
+}
+
+TArray<AStickmanEnemyCharacter*> AEnemySpawner::GetActiveEnemies() const
+{
+	TArray<AStickmanEnemyCharacter*> Result;
+	for (const TWeakObjectPtr<AStickmanEnemyCharacter>& Weak : ActiveEnemies)
+	{
+		if (AStickmanEnemyCharacter* Enemy = Weak.Get())
+		{
+			Result.Add(Enemy);
+		}
+	}
+	return Result;
+}

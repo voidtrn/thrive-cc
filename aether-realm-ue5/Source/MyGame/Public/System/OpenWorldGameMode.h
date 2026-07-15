@@ -17,6 +17,7 @@ class MYGAME_API AOpenWorldGameMode : public AGameModeBase
 public:
 	AOpenWorldGameMode();
 
+	virtual void BeginPlay() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	/** Respawn player di checkpoint/teleport waypoint terakhir. */

@@ -43,4 +43,7 @@ public:
 
 	/** Base damage transformative reaction by level (aproksimasi linear, tuning nanti). */
 	static float TransformativeBaseDamage(int32 Level, float ReactionCoefficient);
+
+	/** CritRate efektif: base + bonus resonance (Shattering Ice) kalau victim frozen. */
+	static float EffectiveCritRate(float BaseCritRate, bool bVictimFrozen, float CritVsFrozenBonus);
 };

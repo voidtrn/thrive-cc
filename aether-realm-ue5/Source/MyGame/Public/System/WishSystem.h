@@ -79,9 +79,18 @@ public:
 protected:
 	static void GetPityThresholds(EBannerType Type, int32& OutSoftPity, int32& OutHardPity);
 
-	FWishResult RollSingle(const FBannerData& Banner, FBannerPityState& Pity);
-	FWishResult MakeResult(const FBannerData& Banner, FBannerPityState& Pity, EWishRarity Rarity);
+	/** Pure fungsi dari (Banner, Pity) — no instance state — testable static. */
+	static FWishResult RollSingle(const FBannerData& Banner, FBannerPityState& Pity);
+	static FWishResult MakeResult(const FBannerData& Banner, FBannerPityState& Pity, EWishRarity Rarity);
 	void ApplyOwnershipRewards(FWishResult& Result);
 
 	UOpenWorldGameInstance* GetOWGameInstance() const;
+
+private:
+	// Automation test akses langsung RollSingle/MakeResult/GetPityThresholds
+	// (pity soft/hard, guarantee) tanpa perlu GameInstance/World penuh.
+	friend class FWishHardPityTest;
+	friend class FWishFourStarGuaranteeTest;
+	friend class FWishFeaturedGuaranteeTest;
+	friend class FWishEpitomizedPathTest;
 };

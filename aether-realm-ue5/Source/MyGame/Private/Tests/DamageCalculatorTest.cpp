@@ -73,4 +73,47 @@ bool FDamageEmBonusTest::RunTest(const FString&)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageTransformativeBaseTest,
+	"AetherRealm.Damage.TransformativeBase",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FDamageTransformativeBaseTest::RunTest(const FString&)
+{
+	// TransformativeBaseDamage = 17.17 * Level * ReactionCoefficient
+	TestEqual(TEXT("level 0 = 0 damage"),
+		UDamageCalculator::TransformativeBaseDamage(0, 1.f), 0.f, 0.001f);
+	TestEqual(TEXT("coefficient 0 = 0 damage"),
+		UDamageCalculator::TransformativeBaseDamage(90, 0.f), 0.f, 0.001f);
+	TestEqual(TEXT("level 90, coefficient 1 = 17.17*90"),
+		UDamageCalculator::TransformativeBaseDamage(90, 1.f), 17.17f * 90.f, 0.01f);
+	TestTrue(TEXT("monoton naik thd level"),
+		UDamageCalculator::TransformativeBaseDamage(90, 1.f) > UDamageCalculator::TransformativeBaseDamage(50, 1.f));
+	TestTrue(TEXT("monoton naik thd coefficient"),
+		UDamageCalculator::TransformativeBaseDamage(90, 2.f) > UDamageCalculator::TransformativeBaseDamage(90, 1.f));
+
+	return true;
+}
+
+/** Shattering Ice resonance (2 Cryo): +crit rate vs frozen. RESONANCE_SYSTEM.md. */
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageEffectiveCritRateTest,
+	"AetherRealm.Damage.EffectiveCritRate",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FDamageEffectiveCritRateTest::RunTest(const FString&)
+{
+	// Victim tidak frozen → bonus resonance tidak berlaku, base rate saja.
+	TestEqual(TEXT("not frozen: base rate only"),
+		UDamageCalculator::EffectiveCritRate(0.05f, false, 0.15f), 0.05f, 0.001f);
+
+	// Victim frozen tapi resonance tidak aktif (bonus 0) → base rate saja.
+	TestEqual(TEXT("frozen, no resonance: base rate only"),
+		UDamageCalculator::EffectiveCritRate(0.05f, true, 0.f), 0.05f, 0.001f);
+
+	// Victim frozen + Shattering Ice aktif → base + 15%.
+	TestEqual(TEXT("frozen + resonance: base + bonus"),
+		UDamageCalculator::EffectiveCritRate(0.05f, true, 0.15f), 0.20f, 0.001f);
+
+	return true;
+}
+
 #endif // WITH_AUTOMATION_TESTS

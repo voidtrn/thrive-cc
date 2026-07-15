@@ -13,7 +13,7 @@ auto-fold), swim + drowning, stamina lengkap, `AWaypoint`, `AStatueOfTheSeven`,
 
 | Input | Call |
 |---|---|
-| IA_Jump saat menghadap dinding (grounded/falling) | `Move->TryStartClimbing()` |
+| IA_Jump saat menghadap dinding (grounded/falling) | `Move->RequestClimb()` (**bukan** `TryStartClimbing()` langsung — lihat ANTISIPASI #3 `CODE_REVIEW.md`: co-op prediction butuh lewat compressed-flag `bPressedClimb`, panggil `TryStartClimbing()` langsung dari BP = climb-entry gak pernah nyampe ke server) |
 | IA_Jump saat climbing | `Character->TryJumpClimb()` (25 stamina, boost 200) |
 | IA_Dodge / IA_Jump ke belakang saat climbing | `Move->StopClimbing()` |
 | IA_Sprint saat climbing | `Move->SetSprinting(true)` → drain 25/s |

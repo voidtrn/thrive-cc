@@ -1,7 +1,9 @@
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Character/CharacterBase.h"
-#include "Kismet/GameplayStatics.h"
+#include "Character/EnemyBase.h"
+#include "System/EnemyRegistrySubsystem.h"
+#include "System/OpenWorldGameState.h"
 #include "MyGame.h"
 
 // ---------- Tick: decay, freeze/quicken expiry, EC DOT, dendro core ----------
@@ -136,8 +138,45 @@ FReactionResult UElementalReactionSubsystem::ApplyElement(
 		}
 	}
 
-	Result = ResolveReaction(Target, Instigator, Element, GaugeUnits, bBluntHit);
+	// Weather × Element (GAME_LONGEVITY_PATTERNS.md §1c): cuaca modulasi
+	// gauge secara sistemik. GameState replicated, jadi client & server baca
+	// nilai sama; damage resolve tetap server-side (jalur existing).
+	float EffectiveUnits = GaugeUnits;
+	if (const AOpenWorldGameState* GS = GetWorld()->GetGameState<AOpenWorldGameState>())
+	{
+		EffectiveUnits *= GetWeatherGaugeMultiplier(GS->GetCurrentWeather(), Element);
+	}
+
+	Result = ResolveReaction(Target, Instigator, Element, EffectiveUnits, bBluntHit);
 	return Result;
+}
+
+float UElementalReactionSubsystem::GetWeatherGaugeMultiplier(EWeatherType Weather, EElement Element)
+{
+	switch (Weather)
+	{
+	case EWeatherType::Rain:
+		if (Element == EElement::Hydro)   return 1.25f;
+		if (Element == EElement::Electro) return 1.15f;
+		if (Element == EElement::Dendro)  return 1.15f;
+		if (Element == EElement::Pyro)    return 0.75f;
+		break;
+	case EWeatherType::Thunderstorm:
+		if (Element == EElement::Electro) return 1.3f;
+		if (Element == EElement::Hydro)   return 1.25f;
+		if (Element == EElement::Pyro)    return 0.6f;
+		break;
+	case EWeatherType::Snow:
+		if (Element == EElement::Cryo) return 1.25f;
+		if (Element == EElement::Pyro) return 0.8f;
+		break;
+	case EWeatherType::Fog:
+		if (Element == EElement::Hydro) return 1.1f;
+		break;
+	default:
+		break;
+	}
+	return 1.f;
 }
 
 bool UElementalReactionSubsystem::PassesICD(ACharacterBase* Target, FName ICDTag)
@@ -371,12 +410,16 @@ void UElementalReactionSubsystem::DoTransformativeDamage(
 	const float Damage = UDamageCalculator::TransformativeBaseDamage(Instigator->Level, ReactionCoefficient)
 		* (1.f + UDamageCalculator::TransformativeEmBonus(Instigator->ElementalMastery));
 
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Enemy"), Enemies);
-
-	for (AActor* Actor : Enemies)
+	// Registry (ANTISIPASI #5 CODE_REVIEW.md) — bukan world-scan penuh tiap reaction
+	UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>();
+	if (!Registry)
 	{
-		if (FVector::Dist(Actor->GetActorLocation(), Center) > Radius)
+		return;
+	}
+
+	for (AEnemyBase* Actor : Registry->GetAllEnemies())
+	{
+		if (!Actor || FVector::Dist(Actor->GetActorLocation(), Center) > Radius)
 		{
 			continue;
 		}

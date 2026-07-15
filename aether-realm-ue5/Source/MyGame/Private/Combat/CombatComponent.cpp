@@ -4,10 +4,12 @@
 #include "Combat/DamageCalculator.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Character/CharacterBase.h"
+#include "Character/EnemyBase.h"
 #include "Character/OpenWorldMovementComponent.h"
-#include "UI/DamageNumberWidget.h"
+#include "System/ElementAdaptationSubsystem.h"
+#include "System/EnemyRegistrySubsystem.h"
+#include "UI/DamageNumberPoolSubsystem.h"
 #include "System/OpenWorldGameInstance.h"
-#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "MyGame.h"
@@ -247,18 +249,15 @@ void UCombatComponent::OnPlungeLand()
 	Params.bBluntHit = true; // plunge selalu blunt (shatter frozen)
 	Params.TalentSource = ETalentSource::NormalAttack; // plunge scale ikut talent Normal
 
-	// AOE landing
-	TArray<AActor*> Enemies;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Enemy"), Enemies);
+	// AOE landing — registry (ANTISIPASI #5 CODE_REVIEW.md), bukan world-scan penuh
 	const FVector Center = OwnerChar->GetActorLocation();
-
-	for (AActor* Actor : Enemies)
+	if (UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>())
 	{
-		if (FVector::Dist(Actor->GetActorLocation(), Center) <= PlungeAOERadius)
+		for (AEnemyBase* Enemy : Registry->GetAllEnemies())
 		{
-			if (ACharacterBase* Victim = Cast<ACharacterBase>(Actor))
+			if (Enemy && FVector::Dist(Enemy->GetActorLocation(), Center) <= PlungeAOERadius)
 			{
-				DealDamage(Victim, Params);
+				DealDamage(Enemy, Params);
 			}
 		}
 	}
@@ -367,6 +366,21 @@ FDamageResult UCombatComponent::DealDamage(ACharacterBase* Victim, const FAttack
 		return Result;
 	}
 
+	// Server-authoritative: entry point ini dipanggil dari anim notify
+	// (combo/charged/plunge) yang jalan di owning client, atau BP skill/burst
+	// hook — bukan cuma server. Tanpa guard client bisa resolve damage lokal
+	// sendiri, gak sinkron dgn CurrentHP replicated (co-op cheat/desync risk).
+	// Forward ke server; simetris dgn AEnemyBase::AttackTarget di arah
+	// sebaliknya. Trade-off: hit stop/damage number lokal utk hit ini baru
+	// nongol di co-op guest setelah round-trip server — prediksi instan lokal
+	// butuh pass terpisah (ANTISIPASI #9, Docs/CODE_REVIEW.md, digarap bareng
+	// FSavedMove climb #3).
+	if (!OwnerChar->HasAuthority())
+	{
+		OwnerChar->ServerRequestAttack(Victim, Params);
+		return Result;
+	}
+
 	// i-frame victim (dodge)
 	if (UCombatComponent* VictimCombat = Victim->FindComponentByClass<UCombatComponent>())
 	{
@@ -412,6 +426,21 @@ FDamageResult UCombatComponent::DealDamage(ACharacterBase* Victim, const FAttack
 		Reaction.AmpMultiplier, Reaction.FlatBonus, bCrit);
 
 	Victim->ApplyDamage(Damage, Params.Element, Params.HitReaction);
+
+	// Enemy Elemental Adaptation: musuh "belajar" elemen yang di-spam player.
+	// Cuma jalur player→enemy elemental (enemy→player lewat AttackTarget,
+	// bukan sini). Udah pasti server-side — DealDamage di-gate HasAuthority
+	// di atas. IsPlayerControlled: CombatComponent sekarang cuma dipasang di
+	// BP_PlayerCharacter, tapi itu konvensi BP (gak di-enforce C++) — guard
+	// ini nutup drift masa depan (ally/summon NPC bawa CombatComponent gak
+	// boleh nge-feed data "player belajar elemen").
+	if (Params.Element != EElement::None && Cast<AEnemyBase>(Victim) && OwnerChar->IsPlayerControlled())
+	{
+		if (UElementAdaptationSubsystem* Adaptation = GetWorld()->GetSubsystem<UElementAdaptationSubsystem>())
+		{
+			Adaptation->ReportElementalDamage(Params.Element, Damage);
+		}
+	}
 
 	Result.FinalDamage = Damage;
 	Result.bCrit = bCrit;
@@ -501,29 +530,9 @@ void UCombatComponent::SpawnDamageNumber(const FVector& Location, const FDamageR
 		return;
 	}
 
-	// Actor sementara dengan WidgetComponent screen-space, auto-destroy
-	AActor* NumberActor = GetWorld()->SpawnActor<AActor>(AActor::StaticClass(), Location, FRotator::ZeroRotator);
-	if (!NumberActor)
+	// Pooled (ANTISIPASI #4 CODE_REVIEW.md) — bukan spawn/destroy actor per hit.
+	if (UDamageNumberPoolSubsystem* Pool = GetWorld()->GetSubsystem<UDamageNumberPoolSubsystem>())
 	{
-		return;
+		Pool->Show(DamageNumberWidgetClass, Location, Result);
 	}
-
-	USceneComponent* SceneRoot = NewObject<USceneComponent>(NumberActor, TEXT("Root"));
-	SceneRoot->RegisterComponent();
-	NumberActor->SetRootComponent(SceneRoot);
-	NumberActor->SetActorLocation(Location);
-
-	UWidgetComponent* Widget = NewObject<UWidgetComponent>(NumberActor, TEXT("DamageNumber"));
-	Widget->SetupAttachment(SceneRoot);
-	Widget->SetWidgetSpace(EWidgetSpace::Screen);
-	Widget->SetWidgetClass(DamageNumberWidgetClass);
-	Widget->SetDrawAtDesiredSize(true);
-	Widget->RegisterComponent();
-
-	if (UDamageNumberWidget* NumberWidget = Cast<UDamageNumberWidget>(Widget->GetWidget()))
-	{
-		NumberWidget->SetDamageInfo(Result);
-	}
-
-	NumberActor->SetLifeSpan(1.2f);
 }

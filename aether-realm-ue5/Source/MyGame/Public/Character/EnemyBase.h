@@ -132,6 +132,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void HandleDeath() override;
 
 	/** Shield bawaan enemy (selalu ada, kosong/no-op kalau ShieldAmount stats = 0). */

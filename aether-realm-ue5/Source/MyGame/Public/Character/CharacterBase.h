@@ -124,6 +124,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats", meta = (ClampMin = 0, ClampMax = 6))
 	int32 Ascension = 0;
 
+	/**
+	 * Server RPC — client-initiated player damage (combo/charged/plunge, BP
+	 * skill/burst) routes lewat sini buat resolusi otentikatif. Dipanggil dari
+	 * UCombatComponent::DealDamage saat !HasAuthority(); simetris dengan
+	 * AEnemyBase::AttackTarget di arah sebaliknya. Lihat ANTISIPASI #9,
+	 * Docs/CODE_REVIEW.md.
+	 */
+	UFUNCTION(Server, Reliable, Category = "Stats")
+	void ServerRequestAttack(ACharacterBase* Victim, const FAttackParams& Params);
+
 	// ---------- Health & damage ----------
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	void ApplyDamage(float Amount, EElement DamageElement, EHitReaction Reaction);

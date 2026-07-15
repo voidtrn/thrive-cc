@@ -1,6 +1,8 @@
 #include "Character/EnemyBase.h"
 #include "Character/EnemyAIController.h"
 #include "System/PacingDirectorSubsystem.h"
+#include "System/EnemyRegistrySubsystem.h"
+#include "System/ElementAdaptationSubsystem.h"
 #include "Combat/ElementalReactionSubsystem.h"
 #include "Combat/DamageCalculator.h"
 #include "Combat/ShieldComponent.h"
@@ -47,6 +49,23 @@ void AEnemyBase::BeginPlay()
 		EnemyShield->OnShieldBroken.AddDynamic(this, &AEnemyBase::OnEnemyShieldBroken);
 	}
 	ApplyElementalShield();
+
+	if (UEnemyRegistrySubsystem* Registry = GetWorld()->GetSubsystem<UEnemyRegistrySubsystem>())
+	{
+		Registry->RegisterEnemy(this);
+	}
+}
+
+void AEnemyBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (UEnemyRegistrySubsystem* Registry = World->GetSubsystem<UEnemyRegistrySubsystem>())
+		{
+			Registry->UnregisterEnemy(this);
+		}
+	}
+	Super::EndPlay(EndPlayReason);
 }
 
 void AEnemyBase::ApplyElementalShield()
@@ -107,11 +126,25 @@ float AEnemyBase::GetBaseResistance(EElement DamageElement) const
 		return 1.f; // 100% RES → multiplier 0.5 per formula; gameplay-wise hampir immune
 	}
 
-	if (const float* Res = CachedStats.ElementalRES.Find(DamageElement))
+	float Res = 0.1f; // default 10%
+	if (const float* TableRes = CachedStats.ElementalRES.Find(DamageElement))
 	{
-		return *Res;
+		Res = *TableRes;
 	}
-	return 0.1f; // default 10%
+
+	// Enemy Elemental Adaptation: attunement dunia vs elemen yang di-spam
+	// player (ElementAdaptationSubsystem). Ditambahkan ke BASE — RES-shred
+	// (superconduct dsb) tetap dikurangkan setelahnya di GetResistance,
+	// jadi shred tetap counter yang valid buat adaptasi.
+	if (const UWorld* World = GetWorld())
+	{
+		if (const UElementAdaptationSubsystem* Adaptation = World->GetSubsystem<UElementAdaptationSubsystem>())
+		{
+			Res += Adaptation->GetAdaptationRES(DamageElement);
+		}
+	}
+
+	return Res;
 }
 
 void AEnemyBase::AttackTarget(ACharacterBase* Target, float DamageMultiplier,
