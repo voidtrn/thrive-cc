@@ -1122,6 +1122,36 @@ font-outline setting.
   FPS-driven quality auto-stepping. Presets are CVar/scalability bundles: no
   platform-detection/first-party SDKs (that's packaging-side).
 
+## Developer tools
+
+- **`UDevConsoleSubsystem`** (+ `UDeveloperConsoleWidget` UI): in-game console — command
+  registry with categories color-coding the log (Cheat yellow / Debug cyan / Test green /
+  World orange / System gray), history (up/down), prefix autocomplete (tab, logs candidates
+  when ambiguous), 500-line log buffer, `help [cmd]`. Open with tilde: bind an IA_Console
+  input action to `ToggleConsole()` (widget grabs keyboard focus; Esc/tilde closes).
+  Commands are lambdas over existing systems — the console owns zero game logic.
+  `RegisterAllCommands()` is compiled out in Shipping.
+- **Testing commands**: `god`, `oneshot` (punches through element immunities, floors HP at
+  the funnel's application point), `infstamina`, `infenergy`, `nocooldown` (new
+  `UStickmanCheatManager` static flags consumed by cost/cooldown/damage paths),
+  `giveitem/setlevel/completequest` (forwarded to the cheat manager), `speed`,
+  `teleport x y z`, `spawnenemy [classpath|nearest]` (nearest kicks a real spawner —
+  respects pools/level scaling), `revealmap` (new `UMinimapWidget::RevealAll()` clears the
+  fog RT), `togglehud`, `freezeai` (BrainComponent pause/resume), `playersonly`
+  (engine-native).
+- **Debug visualizations**: `debug.collision` / `debug.navmesh` / `debug.aipaths`
+  (engine `show`/`ShowDebug AI`), `debug.memory` (PerformanceManager overlay),
+  `debug.damagelog` (damage funnel echoes every hit into the console),
+  `debug.gauges` (dumps live elemental auras per enemy via `GetActiveElements`),
+  `debug.net` (honest: single-player — points at COOP_REPLICATION.md).
+- **`UAutomatedTestSubsystem`** (drive via `test.*`): `test.bench [s]` (avg/1%-low FPS,
+  worst frame, >50ms hitch count), `test.combat [n]` (spawns a ring wave from the nearest
+  spawner's pool or `TestEnemyClass`, times the clear), `test.save [slot]` (write →
+  CRC-verified read → re-write roundtrip), `test.skills` (activates every granted ability
+  1.2s apart, reports failures), `test.record`/`test.playback` — 20 Hz **transform** replay
+  (camera routes, soak paths); true input-level replay = Enhanced Input injection or
+  Gauntlet, deliberately not half-built here.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

@@ -9,6 +9,7 @@
 #include "World/StickmanTorch.h"
 #include "World/StickmanInteractiveFoliage.h"
 #include "GameFlow/StickmanCheatManager.h"
+#include "DevTools/DevConsoleSubsystem.h"
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
 #include "ComboMeterSubsystem.h"
@@ -65,7 +66,7 @@ float UStickmanGameplayAbility::GetCooldownTimeRemaining() const
 
 bool UStickmanGameplayAbility::CheckCost() const
 {
-	if (SkillData.EnergyCost <= 0.f)
+	if (SkillData.EnergyCost <= 0.f || UStickmanCheatManager::IsInfiniteEnergyEnabled())
 	{
 		return true;
 	}
@@ -86,7 +87,7 @@ bool UStickmanGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHand
 
 void UStickmanGameplayAbility::CommitCooldown()
 {
-	if (!SkillData.SkillTag.IsValid() || SkillData.Cooldown <= 0.f)
+	if (!SkillData.SkillTag.IsValid() || SkillData.Cooldown <= 0.f || UStickmanCheatManager::IsNoCooldownEnabled())
 	{
 		return;
 	}
@@ -108,7 +109,7 @@ void UStickmanGameplayAbility::CommitCooldown()
 
 void UStickmanGameplayAbility::CommitCost()
 {
-	if (SkillData.EnergyCost <= 0.f)
+	if (SkillData.EnergyCost <= 0.f || UStickmanCheatManager::IsInfiniteEnergyEnabled())
 	{
 		return;
 	}
@@ -292,6 +293,14 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 
 		const bool bPlayerIsAttacker = GetAvatarActorFromActorInfo() == UGameplayStatics::GetPlayerPawn(this, 0);
 
+		// OneShot cheat: player hits floor any target's health regardless of the multipliers
+		// below (resistances can't zero it out — the max() at the end guarantees the kill).
+		const bool bOneShot = bPlayerIsAttacker && UStickmanCheatManager::IsOneShotEnabled();
+		if (bOneShot)
+		{
+			FinalDamage = FMath::Max(FinalDamage, 999999.f);
+		}
+
 		// Juggle gate: an air-recovering (teched/capped) enemy is hit-immune; landing an air
 		// hit re-floats them and counts toward the juggle limit.
 		if (AStickmanEnemyCharacter* JuggleTarget = Cast<AStickmanEnemyCharacter>(TargetActor))
@@ -338,7 +347,7 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		if (const AStickmanEnemyCharacter* ResistTarget = Cast<AStickmanEnemyCharacter>(TargetActor))
 		{
 			FinalDamage *= ResistTarget->GetElementDamageMultiplier(SkillData.Element);
-			if (FinalDamage <= 0.f)
+			if (FinalDamage <= 0.f && !bOneShot) // OneShot punches through immunities too.
 			{
 				return; // Immune.
 			}
@@ -376,10 +385,28 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			}
 		}
 
+		if (bOneShot)
+		{
+			FinalDamage = FMath::Max(FinalDamage, TargetAttributes->GetMaxHealth());
+		}
+
 		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - FinalDamage, 0.f,
 			TargetAttributes->GetMaxHealth());
 		TargetAttributes->SetHealth(NewHealth);
 		TargetAttributes->OnHealthChanged.Broadcast(NewHealth, TargetAttributes->GetMaxHealth());
+
+		if (UDevConsoleSubsystem::IsDamageLogEnabled())
+		{
+			if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+			{
+				if (UDevConsoleSubsystem* Console = GI->GetSubsystem<UDevConsoleSubsystem>())
+				{
+					Console->Log(FString::Printf(TEXT("DMG %.0f -> %s (HP %.0f/%.0f)%s"), FinalDamage,
+						*TargetActor->GetName(), NewHealth, TargetAttributes->GetMaxHealth(),
+						bIsCritical ? TEXT(" CRIT") : TEXT("")), EDevCommandCategory::Debug);
+				}
+			}
+		}
 
 		if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
 		{

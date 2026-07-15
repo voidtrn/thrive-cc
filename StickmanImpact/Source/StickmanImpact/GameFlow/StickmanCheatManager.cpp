@@ -15,6 +15,9 @@
 
 bool UStickmanCheatManager::bGodMode = false;
 bool UStickmanCheatManager::bInfiniteStamina = false;
+bool UStickmanCheatManager::bOneShot = false;
+bool UStickmanCheatManager::bInfiniteEnergy = false;
+bool UStickmanCheatManager::bNoCooldown = false;
 
 void UStickmanCheatManager::AddItem(FName ItemID, int32 Count)
 {
@@ -128,4 +131,22 @@ void UStickmanCheatManager::InfiniteStamina()
 {
 	bInfiniteStamina = !bInfiniteStamina;
 	UE_LOG(LogTemp, Display, TEXT("[Cheat] InfiniteStamina %s"), bInfiniteStamina ? TEXT("ON") : TEXT("OFF"));
+}
+
+void UStickmanCheatManager::OneShot()
+{
+	bOneShot = !bOneShot;
+	UE_LOG(LogTemp, Display, TEXT("[Cheat] OneShot %s"), bOneShot ? TEXT("ON") : TEXT("OFF"));
+}
+
+void UStickmanCheatManager::InfiniteEnergy()
+{
+	bInfiniteEnergy = !bInfiniteEnergy;
+	UE_LOG(LogTemp, Display, TEXT("[Cheat] InfiniteEnergy %s"), bInfiniteEnergy ? TEXT("ON") : TEXT("OFF"));
+}
+
+void UStickmanCheatManager::NoCooldown()
+{
+	bNoCooldown = !bNoCooldown;
+	UE_LOG(LogTemp, Display, TEXT("[Cheat] NoCooldown %s"), bNoCooldown ? TEXT("ON") : TEXT("OFF"));
 }

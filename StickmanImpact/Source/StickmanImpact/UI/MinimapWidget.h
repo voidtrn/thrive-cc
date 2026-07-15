@@ -74,6 +74,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Minimap")
 	void CycleZoom();
 
+	// Dev/debug: clears the fog-of-war render target to fully revealed (revealmap command).
+	UFUNCTION(BlueprintCallable, Category = "Minimap")
+	void RevealAll();
+
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
