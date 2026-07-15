@@ -73,6 +73,31 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
 	void SetScreenShakeEnabled(bool bEnabled);
 
+	// 0-100 (%). Scales every camera shake amplitude; combat/juice systems multiply by this.
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetScreenShakeIntensityPercent(float Percent);
+
+	// Motion-sickness reduction: kills motion blur + velocity FOV/camera dynamics.
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetReduceMotion(bool bEnabled);
+
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetSubtitleSizeScale(float Scale); // 0.75-2.0
+
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetSubtitleBackgroundOpacity(float Opacity); // 0-1
+
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetSubtitleSpeakerColorEnabled(bool bEnabled);
+
+	// Repeated actions (sprint/aim/crouch) as hold vs toggle.
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetToggleHoldActions(bool bToggle);
+
+	// Emit audio cues for visually-conveyed info (off-screen telegraphs, low HP).
+	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
+	void SetAudioCuesForVisualInfo(bool bEnabled);
+
 	UFUNCTION(BlueprintCallable, Category = "Settings")
 	void ApplyAndSave();
 
@@ -80,8 +105,30 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Settings")
 	static bool IsScreenShakeEnabled();
 
+	// 1.0 = 100%. IsScreenShakeEnabled()==false forces this to 0.
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static float GetScreenShakeScale();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static bool IsReduceMotionEnabled();
+
 	UFUNCTION(BlueprintPure, Category = "Settings")
 	static bool AreSubtitlesEnabled();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static float GetSubtitleSizeScale();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static float GetSubtitleBackgroundOpacity();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static bool IsSubtitleSpeakerColorEnabled();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static bool AreActionsToggle();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static bool AreAudioCuesForVisualInfoEnabled();
 
 	UFUNCTION(BlueprintPure, Category = "Settings")
 	static float GetSavedMouseSensitivity();
@@ -105,6 +152,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UCheckBox> SubtitlesCheckBox;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UComboBoxString> ColorblindCombo;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UCheckBox> ScreenShakeCheckBox;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<USlider> ShakeIntensitySlider;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UCheckBox> ReduceMotionCheckBox;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<USlider> SubtitleSizeSlider;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<USlider> SubtitleBackgroundSlider;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UCheckBox> SubtitleSpeakerColorCheckBox;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UCheckBox> ToggleHoldCheckBox;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UCheckBox> AudioCuesCheckBox;
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional)) TObjectPtr<UButton> ApplyButton;
 
 private:

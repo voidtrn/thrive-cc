@@ -53,7 +53,9 @@ void UCombatJuiceSubsystem::DoHitStop(float Damage, bool bIsCritical)
 void UCombatJuiceSubsystem::DoShake(AActor* Target, float Damage, EStickmanElement Element,
 	const FVector& HitDirection)
 {
-	if (!USettingsScreenWidget::IsScreenShakeEnabled())
+	// GetScreenShakeScale folds the on/off toggle (0 when disabled) and the 0-100% slider.
+	const float ShakeUserScale = USettingsScreenWidget::GetScreenShakeScale();
+	if (ShakeUserScale <= 0.f)
 	{
 		return;
 	}
@@ -81,7 +83,7 @@ void UCombatJuiceSubsystem::DoShake(AActor* Target, float Damage, EStickmanEleme
 	// Intensity by damage, falloff by camera distance.
 	const float DistanceToCamera = FVector::Dist(PC->PlayerCameraManager->GetCameraLocation(), Target->GetActorLocation());
 	const float Falloff = 1.f - FMath::Clamp(DistanceToCamera / ShakeFalloffDistance, 0.f, 1.f);
-	const float Scale = FMath::Clamp(Damage / HeavyHitDamage, 0.2f, 1.5f) * Falloff;
+	const float Scale = FMath::Clamp(Damage / HeavyHitDamage, 0.2f, 1.5f) * Falloff * ShakeUserScale;
 	if (Scale <= 0.05f)
 	{
 		return;

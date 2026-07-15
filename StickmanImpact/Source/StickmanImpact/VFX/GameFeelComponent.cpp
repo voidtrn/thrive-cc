@@ -55,11 +55,12 @@ void UGameFeelComponent::UpdateVelocityFeedback(float DeltaTime)
 	}
 
 	// Motion blur scales with velocity via the follow camera's post-process settings.
-	// (Respects the accessibility motion-reduction toggle — zero when disabled.)
+	// Respects the accessibility motion-reduction toggle — forced to zero when enabled.
+	const bool bReduceMotion = USettingsScreenWidget::IsReduceMotionEnabled();
 	if (UCameraComponent* Camera = Character->FindComponentByClass<UCameraComponent>())
 	{
 		Camera->PostProcessSettings.bOverride_MotionBlurAmount = true;
-		Camera->PostProcessSettings.MotionBlurAmount = MaxMotionBlurAmount * SpeedAlpha;
+		Camera->PostProcessSettings.MotionBlurAmount = bReduceMotion ? 0.f : MaxMotionBlurAmount * SpeedAlpha;
 	}
 
 	// Whoosh tiers: play once per upward threshold crossing, reset when speed falls back.

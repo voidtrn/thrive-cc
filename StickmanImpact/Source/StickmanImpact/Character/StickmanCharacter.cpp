@@ -19,6 +19,7 @@
 #include "Party/StickmanPartyTypes.h"
 #include "Equipment/EquipmentManager.h"
 #include "GameFlow/StickmanCheatManager.h"
+#include "UI/Menus/SettingsScreenWidget.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -770,7 +771,14 @@ void AStickmanCharacter::StopSlide()
 void AStickmanCharacter::TickCameraDynamics(float DeltaSeconds)
 {
 	const float Speed = GetVelocity().Size2D();
-	const float SpeedAlpha = FMath::Clamp(Speed / FMath::Max(SprintSpeed, 1.f), 0.f, 1.f);
+	float SpeedAlpha = FMath::Clamp(Speed / FMath::Max(SprintSpeed, 1.f), 0.f, 1.f);
+
+	// Accessibility: motion-sickness reduction kills the velocity FOV swell and turn tilt
+	// (the two biggest motion-sickness contributors). Sprint FOV in TickCamera stays.
+	if (USettingsScreenWidget::IsReduceMotionEnabled())
+	{
+		SpeedAlpha = 0.f;
+	}
 
 	// Velocity-based FOV on top of the sprint FOV TickCamera already lerps.
 	FollowCamera->SetFieldOfView(FollowCamera->FieldOfView + MaxVelocityFOVBonus * SpeedAlpha * DeltaSeconds * 4.f

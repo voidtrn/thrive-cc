@@ -1090,6 +1090,38 @@ font-outline setting.
   design for team reactions/synergy/puzzles layered on top. Nothing half-replicated was
   shipped — the three components above are correct solo today and RPC-ready by design.
 
+## Juice, accessibility & final performance
+
+- **UI juice** (`UI/Juice/`): `UUIJuiceLibrary` — easing curves (SmoothStep, EaseOutBack
+  overshoot, elastic, cubic), `PopScale` bounce, critically-damped `SpringInterp`, and a
+  `DecayingShake` for damage-taken widget kicks (pure math WBP animations can't do
+  procedurally). `UJuicyButtonWidget` — a button base that springs to 110% on hover / 90%
+  on press and fires hover/click sounds through `UStickmanAudioManager::PlayUISound`, so
+  most menu buttons need zero per-widget graph.
+- **Transitions** (`UScreenTransitionSubsystem`): one driver for Fade / IrisWipe / Death /
+  Respawn / Teleport. C++ owns the in/hold/out timeline + the alpha the overlay widget
+  reads (`OnTransitionPhase`); `OnTransitionMidpoint` (full-cover instant) is where you
+  swap level / respawn. `PlayDeathSequence` ramps time dilation 1→0.2 + camera grayscale,
+  fades to black, fires the midpoint, then uncovers. Reduce-motion collapses fancy
+  wipes/dissolves to a fast fade.
+- **Accessibility** (expanded `USettingsScreenWidget`, GConfig-persisted): screen-shake
+  **intensity** 0-100% (folded with the on/off toggle into `GetScreenShakeScale()`, which
+  `UCombatJuiceSubsystem` now multiplies into every shake), **reduce-motion** (kills motion
+  blur in `UGameFeelComponent` and the velocity-FOV/turn-tilt in the character's camera
+  dynamics), subtitle **size/background-opacity/speaker-color**, **hold-vs-toggle** for
+  repeated actions, and **audio cues for visual-only info** — all with static read points
+  for the systems that consume them. Colorblind modes (Deuteranopia/Protanopia/Tritanopia
+  via `r.ColorCorrect.Deficiency*`) and full key rebinding (Enhanced Input user settings)
+  were already in place.
+- **Final performance** (`UPlatformPresetLibrary`): coherent one-call profiles — PC
+  Low→Ultra, Steam Deck (60 cap, medium, dynamic res), Console Quality (30 locked) /
+  Performance (60 locked). `ConfigureDynamicResolution` enables UE5's **GPU-time-driven**
+  dynamic resolution (target frame-time budget, min/max screen % clamp) with **TSR**
+  upsampling — configured at the engine layer that already does it well rather than a
+  hand-rolled resolution loop. Complements the existing `UPerformanceManager`
+  FPS-driven quality auto-stepping. Presets are CVar/scalability bundles: no
+  platform-detection/first-party SDKs (that's packaging-side).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

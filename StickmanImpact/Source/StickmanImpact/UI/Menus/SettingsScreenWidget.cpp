@@ -92,6 +92,13 @@ void USettingsScreenWidget::LoadCurrentValuesIntoWidgets()
 	if (SensitivitySlider) SensitivitySlider->SetValue(GetSavedMouseSensitivity());
 	if (SubtitlesCheckBox) SubtitlesCheckBox->SetIsChecked(AreSubtitlesEnabled());
 	if (ScreenShakeCheckBox) ScreenShakeCheckBox->SetIsChecked(IsScreenShakeEnabled());
+	if (ShakeIntensitySlider) ShakeIntensitySlider->SetValue(ReadConfigFloat(TEXT("ScreenShakeIntensity"), 100.f));
+	if (ReduceMotionCheckBox) ReduceMotionCheckBox->SetIsChecked(IsReduceMotionEnabled());
+	if (SubtitleSizeSlider) SubtitleSizeSlider->SetValue(GetSubtitleSizeScale());
+	if (SubtitleBackgroundSlider) SubtitleBackgroundSlider->SetValue(GetSubtitleBackgroundOpacity());
+	if (SubtitleSpeakerColorCheckBox) SubtitleSpeakerColorCheckBox->SetIsChecked(IsSubtitleSpeakerColorEnabled());
+	if (ToggleHoldCheckBox) ToggleHoldCheckBox->SetIsChecked(AreActionsToggle());
+	if (AudioCuesCheckBox) AudioCuesCheckBox->SetIsChecked(AreAudioCuesForVisualInfoEnabled());
 
 	if (LanguageCombo && LanguageCombo->GetOptionCount() == 0)
 	{
@@ -205,6 +212,41 @@ void USettingsScreenWidget::SetScreenShakeEnabled(bool bEnabled)
 	WriteConfigBool(TEXT("ScreenShakeEnabled"), bEnabled);
 }
 
+void USettingsScreenWidget::SetScreenShakeIntensityPercent(float Percent)
+{
+	WriteConfigFloat(TEXT("ScreenShakeIntensity"), FMath::Clamp(Percent, 0.f, 100.f));
+}
+
+void USettingsScreenWidget::SetReduceMotion(bool bEnabled)
+{
+	WriteConfigBool(TEXT("ReduceMotion"), bEnabled);
+}
+
+void USettingsScreenWidget::SetSubtitleSizeScale(float Scale)
+{
+	WriteConfigFloat(TEXT("SubtitleSizeScale"), FMath::Clamp(Scale, 0.75f, 2.f));
+}
+
+void USettingsScreenWidget::SetSubtitleBackgroundOpacity(float Opacity)
+{
+	WriteConfigFloat(TEXT("SubtitleBackgroundOpacity"), FMath::Clamp(Opacity, 0.f, 1.f));
+}
+
+void USettingsScreenWidget::SetSubtitleSpeakerColorEnabled(bool bEnabled)
+{
+	WriteConfigBool(TEXT("SubtitleSpeakerColor"), bEnabled);
+}
+
+void USettingsScreenWidget::SetToggleHoldActions(bool bToggle)
+{
+	WriteConfigBool(TEXT("ToggleHoldActions"), bToggle);
+}
+
+void USettingsScreenWidget::SetAudioCuesForVisualInfo(bool bEnabled)
+{
+	WriteConfigBool(TEXT("AudioCuesForVisualInfo"), bEnabled);
+}
+
 void USettingsScreenWidget::ApplyAndSave()
 {
 	// Read every bound widget and push through the setters, then persist.
@@ -221,6 +263,13 @@ void USettingsScreenWidget::ApplyAndSave()
 	if (SubtitlesCheckBox) SetSubtitlesEnabled(SubtitlesCheckBox->IsChecked());
 	if (ColorblindCombo) SetColorblindMode(static_cast<EColorblindModeSetting>(ColorblindCombo->GetSelectedIndex()));
 	if (ScreenShakeCheckBox) SetScreenShakeEnabled(ScreenShakeCheckBox->IsChecked());
+	if (ShakeIntensitySlider) SetScreenShakeIntensityPercent(ShakeIntensitySlider->GetValue());
+	if (ReduceMotionCheckBox) SetReduceMotion(ReduceMotionCheckBox->IsChecked());
+	if (SubtitleSizeSlider) SetSubtitleSizeScale(SubtitleSizeSlider->GetValue());
+	if (SubtitleBackgroundSlider) SetSubtitleBackgroundOpacity(SubtitleBackgroundSlider->GetValue());
+	if (SubtitleSpeakerColorCheckBox) SetSubtitleSpeakerColorEnabled(SubtitleSpeakerColorCheckBox->IsChecked());
+	if (ToggleHoldCheckBox) SetToggleHoldActions(ToggleHoldCheckBox->IsChecked());
+	if (AudioCuesCheckBox) SetAudioCuesForVisualInfo(AudioCuesCheckBox->IsChecked());
 
 	if (UGameUserSettings* Settings = GEngine ? GEngine->GetGameUserSettings() : nullptr)
 	{
@@ -234,9 +283,48 @@ bool USettingsScreenWidget::IsScreenShakeEnabled()
 	return ReadConfigBool(TEXT("ScreenShakeEnabled"), true);
 }
 
+float USettingsScreenWidget::GetScreenShakeScale()
+{
+	if (!IsScreenShakeEnabled())
+	{
+		return 0.f;
+	}
+	return FMath::Clamp(ReadConfigFloat(TEXT("ScreenShakeIntensity"), 100.f) / 100.f, 0.f, 1.f);
+}
+
+bool USettingsScreenWidget::IsReduceMotionEnabled()
+{
+	return ReadConfigBool(TEXT("ReduceMotion"), false);
+}
+
 bool USettingsScreenWidget::AreSubtitlesEnabled()
 {
 	return ReadConfigBool(TEXT("SubtitlesEnabled"), true);
+}
+
+float USettingsScreenWidget::GetSubtitleSizeScale()
+{
+	return ReadConfigFloat(TEXT("SubtitleSizeScale"), 1.f);
+}
+
+float USettingsScreenWidget::GetSubtitleBackgroundOpacity()
+{
+	return ReadConfigFloat(TEXT("SubtitleBackgroundOpacity"), 0.5f);
+}
+
+bool USettingsScreenWidget::IsSubtitleSpeakerColorEnabled()
+{
+	return ReadConfigBool(TEXT("SubtitleSpeakerColor"), true);
+}
+
+bool USettingsScreenWidget::AreActionsToggle()
+{
+	return ReadConfigBool(TEXT("ToggleHoldActions"), false);
+}
+
+bool USettingsScreenWidget::AreAudioCuesForVisualInfoEnabled()
+{
+	return ReadConfigBool(TEXT("AudioCuesForVisualInfo"), false);
 }
 
 float USettingsScreenWidget::GetSavedMouseSensitivity()
