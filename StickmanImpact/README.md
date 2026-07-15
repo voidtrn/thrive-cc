@@ -1011,6 +1011,42 @@ font-outline setting.
   deferred until a breath mechanic exists), and community-features scope (journal
   implemented; geotags/messages/leaderboards need an online backend — out).
 
+## Progression depth
+
+- **Skill mastery** (`USkillMasterySubsystem`): every player skill hit registers in the
+  damage funnel — levels 1-10, +3% damage per level (multiplied in
+  `ApplyDamageToTarget`), level 10 = **Awakened** (`OnSkillAwakened` / `IsAwakened` — the
+  ability itself branches to its awakened behavior, e.g. double slash + fire trail).
+  Levels 4/7/10 are challenge-gated: the quota fills, `OnMasteryChallengeIssued` fires,
+  and the level lands on `CompleteMasteryChallenge` (author objectives as quests).
+- **Character bonds** (`UCharacterBondSubsystem`): per-member bond 1-10. Ambient sources
+  auto-wired (quest completions credit the active character; 60s ActivePlay trickle via
+  FTSTicker); gifts/bond-events are explicit calls. Unlock milestones (1: story quest,
+  3: dialogue, 5: idle anim, 7: passive buff, 10: skin + voice line) broadcast
+  `OnBondUnlock` — content keys off it; the Lv7 +5% passive is `GetBondPassiveScale`
+  (multiply where equipment totals apply).
+- **Reputation** (`UReputationSubsystem`): per-region points from
+  quests/exploration/bounties/donations, tiers 1-5. Decay after 3 neglected in-game days
+  walks points toward the current tier's floor — **earned tiers are never lost**, decay is
+  friction, not punishment. Wire `NotifyGameHoursPassed` from `ADayNightManager`.
+- **Titles** (`UTitleManager` + `FTitleDefinition` DataTable): unlocked by achievements
+  (specific ID or total-count milestone), never grind-bought; rare titles carry an
+  `EquippedVFX` for the nameplate. Added `bHidden` to `FAchievementEntry` ("???" until
+  unlocked) and `GetUnlockedCount()` to `UAchievementManager`.
+- **Season pass** (`USeasonPassSubsystem` + `FSeasonPassTier`/`FSeasonalChallenge`
+  DataTables): XP → tiers, free/premium claim tracking, biweekly challenge rotation
+  (`RotationIndex` = season day / 14), catch-up multiplier (+25% XP per tier behind the
+  season timeline, capped 2×). Honest scope: `bOwnsPremiumTrack` is a plain bool — no
+  store/monetization backend; rotation driven by `SetSeasonDay`, no live service.
+- **Bad-luck protection** (`UBadLuckProtectionSubsystem`): generic pity math for anything
+  random-reward shaped — `RollWithPity` (soft ramp after 20 attempts, hard guarantee at
+  40), duplicate saturation (`ShouldRerollDuplicate` after max refinement), and boss mercy
+  (`GetMercyDropBonus` grows per wipe, resets on clear — pairs with the adaptive
+  difficulty's combat mercy). Still no gacha/currency system — this is the reusable math
+  any future pool must respect.
+- All six expose Export/ImportSaveState; none are wired into `UStickmanSaveManager`'s
+  binary format yet (single deferred format-version bump, same as world persistence).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

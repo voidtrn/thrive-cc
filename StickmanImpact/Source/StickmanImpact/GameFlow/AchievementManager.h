@@ -45,6 +45,10 @@ struct FAchievementEntry : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Achievement")
 	FString TargetID;
+
+	// Hidden until unlocked — the achievements UI shows "???" for these while locked.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Achievement")
+	bool bHidden = false;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAchievementUnlocked, FAchievementEntry, Entry);
@@ -75,6 +79,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Achievements")
 	int32 GetProgress(FName AchievementID) const;
+
+	UFUNCTION(BlueprintPure, Category = "Achievements")
+	int32 GetUnlockedCount() const { return UnlockedIDs.Num(); }
 
 	// For the tracking UI: every row + current count, unlocked-or-not.
 	UFUNCTION(BlueprintCallable, Category = "Achievements")

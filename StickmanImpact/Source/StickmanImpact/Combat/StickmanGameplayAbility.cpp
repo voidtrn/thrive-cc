@@ -12,6 +12,7 @@
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
 #include "ComboMeterSubsystem.h"
+#include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -314,6 +315,13 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 				{
 					ComboMeter->RegisterHit(SkillData.SkillTag);
 					FinalDamage *= ComboMeter->ConsumeDamageMultiplier();
+				}
+
+				// Skill mastery: using a skill levels it; +3%/level rides every hit.
+				if (USkillMasterySubsystem* Mastery = GI->GetSubsystem<USkillMasterySubsystem>())
+				{
+					Mastery->RegisterSkillUse(SkillData.SkillTag);
+					FinalDamage *= Mastery->GetMasteryDamageMultiplier(SkillData.SkillTag);
 				}
 			}
 		}
