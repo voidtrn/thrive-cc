@@ -13,6 +13,8 @@
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
 #include "ComboMeterSubsystem.h"
+#include "DefenseComponent.h"
+#include "AI/EnemyTelegraphComponent.h"
 #include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
@@ -269,12 +271,39 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		return;
 	}
 
+	// Defense (perfect dodge / parry) mitigation multiplier, computed on the player-hit branch
+	// and applied to FinalDamage below. 1 = full damage, 0.5 = partial parry, 0 = negated.
+	float DefenseMultiplier = 1.f;
+
 	if (TargetActor == UGameplayStatics::GetPlayerPawn(this, 0))
 	{
 		if (UStickmanCheatManager::IsGodModeEnabled())
 		{
 			return; // Player is invulnerable under GodMode.
 		}
+
+		// Timing defense: resolve the incoming hit against dodge/parry state.
+		if (AStickmanCharacter* Player = Cast<AStickmanCharacter>(TargetActor))
+		{
+			if (UDefenseComponent* Defense = Player->GetDefenseComponent())
+			{
+				bool bParryable = true;
+				if (const AActor* Attacker = GetAvatarActorFromActorInfo())
+				{
+					if (const UEnemyTelegraphComponent* Telegraph = Attacker->FindComponentByClass<UEnemyTelegraphComponent>())
+					{
+						bParryable = Telegraph->IsCurrentAttackParryable();
+					}
+				}
+				const EDefenseResult Result = Defense->ResolveIncomingAttack(GetAvatarActorFromActorInfo(), bParryable);
+				DefenseMultiplier = UDefenseComponent::GetDamageMultiplier(Result);
+				if (DefenseMultiplier <= 0.f)
+				{
+					return; // Fully negated (perfect dodge / i-frame / perfect parry).
+				}
+			}
+		}
+
 		// Adaptive difficulty: reset the "player untouched" aggression clock.
 		if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
 		{
@@ -290,6 +319,9 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			TargetASC->GetSet<UStickmanAttributeSet>()) : nullptr)
 	{
 		float FinalDamage = DamageAmount;
+
+		// Partial-parry mitigation (perfect dodge/parry already returned above).
+		FinalDamage *= DefenseMultiplier;
 
 		const bool bPlayerIsAttacker = GetAvatarActorFromActorInfo() == UGameplayStatics::GetPlayerPawn(this, 0);
 
@@ -331,6 +363,16 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 				{
 					Mastery->RegisterSkillUse(SkillData.SkillTag);
 					FinalDamage *= Mastery->GetMasteryDamageMultiplier(SkillData.SkillTag);
+				}
+			}
+
+			// Counter / riposte: perfect-dodge arms +50%, perfect-parry arms +100% on the
+			// next player hit (one-shot, within the reaction window).
+			if (const AStickmanCharacter* PlayerAttacker = Cast<AStickmanCharacter>(GetAvatarActorFromActorInfo()))
+			{
+				if (UDefenseComponent* Defense = PlayerAttacker->GetDefenseComponent())
+				{
+					FinalDamage *= Defense->ConsumeCounterMultiplier();
 				}
 			}
 		}

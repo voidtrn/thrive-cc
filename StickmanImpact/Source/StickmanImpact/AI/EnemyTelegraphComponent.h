@@ -44,9 +44,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Telegraph")
 	float FeintChance = 0.08f;
 
+	// White flash = parryable; red flash = unparryable (player must dodge). Drives
+	// "TellFlash" (white) vs "TellUnparryable" (red) scalars on the mesh materials.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Telegraph")
+	bool bDefaultAttackParryable = true;
+
 	// Fires the tell; OnFinished(true) = attack really comes, (false) = feint canceled.
 	DECLARE_DELEGATE_OneParam(FOnTelegraphFinished, bool);
 	void BeginTelegraph(float TellDuration, FOnTelegraphFinished OnFinished);
+
+	// Overload that sets whether the telegraphed attack is parryable (red vs white flash).
+	void BeginTelegraph(float TellDuration, bool bParryable, FOnTelegraphFinished OnFinished);
+
+	// Read by the damage funnel to decide if a parry can catch this attack.
+	UFUNCTION(BlueprintPure, Category = "Telegraph")
+	bool IsCurrentAttackParryable() const { return bCurrentAttackParryable; }
 
 	UFUNCTION(BlueprintPure, Category = "Telegraph")
 	bool IsTelegraphing() const { return bTelegraphing; }
@@ -63,8 +75,8 @@ private:
 
 	bool bTelegraphing = false;
 	bool bIsFeint = false;
+	bool bCurrentAttackParryable = true;
 	float TelegraphRemaining = 0.f;
 	float TelegraphTotal = 0.f;
-	bool bPerfectDodgeConsumed = false;
 	FOnTelegraphFinished FinishedDelegate;
 };

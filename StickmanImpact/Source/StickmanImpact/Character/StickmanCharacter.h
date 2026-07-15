@@ -19,6 +19,7 @@ class UStickmanAbilitySystemComponent;
 class UStickmanAttributeSet;
 class UGameplayAbility;
 class UEquipmentManager;
+class UDefenseComponent;
 struct FInputActionValue;
 
 /**
@@ -67,9 +68,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Equipment", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UEquipmentManager> EquipmentManager;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Defense", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UDefenseComponent> DefenseComponent;
+
 public:
 	UFUNCTION(BlueprintPure, Category = "Equipment")
 	UEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
+
+	UFUNCTION(BlueprintPure, Category = "Defense")
+	UDefenseComponent* GetDefenseComponent() const { return DefenseComponent; }
 
 protected:
 
@@ -126,6 +133,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> DashAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> ParryAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> NormalAttackAction;
@@ -424,6 +434,7 @@ public:
 	void StartSprint();
 	void StopSprint();
 	void Dash();
+	void Parry();
 	void OnNormalAttack();
 	void OnSkill1();
 	void OnSkill2();
