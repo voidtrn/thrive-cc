@@ -1047,6 +1047,28 @@ font-outline setting.
 - All six expose Export/ImportSaveState; none are wired into `UStickmanSaveManager`'s
   binary format yet (single deferred format-version bump, same as world persistence).
 
+## Story elevation
+
+- **Consequence tracking** (`UConsequenceTrackerSubsystem`): permanent choice record
+  (`RecordChoice`/`GetChosenOption` — first answer stands), faction alignment with
+  standing bands (Hostile → Allied, quest lines gate on standing), permanent NPC death
+  (`MarkNPCDead`/`IsNPCDead` — NPC actors self-destroy in BeginPlay, no resurrection
+  path), and butterfly-effect rules (`FDeferredConsequence`: choice + option + delay in
+  game hours → story flag via `UDialogueManager`; clock driven by `NotifyGameHoursPassed`
+  from `ADayNightManager`, same hook as reputation decay).
+- **Party banter** (`UPartyBanterComponent` on the player): ambient chatter every ~2min —
+  eligibility = speaker in party + story flag + bond level, recent-line memory, silent
+  during real dialogue. Bond-gated lines are where characters open up.
+- **Ghost echoes** (`AGhostEchoActor`): walk into the trigger and translucent figures
+  replay a past event in place — observer framing, not a cutscene (player keeps control).
+  Timed beats (single-node animations on bare skeletal meshes + subtitle lines via
+  `OnEchoBeat`), plays once (completion story flag), story-flag gated.
+- **`Docs/NARRATIVE.md`**: the authoring contract — multi-perspective layer map onto
+  existing systems, branch/permadeath/faction/butterfly rules, character writing
+  requirements, emotional-pacing beat budget per act, delivery-channel guide, and scope
+  honesty (flashbacks/investigations/branching cutscenes are conventions over existing
+  systems, not new code).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
