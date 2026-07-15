@@ -985,6 +985,32 @@ font-outline setting.
   save format (a versioned format change), deferred rather than half-done. NPC-to-NPC
   ambient chatter is also out — needs authored barks + audio to not feel worse than silence.
 
+## Discovery system
+
+- **`UDiscoveryManager`**: registry of every secret (sites self-register at BeginPlay so
+  totals are correct before anything is found), per-area "Area Discovery: 45%"
+  (`GetAreaDiscoveryPercent`) and "N secrets remaining" (`GetSecretsRemaining`), plus the
+  auto-recording **Traveler's Journal** (`FDiscoveryJournalEntry`: area, layer, tier,
+  location, in-game hour found). Save hooks (`ExportSaveState`/`ImportSaveState`) exist but
+  aren't wired into `UStickmanSaveManager`'s binary format yet — that's a format version
+  bump, same deferral as world-actor persistence.
+- **`ADiscoverySite`**: placeable secret with `EDiscoveryLayer`
+  (Surface/Hidden/Deep/TimeLocked/AbilityGated) + `EDiscoveryTier` (1-5) + `FRewardData`
+  granted through `UCollectibleManager`. Gates: `bOnlyAtNight`/`bRequireWeather` (trigger
+  inert outside the window), `bStartSealed` + `RequiredElement` (hidden until `Unseal()` —
+  call `NotifyElementApplied` from the gate prop, e.g. Pyro melting the ice wall).
+- **Investigation**: `AClueActor` ("F to Investigate", lore text via `OnClueRead`) — clues
+  share a `ClueSetID`; collecting all of them auto-accepts the set's hidden
+  `UQuestDataAsset` through `UQuestManager` (the designed a-ha moment).
+  `UDetectiveModeComponent` = elemental sight: 8s pulse / 12s cooldown, desaturates the
+  camera, custom-depth outlines clues (stencil 1) + discoverable sites (stencil 2), reveals
+  `bDetectiveModeOnly` clues (footprints, residue). Sealed sites stay hidden — detective
+  mode hints, never bypasses gates.
+- **Level design**: `Docs/DISCOVERY_DESIGN.md` — layer/tier matching rules, clue-set
+  authoring contract, vertical exploration guidelines (caves/sky islands/multi-level; underwater
+  deferred until a breath mechanic exists), and community-features scope (journal
+  implemented; geotags/messages/leaderboards need an online backend — out).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
