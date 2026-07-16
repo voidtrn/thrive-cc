@@ -1122,6 +1122,72 @@ font-outline setting.
   FPS-driven quality auto-stepping. Presets are CVar/scalability bundles: no
   platform-detection/first-party SDKs (that's packaging-side).
 
+## Developer tools
+
+- **`UDevConsoleSubsystem`** (+ `UDeveloperConsoleWidget` UI): in-game console — command
+  registry with categories color-coding the log (Cheat yellow / Debug cyan / Test green /
+  World orange / System gray), history (up/down), prefix autocomplete (tab, logs candidates
+  when ambiguous), 500-line log buffer, `help [cmd]`. Open with tilde: bind an IA_Console
+  input action to `ToggleConsole()` (widget grabs keyboard focus; Esc/tilde closes).
+  Commands are lambdas over existing systems — the console owns zero game logic.
+  `RegisterAllCommands()` is compiled out in Shipping.
+- **Testing commands**: `god`, `oneshot` (punches through element immunities, floors HP at
+  the funnel's application point), `infstamina`, `infenergy`, `nocooldown` (new
+  `UStickmanCheatManager` static flags consumed by cost/cooldown/damage paths),
+  `giveitem/setlevel/completequest` (forwarded to the cheat manager), `speed`,
+  `teleport x y z`, `spawnenemy [classpath|nearest]` (nearest kicks a real spawner —
+  respects pools/level scaling), `revealmap` (new `UMinimapWidget::RevealAll()` clears the
+  fog RT), `togglehud`, `freezeai` (BrainComponent pause/resume), `playersonly`
+  (engine-native).
+- **Debug visualizations**: `debug.collision` / `debug.navmesh` / `debug.aipaths`
+  (engine `show`/`ShowDebug AI`), `debug.memory` (PerformanceManager overlay),
+  `debug.damagelog` (damage funnel echoes every hit into the console),
+  `debug.gauges` (dumps live elemental auras per enemy via `GetActiveElements`),
+  `debug.net` (honest: single-player — points at COOP_REPLICATION.md).
+- **`UAutomatedTestSubsystem`** (drive via `test.*`): `test.bench [s]` (avg/1%-low FPS,
+  worst frame, >50ms hitch count), `test.combat [n]` (spawns a ring wave from the nearest
+  spawner's pool or `TestEnemyClass`, times the clear), `test.save [slot]` (write →
+  CRC-verified read → re-write roundtrip), `test.skills` (activates every granted ability
+  1.2s apart, reports failures), `test.record`/`test.playback` — 20 Hz **transform** replay
+  (camera routes, soak paths); true input-level replay = Enhanced Input injection or
+  Gauntlet, deliberately not half-built here.
+
+## Defense mechanics (perfect dodge & parry)
+
+- **`UDefenseComponent`** (on the player, auto-created): the timing-defense hub, wired into
+  the damage funnel — `ResolveIncomingAttack` on the player-hit branch classifies each hit,
+  `ConsumeCounterMultiplier` on the player-attack branch spends the armed bonus.
+  - **Perfect dodge**: `Dash()` calls `NotifyDodgeStarted`. A hit landing during the dash's
+    i-frames is negated; inside the front `PerfectDodgeWindow` (0.2s) it triggers **Witch
+    Time** — global time dilation drops to 0.2 while the player's `CustomTimeDilation`
+    compensates so they stay full-speed — plus element-tinted screen glow (`OnPerfectDodge`),
+    a sound, and a +50% counter armed for the next hit. Dodging a hair late = **Near Miss**
+    (0.8 slow). Spamming (≥3 dashes/2s) disables the perfect window for 1s (i-frames still
+    work).
+  - **Parry**: `ParryAction` → `BeginParry()` opens the window. A hit inside it = **Perfect
+    Parry** (negated, `ForceStagger` the attacker, refund 20% burst energy, arm a +100%
+    riposte, sound). Off by up to `PartialParryGrace` = **Partial Parry** (50% damage, spark).
+    An unparryable (red) attack while parrying = **Guard Break** (full damage, can't act for
+    0.5s — `Dash`/`Parry` gate on `IsGuardBroken`).
+- **`UDefenseSkillSubsystem`** — two 1-4 tracks unlocked by party ascension
+  (`OnMemberAscended`): Perfect Dodge (L1 1.5s witch time / L2 2.5s / L3 spreads a stagger
+  to nearby enemies / L4 auto-counter fires the normal attack) and Parry (L1 0.15s window /
+  L2 0.20s / L3 projectile reflect hook / L4 AoE blast staggering nearby enemies). The
+  DefenseComponent reads these for window/duration sizing and higher-tier behavior.
+- **Attack parryability**: `UEnemyTelegraphComponent` carries `bDefaultAttackParryable` +
+  per-attack `BeginTelegraph(duration, bParryable, ...)`, flashing **white** (parryable) vs
+  **red** (`TellUnparryable` scalar — must dodge). `AStickmanEnemyCharacter::ForceStagger`
+  added for the riposte. Multi-hit attacks resolve per hit (each `ApplyDamageToTarget` call
+  runs the funnel independently); perfect dodge works on every attack, parry only on white
+  ones.
+- **Feedback**: C++ owns the mechanics + fires delegates (`OnPerfectDodge`/`OnNearMiss`/
+  `OnParryResolved`/`OnCounterArmed`/`OnGuardBroken`/`OnParryBlast`) carrying the element
+  color; the "PERFECT DODGE"/"PARRY" popups, afterimage/spark Niagara, camera zoom, and
+  controller-vibration patterns bind to those in the HUD/character BP (asset-side).
+  Projectile reflect (parry L3) is a delegate hook pending the projectile system; levels
+  Export/ImportSaveState but aren't in the binary save format yet (same deferral as the
+  other progression subsystems).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

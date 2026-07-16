@@ -20,6 +20,7 @@
 #include "Equipment/EquipmentManager.h"
 #include "GameFlow/StickmanCheatManager.h"
 #include "UI/Menus/SettingsScreenWidget.h"
+#include "Combat/DefenseComponent.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -76,6 +77,8 @@ AStickmanCharacter::AStickmanCharacter()
 	AttributeSet = CreateDefaultSubobject<UStickmanAttributeSet>(TEXT("AttributeSet"));
 
 	EquipmentManager = CreateDefaultSubobject<UEquipmentManager>(TEXT("EquipmentManager"));
+
+	DefenseComponent = CreateDefaultSubobject<UDefenseComponent>(TEXT("DefenseComponent"));
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -262,6 +265,10 @@ void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		if (DashAction)
 		{
 			EIC->BindAction(DashAction, ETriggerEvent::Started, this, &AStickmanCharacter::Dash);
+		}
+		if (ParryAction)
+		{
+			EIC->BindAction(ParryAction, ETriggerEvent::Started, this, &AStickmanCharacter::Parry);
 		}
 		if (NormalAttackAction)
 		{
@@ -450,8 +457,22 @@ void AStickmanCharacter::Jump()
 	++CurrentJumpCount;
 }
 
+void AStickmanCharacter::Parry()
+{
+	if (DefenseComponent && !DefenseComponent->IsGuardBroken())
+	{
+		DefenseComponent->BeginParry();
+	}
+}
+
 void AStickmanCharacter::Dash()
 {
+	// Guard-break lockout freezes all defensive/movement action briefly.
+	if (DefenseComponent && DefenseComponent->IsGuardBroken())
+	{
+		return;
+	}
+
 	if (bIsDashing || bDashOnCooldown || CurrentStamina < DashStaminaCost)
 	{
 		if (bDashOnCooldown)
@@ -483,6 +504,12 @@ void AStickmanCharacter::Dash()
 	DashTargetLocation = DashStartLocation + DashDirection * DashDistance;
 	DashElapsedTime = 0.f;
 	bIsDashing = true;
+
+	// Defense: opens the dodge i-frame / perfect-dodge window and tracks dodge-spam.
+	if (DefenseComponent)
+	{
+		DefenseComponent->NotifyDodgeStarted();
+	}
 
 	ConsumeStamina(DashStaminaCost);
 

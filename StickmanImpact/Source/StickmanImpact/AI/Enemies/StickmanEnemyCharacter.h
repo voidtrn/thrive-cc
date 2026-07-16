@@ -148,6 +148,11 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Hit Reaction")
 	bool IsStaggered() const { return bIsStaggered; }
 
+	// Force a full stagger for Duration (parry riposte, heavy reactions) regardless of the
+	// accumulation threshold. Plays the stagger montage + stars VFX like a threshold stagger.
+	UFUNCTION(BlueprintCallable, Category = "Hit Reaction")
+	void ForceStagger(float Duration = 1.f);
+
 	// --- Juggle system --------------------------------------------------------
 
 	// 0 = feather (full launch), 1 = unliftable. Heavies resist launch velocity by this much.

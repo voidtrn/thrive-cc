@@ -239,3 +239,11 @@ void UMinimapWidget::CycleZoom()
 		CaptureComponent->CycleZoom();
 	}
 }
+
+void UMinimapWidget::RevealAll()
+{
+	if (FogRevealRT)
+	{
+		UKismetRenderingLibrary::ClearRenderTarget2D(this, FogRevealRT, FLinearColor::White);
+	}
+}

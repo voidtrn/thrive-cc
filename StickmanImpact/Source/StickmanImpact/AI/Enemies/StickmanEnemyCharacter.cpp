@@ -185,6 +185,37 @@ void AStickmanEnemyCharacter::ReceiveHitFeedback(const FVector& HitDirection, fl
 	}
 }
 
+void AStickmanEnemyCharacter::ForceStagger(float Duration)
+{
+	if (bIsStaggered)
+	{
+		return;
+	}
+
+	bIsStaggered = true;
+	StaggerAccumulatedDamage = 0.f;
+	SetCombatState(EEnemyCombatState::Staggered);
+
+	if (UAnimInstance* AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr)
+	{
+		if (StaggerMontage)
+		{
+			AnimInstance->Montage_Play(StaggerMontage);
+		}
+	}
+	if (StunnedStarsVFX)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAttached(StunnedStarsVFX, GetMesh(), TEXT("head"),
+			FVector(0.f, 0.f, 30.f), FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset, true);
+	}
+
+	GetWorldTimerManager().SetTimer(StaggerRecoverTimerHandle, FTimerDelegate::CreateWeakLambda(this, [this]()
+	{
+		bIsStaggered = false;
+		SetCombatState(EEnemyCombatState::Combat);
+	}), FMath::Max(Duration, 0.1f), false);
+}
+
 void AStickmanEnemyCharacter::ActivateRagdoll(const FVector& ForceDirection, float Damage)
 {
 	GetCharacterMovement()->DisableMovement();

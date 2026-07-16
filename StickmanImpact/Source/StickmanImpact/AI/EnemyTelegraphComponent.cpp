@@ -16,11 +16,16 @@ UEnemyTelegraphComponent::UEnemyTelegraphComponent()
 
 void UEnemyTelegraphComponent::BeginTelegraph(float TellDuration, FOnTelegraphFinished OnFinished)
 {
+	BeginTelegraph(TellDuration, bDefaultAttackParryable, OnFinished);
+}
+
+void UEnemyTelegraphComponent::BeginTelegraph(float TellDuration, bool bParryable, FOnTelegraphFinished OnFinished)
+{
 	bTelegraphing = true;
 	bIsFeint = FMath::FRand() < FeintChance;
+	bCurrentAttackParryable = bParryable;
 	TelegraphRemaining = TellDuration;
 	TelegraphTotal = TellDuration;
-	bPerfectDodgeConsumed = false;
 	FinishedDelegate = OnFinished;
 
 	OnTelegraphStarted.Broadcast(TellDuration);
@@ -49,12 +54,16 @@ void UEnemyTelegraphComponent::SetMeshFlash(float Intensity)
 	{
 		return;
 	}
-	// Author enemy materials with a "TellFlash" scalar (emissive lerp to white).
+	// Parryable attacks flash white ("TellFlash"), unparryable ones flash red
+	// ("TellUnparryable") so the player reads "parry" vs "must dodge" at a glance.
+	const FName FlashParam = bCurrentAttackParryable ? FName(TEXT("TellFlash")) : FName(TEXT("TellUnparryable"));
+	const FName OtherParam = bCurrentAttackParryable ? FName(TEXT("TellUnparryable")) : FName(TEXT("TellFlash"));
 	for (int32 Index = 0; Index < Mesh->GetNumMaterials(); ++Index)
 	{
 		if (UMaterialInstanceDynamic* MID = Mesh->CreateDynamicMaterialInstance(Index))
 		{
-			MID->SetScalarParameterValue(TEXT("TellFlash"), Intensity);
+			MID->SetScalarParameterValue(FlashParam, Intensity);
+			MID->SetScalarParameterValue(OtherParam, 0.f);
 		}
 	}
 }
@@ -74,23 +83,9 @@ void UEnemyTelegraphComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	// Flash ramps up as the attack nears (consistent, learnable curve).
 	SetMeshFlash(1.f - FMath::Clamp(TelegraphRemaining / FMath::Max(TelegraphTotal, 0.01f), 0.f, 1.f));
 
-	// Perfect dodge: player dashing inside the final window.
-	if (!bPerfectDodgeConsumed && TelegraphRemaining <= PerfectDodgeWindow)
-	{
-		if (AStickmanCharacter* Player = Cast<AStickmanCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
-		{
-			const float DistanceToPlayer = FVector::Dist(Player->GetActorLocation(), GetOwner()->GetActorLocation());
-			if (DistanceToPlayer < GroundIndicatorRadius * 2.f
-				&& Player->GetCurrentMovementTag() == StickmanGameplayTags::State_Movement_Dashing)
-			{
-				bPerfectDodgeConsumed = true;
-				if (UGameFeelComponent* GameFeel = Player->FindComponentByClass<UGameFeelComponent>())
-				{
-					GameFeel->NotifyPerfectDodge();
-				}
-			}
-		}
-	}
+	// Perfect-dodge / parry resolution is owned by UDefenseComponent when the attack actually
+	// lands on the player (ApplyDamageToTarget), so the tell only needs to signal timing +
+	// parryability here — no dash detection in the telegraph anymore.
 
 	if (TelegraphRemaining <= 0.f)
 	{

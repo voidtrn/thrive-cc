@@ -9,9 +9,12 @@
 #include "World/StickmanTorch.h"
 #include "World/StickmanInteractiveFoliage.h"
 #include "GameFlow/StickmanCheatManager.h"
+#include "DevTools/DevConsoleSubsystem.h"
 #include "CombatFeedbackSubsystem.h"
 #include "CombatJuiceSubsystem.h"
 #include "ComboMeterSubsystem.h"
+#include "DefenseComponent.h"
+#include "AI/EnemyTelegraphComponent.h"
 #include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
@@ -65,7 +68,7 @@ float UStickmanGameplayAbility::GetCooldownTimeRemaining() const
 
 bool UStickmanGameplayAbility::CheckCost() const
 {
-	if (SkillData.EnergyCost <= 0.f)
+	if (SkillData.EnergyCost <= 0.f || UStickmanCheatManager::IsInfiniteEnergyEnabled())
 	{
 		return true;
 	}
@@ -86,7 +89,7 @@ bool UStickmanGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHand
 
 void UStickmanGameplayAbility::CommitCooldown()
 {
-	if (!SkillData.SkillTag.IsValid() || SkillData.Cooldown <= 0.f)
+	if (!SkillData.SkillTag.IsValid() || SkillData.Cooldown <= 0.f || UStickmanCheatManager::IsNoCooldownEnabled())
 	{
 		return;
 	}
@@ -108,7 +111,7 @@ void UStickmanGameplayAbility::CommitCooldown()
 
 void UStickmanGameplayAbility::CommitCost()
 {
-	if (SkillData.EnergyCost <= 0.f)
+	if (SkillData.EnergyCost <= 0.f || UStickmanCheatManager::IsInfiniteEnergyEnabled())
 	{
 		return;
 	}
@@ -268,12 +271,39 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		return;
 	}
 
+	// Defense (perfect dodge / parry) mitigation multiplier, computed on the player-hit branch
+	// and applied to FinalDamage below. 1 = full damage, 0.5 = partial parry, 0 = negated.
+	float DefenseMultiplier = 1.f;
+
 	if (TargetActor == UGameplayStatics::GetPlayerPawn(this, 0))
 	{
 		if (UStickmanCheatManager::IsGodModeEnabled())
 		{
 			return; // Player is invulnerable under GodMode.
 		}
+
+		// Timing defense: resolve the incoming hit against dodge/parry state.
+		if (AStickmanCharacter* Player = Cast<AStickmanCharacter>(TargetActor))
+		{
+			if (UDefenseComponent* Defense = Player->GetDefenseComponent())
+			{
+				bool bParryable = true;
+				if (const AActor* Attacker = GetAvatarActorFromActorInfo())
+				{
+					if (const UEnemyTelegraphComponent* Telegraph = Attacker->FindComponentByClass<UEnemyTelegraphComponent>())
+					{
+						bParryable = Telegraph->IsCurrentAttackParryable();
+					}
+				}
+				const EDefenseResult Result = Defense->ResolveIncomingAttack(GetAvatarActorFromActorInfo(), bParryable);
+				DefenseMultiplier = UDefenseComponent::GetDamageMultiplier(Result);
+				if (DefenseMultiplier <= 0.f)
+				{
+					return; // Fully negated (perfect dodge / i-frame / perfect parry).
+				}
+			}
+		}
+
 		// Adaptive difficulty: reset the "player untouched" aggression clock.
 		if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
 		{
@@ -290,7 +320,18 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 	{
 		float FinalDamage = DamageAmount;
 
+		// Partial-parry mitigation (perfect dodge/parry already returned above).
+		FinalDamage *= DefenseMultiplier;
+
 		const bool bPlayerIsAttacker = GetAvatarActorFromActorInfo() == UGameplayStatics::GetPlayerPawn(this, 0);
+
+		// OneShot cheat: player hits floor any target's health regardless of the multipliers
+		// below (resistances can't zero it out — the max() at the end guarantees the kill).
+		const bool bOneShot = bPlayerIsAttacker && UStickmanCheatManager::IsOneShotEnabled();
+		if (bOneShot)
+		{
+			FinalDamage = FMath::Max(FinalDamage, 999999.f);
+		}
 
 		// Juggle gate: an air-recovering (teched/capped) enemy is hit-immune; landing an air
 		// hit re-floats them and counts toward the juggle limit.
@@ -324,6 +365,16 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 					FinalDamage *= Mastery->GetMasteryDamageMultiplier(SkillData.SkillTag);
 				}
 			}
+
+			// Counter / riposte: perfect-dodge arms +50%, perfect-parry arms +100% on the
+			// next player hit (one-shot, within the reaction window).
+			if (const AStickmanCharacter* PlayerAttacker = Cast<AStickmanCharacter>(GetAvatarActorFromActorInfo()))
+			{
+				if (UDefenseComponent* Defense = PlayerAttacker->GetDefenseComponent())
+				{
+					FinalDamage *= Defense->ConsumeCounterMultiplier();
+				}
+			}
 		}
 
 		if (const AEnemyShieldGuard* ShieldGuard = Cast<AEnemyShieldGuard>(TargetActor))
@@ -338,7 +389,7 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		if (const AStickmanEnemyCharacter* ResistTarget = Cast<AStickmanEnemyCharacter>(TargetActor))
 		{
 			FinalDamage *= ResistTarget->GetElementDamageMultiplier(SkillData.Element);
-			if (FinalDamage <= 0.f)
+			if (FinalDamage <= 0.f && !bOneShot) // OneShot punches through immunities too.
 			{
 				return; // Immune.
 			}
@@ -376,10 +427,28 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 			}
 		}
 
+		if (bOneShot)
+		{
+			FinalDamage = FMath::Max(FinalDamage, TargetAttributes->GetMaxHealth());
+		}
+
 		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - FinalDamage, 0.f,
 			TargetAttributes->GetMaxHealth());
 		TargetAttributes->SetHealth(NewHealth);
 		TargetAttributes->OnHealthChanged.Broadcast(NewHealth, TargetAttributes->GetMaxHealth());
+
+		if (UDevConsoleSubsystem::IsDamageLogEnabled())
+		{
+			if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+			{
+				if (UDevConsoleSubsystem* Console = GI->GetSubsystem<UDevConsoleSubsystem>())
+				{
+					Console->Log(FString::Printf(TEXT("DMG %.0f -> %s (HP %.0f/%.0f)%s"), FinalDamage,
+						*TargetActor->GetName(), NewHealth, TargetAttributes->GetMaxHealth(),
+						bIsCritical ? TEXT(" CRIT") : TEXT("")), EDevCommandCategory::Debug);
+				}
+			}
+		}
 
 		if (UGameInstance* GameInstance = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
 		{

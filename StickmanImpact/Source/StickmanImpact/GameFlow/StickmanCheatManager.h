@@ -45,10 +45,28 @@ public:
 	UFUNCTION(Exec)
 	void InfiniteStamina();
 
+	// Player hits kill anything in one hit (damage funnel floors target health).
+	UFUNCTION(Exec)
+	void OneShot();
+
+	// Skill energy costs skipped (check + deduction).
+	UFUNCTION(Exec)
+	void InfiniteEnergy();
+
+	// Skill cooldowns never commit.
+	UFUNCTION(Exec)
+	void NoCooldown();
+
 	static bool IsGodModeEnabled() { return bGodMode; }
 	static bool IsInfiniteStaminaEnabled() { return bInfiniteStamina; }
+	static bool IsOneShotEnabled() { return bOneShot; }
+	static bool IsInfiniteEnergyEnabled() { return bInfiniteEnergy; }
+	static bool IsNoCooldownEnabled() { return bNoCooldown; }
 
 private:
 	static bool bGodMode;
 	static bool bInfiniteStamina;
+	static bool bOneShot;
+	static bool bInfiniteEnergy;
+	static bool bNoCooldown;
 };
