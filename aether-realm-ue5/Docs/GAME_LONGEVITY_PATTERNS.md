@@ -93,6 +93,10 @@ Variable reward (gacha) → dopamin dari antisipasi, bukan hasil.
 **Penerapan: ✅ sudah ada** — daily commission (PHASE6), wish/pity/soft-pity
 (PHASE5). Catatan etika: pity system kita transparan; jangan tiru dark
 pattern loss-aversion berlebihan — target Steam, bukan mobile F2P.
+**Ditambah pass ini:** tiap 5★ (base 0.6% — momen paling langka di gacha)
+sekarang tercatat ke Session Chronicle ("WishFiveStar") — dopamin dari
+antisipasi (RPE, FOUNDATIONS §2a) dikonsolidasi jadi memoar yang bisa
+dibaca ulang, bukan cuma animasi yang lewat.
 
 ### 2c. Momen clip-worthy — game yang memasarkan dirinya sendiri
 
