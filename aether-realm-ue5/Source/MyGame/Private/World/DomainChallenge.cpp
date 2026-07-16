@@ -93,7 +93,12 @@ void ADomainChallenge::SpawnWave(int32 WaveIndex)
 		{
 			continue;
 		}
-		const int32 SpawnCount = FMath::Max(1, FMath::RoundToInt(Pair.Value * SpawnMultiplier));
+		// Pair.Value == 0 = entri sengaja dimatikan designer (default TMap
+		// editor juga 0) — jangan dipaksa jadi 1 oleh clamp; min-1 cuma
+		// berlaku buat entri yang memang aktif.
+		const int32 SpawnCount = Pair.Value > 0
+			? FMath::Max(1, FMath::RoundToInt(Pair.Value * SpawnMultiplier))
+			: 0;
 		for (int32 i = 0; i < SpawnCount; ++i)
 		{
 			FActorSpawnParameters Params;
