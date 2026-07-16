@@ -1,5 +1,6 @@
 #include "World/DomainChallenge.h"
 #include "Character/EnemyBase.h"
+#include "System/PacingDirectorSubsystem.h"
 #include "Components/BoxComponent.h"
 #include "TimerManager.h"
 #include "MyGame.h"
@@ -75,13 +76,25 @@ void ADomainChallenge::SpawnWave(int32 WaveIndex)
 	CurrentWaveIndex = WaveIndex;
 	AliveEnemies.Reset();
 
+	// Spawn budget pacing director — konsumen C++ pertama (sebelumnya cuma
+	// diiklankan di docs). Domain = wave curated, jadi cuma skala NAIK
+	// (Peak 1.5×, tekanan buat pemain dominan); mercy saat Relax TIDAK
+	// mengurangi wave — ngurangin isi challenge arena = cheese ("masuk pas
+	// Relax = domain gampang"). Mercy di domain lewat jalur loot bonus.
+	float SpawnMultiplier = 1.f;
+	if (const UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
+	{
+		SpawnMultiplier = FMath::Max(1.f, Pacing->GetSpawnBudgetMultiplier());
+	}
+
 	for (const auto& Pair : Waves[WaveIndex].Enemies)
 	{
 		if (!Pair.Key)
 		{
 			continue;
 		}
-		for (int32 i = 0; i < Pair.Value; ++i)
+		const int32 SpawnCount = FMath::Max(1, FMath::RoundToInt(Pair.Value * SpawnMultiplier));
+		for (int32 i = 0; i < SpawnCount; ++i)
 		{
 			FActorSpawnParameters Params;
 			Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;

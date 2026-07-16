@@ -1,5 +1,6 @@
 #include "Character/EnemyBase.h"
 #include "Character/EnemyAIController.h"
+#include "System/OpenWorldGameInstance.h"
 #include "System/PacingDirectorSubsystem.h"
 #include "System/EnemyRegistrySubsystem.h"
 #include "System/ElementAdaptationSubsystem.h"
@@ -226,17 +227,50 @@ void AEnemyBase::HandleDeath()
 	// aggro. HasAuthority: director server-side; di client HandleDeath bisa
 	// kepanggil dari jalur damage lokal yang belum server-gated (lihat
 	// ANTISIPASI CombatComponent di CODE_REVIEW.md).
+	float LootMultiplier = 1.f;
 	if (HasAuthority())
 	{
 		if (UPacingDirectorSubsystem* Pacing = GetWorld()->GetSubsystem<UPacingDirectorSubsystem>())
 		{
 			Pacing->ReportEnemyKilled(GetActorLocation());
+			LootMultiplier = Pacing->GetLootBonusMultiplier();
 
 			const AEnemyAIController* AI = Cast<AEnemyAIController>(GetController());
 			if (AI && AI->HasAggro())
 			{
 				Pacing->ReportEnemyAggro(-1);
 			}
+		}
+
+		// Loot drop — sebelumnya cuma komentar "Phase 4": data DT_EnemyStats
+		// (MoraDrop/MaterialDrops/ArtifactDropChance) ke-load tapi tak pernah
+		// dieksekusi = musuh mati tanpa reward materiil. Mercy loot pacing
+		// director (GetLootBonusMultiplier, 1.0-1.5×) akhirnya punya konsumen:
+		// - Mora: skala langsung.
+		// - Material: 1 per entri; multiplier >1 = chance salinan ekstra
+		//   (mult 1.5 = 50% chance +1) — mercy tanpa inflasi pasti.
+		// - Artifact: roll chance × multiplier; hasil di-broadcast
+		//   OnLootDropped — BP yang generate FArtifactInstance (generator
+		//   rarity/substat itu data/BP territory, konsisten arsitektur set
+		//   bonus; C++ sengaja tak freelance bikin artifact dari nol).
+		if (UOpenWorldGameInstance* GI = Cast<UOpenWorldGameInstance>(GetGameInstance()))
+		{
+			const int32 MoraGained = FMath::RoundToInt(CachedStats.MoraDrop * LootMultiplier);
+			GI->Mora += MoraGained;
+
+			for (const FName& Material : CachedStats.MaterialDrops)
+			{
+				int32 Count = 1;
+				if (FMath::FRand() < LootMultiplier - 1.f)
+				{
+					++Count;
+				}
+				GI->AddItem(Material, Count);
+			}
+
+			const bool bArtifactDropped =
+				FMath::FRand() < CachedStats.ArtifactDropChance * LootMultiplier;
+			OnLootDropped.Broadcast(MoraGained, bArtifactDropped);
 		}
 	}
 
@@ -249,9 +283,6 @@ void AEnemyBase::HandleDeath()
 			GetWorld()->SpawnActor<AActor>(EnergyOrbClass, GetActorLocation() + Offset, FRotator::ZeroRotator);
 		}
 	}
-
-	// Drops: mora + material + artifact roll — Phase 4 inventory system.
-	// Data sudah tersedia di CachedStats (MoraDrop, MaterialDrops, ArtifactDropChance).
 
 	SetLifeSpan(3.f); // despawn setelah death anim
 }

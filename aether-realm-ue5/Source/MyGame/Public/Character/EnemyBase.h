@@ -8,6 +8,13 @@
 class UShieldComponent;
 class AEnemyProjectile;
 
+/**
+ * Loot musuh ke-grant (server-side, di HandleDeath). MoraGained sudah masuk
+ * GameInstance; bArtifactDropped = hasil roll — BP subscriber yang generate
+ * FArtifactInstance & pickup VFX (generator artifact = data/BP territory).
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLootDropped, int32, MoraGained, bool, bArtifactDropped);
+
 UENUM(BlueprintType)
 enum class EEnemyType : uint8
 {
@@ -129,6 +136,10 @@ public:
 	/** Class proyektil dipakai `FireProjectileAt` — assign di BP child ranged. */
 	UPROPERTY(EditDefaultsOnly, Category = "Enemy|Ranged")
 	TSubclassOf<AEnemyProjectile> ProjectileClass;
+
+	/** Loot ke-grant saat mati (lihat komentar delegate di atas class). */
+	UPROPERTY(BlueprintAssignable, Category = "Enemy|Drops")
+	FOnLootDropped OnLootDropped;
 
 protected:
 	virtual void BeginPlay() override;

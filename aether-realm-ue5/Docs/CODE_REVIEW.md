@@ -521,6 +521,7 @@ Review `ue5-reviewer`: 1🔴 2🟡 1❓, semua closed:
 | Presentation pass | character catalog + reaction SFX — 2 class baru (`PlayableCharacter`, `SFXManager`) |
 | Longevity pass | AI Director (`PacingDirectorSubsystem`) — riset + pola di `GAME_LONGEVITY_PATTERNS.md` |
 | Psychology pass | Session Chronicle / memoar (`SessionChronicleSubsystem`) — teori lintas ilmu di `GAME_PSYCHOLOGY_FOUNDATIONS.md` |
+| Reward loop pass | Enemy loot drop akhirnya DIEKSEKUSI (mora/material/artifact roll dari `DT_EnemyStats`, sebelumnya cuma komentar "Phase 4") + pacing director outputs dapat konsumen C++ pertama (`GetLootBonusMultiplier` → HandleDeath, `GetSpawnBudgetMultiplier` → DomainChallenge, skala naik saja) — delegate baru `OnLootDropped` (BP generate artifact instance + VFX) |
 | Content pass | prolog 2-quest chain + `CutsceneActor` — 2 class baru (`StarterContentLibrary`, `CutsceneActor`) |
 | Perf/security pass | `UEnemyRegistrySubsystem` (ganti 5 world-scan call site) + `AChest` interact-range anti-cheat — 1 class baru |
 | Damage number pooling pass | `ADamageNumberCarrier` + `UDamageNumberPoolSubsystem` — 2 class baru |

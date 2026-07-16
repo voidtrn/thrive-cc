@@ -148,8 +148,8 @@ Relax ───(RelaxDurationSeconds habis)──▶ BuildUp
 ### Output (dipoll / event oleh sistem lain)
 | API | Konsumen | Efek |
 |---|---|---|
-| `GetSpawnBudgetMultiplier()` | spawner BP / DomainChallenge | Relax = 0.5× (napas), BuildUp = 1×, Peak = 1.5× (tekanan) |
-| `GetLootBonusMultiplier()` | drop logic BP (`FEnemyStatsRow` drops) | Stress tinggi berkepanjangan = mercy loot naik (rubber-band L4D2) |
+| `GetSpawnBudgetMultiplier()` | ✅ `DomainChallenge::SpawnWave` (C++) + spawner BP | Peak = 1.5× jumlah spawn per wave. Domain cuma skala NAIK (mercy pengurangan wave = cheese-able di arena curated); Relax 0.5× berlaku buat spawner open-world (BP/editor) |
+| `GetLootBonusMultiplier()` | ✅ `EnemyBase::HandleDeath` (C++) | Mercy loot beneran jalan: mora ×mult, material chance salinan ekstra, artifact chance ×mult (lihat baris berikut) |
 | `GetEnemyAggressionMultiplier()` | BT service musuh | Peak = agresif; Relax = musuh lebih pasif |
 | auto-drive | `MusicManagerSubsystem::SetCombatIntensity` | Musik ikut kurva stress tanpa wiring BP |
 | `OnPacingStateChanged` | BP/VFX/ambience | Hook transisi build-up/peak/relax |
