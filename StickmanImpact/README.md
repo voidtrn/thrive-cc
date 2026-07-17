@@ -1359,6 +1359,26 @@ surgery on the well-tested base movement):
   (co-op realm visits ride the same host/guest model as `UCoopSessionSubsystem`). Save hooks
   exist; not yet in the binary format.
 
+## Faction system (Nemesis-lite)
+
+- **`UFactionSubsystem`**: the 6-faction world state (`EFaction`
+  Knights/Adventurers/Abyss/TreasureHoarders/Fatui/WildAlliance) — reputation -100..+100 →
+  7 tiers (`EFactionRepTier` Hated→Exalted, gating hostility/discounts/companions/legendary
+  lines), territory control (region → controlling faction + per-faction influence;
+  `ShiftTerritoryInfluence` flips control past 0.5 for "Battle for [Region]" events + weekly
+  drift), and per-faction bounties (0-5 stars; a crime raises the bounty + drops standing).
+  Territory control drives spawns/vendors/patrols/music/safe-zones via
+  `GetTerritoryController`. Sits above the region-scoped `UReputationSubsystem` and
+  choice-scoped `UConsequenceTrackerSubsystem`, which feed it.
+- **`UNemesisSubsystem`**: procedural faction captains (`FNemesisCaptain` — generated name +
+  strength/weakness traits + faction + territory + rank). Beating the player promotes +
+  remembers them (`TimesDefeatedPlayer` → escalating `GetCaptainTaunt`) and swings their
+  faction's territory influence; the player beating them resolves fate (die/flee/demote),
+  weakens the faction, and frees the slot for a rival. `GetActiveCaptains` is the nemesis
+  board; captains spawn as bestiary/boss pawns configured from their traits.
+- Faction quest lines, territory-war battle events, and jail/bounty-hunter spawns are content
+  on these subsystems. Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
