@@ -22,6 +22,9 @@
 #include "UI/Menus/SettingsScreenWidget.h"
 #include "Combat/DefenseComponent.h"
 #include "Combat/WeaponSwapComponent.h"
+#include "Movement/GrapplingHookComponent.h"
+#include "Movement/AerialMovementComponent.h"
+#include "Movement/FlowStateComponent.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -82,6 +85,10 @@ AStickmanCharacter::AStickmanCharacter()
 	DefenseComponent = CreateDefaultSubobject<UDefenseComponent>(TEXT("DefenseComponent"));
 
 	WeaponSwapComponent = CreateDefaultSubobject<UWeaponSwapComponent>(TEXT("WeaponSwapComponent"));
+
+	GrapplingHookComponent = CreateDefaultSubobject<UGrapplingHookComponent>(TEXT("GrapplingHookComponent"));
+	AerialMovementComponent = CreateDefaultSubobject<UAerialMovementComponent>(TEXT("AerialMovementComponent"));
+	FlowStateComponent = CreateDefaultSubobject<UFlowStateComponent>(TEXT("FlowStateComponent"));
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -276,6 +283,14 @@ void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		if (WeaponSwapAction)
 		{
 			EIC->BindAction(WeaponSwapAction, ETriggerEvent::Started, this, &AStickmanCharacter::OnWeaponSwap);
+		}
+		if (GrappleAction)
+		{
+			EIC->BindAction(GrappleAction, ETriggerEvent::Started, this, &AStickmanCharacter::OnGrapple);
+		}
+		if (AirDashAction)
+		{
+			EIC->BindAction(AirDashAction, ETriggerEvent::Started, this, &AStickmanCharacter::OnAirDash);
 		}
 		if (NormalAttackAction)
 		{
@@ -480,6 +495,32 @@ void AStickmanCharacter::OnWeaponSwap()
 	}
 }
 
+void AStickmanCharacter::OnGrapple()
+{
+	if (GrapplingHookComponent && GrapplingHookComponent->FireGrapple() && FlowStateComponent)
+	{
+		FlowStateComponent->NotifyTech(EMovementTech::Grapple);
+	}
+}
+
+void AStickmanCharacter::OnAirDash()
+{
+	if (!AerialMovementComponent)
+	{
+		return;
+	}
+	// Air context: dash if airborne, else fall through to a double jump.
+	const bool bDashed = AerialMovementComponent->TryAirDash(GetLastMovementInputVector());
+	if (bDashed)
+	{
+		if (FlowStateComponent) { FlowStateComponent->NotifyTech(EMovementTech::AirDash); }
+	}
+	else if (AerialMovementComponent->TryDoubleJump() && FlowStateComponent)
+	{
+		FlowStateComponent->NotifyTech(EMovementTech::DoubleJump);
+	}
+}
+
 void AStickmanCharacter::Dash()
 {
 	// Guard-break lockout freezes all defensive/movement action briefly.
@@ -524,6 +565,11 @@ void AStickmanCharacter::Dash()
 	if (DefenseComponent)
 	{
 		DefenseComponent->NotifyDodgeStarted();
+	}
+	// Flow: a dash/slide is a movement tech for the chain.
+	if (FlowStateComponent)
+	{
+		FlowStateComponent->NotifyTech(EMovementTech::Slide);
 	}
 
 	ConsumeStamina(DashStaminaCost);

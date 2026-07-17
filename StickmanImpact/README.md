@@ -1258,6 +1258,31 @@ font-outline setting.
   / Wildlife / Special) mapped to rows + which existing system realizes each mechanic, and
   the per-row authoring recipe.
 
+## Advanced traversal
+
+Built as additive player components over the existing wall-run/glide/dive locomotion (no
+surgery on the well-tested base movement):
+
+- **`UGrapplingHookComponent`**: unlockable grapple — camera-aim fire auto-picks mode
+  (`Pull` straight-line yank / `Swing` analytic pendulum when the anchor is overhead /
+  `Enemy` yank-small or pull-to-large by enemy HP). 3 charges, 1/5s recharge, 2s between
+  fires; release preserves + boosts momentum (the chain-move payoff). Cable/whoosh are
+  cosmetic hooks; full Chaos cable-constraint sim noted as an upgrade over the lightweight
+  pendulum.
+- **`UAerialMovementComponent`**: air move budget that refills on landing — double jump
+  (unlockable, +1 with Trickster), omnidirectional air dash (stamina-costed, extra dashes
+  from `UStyleSubsystem::GetExtraAirDashes`), brief zero-gravity hover, and dive bomb
+  (`OnDiveBomb` → the existing plunge routing spawns the slam).
+- **`UFlowStateComponent`** ("moment system"): chaining *distinct* movement techs
+  (`NotifyTech`) past a threshold enters **Flow State** — `GetSpeedMultiplier` up,
+  `GetStaminaCostMultiplier` down, trail VFX; a repeat resets the streak, grounded-idle
+  breaks it. Tracks style points + longest-flow distance for the traversal-leaderboard hook.
+  Fed from `Dash()`/`OnGrapple`/`OnAirDash` (wall-run/glide feed it the same way).
+- Character gains `GrappleAction`/`AirDashAction` inputs + the three subobjects with getters.
+  Wall-run **vertical/ceiling** modes + surface-runnability tags are a documented extension
+  of the existing horizontal wall-run tunables (kept data-side this pass to avoid churning
+  tested movement).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

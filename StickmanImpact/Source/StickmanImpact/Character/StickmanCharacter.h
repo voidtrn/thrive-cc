@@ -21,6 +21,9 @@ class UGameplayAbility;
 class UEquipmentManager;
 class UDefenseComponent;
 class UWeaponSwapComponent;
+class UGrapplingHookComponent;
+class UAerialMovementComponent;
+class UFlowStateComponent;
 struct FInputActionValue;
 
 /**
@@ -75,6 +78,26 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UWeaponSwapComponent> WeaponSwapComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Traversal", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGrapplingHookComponent> GrapplingHookComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Traversal", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAerialMovementComponent> AerialMovementComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Traversal", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UFlowStateComponent> FlowStateComponent;
+
+public:
+	UFUNCTION(BlueprintPure, Category = "Traversal")
+	UGrapplingHookComponent* GetGrapplingHookComponent() const { return GrapplingHookComponent; }
+
+	UFUNCTION(BlueprintPure, Category = "Traversal")
+	UAerialMovementComponent* GetAerialMovementComponent() const { return AerialMovementComponent; }
+
+	UFUNCTION(BlueprintPure, Category = "Traversal")
+	UFlowStateComponent* GetFlowStateComponent() const { return FlowStateComponent; }
+
+private:
 public:
 	UFUNCTION(BlueprintPure, Category = "Equipment")
 	UEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
@@ -146,6 +169,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> WeaponSwapAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> GrappleAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> AirDashAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> NormalAttackAction;
@@ -446,6 +475,8 @@ public:
 	void Dash();
 	void Parry();
 	void OnWeaponSwap();
+	void OnGrapple();
+	void OnAirDash();
 	void OnNormalAttack();
 	void OnSkill1();
 	void OnSkill2();
