@@ -1283,6 +1283,23 @@ surgery on the well-tested base movement):
   of the existing horizontal wall-run tunables (kept data-side this pass to avoid churning
   tested movement).
 
+## Mount system
+
+- **`AMountBase`**: rideable pawn — mounting re-possesses this actor with the player's
+  controller (rider attached to the seat socket, hidden/disabled), so movement input drives
+  the mount; dismount re-possesses the rider. Per-type movement (`EMountType`
+  Ground/Flying/Aquatic/Climbing) applied from `FMountStats` in BeginPlay. Mounted combat:
+  `MountCharge` (velocity-scaled impact via `NotifyHit`), `UseMountAbility` (`OnMountAbility`
+  BP hook per type — stomp/dive/tail-whip), mount HP + downed state, `DismountAttack`
+  (launches the rider into the existing plunge/dive-bomb path).
+- **`UMountManagerSubsystem`**: the stable — `FMountRecord` per mount (bond level/XP, custom
+  name, skin, armor), `SummonMount` (whistle: spawns/relocates near the player, navmesh
+  projected), `SwitchActiveMount`, 10s post-dismount summon cooldown, bond XP from riding
+  (unlocks abilities + stat scaling). Wild taming = `RegisterMount`; legendaries = maxed
+  records. Breeding/racing/photo-poses + vehicle alternatives (steam cycle, glider pack,
+  skiff, teleport beacon) are content/simple-actors on this foundation — documented, not
+  bespoke mounts. Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
