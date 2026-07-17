@@ -1300,6 +1300,27 @@ surgery on the well-tested base movement):
   skiff, teleport beacon) are content/simple-actors on this foundation — documented, not
   bespoke mounts. Save hooks exist; not yet in the binary format.
 
+## Time manipulation (Chrono)
+
+- **`UChronoComponent`** (on the Chrono character): time powers on **per-actor
+  `CustomTimeDilation`** (global stays 1) — the same primitive as witch time.
+  - **Time Slow** (skill): sets nearby enemies' dilation to `SlowFactor` for `SlowDuration`;
+    player untouched.
+  - **Time Stop** (burst): freezes all enemies + registered projectiles (dilation ~0) for
+    `StopDuration`; the player acts freely. Damage to a frozen target **accumulates** (the
+    damage funnel routes it via `AccumulateStoppedDamage` and returns early) and lands all at
+    once when time resumes.
+  - **Time Rewind** (passive): 20 Hz ring buffer of loc/rot/HP; `TryRewind` restores the
+    snapshot `RewindSeconds` ago — once per battle (`ResetBattleState` re-arms).
+  - **Time Clone** (dash): `SpawnTimeClone` drops an **`AChronoClone`** that replays the
+    player's recent transform track `CloneDelay` later, re-emitting attacks on `OnCloneBeat`.
+  - **Time Skip** (hold): `BeginTimeSkip`/`ReleaseTimeSkip` charges, teleports behind the
+    target, and queues charge-scaled hits (`GetLastSkipHits`) for the combat side to deliver.
+- Puzzle/boss hooks (time-locked doors, decaying bridges, echo puzzles, a boss that
+  speeds/rewinds or fights across timelines) all build on the same per-actor dilation +
+  the Chrono methods — no new primitive needed. Time Wraith enemy (bestiary Special) reuses
+  the slow. Funnel wiring for time-stop accumulation is the only combat-path change.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

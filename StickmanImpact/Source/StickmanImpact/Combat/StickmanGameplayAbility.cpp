@@ -16,6 +16,7 @@
 #include "DefenseComponent.h"
 #include "WeaponSwapComponent.h"
 #include "StyleSubsystem.h"
+#include "Chrono/ChronoComponent.h"
 #include "AI/EnemyTelegraphComponent.h"
 #include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
@@ -446,6 +447,19 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 		if (bOneShot)
 		{
 			FinalDamage = FMath::Max(FinalDamage, TargetAttributes->GetMaxHealth());
+		}
+
+		// Time Stop: damage to a frozen target accumulates and applies when time resumes.
+		if (const AStickmanCharacter* PlayerAttacker = Cast<AStickmanCharacter>(GetAvatarActorFromActorInfo()))
+		{
+			if (UChronoComponent* Chrono = PlayerAttacker->FindComponentByClass<UChronoComponent>())
+			{
+				if (Chrono->IsActorTimeStopped(TargetActor))
+				{
+					Chrono->AccumulateStoppedDamage(TargetActor, FinalDamage);
+					return; // Applied later on resume.
+				}
+			}
 		}
 
 		const float NewHealth = FMath::Clamp(TargetAttributes->GetHealth() - FinalDamage, 0.f,
