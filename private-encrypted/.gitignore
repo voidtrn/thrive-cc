@@ -1,0 +1,3 @@
+# Never commit decrypted plaintext. Only .enc and README.md belong here.
+*.md
+!README.md
