@@ -1321,6 +1321,26 @@ surgery on the well-tested base movement):
   the Chrono methods — no new primitive needed. Time Wraith enemy (bestiary Special) reuses
   the slow. Funnel wiring for time-stop accumulation is the only combat-path change.
 
+## Roguelike domain (Abyss Domain)
+
+- **`UDungeonGenerator`**: deterministic seeded floor layouts — `GenerateFloor(seed, floor)`
+  returns the abstract room sequence (N combat/utility rooms + a boss, count/difficulty by
+  floor per the 1-12 structure), and `RollAffix` seeds enemy affixes from floor 4+
+  (`EEnemyAffix` Frenzied/Thorned/Vampiric/Explosive/Regenerating/Shielded/Mirror/Giant).
+  Same seed → same dungeon. Room *geometry* is the caller's `FRoomPiece` pool (streaming
+  levels) filtered on `ERoomType` + biome; the generator owns the sequence.
+- **`URoguelikeRunSubsystem`**: the run — seed, current floor, `AdvanceFloor`, and boon flow:
+  `OfferBoons()` rolls `BoonChoicesPerRoom` rarity-weighted picks from the `FBoonDef`
+  DataTable (excluding maxed), `ChooseBoon` stacks to upgrade + resolves synergies (owning
+  all `SynergyPartners` grants `SynergyBoonID`). `GetBoonLevel`/`GetBoonMagnitude` are what
+  combat/defense read; legendary boons are high-rarity rows with a distinct `EffectTag`.
+  Abyssal Shards currency (`AddShards`/`SpendShards`) + the cross-run **Abyss Talent Tree**
+  (`BuyTalent`/`HasTalent`) persist; boons are run-scoped (lost on death, shards kept).
+- `ERoomType` (Combat/Boss/Treasure/Shop/Rest/Mystery/Trap/Puzzle) + `EBoonCategory`/
+  `EBoonRarity` complete the schema. Enemies spawn through the existing `UEnemyFactory` with
+  the rolled affix applied; the floor boss uses `AStickmanBossCharacter`. Save hooks exist;
+  not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
