@@ -1188,6 +1188,31 @@ font-outline setting.
   Export/ImportSaveState but aren't in the binary save format yet (same deferral as the
   other progression subsystems).
 
+## Boss fights (multi-phase)
+
+- **`AStickmanBossCharacter`** (extends the enemy base): HP-threshold `FBossPhase` array —
+  crossing a threshold makes the boss invulnerable, plays the transition montage/VFX/SFX,
+  grants that phase's abilities, swaps its available attack patterns, and applies an
+  aggression multiplier (final phase = author it as fast "desperation"). `HandleHealthChanged`
+  drives it off the AttributeSet; `OnBossPhaseChanged` + `OnPhaseTransitionBegin`
+  (BlueprintImplementableEvent) hand the arena change / dramatic camera to BP.
+- **Attack rotation**: `PickNextPattern()` (`EBossAttackPattern`
+  Combo/AoE/Charge/Projectile/Grab/Summon/Ultimate) draws no-repeat from the current phase's
+  set, biased toward Grab when the adaptive system says the player is dodge-spamming.
+- **Stagger/weak points**: visible poise bar (`AddStagger` from heavy hits/reactions →
+  downed `StaggerDownDuration`s at full); `FBossWeakPoint` bones rotate on a timer, take a
+  damage multiplier, break permanently after enough damage, and can gate behind an
+  elemental shield broken only by `ShieldElement` (`GetIncomingDamageMultiplier` is the
+  damage-funnel hook — returns 0 while the wrong-element hit meets an active shield).
+- **AI director**: `NotifyPlayerDied` → 3+ wipes eases the fight (mercy damage buff);
+  reacts to the player's favorite element via `UAdaptiveDifficultySubsystem`.
+- **`UBossEncounterSubsystem`** + `EBossVariant` (Story/World/Weekly/Abyss/Corrupted):
+  first-clear flags, per-boss kill counts (→ title milestones), speed-kill + no-hit bonus
+  grants, reward routing through `UCollectibleManager`. Example authoring documented for
+  **Pyro Sovereign "Ignis Rex"** (sword combos → Pyro AoE + summons → desperation flight +
+  firestorm ultimate). Weekly/Abyss period-gating + leaderboard are a data/timestamp layer
+  on these flags; save hooks exist, not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
