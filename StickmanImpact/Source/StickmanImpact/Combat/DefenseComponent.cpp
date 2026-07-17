@@ -2,6 +2,7 @@
 
 #include "DefenseComponent.h"
 #include "DefenseSkillSubsystem.h"
+#include "StyleSubsystem.h"
 #include "StickmanAttributeSet.h"
 #include "Character/StickmanCharacter.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
@@ -136,7 +137,15 @@ EDefenseResult UDefenseComponent::ResolveIncomingAttack(AActor* Attacker, bool b
 
 	// --- Parry resolution: is a parry active? ---
 	const double SinceParry = Now - ParryStartTime;
-	const float ParryWindow = Skills ? Skills->GetParryWindow() : 0.15f;
+	float ParryWindow = Skills ? Skills->GetParryWindow() : 0.15f;
+	// DMC Royal Guard stance doubles the parry window.
+	if (const UGameInstance* GameInstance = GetOwner()->GetGameInstance())
+	{
+		if (const UStyleSubsystem* Style = GameInstance->GetSubsystem<UStyleSubsystem>())
+		{
+			ParryWindow *= Style->GetParryWindowMultiplier();
+		}
+	}
 	if (SinceParry >= 0.0 && SinceParry <= ParryWindow + PartialParryGrace)
 	{
 		if (!bAttackParryable)

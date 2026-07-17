@@ -14,6 +14,8 @@
 #include "CombatJuiceSubsystem.h"
 #include "ComboMeterSubsystem.h"
 #include "DefenseComponent.h"
+#include "WeaponSwapComponent.h"
+#include "StyleSubsystem.h"
 #include "AI/EnemyTelegraphComponent.h"
 #include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
@@ -373,6 +375,20 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 				if (UDefenseComponent* Defense = PlayerAttacker->GetDefenseComponent())
 				{
 					FinalDamage *= Defense->ConsumeCounterMultiplier();
+				}
+				// Weapon-swap first-hit bonus (Sword→Claymore slam etc.).
+				if (UWeaponSwapComponent* Swap = PlayerAttacker->FindComponentByClass<UWeaponSwapComponent>())
+				{
+					FinalDamage *= Swap->ConsumeSwapBonus();
+				}
+			}
+
+			// DMC style stance damage modifier.
+			if (UGameInstance* GI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+			{
+				if (const UStyleSubsystem* Style = GI->GetSubsystem<UStyleSubsystem>())
+				{
+					FinalDamage *= Style->GetStyleDamageMultiplier();
 				}
 			}
 		}

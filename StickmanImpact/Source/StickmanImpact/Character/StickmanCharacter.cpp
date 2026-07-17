@@ -21,6 +21,7 @@
 #include "GameFlow/StickmanCheatManager.h"
 #include "UI/Menus/SettingsScreenWidget.h"
 #include "Combat/DefenseComponent.h"
+#include "Combat/WeaponSwapComponent.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -79,6 +80,8 @@ AStickmanCharacter::AStickmanCharacter()
 	EquipmentManager = CreateDefaultSubobject<UEquipmentManager>(TEXT("EquipmentManager"));
 
 	DefenseComponent = CreateDefaultSubobject<UDefenseComponent>(TEXT("DefenseComponent"));
+
+	WeaponSwapComponent = CreateDefaultSubobject<UWeaponSwapComponent>(TEXT("WeaponSwapComponent"));
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -269,6 +272,10 @@ void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		if (ParryAction)
 		{
 			EIC->BindAction(ParryAction, ETriggerEvent::Started, this, &AStickmanCharacter::Parry);
+		}
+		if (WeaponSwapAction)
+		{
+			EIC->BindAction(WeaponSwapAction, ETriggerEvent::Started, this, &AStickmanCharacter::OnWeaponSwap);
 		}
 		if (NormalAttackAction)
 		{
@@ -462,6 +469,14 @@ void AStickmanCharacter::Parry()
 	if (DefenseComponent && !DefenseComponent->IsGuardBroken())
 	{
 		DefenseComponent->BeginParry();
+	}
+}
+
+void AStickmanCharacter::OnWeaponSwap()
+{
+	if (WeaponSwapComponent)
+	{
+		WeaponSwapComponent->SwapWeapon();
 	}
 }
 

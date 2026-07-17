@@ -20,6 +20,7 @@ class UStickmanAttributeSet;
 class UGameplayAbility;
 class UEquipmentManager;
 class UDefenseComponent;
+class UWeaponSwapComponent;
 struct FInputActionValue;
 
 /**
@@ -71,12 +72,18 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Defense", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UDefenseComponent> DefenseComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UWeaponSwapComponent> WeaponSwapComponent;
+
 public:
 	UFUNCTION(BlueprintPure, Category = "Equipment")
 	UEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
 
 	UFUNCTION(BlueprintPure, Category = "Defense")
 	UDefenseComponent* GetDefenseComponent() const { return DefenseComponent; }
+
+	UFUNCTION(BlueprintPure, Category = "Weapon")
+	UWeaponSwapComponent* GetWeaponSwapComponent() const { return WeaponSwapComponent; }
 
 protected:
 
@@ -136,6 +143,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> ParryAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> WeaponSwapAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> NormalAttackAction;
@@ -435,6 +445,7 @@ public:
 	void StopSprint();
 	void Dash();
 	void Parry();
+	void OnWeaponSwap();
 	void OnNormalAttack();
 	void OnSkill1();
 	void OnSkill2();

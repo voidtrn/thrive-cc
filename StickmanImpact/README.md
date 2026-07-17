@@ -1213,6 +1213,29 @@ font-outline setting.
   firestorm ultimate). Weekly/Abyss period-gating + leaderboard are a data/timestamp layer
   on these flags; save hooks exist, not yet in the binary format.
 
+## Weapon swap & DMC style system
+
+- **`UWeaponSwapComponent`** (on the player): two equipped weapons (`FEquippedWeapon` —
+  type + `EWeaponSubType` + normal/heavy skill tags + mesh). `SwapWeapon()` (bound to
+  `WeaponSwapAction`) is instant and doesn't reset the combo; the first attack after a swap
+  plays the matching `FSwapAttack` (Sword→Claymore slam, Ranged→Melee gap-closer, …) with a
+  bonus the damage funnel spends via `ConsumeSwapBonus`. 1.5s `SwapCooldown` gates spam.
+- **`EWeaponSubType`** — 15 sub-types (Katana/Longsword/Twinblades, Greatsword/WarAxe/Hammer,
+  Spear/Halberd/Scythe, Shortbow/Longbow/Crossbow, Orb/Tome/Wand), each with its own
+  heavy-attack tag + passive (data on the equipped weapon).
+- **`UStyleSubsystem`** — the four DMC stances (`ECombatStyle`
+  Trickster/Swordmaster/Gunslinger/RoyalGuard), D-pad `SetStyle`, per-style EXP/level (use =
+  gain), and the modifiers other systems read: `GetStyleDamageMultiplier` (funnel),
+  `GetStyleEnergyMultiplier`, `GetParryWindowMultiplier` (RoyalGuard doubles the
+  `UDefenseComponent` parry window), `GetExtraAirDashes` (Trickster), `IsSignatureUnlocked`
+  (Lv3 signature moves = gated abilities). The **style RANK** (D→SS) is still the existing
+  `UComboMeterSubsystem` from attack variety — the stance layers on top.
+- **`FComboRoute`/`FComboRouteStep`** — saved combo routes for the training room +
+  export/import share codes; combo-recording is a thin input-tap layer deferred the same way
+  as the automated-test input replay.
+- Funnel wiring: player-attack damage now runs `× swap-bonus × style-multiplier` after the
+  counter/riposte step. Save hooks on the style subsystem, not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

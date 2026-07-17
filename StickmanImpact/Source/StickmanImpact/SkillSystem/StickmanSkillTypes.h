@@ -46,6 +46,26 @@ enum class EWeaponType : uint8
 };
 
 /**
+ * Weapon sub-types — each parent EWeaponType has three flavors with a distinct heavy attack
+ * and passive (data on FWeaponSubTypeData). WeaponType is derivable from this via
+ * WeaponTypeForSubType().
+ */
+UENUM(BlueprintType)
+enum class EWeaponSubType : uint8
+{
+	// Sword
+	Katana, Longsword, Twinblades,
+	// Claymore
+	Greatsword, WarAxe, Hammer,
+	// Polearm
+	Spear, Halberd, Scythe,
+	// Bow
+	Shortbow, Longbow, Crossbow,
+	// Catalyst
+	Orb, Tome, Wand
+};
+
+/**
  * A normal-attack combo chain: N montages played back to back, each with its own damage
  * multiplier, as long as the player keeps attacking inside ComboWindowTime of the last hit.
  */
