@@ -1341,6 +1341,24 @@ surgery on the well-tested base movement):
   the rolled affix applied; the floor boss uses `AStickmanBossCharacter`. Save hooks exist;
   not yet in the binary format.
 
+## Player housing (Serenitea Realm)
+
+- **`URealmSubsystem`**: the pocket-dimension model — unlocked/active layouts (`ERealmLayout`
+  FloatingIslands/EmeraldForest/CrystalCave/Beachfront/MountainPeak), the authoritative
+  placed-furniture list, realm energy (sum of placed `FFurnitureDef.RealmEnergy` + full-set
+  bonuses) with benefit tiers (`GetUnlockedBenefitTier` → stamina regen / crafting speed /
+  realm shop / second slot), comfort level (NPC visitor frequency), and gardening
+  (`PlantSeed`/`AdvanceGardens` with adjacency cross-breeding/`HarvestPlot`).
+- **`UHousingBuildComponent`**: the build-mode editor — ghost preview, grid snap (toggle
+  free), 45°/free rotate, 0.5-1.5 scale, Z elevation, collision-checked `ConfirmPlacement`
+  into the realm, and 20-deep undo/redo. UX layer over the subsystem model.
+- `FFurnitureDef` (category/mesh/craft-materials/energy/set/functional-tag) DataTable +
+  `FPlacedFurniture` (transform + dye index) + `FGardenPlot`. Crafting = spend
+  `CraftMaterials` via the inventory; dye = 16-color palette index on the placed piece.
+  Companion visitors, realm events, and friend-visit/sharing are content on this foundation
+  (co-op realm visits ride the same host/guest model as `UCoopSessionSubsystem`). Save hooks
+  exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
