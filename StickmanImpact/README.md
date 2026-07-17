@@ -1236,6 +1236,28 @@ font-outline setting.
 - Funnel wiring: player-attack damage now runs `× swap-bonus × style-multiplier` after the
   counter/riposte step. Save hooks on the style subsystem, not yet in the binary format.
 
+## Bestiary (modular enemy factory)
+
+- **`FEnemyArchetype`** DataTable rows are the whole 50+ roster — faction, element, stat
+  template, personality, weighted attacks, abilities, element resistances (weakness/resist/
+  immune), loot table, recommended level, and a `MechanicComponentClass` for the signature
+  behavior. **No 50 hand-written classes**; enemies are data.
+- **`UEnemyFactory::SpawnArchetype(ID, transform, level)`** deferred-spawns the row's pawn
+  (base `AStickmanEnemyCharacter` or a native subclass — bosses use
+  `AStickmanBossCharacter`), stamps stats/element/personality/attacks/resistances,
+  level-scales, attaches the mechanic component, and records the sighting. Used by spawners,
+  world events, roguelike rooms.
+- **Reusable mechanics** (dropped on via the archetype, proving the modular hook):
+  `UEnrageComponent` (speed+attack buff below an HP%), `USummonerComponent` (periodic
+  minion waves through the factory). Bespoke mechanics are BP components on the same hook;
+  many "mechanics" are just stat shapes (tank = high DEF, swarm = spawn count) needing no
+  component.
+- **`UBestiarySubsystem`**: monster journal — first sightings, kill counts, progressive
+  weakness reveal, "N species catalogued" completion.
+- **`Docs/BESTIARY.md`**: the full roster catalog (Hilichurl / Abyss / Elemental / Humanoid
+  / Wildlife / Special) mapped to rows + which existing system realizes each mechanic, and
+  the per-row authoring recipe.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
