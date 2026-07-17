@@ -1,5 +1,6 @@
 #include "System/WishSystem.h"
 #include "System/OpenWorldGameInstance.h"
+#include "System/SessionChronicleSubsystem.h"
 #include "MyGame.h"
 
 UOpenWorldGameInstance* UWishSystem::GetOWGameInstance() const
@@ -132,6 +133,22 @@ TArray<FWishResult> UWishSystem::Pull(const FBannerData& Banner, int32 Count)
 		Entry.BannerType = Banner.BannerType;
 		Entry.Timestamp = FDateTime::UtcNow();
 		GI->WishHistory.Add(Entry);
+	}
+
+	// Chronicle: 5★ = momen paling langka di gacha (base 0.6%) — peak-end rule
+	// murni (GAME_PSYCHOLOGY_FOUNDATIONS §1c/2a). Satu entri per 5★ dalam
+	// batch (bisa >1 kalau hard-pity kena 2x di 10-pull yang sama, jarang
+	// tapi mungkin). Intensity 1.0 — sama kelas dgn BossSlain, peak sejati,
+	// terlepas menang/kalah 50/50 (bFeatured di ContextId lewat ItemId).
+	if (USessionChronicleSubsystem* Chronicle = GI->GetSubsystem<USessionChronicleSubsystem>())
+	{
+		for (const FWishResult& Result : Results)
+		{
+			if (Result.Rarity == EWishRarity::FiveStar)
+			{
+				Chronicle->RecordMoment(TEXT("WishFiveStar"), Result.ItemId, FVector::ZeroVector, 1.f);
+			}
+		}
 	}
 
 	GI->AutoSave();

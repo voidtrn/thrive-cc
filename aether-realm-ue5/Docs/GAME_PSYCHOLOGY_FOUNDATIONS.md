@@ -70,9 +70,13 @@ MELEBIHI prediksi (positive prediction error). Reward yang bisa diprediksi
 dasar kenapa gacha/loot acak bekerja.
 
 **→ Kode: ✅ sudah ada** — wish system (pity + 50/50), artifact substat
-acak, drop chance. **Ditambah pass ini:** momen chronicle sendiri bersifat
-variable — pemain tak tahu kapan aksi mereka "layak dicatat sejarah", jadi
-notifikasi "momen terekam" adalah micro-reward tak terduga.
+acak, drop chance. Momen chronicle sendiri bersifat variable — pemain tak
+tahu kapan aksi mereka "layak dicatat sejarah", jadi notifikasi "momen
+terekam" adalah micro-reward tak terduga. **Ditambah pass ini:** tiap 5★
+(RPE paling ekstrem di game ini — base 0.6%, reward jauh melebihi prediksi)
+sekarang tercatat ke chronicle (`WishSystem::Pull` → `"WishFiveStar"`) —
+lonjakan dopamin gacha dikonsolidasi jadi memoar yang bisa dibaca ulang,
+bukan cuma animasi 10 detik yang lewat lalu lupa.
 
 ### 2b. Reward-modulated memory encoding — momen ber-reward dienkode lebih kuat
 

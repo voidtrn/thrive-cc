@@ -93,6 +93,10 @@ Variable reward (gacha) → dopamin dari antisipasi, bukan hasil.
 **Penerapan: ✅ sudah ada** — daily commission (PHASE6), wish/pity/soft-pity
 (PHASE5). Catatan etika: pity system kita transparan; jangan tiru dark
 pattern loss-aversion berlebihan — target Steam, bukan mobile F2P.
+**Ditambah pass ini:** tiap 5★ (base 0.6% — momen paling langka di gacha)
+sekarang tercatat ke Session Chronicle ("WishFiveStar") — dopamin dari
+antisipasi (RPE, FOUNDATIONS §2a) dikonsolidasi jadi memoar yang bisa
+dibaca ulang, bukan cuma animasi yang lewat.
 
 ### 2c. Momen clip-worthy — game yang memasarkan dirinya sendiri
 
@@ -144,8 +148,8 @@ Relax ───(RelaxDurationSeconds habis)──▶ BuildUp
 ### Output (dipoll / event oleh sistem lain)
 | API | Konsumen | Efek |
 |---|---|---|
-| `GetSpawnBudgetMultiplier()` | spawner BP / DomainChallenge | Relax = 0.5× (napas), BuildUp = 1×, Peak = 1.5× (tekanan) |
-| `GetLootBonusMultiplier()` | drop logic BP (`FEnemyStatsRow` drops) | Stress tinggi berkepanjangan = mercy loot naik (rubber-band L4D2) |
+| `GetSpawnBudgetMultiplier()` | ✅ `DomainChallenge::SpawnWave` (C++) + spawner BP | Peak = 1.5× jumlah spawn per wave. Domain cuma skala NAIK (mercy pengurangan wave = cheese-able di arena curated); Relax 0.5× berlaku buat spawner open-world (BP/editor) |
+| `GetLootBonusMultiplier()` | ✅ `EnemyBase::HandleDeath` (C++) | Mercy loot beneran jalan: mora ×mult, material chance salinan ekstra, artifact chance ×mult (lihat baris berikut) |
 | `GetEnemyAggressionMultiplier()` | BT service musuh | Peak = agresif; Relax = musuh lebih pasif |
 | auto-drive | `MusicManagerSubsystem::SetCombatIntensity` | Musik ikut kurva stress tanpa wiring BP |
 | `OnPacingStateChanged` | BP/VFX/ambience | Hook transisi build-up/peak/relax |
