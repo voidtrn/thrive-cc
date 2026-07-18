@@ -1449,6 +1449,20 @@ surgery on the well-tested base movement):
   themselves are cutscene content on `OnEndingLocked`. Save hooks exist; not yet in the
   binary format.
 
+## Morality system (two-axis)
+
+- **`UMoralitySubsystem`**: Compassion↔Cruelty × Order↔Chaos (-100..+100 each).
+  `RecordAction(EMoralityAction)` moves both axes by authored deltas (sparing enemies,
+  executing surrendered foes, following/breaking law, free help vs demanded payment, …);
+  `AddMorality` for bespoke story beats. Quadrant (`Paragon`/`Rebel`/`Judge`/`Anarchist`,
+  or `Neutral` inside the center band — the rarest path) + `GetTransformIntensity` (0-1
+  distance from center) drive the **visual transformation**: BP reads `OnQuadrantChanged`/
+  `OnMoralityChanged` to morph aura color/material (golden glow → demonic hints scale with
+  intensity) and tint elemental VFX. Morality-locked content gates on
+  `MeetsRequirement(quadrant, intensity)` (e.g. "Sword of Mercy" = Paragon ≥ 0.5); NPC
+  reactions/quests key the same. Redemption/corruption arcs = quests calling in with large
+  deltas — never permanent. Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
