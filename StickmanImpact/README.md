@@ -1610,6 +1610,21 @@ surgery on the well-tested base movement):
   SIMK mod-kit plan (separate editor-tooling artifact), and the honest backend scope for
   signatures/workshop/ratings/creator rewards.
 
+## Photo mode
+
+- **`UPhotoModeSubsystem`**: enter = real pause (works mid-cutscene) + a free camera
+  spawned at the current view. Camera: free-fly clamped to a 50m drone sphere, orbit
+  helper, and `FPhotoSettings` applied live — focal length (10-300mm → FOV), aperture +
+  focus distance (DoF), exposure compensation, roll, filter presets
+  (Cinematic/Vibrant/Vintage/Noir; LUT-quality versions asset-side), vignette, film grain.
+  Scene: hide UI/enemies/NPCs, time-of-day override (restored on exit).
+- **Capture**: `TakePhoto` = engine `HighResShot` ×1-4 (≈8K on 1080p) into the platform
+  screenshots dir; `OnPhotoCaptured` feeds the in-game gallery. Character posing
+  (pose library, stickman expressions, group/interaction poses, aura toggle) is anim/data
+  content the photo UI applies to the paused pawns — the subsystem provides the pause +
+  capture rails. Co-op posing rides the co-op session; photo challenges/community voting =
+  backend scope; photos-as-loading-screens = the loading screen reading the gallery.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
