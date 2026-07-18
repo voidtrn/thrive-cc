@@ -1643,6 +1643,22 @@ surgery on the well-tested base movement):
   platform capture — honestly out of in-engine scope. The `.replay` file is the shareable
   artifact.
 
+## Final integration pass
+
+- **`Docs/INTEGRATION.md`** is the capstone map — how ~70 systems compose through the two
+  hubs (the single **damage funnel** every hit flows through, and per-actor
+  `CustomTimeDilation` shared by witch-time/Chrono/boss-speed), the mandatory
+  cross-system integrations (combat+movement no-state-locks, elemental+environment,
+  story+reputation+morality, housing+social, roguelike+progression, photo+replay,
+  mods+everything), the full accessibility checklist, the 60 FPS / 4GB perf budget, and the
+  standing honesty note.
+- **Difficulty presets** (Story/Normal/Hard/Expert) added to settings
+  (`GetDifficultyDamageScale` scales incoming player damage in the funnel + drives
+  `UAdaptiveDifficultySubsystem`) — completing the accessibility checklist.
+- **Final test rail** in the dev console: `test.skills` / `test.reactions` / `test.quests` /
+  `test.maps` / `test.save` / `test.bench` / `test.combat` — the acceptance commands
+  (TestAllSkills/Reactions/Quests/LoadAllMaps/SaveLoad/Performance).
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed

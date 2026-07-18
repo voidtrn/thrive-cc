@@ -8,6 +8,7 @@
 #include "GameFramework/GameUserSettings.h"
 #include "GameFramework/PlayerController.h"
 #include "Audio/StickmanAudioManager.h"
+#include "AI/AdaptiveDifficultySubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Internationalization/Culture.h"
 #include "Misc/ConfigCacheIni.h"
@@ -247,6 +248,19 @@ void USettingsScreenWidget::SetAudioCuesForVisualInfo(bool bEnabled)
 	WriteConfigBool(TEXT("AudioCuesForVisualInfo"), bEnabled);
 }
 
+void USettingsScreenWidget::SetDifficultyPreset(int32 Preset)
+{
+	WriteConfigFloat(TEXT("DifficultyPreset"), FMath::Clamp(Preset, 0, 3));
+	// Push into the live adaptive-difficulty knob immediately.
+	if (const UGameInstance* GameInstance = GetGameInstance())
+	{
+		if (UAdaptiveDifficultySubsystem* Difficulty = GameInstance->GetSubsystem<UAdaptiveDifficultySubsystem>())
+		{
+			Difficulty->DifficultyScale = GetDifficultyDamageScale();
+		}
+	}
+}
+
 void USettingsScreenWidget::ApplyAndSave()
 {
 	// Read every bound widget and push through the setters, then persist.
@@ -325,6 +339,17 @@ bool USettingsScreenWidget::AreActionsToggle()
 bool USettingsScreenWidget::AreAudioCuesForVisualInfoEnabled()
 {
 	return ReadConfigBool(TEXT("AudioCuesForVisualInfo"), false);
+}
+
+int32 USettingsScreenWidget::GetDifficultyPreset()
+{
+	return FMath::Clamp(FMath::RoundToInt(ReadConfigFloat(TEXT("DifficultyPreset"), 1.f)), 0, 3);
+}
+
+float USettingsScreenWidget::GetDifficultyDamageScale()
+{
+	static const float Scales[] = { 0.6f, 1.f, 1.35f, 1.7f };
+	return Scales[GetDifficultyPreset()];
 }
 
 float USettingsScreenWidget::GetSavedMouseSensitivity()

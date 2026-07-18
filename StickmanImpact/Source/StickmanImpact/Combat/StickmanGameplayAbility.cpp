@@ -333,6 +333,9 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 					return; // Fully negated (perfect dodge / i-frame / perfect parry).
 				}
 			}
+			// Difficulty preset scales incoming damage to the player (Story 0.6 → Expert 1.7).
+			DefenseMultiplier *= USettingsScreenWidget::GetDifficultyDamageScale();
+
 			// Taking a hit builds awakening gauge.
 			if (UAwakeningComponent* Awakening = Player->FindComponentByClass<UAwakeningComponent>())
 			{

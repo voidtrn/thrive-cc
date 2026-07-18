@@ -483,6 +483,30 @@ void UDevConsoleSubsystem::RegisterAllCommands()
 			Tests->RunAllSkillsTest();
 		}
 	});
+	RegisterCommand(TEXT("test.reactions"), EDevCommandCategory::Test, TEXT("test.reactions — drive every element pair on a dummy"),
+		[this](const TArray<FString>&)
+	{
+		if (UAutomatedTestSubsystem* Tests = GetGameInstance()->GetSubsystem<UAutomatedTestSubsystem>())
+		{
+			Tests->RunAllReactionsTest();
+		}
+	});
+	RegisterCommand(TEXT("test.quests"), EDevCommandCategory::Test, TEXT("test.quests — validate the quest catalog"),
+		[this](const TArray<FString>&)
+	{
+		if (UAutomatedTestSubsystem* Tests = GetGameInstance()->GetSubsystem<UAutomatedTestSubsystem>())
+		{
+			Tests->RunAllQuestsValidation();
+		}
+	});
+	RegisterCommand(TEXT("test.maps"), EDevCommandCategory::Test, TEXT("test.maps — verify all TestMapNames resolve"),
+		[this](const TArray<FString>&)
+	{
+		if (UAutomatedTestSubsystem* Tests = GetGameInstance()->GetSubsystem<UAutomatedTestSubsystem>())
+		{
+			Tests->RunLoadAllMapsTest();
+		}
+	});
 	RegisterCommand(TEXT("test.record"), EDevCommandCategory::Test, TEXT("test.record — start/stop movement recording"),
 		[this](const TArray<FString>&)
 	{

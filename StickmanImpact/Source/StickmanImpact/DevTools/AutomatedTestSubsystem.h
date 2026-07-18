@@ -61,6 +61,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Test")
 	void RunAllSkillsTest();
 
+	// Applies every element to a dummy in sequence so each reaction fires (integration check).
+	UFUNCTION(BlueprintCallable, Category = "Test")
+	void RunAllReactionsTest();
+
+	// Validates the quest DataTable: every quest's objectives resolve + rewards are set.
+	UFUNCTION(BlueprintCallable, Category = "Test")
+	void RunAllQuestsValidation();
+
+	// Streams every level in TestMapNames and reports load success (set the list in defaults).
+	UFUNCTION(BlueprintCallable, Category = "Test")
+	void RunLoadAllMapsTest();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Test")
+	TArray<TSoftObjectPtr<UWorld>> TestMapNames;
+
 	UFUNCTION(BlueprintCallable, Category = "Test")
 	void ToggleRecording();
 

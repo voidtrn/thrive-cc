@@ -98,6 +98,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Settings|Accessibility")
 	void SetAudioCuesForVisualInfo(bool bEnabled);
 
+	// Difficulty preset: 0 Story, 1 Normal, 2 Hard, 3 Expert. Feeds AdaptiveDifficultySubsystem.
+	UFUNCTION(BlueprintCallable, Category = "Settings|Gameplay")
+	void SetDifficultyPreset(int32 Preset);
+
 	UFUNCTION(BlueprintCallable, Category = "Settings")
 	void ApplyAndSave();
 
@@ -129,6 +133,13 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Settings")
 	static bool AreAudioCuesForVisualInfoEnabled();
+
+	// 0 Story..3 Expert → damage-scale knob (Story 0.6, Normal 1, Hard 1.35, Expert 1.7).
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static int32 GetDifficultyPreset();
+
+	UFUNCTION(BlueprintPure, Category = "Settings")
+	static float GetDifficultyDamageScale();
 
 	UFUNCTION(BlueprintPure, Category = "Settings")
 	static float GetSavedMouseSensitivity();

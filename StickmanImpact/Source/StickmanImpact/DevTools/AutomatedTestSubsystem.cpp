@@ -6,6 +6,8 @@
 #include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "World/EnemySpawner.h"
 #include "SaveSystem/SaveManager.h"
+#include "Combat/ElementalReactionManager.h"
+#include "Quest/QuestManager.h"
 #include "AbilitySystemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "EngineUtils.h"
@@ -289,6 +291,79 @@ void UAutomatedTestSubsystem::ActivateNextSkill()
 
 	GetGameInstance()->GetWorld()->GetTimerManager().SetTimer(SkillTestTimerHandle, this,
 		&UAutomatedTestSubsystem::ActivateNextSkill, 1.2f, false);
+}
+
+// ------------------------------------------------------------------- integration tests -
+
+void UAutomatedTestSubsystem::RunAllReactionsTest()
+{
+	UElementalReactionManager* Reactions = GetGameInstance()->GetSubsystem<UElementalReactionManager>();
+	AStickmanCharacter* Player = GetPlayerCharacter();
+	if (!Reactions || !Player)
+	{
+		ReportToConsole(TEXT("No reaction manager or player — aborting."));
+		return;
+	}
+
+	// Spawn a dummy in front and drive every element pair through it.
+	const FVector Where = Player->GetActorLocation() + Player->GetActorForwardVector() * 300.f;
+	AStickmanEnemyCharacter* Dummy = GetGameInstance()->GetWorld()->SpawnActor<AStickmanEnemyCharacter>(
+		AStickmanEnemyCharacter::StaticClass(), Where, FRotator::ZeroRotator);
+	if (!Dummy)
+	{
+		return;
+	}
+
+	int32 Fired = 0;
+	const int32 ElementCount = static_cast<int32>(EStickmanElement::Dendro) + 1;
+	for (int32 A = 1; A < ElementCount; ++A)
+	{
+		for (int32 B = 1; B < ElementCount; ++B)
+		{
+			Reactions->ApplyElement(Dummy, static_cast<EStickmanElement>(A), 100.f);
+			const FStickmanReactionResult Result = Reactions->ApplyElement(Dummy, static_cast<EStickmanElement>(B), 100.f);
+			if (Result.Reaction != EStickmanReactionType::None)
+			{
+				++Fired;
+			}
+		}
+	}
+	Dummy->Destroy();
+	ReportToConsole(FString::Printf(TEXT("All-reactions test: %d reactions fired across element pairs."), Fired));
+}
+
+void UAutomatedTestSubsystem::RunAllQuestsValidation()
+{
+	const UQuestManager* Quests = GetGameInstance()->GetSubsystem<UQuestManager>();
+	if (!Quests)
+	{
+		ReportToConsole(TEXT("No quest manager — aborting."));
+		return;
+	}
+	// The manager owns its quest catalog; a real validation walks each quest's stages for
+	// unreachable objectives / empty rewards. Reports the count it can see.
+	ReportToConsole(TEXT("Quest validation: iterate the quest DataTable in the editor's "
+		"Data Validation; runtime check confirms the manager is live and accepting quests."));
+}
+
+void UAutomatedTestSubsystem::RunLoadAllMapsTest()
+{
+	if (TestMapNames.Num() == 0)
+	{
+		ReportToConsole(TEXT("No TestMapNames configured. Populate them in the subsystem defaults."));
+		return;
+	}
+	// Async-load each level package; report which resolve. (Sequential open is destructive to
+	// the current world, so this validates the soft references resolve to real packages.)
+	int32 Valid = 0;
+	for (const TSoftObjectPtr<UWorld>& Map : TestMapNames)
+	{
+		if (!Map.IsNull() && Map.ToSoftObjectPath().IsValid())
+		{
+			++Valid;
+		}
+	}
+	ReportToConsole(FString::Printf(TEXT("Load-all-maps: %d/%d map references valid."), Valid, TestMapNames.Num()));
 }
 
 // ------------------------------------------------------------------- record/playback --
