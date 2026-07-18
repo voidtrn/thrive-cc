@@ -1420,6 +1420,21 @@ surgery on the well-tested base movement):
   use-friend's-character-as-NPC need the online backend (same scope note as guild/trading).
   Save hooks exist; not yet in the binary format.
 
+## Cosmetic skin system
+
+- **`FSkinDef`** DataTable rows, tiered (`ESkinTier` Default/Recolor/Outfit/Themed/
+  Legendary/Mythic): every component optional — a Recolor is just a `VFXColorOverride`
+  pushed into the skill-VFX Material Parameter Collection (recolor without remaking
+  assets); Legendary adds mesh/SFX/voice/animation overrides; **Mythic evolves** by
+  character level (`MythicStageLevels` → `GetMythicStage`). Collection membership +
+  seasonal flag included. Example ladders (Blue Flame → Samurai → Demon Slayer → Phoenix
+  Knight → Sun God) are rows.
+- **`USkinSubsystem`**: unlock (acquisition — currency/events/pass/drops — is content),
+  per-character equip with ownership + character checks, wardrobe listing, collection
+  completion bonus. The character BP applies the def's overrides on switch-in; VFX manager
+  reads the color override; audio checks SFX/voice. Preview/tryout is stateless UI over the
+  table. Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
