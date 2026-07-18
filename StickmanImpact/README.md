@@ -1580,6 +1580,21 @@ surgery on the well-tested base movement):
   + hazards are level content; spectator/replay = the replay system. Save hooks exist; not
   yet in the binary format.
 
+## Player trading / economy (local-first)
+
+- **`UTradingSubsystem`**: the economy model with the safeguards baked in — market board
+  (listings with fee, buy orders, 24-72h expiry driven by the shared game-hour tick,
+  50-deep per-item price history for the graph), trade tax on purchase, tradability
+  blacklist (quest/achievement/premium = account-bound), anti-abuse throttles (daily trade
+  limit + 48h new-account lock in `CanTrade`), crafting specializations
+  (Weaponsmith/Alchemist/Enchanter/Furnisher — EXP levels + growing masterpiece proc
+  `RollMasterpiece`), and daily-limited gifts.
+- **Honest scope**: real player↔player exchange + a shared order book + RMT flagging need
+  the backend service (same scope block as guild/PvP); wallet debits happen at the
+  inventory/wallet call sites since there's still deliberately no currency system in code —
+  the fee/tax fractions are the contract. Dynamic vendor pricing + price ceilings are
+  vendor content reading `GetAveragePrice`. Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
