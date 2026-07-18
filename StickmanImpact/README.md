@@ -1435,6 +1435,20 @@ surgery on the well-tested base movement):
   reads the color override; audio checks SFX/voice. Preview/tryout is stateless UI over the
   table. Save hooks exist; not yet in the binary format.
 
+## Multi-ending system
+
+- **`UEndingSubsystem`**: hidden ending score (0-100, starts 50) moved by
+  `AddEndingPoints(description, ±N)` from major choices (±10), side quests (±3),
+  interactions (±1), faction allegiances (±5) — every call appends to the reviewable
+  **choice log**. `GetProjectedEnding` maps thresholds → the five endings (Fallen Hero /
+  Lone Survivor / Balance / Hero's Legacy / True Savior); **True Savior additionally
+  requires every `TrueEndingRequiredFlags` story flag** (secret quest chain) — points alone
+  cap at Hero's Legacy. `LockEnding` at the point-of-no-return (the pre-final NPC hint reads
+  the projection just before); seen endings persist for **NG+** variations
+  (`HasSeenEnding` keys dialogue/buffs/exclusive content). The ending cutscenes/epilogues
+  themselves are cutscene content on `OnEndingLocked`. Save hooks exist; not yet in the
+  binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
