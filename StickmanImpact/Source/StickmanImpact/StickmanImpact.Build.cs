@@ -35,6 +35,7 @@ public class StickmanImpact : ModuleRules
 			"NavigationSystem",
 			"Json",
 			"JsonUtilities", // FJsonObjectConverter (character-creator share codes)
+			"PakFile",       // FPakPlatformFile (.smod mod mounting)
 		});
 	}
 }

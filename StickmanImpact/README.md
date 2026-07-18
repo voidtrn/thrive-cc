@@ -1595,6 +1595,21 @@ surgery on the well-tested base movement):
   the fee/tax fractions are the contract. Dynamic vendor pricing + price ceilings are
   vendor content reading `GetAveragePrice`. Save hooks exist; not yet in the binary format.
 
+## Modding framework
+
+- **`UModManagerSubsystem`**: the .smod loader — a .smod is a cooked pak + `mod.json`
+  manifest in `<Project>/Mods/`. Scan, enable/disable, load-order sort (mount order = asset
+  override order), mount-root conflict detection, dependency checks, and pak mounting via
+  the pak platform file (`PakFile` dep added). `AreModsActive()` gates ranked/online paths
+  away from modded sessions.
+- **Safety by construction**: cooked paks carry assets + Blueprint bytecode only — no
+  native code in a .smod; mods script against the BlueprintCallable surface every subsystem
+  already publishes, and **the data-driven design is the mod API** (enemy archetypes, boons,
+  quests, dialogue, events, skins are all runtime-loaded rows).
+- **`Docs/MODDING.md`**: manifest schema, mod-type → content mapping, safety model, the
+  SIMK mod-kit plan (separate editor-tooling artifact), and the honest backend scope for
+  signatures/workshop/ratings/creator rewards.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
