@@ -1515,6 +1515,22 @@ surgery on the well-tested base movement):
   mono/balance presets. Diegetic sources (bard, music box, humming chest, hollow wall)
   are placed audio actors — "sound as gameplay clue" is content.
 
+## Cel-shading / visual identity
+
+- **`UVisualStyleSubsystem`** (runtime knobs): per-region LUT application + intensity on the
+  player camera (`SetRegionLUT`), time-of-day + weather grading via StyleMPC scalars
+  (`SetTimeOfDayBlend`, `SetWeatherGrade` — drive from day/night + weather managers),
+  color-coded outline stencils (`SetActorOutline`: ally green / enemy red / neutral white /
+  item gold / quest sparkle — values 3+ so detective mode's 1/2 never collide;
+  `SetOutlinesEnabled` settings toggle), and anime-moment triggers (`TriggerSpeedLines`,
+  `TriggerImpactFrame` — MPC scalars the full-screen FX material animates).
+- **`Docs/VISUAL_STYLE.md`**: the material recipes — PP_CelShade (3-4 hard light bands,
+  colored shadows, element-tinted rim light, discrete specular + hair band), PP_Outline
+  (depth+normal Sobel with distance-scaled thickness + stencil colors, chosen over
+  inverted-hull), the 7 region LUTs + time/weather ramps, M_AnimeFX (speed lines / impact
+  frames / screen tone), and character/environment/water material guidelines. Shader work
+  is honest asset-side; C++ owns only the param contract.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
