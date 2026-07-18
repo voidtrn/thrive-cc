@@ -33,6 +33,8 @@ public class StickmanImpact : ModuleRules
 			"SlateCore",
 			"AIModule",
 			"NavigationSystem",
+			"Json",
+			"JsonUtilities", // FJsonObjectConverter (character-creator share codes)
 		});
 	}
 }

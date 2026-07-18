@@ -1399,6 +1399,27 @@ surgery on the well-tested base movement):
   multiplier, cooldown waive) is the only combat-path change; the transformation cutscene +
   model swap + per-form visual rework are BP/asset content on the C++ mechanics.
 
+## Character creator (custom Traveler)
+
+- **`FCustomCharacterPreset`**: the whole custom hero as one serializable struct — body
+  sliders (height w/ slight hitbox influence, build, head size, limb/torso length),
+  stickman face (head shape, eye style/spacing/size, mouth, accessory IDs), colors
+  (body line / eyes / elemental aura / accents), starting element + weapon + voice (10
+  options). The character BP applies it onto the stickman rig's morphs + material params by
+  reading `GetActivePreset` on `OnCustomCharacterChanged`.
+- **`UCharacterCreatorSubsystem`**: preset slots, **export/import share codes**
+  (struct → JSON → hex, Soul-Calibur style — `Json`/`JsonUtilities` added to Build.cs), and
+  the Traveler identity: `SwapTravelerElement` (any of the 7, internal cooldown —
+  the "can temporarily use ANY element" special), late-game `UnlockDualElement` +
+  `SetSecondElement`, **borrowed skills** (`BorrowSkill` gated on
+  `UCharacterBondSubsystem` bond ≥ 5, max 3 equipped), and the four-branch custom skill
+  tree (Elemental/Weapon/Traveler/Social) as purchasable node IDs.
+- Story integration (dialogue referencing the Traveler's element, origin arc) rides the
+  existing `FNPCDialogueVariant`/story-flag systems reading `GetTravelerElement`.
+  Barber/salon = overwrite the preset for currency; featured-creations gallery +
+  use-friend's-character-as-NPC need the online backend (same scope note as guild/trading).
+  Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
