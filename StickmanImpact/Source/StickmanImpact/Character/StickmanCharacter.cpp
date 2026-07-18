@@ -25,6 +25,7 @@
 #include "Movement/GrapplingHookComponent.h"
 #include "Movement/AerialMovementComponent.h"
 #include "Movement/FlowStateComponent.h"
+#include "Combat/Awakening/AwakeningComponent.h"
 #include "StickmanInteractable.h"
 
 AStickmanCharacter::AStickmanCharacter()
@@ -89,6 +90,8 @@ AStickmanCharacter::AStickmanCharacter()
 	GrapplingHookComponent = CreateDefaultSubobject<UGrapplingHookComponent>(TEXT("GrapplingHookComponent"));
 	AerialMovementComponent = CreateDefaultSubobject<UAerialMovementComponent>(TEXT("AerialMovementComponent"));
 	FlowStateComponent = CreateDefaultSubobject<UFlowStateComponent>(TEXT("FlowStateComponent"));
+
+	AwakeningComponent = CreateDefaultSubobject<UAwakeningComponent>(TEXT("AwakeningComponent"));
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const

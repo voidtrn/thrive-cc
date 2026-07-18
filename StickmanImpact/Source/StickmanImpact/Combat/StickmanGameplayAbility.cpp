@@ -17,6 +17,7 @@
 #include "WeaponSwapComponent.h"
 #include "StyleSubsystem.h"
 #include "Chrono/ChronoComponent.h"
+#include "Awakening/AwakeningComponent.h"
 #include "AI/EnemyTelegraphComponent.h"
 #include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
@@ -95,6 +96,18 @@ void UStickmanGameplayAbility::CommitCooldown()
 	if (!SkillData.SkillTag.IsValid() || SkillData.Cooldown <= 0.f || UStickmanCheatManager::IsNoCooldownEnabled())
 	{
 		return;
+	}
+
+	// Awakening waives skill cooldowns.
+	if (const AActor* Avatar = GetAvatarActorFromActorInfo())
+	{
+		if (const UAwakeningComponent* Awakening = Avatar->FindComponentByClass<UAwakeningComponent>())
+		{
+			if (Awakening->IsSkillCooldownWaived())
+			{
+				return;
+			}
+		}
 	}
 
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
@@ -302,8 +315,18 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 				DefenseMultiplier = UDefenseComponent::GetDamageMultiplier(Result);
 				if (DefenseMultiplier <= 0.f)
 				{
+					// Perfect dodge/parry still builds awakening gauge.
+					if (UAwakeningComponent* Awakening = Player->FindComponentByClass<UAwakeningComponent>())
+					{
+						Awakening->AddGauge(10.f);
+					}
 					return; // Fully negated (perfect dodge / i-frame / perfect parry).
 				}
+			}
+			// Taking a hit builds awakening gauge.
+			if (UAwakeningComponent* Awakening = Player->FindComponentByClass<UAwakeningComponent>())
+			{
+				Awakening->AddGauge(DamageAmount * 0.1f);
 			}
 		}
 
@@ -390,6 +413,15 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 				if (const UStyleSubsystem* Style = GI->GetSubsystem<UStyleSubsystem>())
 				{
 					FinalDamage *= Style->GetStyleDamageMultiplier();
+				}
+			}
+
+			// Awakening transformation stat bonus (and exhaustion penalty).
+			if (const AStickmanCharacter* PlayerAttacker = Cast<AStickmanCharacter>(GetAvatarActorFromActorInfo()))
+			{
+				if (const UAwakeningComponent* Awakening = PlayerAttacker->FindComponentByClass<UAwakeningComponent>())
+				{
+					FinalDamage *= Awakening->GetStatMultiplier();
 				}
 			}
 		}

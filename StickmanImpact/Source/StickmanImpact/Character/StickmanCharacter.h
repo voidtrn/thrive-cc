@@ -24,6 +24,7 @@ class UWeaponSwapComponent;
 class UGrapplingHookComponent;
 class UAerialMovementComponent;
 class UFlowStateComponent;
+class UAwakeningComponent;
 struct FInputActionValue;
 
 /**
@@ -87,7 +88,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Traversal", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UFlowStateComponent> FlowStateComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Awakening", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAwakeningComponent> AwakeningComponent;
+
 public:
+	UFUNCTION(BlueprintPure, Category = "Awakening")
+	UAwakeningComponent* GetAwakeningComponent() const { return AwakeningComponent; }
+
 	UFUNCTION(BlueprintPure, Category = "Traversal")
 	UGrapplingHookComponent* GetGrapplingHookComponent() const { return GrapplingHookComponent; }
 

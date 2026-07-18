@@ -1379,6 +1379,26 @@ surgery on the well-tested base movement):
 - Faction quest lines, territory-war battle events, and jail/bounty-hunter spawns are content
   on these subsystems. Save hooks exist; not yet in the binary format.
 
+## Awakening transformation
+
+- **`UAwakeningComponent`** (on the player): a Devil-Trigger transformation separate from the
+  Elemental Burst. A gauge fills from taking damage + perfect dodges + kills (funnel-wired
+  `AddGauge`), faster at low HP (desperation `LowHPGaugeMultiplier`). Full → `Activate`
+  (once per battle, `MaxActivationsPerBattle` with upgrades): +50% stats
+  (`GetStatMultiplier`, funnel-multiplied), skill cooldowns waived
+  (`IsSkillCooldownWaived`, checked in `CommitCooldown`), rapid HP regen, transform
+  set-piece (`OnAwakeningBegin` BP hook: mesh/aura/voice), and the awakening-only skill.
+  After `Duration`: an exhaustion penalty (`ExhaustStats` for `ExhaustDuration`) + gauge
+  lockout (`GaugeLockAfter`).
+- **`FAwakeningForm`** per character (element, form name, transformed mesh, aura VFX,
+  activation voice line, awakening-skill tag) — the seven elemental forms (Inferno Form,
+  Absolute Zero, Thunder God, Tsunami Avatar, Eye of the Storm, Diamond Colossus, World Tree
+  Avatar) are form rows; the awakening-skill (Supernova, Ice Age, Ragnarok, …) is the
+  granted `AwakeningSkillTag`. Upgrades (duration/stat/activations/gauge rate) are the
+  tunables; the finisher fires on `OnAwakeningEnd`. Funnel wiring (gauge on hit/dodge, stat
+  multiplier, cooldown waive) is the only combat-path change; the transformation cutscene +
+  model swap + per-form visual rework are BP/asset content on the C++ mechanics.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
