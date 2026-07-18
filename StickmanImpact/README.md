@@ -1550,6 +1550,21 @@ surgery on the well-tested base movement):
   destructibles + existing elemental systems. Geometry-Collection fracture assets + debris
   LOD are Chaos asset-side — the C++ owns damage routing, spread, budget, persistence.
 
+## Guild system (local-first)
+
+- **`UGuildSubsystem`**: the guild data model — creation (name + 2-4 char tag), five roles
+  (Initiate→Guild Master), EXP/levels 1-50 with the perk table read via `HasPerk(level)`
+  (5 +EXP% / 10 bank / 15 shop / 20 hall / 25 +drops / 30 raid boss / 40 GvG / 50 legendary
+  quest), guild bank (level-gated deposits), weekly missions (collective goals + per-member
+  contribution → guild EXP), and the **raid boss shared HP pool** (75/50/25/0% reward
+  tiers, per-contributor damage tracking for MVP).
+- **Honest scope**: deliberately local-first — real multi-account membership, cross-player
+  raid damage, GvG, and guild chat need the online backend service already scoped in the
+  co-op/trading docs. The model is plain structs with explicit mutations so a backend
+  mirrors it 1:1. The guild hall = a housing realm layout flagged shared (emblem creator,
+  trophy room, gathering nodes are hall content). Save hooks exist; not yet in the binary
+  format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
