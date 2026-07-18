@@ -1625,6 +1625,24 @@ surgery on the well-tested base movement):
   capture rails. Co-op posing rides the co-op session; photo challenges/community voting =
   backend scope; photos-as-loading-screens = the loading screen reading the gallery.
 
+## Replay system
+
+- **`UReplaySubsystem`**: wrapper over UE's native replay (DemoNetDriver) — recording
+  captures the replicated stream to disk (small input/state files, not video), playback
+  re-simulates with full time control. Single-player records fine via the local demo
+  driver.
+  - Record/stop, auto-record FIFO (last `MaxAutoReplays`, bookmark-exempt),
+    `AddEventMarker` timestamps kills/deaths/skills/reactions for the timeline's
+    jump-to-event.
+  - Playback: `PlayReplay`, `SetPlaybackSpeed` (0-8× via demo world dilation, 0≈pause),
+    `JumpToTime` (`GotoTimeInSeconds`), frame-step = pause + tiny jump.
+- Cameras: the replay world is a normal re-simulated world, so the **photo-mode free
+  camera works during replays** (covers "photo mode during replays"); follow/player/enemy
+  views = SetViewTarget on replayed pawns. Cinematic keyframed tracks + cut editing =
+  Sequencer (record the replay world into Sequencer); MP4 export = Sequencer render /
+  platform capture — honestly out of in-engine scope. The `.replay` file is the shareable
+  artifact.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
