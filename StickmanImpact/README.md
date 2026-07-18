@@ -1463,6 +1463,23 @@ surgery on the well-tested base movement):
   reactions/quests key the same. Redemption/corruption arcs = quests calling in with large
   deltas — never permanent. Save hooks exist; not yet in the binary format.
 
+## Companion relationships (affection)
+
+- **`UCompanionAffectionSubsystem`** (layered over the coarser `UCharacterBondSubsystem`):
+  per-companion affection 0-100 with 6 milestones (Stranger→Soul Bond), gift preferences
+  (loved/liked/disliked multipliers via `SetGiftPreference`/`GiveGift`), and 5-part
+  **personal quest chains** unlocking at 20/40/60/80/100 (`GetUnlockedQuestPart` + delegate;
+  the quests are UQuestDataAssets per part).
+- **Romance** (optional, per-companion `SetRomanceable` + polyamory flag): confession
+  requires affection ≥ 80 + quest part 4 done + expressed interest; jealousy drops a
+  non-accepting active partner's affection, and a non-accepting companion declines while
+  another romance is live. `BreakUp` costs 40 affection. Romance benefits (unique dialogue,
+  team-attack animation, housing room) key off `GetRomanceState`.
+- **Battle bond**: fighting together levels 1-5 → team attack / passive boost / auto-revive
+  / shared energy / dual awakening — combat systems gate on `GetBattleBondLevel`.
+  Campfire scenes/birthdays/banter ride the existing dialogue + `UPartyBanterComponent`
+  systems reading these values. Save hooks exist; not yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
