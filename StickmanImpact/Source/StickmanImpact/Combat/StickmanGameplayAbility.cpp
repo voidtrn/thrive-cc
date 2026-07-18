@@ -19,6 +19,7 @@
 #include "StyleSubsystem.h"
 #include "Chrono/ChronoComponent.h"
 #include "Awakening/AwakeningComponent.h"
+#include "PvP/PvPArenaSubsystem.h"
 #include "AI/EnemyTelegraphComponent.h"
 #include "Progression/SkillMasterySubsystem.h"
 #include "AI/AdaptiveDifficultySubsystem.h"
@@ -357,6 +358,15 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 
 		// Partial-parry mitigation (perfect dodge/parry already returned above).
 		FinalDamage *= DefenseMultiplier;
+
+		// PvP balance profile: separate damage tuning while an arena match is active.
+		if (UGameInstance* PvPGI = GetWorld() ? GetWorld()->GetGameInstance() : nullptr)
+		{
+			if (const UPvPArenaSubsystem* PvP = PvPGI->GetSubsystem<UPvPArenaSubsystem>())
+			{
+				FinalDamage *= PvP->GetDamageScalar();
+			}
+		}
 
 		const bool bPlayerIsAttacker = GetAvatarActorFromActorInfo() == UGameplayStatics::GetPlayerPawn(this, 0);
 

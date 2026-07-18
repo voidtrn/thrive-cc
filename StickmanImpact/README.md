@@ -1565,6 +1565,21 @@ surgery on the well-tested base movement):
   trophy room, gathering nodes are hall content). Save hooks exist; not yet in the binary
   format.
 
+## PvP arena
+
+- **`UPvPArenaSubsystem`**: the rules + progression layer — seven modes (`EPvPMode`
+  1v1/3v3/FFA/Elemental Clash/Boss Race/Casual/Ranked), the **PvP balance profile**
+  applied while a match is active (damage ×0.75 funnel-wired, equipment effects ×0.5,
+  CC ×0.6, healing ×0.7 — read points for their systems), 2-per-team character bans,
+  **Elo** with 9 tiers (Iron→Celestial), double-K placements (10 matches), weekly decay,
+  arena tokens (win/lose split + streak bonus) for the arena shop.
+- **Honest scope**: real netplay = the co-op networking refactor + a match service
+  (matchmaking, leaderboards, seasons) — same backend scope as guild/trading. Until then
+  the full rule set runs locally vs mirror-AI (the bestiary Doppelganger) for offline
+  duels/training — which is also how the balance profile gets tuned. Symmetric arena maps
+  + hazards are level content; spectator/replay = the replay system. Save hooks exist; not
+  yet in the binary format.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
