@@ -8,6 +8,7 @@
 #include "AI/Enemies/EnemyShieldGuard.h"
 #include "World/StickmanTorch.h"
 #include "World/StickmanInteractiveFoliage.h"
+#include "World/Destruction/DestructibleObject.h"
 #include "GameFlow/StickmanCheatManager.h"
 #include "DevTools/DevConsoleSubsystem.h"
 #include "CombatFeedbackSubsystem.h"
@@ -272,6 +273,14 @@ void UStickmanGameplayAbility::ApplyDamageToTarget(AActor* TargetActor, float Da
 	{
 		Torch->TryAffectWithElement(SkillData.Element);
 		return; // Torches have no health/ASC — hitting one is a puzzle interaction, not damage.
+	}
+
+	// Destructibles: route damage into the destruction system (elemental multipliers,
+	// progressive break, fire spread) — no health/ASC involved.
+	if (ADestructibleObject* Destructible = Cast<ADestructibleObject>(TargetActor))
+	{
+		Destructible->TakeDestructionDamage(SkillData.Element, DamageAmount, GetAvatarActorFromActorInfo());
+		return;
 	}
 
 	// Interactive foliage: burn (Pyro), freeze (Cryo), cut (physical) — environment interaction.

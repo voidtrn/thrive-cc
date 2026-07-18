@@ -1531,6 +1531,25 @@ surgery on the well-tested base movement):
   frames / screen tone), and character/environment/water material guidelines. Shader work
   is honest asset-side; C++ owns only the param contract.
 
+## Destruction system
+
+- **`ADestructibleObject`**: breakable world object routed from the damage funnel
+  (WorldDynamic overlaps already reach it) — `EDestructionType`
+  (Fracture/Burn/Melt/Corrode/Shatter), per-element damage multipliers, progressive visuals
+  via a "Progress" material scalar (char/melt/rust ramps), **fire spread** (a burning
+  flammable ignites neighbors on a delay + keeps consuming itself), **explosive** variants
+  (barrels — radius chain-trigger of nearby destructibles; pawn blast damage goes through
+  the normal radial ability so enemies/player are handled uniformly). On break: `OnBroken`
+  BP swaps in the Chaos Geometry Collection / spawns debris + decal per type (chunk-hits =
+  the GC's own collision + a damage-on-hit BP).
+- **`UDestructionManagerSubsystem`**: debris budget (break BPs `RegisterDebris`; capped at
+  60, oldest fade first, lifespanned), session persistence (majors stay broken via
+  `WasBrokenThisSession`; minors reset on reload — the boss arena always resets by being
+  minor). Environmental kills (chandelier, ceiling), Anemo-lift/Geo-crystallize debris
+  weapons, dam/flood chains, and structural-support collapse are level content wiring
+  destructibles + existing elemental systems. Geometry-Collection fracture assets + debris
+  LOD are Chaos asset-side — the C++ owns damage routing, spread, budget, persistence.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
