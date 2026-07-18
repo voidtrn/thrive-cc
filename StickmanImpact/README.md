@@ -1480,6 +1480,23 @@ surgery on the well-tested base movement):
   Campfire scenes/birthdays/banter ride the existing dialogue + `UPartyBanterComponent`
   systems reading these values. Save hooks exist; not yet in the binary format.
 
+## Adaptive music
+
+- **`UAdaptiveMusicSubsystem`**: Nier/DOOM-style layered music over the audio manager's
+  plain BGM. An `FLayeredMusicTrack` = up to 8 same-length stems (`EMusicLayer` Ambient →
+  Climax) that **all start together at zero volume** so they stay sample-synced — the
+  subsystem only eases per-layer volumes, making every transition seamless by construction.
+- Game state flows in via `Notify*` (enemy count, elite/boss, boss phase transition — the
+  Epic layer is an 8s moment not a state, low HP → Desperate, awakening → Climax,
+  victory-near → Triumphant); `RecomputeTargets` maps state → layer on/off.
+  `PlayStinger` fires one-shots over the bed (kill sting, perfect-dodge fill, elemental
+  reaction motif, character leitmotif on switch); `SetDucked` for dialogue/cutscenes.
+- Track *selection* (region/time-of-day/weather variants, character themes) stays where
+  region BGM already lives — the caller picks which `FLayeredMusicTrack` row to play.
+  Music memory = components persist at zero volume; jukebox = play with all layers forced.
+  Per-track MetaSound graphs (BPM-synced crossfades) can replace the volume mixer without
+  touching callers — noted as the authoring upgrade.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
