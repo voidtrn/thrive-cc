@@ -1497,6 +1497,24 @@ surgery on the well-tested base movement):
   Per-track MetaSound graphs (BPM-synced crossfades) can replace the volume mixer without
   touching callers — noted as the authoring upgrade.
 
+## Immersive soundscape
+
+- **`UAmbientSoundscapeSubsystem`**: per-region layered ambient bed (`FAmbientBed`) whose
+  channel volumes ride game state each tick — **wind** by player altitude + weather
+  intensity (silent indoors), **water** by proximity, **wildlife** day/night crossfade off
+  `ADayNightManager`, **civilization** near settlements, **interior**
+  (drips/settling-stone) replacing wind inside. `SetRegionBed` crossfades on region change.
+- **`UAudioSubtitleSubsystem`** (accessibility): subtitles for non-dialogue audio —
+  `BroadcastAt` composes "[Enemy growls behind you]" with a direction suffix derived from
+  source vs player; gated internally on the audio-cues/subtitles settings so callers fire
+  unconditionally. Sound-visualization radar subscribes to the same delegate.
+- Already covered elsewhere: surface footsteps + water ripples (`UStickmanFootstepComponent`),
+  breathing/exhaustion (`UGameFeelComponent`), occlusion trace + priority sound classes
+  (`UStickmanAudioManager`). Engine-side (documented, not reimplemented): HRTF
+  spatialization plugin settings, UE Audio Volumes for reverb zones, Doppler,
+  mono/balance presets. Diegetic sources (bard, music box, humming chest, hollow wall)
+  are placed audio actors — "sound as gameplay clue" is content.
+
 ## Notes
 
 - Gameplay tags are declared natively (`UE_DEFINE_GAMEPLAY_TAG`), no `Config/Tags/*.ini` needed
