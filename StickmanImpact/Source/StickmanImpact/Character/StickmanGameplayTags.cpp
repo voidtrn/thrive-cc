@@ -15,4 +15,9 @@ namespace StickmanGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Gliding, "State.Movement.Gliding");
 	UE_DEFINE_GAMEPLAY_TAG(State_Movement_Swimming, "State.Movement.Swimming");
 	UE_DEFINE_GAMEPLAY_TAG(SetByCaller_Damage, "SetByCaller.Damage");
+
+	// DEV placeholder ability tags (revert before ship).
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Dev_NormalAttack, "Ability.Dev.NormalAttack");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Dev_Skill1, "Ability.Dev.Skill1");
+	UE_DEFINE_GAMEPLAY_TAG(Ability_Dev_Skill2, "Ability.Dev.Skill2");
 }

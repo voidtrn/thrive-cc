@@ -231,6 +231,17 @@ protected:
 	void DevToggleCameraMode();
 	void DevSpawnEnemy();
 	void DevSpawnEnemyAt(const FVector& Location); // shared spawn helper
+
+	// Humanoid placeholder anims (from NetworkPredictionExtras UE4_Guy), driven in code without an
+	// AnimBP via PlayAnimation. Set on GetMesh() in the ctor; DevUpdateAnim() switches per state.
+	UPROPERTY(Transient) TObjectPtr<class UAnimSequence> DevAnimIdle;
+	UPROPERTY(Transient) TObjectPtr<class UAnimSequence> DevAnimRun;
+	UPROPERTY(Transient) TObjectPtr<class UAnimSequence> DevAnimJump;
+	int32 DevAnimState = -1; // 0 idle, 1 run, 2 air — avoids restarting the anim every tick
+	void DevSetupHumanoid(); // runtime-load mesh+anims (BeginPlay; plugin mounted by then)
+	void DevUpdateAnim();
+	void DevGrantSkills(); // grant NormalAttack/Skill1/Skill2 GA classes + wire their skill tags
+
 	// ============================================================================================
 
 	// -------------------------------------------------------------------

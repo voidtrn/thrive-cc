@@ -33,6 +33,10 @@ public:
 	virtual void BeginPlay() override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+	// DEV placeholder (revert before ship). Mesh+idle loaded at runtime in BeginPlay.
+	UPROPERTY(Transient) TObjectPtr<class UAnimSequence> DevIdleAnim;
+	UPROPERTY(Transient) TObjectPtr<class UStaticMeshComponent> DevPlaceholderComp;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 

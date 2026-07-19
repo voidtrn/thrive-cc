@@ -23,4 +23,10 @@ namespace StickmanGameplayTags
 	// SetByCaller magnitude key for periodic-damage GameplayEffects (elemental DoT statuses):
 	// the applying ability sets this to the per-tick damage, the GE's modifier reads it back.
 	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(SetByCaller_Damage);
+
+	// DEV placeholder ability tags (revert before ship): identify the code-granted dev abilities
+	// so ActivateSkillByTag can match them without an authored SkillData DataAsset.
+	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dev_NormalAttack);
+	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dev_Skill1);
+	STICKMANIMPACT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Dev_Skill2);
 }

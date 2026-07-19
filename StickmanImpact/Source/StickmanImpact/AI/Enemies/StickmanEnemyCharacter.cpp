@@ -7,7 +7,10 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
+#include "Animation/AnimSequence.h"
 #include "UObject/ConstructorHelpers.h"
 #include "NiagaraFunctionLibrary.h"
 #include "EngineUtils.h"
@@ -32,11 +35,30 @@ AStickmanEnemyCharacter::AStickmanEnemyCharacter()
 	{
 		DevPlaceholder->SetStaticMesh(DevCone.Object);
 	}
+	// Humanoid mesh + idle are loaded at runtime in BeginPlay (plugin content mounts later).
+	DevPlaceholderComp = DevPlaceholder;
 }
 
 void AStickmanEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// DEV: runtime-load humanoid mesh (plugin content mounted by now), hide the cone, play idle.
+	const TCHAR* Base = TEXT("/NetworkPredictionExtras/Animation/Characters/UE4_Guy");
+	if (USkeletalMesh* Manny = LoadObject<USkeletalMesh>(nullptr, *FString::Printf(TEXT("%s/Mesh/SK_Mannequin.SK_Mannequin"), Base)))
+	{
+		GetMesh()->SetSkeletalMesh(Manny);
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, 0.f));
+		if (DevPlaceholderComp)
+		{
+			DevPlaceholderComp->SetVisibility(false);
+		}
+	}
+	DevIdleAnim = LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("%s/Animations/ThirdPersonIdle.ThirdPersonIdle"), Base));
+	if (DevIdleAnim && GetMesh() && GetMesh()->GetSkeletalMeshAsset())
+	{
+		GetMesh()->PlayAnimation(DevIdleAnim, /*bLooping=*/true);
+	}
 
 	PatrolOrigin = GetActorLocation();
 

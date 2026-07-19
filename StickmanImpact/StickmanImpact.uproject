@@ -30,6 +30,11 @@
 		{
 			"Name": "Metasound",
 			"Enabled": true
+		},
+		{
+			"Name": "NetworkPredictionExtras",
+			"Enabled": true,
+			"Comment": "DEV: source of SK_Mannequin humanoid + ThirdPerson anims for placeholder chars. Remove with the DEV placeholder code."
 		}
 	]
 }

@@ -14,13 +14,18 @@
 #include "InputAction.h"
 #include "InputModifiers.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
+#include "Animation/AnimSequence.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Curves/CurveFloat.h"
 #include "Engine/Engine.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
 #include "Combat/StickmanAttributeSet.h"
 #include "Combat/Abilities/GA_NormalAttack.h"
+#include "Combat/Abilities/GA_PyroSkill.h"
+#include "Combat/Abilities/GA_PyroBurst.h"
 #include "SkillSystem/StickmanSkillDataAsset.h"
 #include "Party/StickmanPartyTypes.h"
 #include "Equipment/EquipmentManager.h"
@@ -112,6 +117,22 @@ AStickmanCharacter::AStickmanCharacter()
 	{
 		DevPlaceholderMesh->SetStaticMesh(DevCube.Object);
 	}
+	// Humanoid mesh + anims are loaded at runtime in BeginPlay (DevSetupHumanoid) — the plugin
+	// content mounts after this module, so ConstructorHelpers here would fail.
+}
+
+void AStickmanCharacter::DevSetupHumanoid()
+{
+	// DEV: UE4 mannequin from NetworkPredictionExtras, loaded at runtime (plugin now mounted).
+	const TCHAR* Base = TEXT("/NetworkPredictionExtras/Animation/Characters/UE4_Guy");
+	if (USkeletalMesh* Manny = LoadObject<USkeletalMesh>(nullptr, *FString::Printf(TEXT("%s/Mesh/SK_Mannequin.SK_Mannequin"), Base)))
+	{
+		GetMesh()->SetSkeletalMesh(Manny);
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, 0.f));
+	}
+	DevAnimIdle = LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("%s/Animations/ThirdPersonIdle.ThirdPersonIdle"), Base));
+	DevAnimRun  = LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("%s/Animations/ThirdPersonRun.ThirdPersonRun"), Base));
+	DevAnimJump = LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("%s/Animations/ThirdPersonJump_Loop.ThirdPersonJump_Loop"), Base));
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -232,7 +253,9 @@ void AStickmanCharacter::BeginPlay()
 		AbilitySystemComponent->GrantDefaultAbilities(DefaultAbilities);
 	}
 
-	// DEV: code-generate input + hide placeholder if a real mesh got assigned (see header).
+	// DEV: load humanoid mesh/anims now (plugin content mounted), gen input, hide cube if mesh set.
+	DevSetupHumanoid();
+	DevGrantSkills();
 	BuildFallbackInput();
 	if (DevPlaceholderMesh)
 	{
@@ -279,6 +302,7 @@ void AStickmanCharacter::Tick(float DeltaSeconds)
 	TickSlide(DeltaSeconds);
 	UpdateMovementStateTag();
 	ShowDebugOnScreen();
+	DevUpdateAnim(); // DEV: code-driven idle/run/jump on the placeholder humanoid.
 
 	TimeSinceLanded += DeltaSeconds;
 	TimeSinceLookInput += DeltaSeconds;
@@ -464,7 +488,11 @@ void AStickmanCharacter::DevToggleCameraMode()
 	}
 	if (DevPlaceholderMesh)
 	{
-		DevPlaceholderMesh->SetVisibility(!bDevFirstPerson); // hide own body in FPS so it doesn't block view
+		DevPlaceholderMesh->SetVisibility(false); // humanoid mesh is the body now; cube stays hidden
+	}
+	if (GetMesh())
+	{
+		GetMesh()->SetVisibility(!bDevFirstPerson); // hide own body in FPS so it doesn't block view
 	}
 	if (GEngine)
 	{
@@ -495,6 +523,80 @@ void AStickmanCharacter::DevSpawnEnemyAt(const FVector& Location)
 	if (Enemy && GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, TEXT("Enemy spawned."));
+	}
+}
+
+void AStickmanCharacter::DevGrantSkills()
+{
+	if (!AbilitySystemComponent)
+	{
+		return;
+	}
+	// Give the C++ GA classes a matching SkillTag (their SkillData normally comes from a DataAsset)
+	// so ActivateSkillByTag can find them, then grant them and point the input tags at them.
+	GetMutableDefault<UGA_NormalAttack>()->SkillData.SkillTag = StickmanGameplayTags::Ability_Dev_NormalAttack;
+	GetMutableDefault<UGA_PyroSkill>()->SkillData.SkillTag    = StickmanGameplayTags::Ability_Dev_Skill1;
+	GetMutableDefault<UGA_PyroBurst>()->SkillData.SkillTag    = StickmanGameplayTags::Ability_Dev_Skill2;
+
+	NormalAttackSkillTag = StickmanGameplayTags::Ability_Dev_NormalAttack;
+	Skill1SkillTag       = StickmanGameplayTags::Ability_Dev_Skill1;
+	Skill2SkillTag       = StickmanGameplayTags::Ability_Dev_Skill2;
+
+	TArray<TSubclassOf<UGameplayAbility>> DevAbilities;
+	DevAbilities.Add(UGA_NormalAttack::StaticClass());
+	DevAbilities.Add(UGA_PyroSkill::StaticClass());
+	DevAbilities.Add(UGA_PyroBurst::StaticClass());
+	AbilitySystemComponent->GrantDefaultAbilities(DevAbilities);
+
+	// Verify the grant + tag matching actually landed; log the truth for debugging.
+	const int32 SpecCount = AbilitySystemComponent->GetActivatableAbilities().Num();
+	const bool bFindSkill1 = AbilitySystemComponent->CanActivateSkill(Skill1SkillTag);
+	UE_LOG(LogTemp, Display, TEXT("[DEV] GrantSkills: specs=%d Skill1Tag=%s findableAndCastable=%d"),
+		SpecCount, *Skill1SkillTag.ToString(), bFindSkill1 ? 1 : 0);
+	for (const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		const UStickmanGameplayAbility* SA = Cast<UStickmanGameplayAbility>(Spec.Ability);
+		UE_LOG(LogTemp, Display, TEXT("[DEV]   spec: %s tag=%s"),
+			Spec.Ability ? *Spec.Ability->GetName() : TEXT("null"),
+			SA ? *SA->SkillData.SkillTag.ToString() : TEXT("<not stickman GA>"));
+	}
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green,
+			FString::Printf(TEXT("[DEV] Skills granted (specs=%d): LMB=Attack Q=Skill1 E=Skill2"), SpecCount));
+	}
+}
+
+void AStickmanCharacter::DevUpdateAnim()
+{
+	USkeletalMeshComponent* MeshComp = GetMesh();
+	if (!MeshComp || !MeshComp->GetSkeletalMeshAsset())
+	{
+		return; // real AnimBP or no mesh — leave animation alone.
+	}
+
+	// 0 idle, 1 run, 2 air. Pick from movement so no AnimBP/state machine is needed.
+	int32 NewState = 0;
+	if (GetCharacterMovement() && GetCharacterMovement()->IsFalling())
+	{
+		NewState = 2;
+	}
+	else if (GetVelocity().Size2D() > 10.f)
+	{
+		NewState = 1;
+	}
+
+	if (NewState == DevAnimState)
+	{
+		return; // already playing the right clip.
+	}
+	DevAnimState = NewState;
+
+	UAnimSequence* Clip = (NewState == 2) ? DevAnimJump : (NewState == 1) ? DevAnimRun : DevAnimIdle;
+	if (Clip)
+	{
+		MeshComp->PlayAnimation(Clip, /*bLooping=*/true);
 	}
 }
 // ============================================================================================
