@@ -4,6 +4,7 @@
 #include "StickmanScheduleComponent.h"
 #include "StickmanDialogueTriggerComponent.h"
 #include "Enemies/StickmanEnemyCharacter.h"
+#include "StickmanVisuals/StickmanBodyComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EngineUtils.h"
@@ -14,6 +15,11 @@ AStickmanNPC::AStickmanNPC()
 
 	ScheduleComponent = CreateDefaultSubobject<UStickmanScheduleComponent>(TEXT("ScheduleComponent"));
 	DialogueComponent = CreateDefaultSubobject<UStickmanDialogueTriggerComponent>(TEXT("DialogueComponent"));
+
+	// Procedural stickman silhouette (green = civilian), distinct from blue player / red enemy.
+	NPCBody = CreateDefaultSubobject<UStickmanBodyComponent>(TEXT("NPCBody"));
+	NPCBody->SetupAttachment(RootComponent);
+	NPCBody->BodyColor = FLinearColor(0.25f, 0.75f, 0.35f);
 
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }

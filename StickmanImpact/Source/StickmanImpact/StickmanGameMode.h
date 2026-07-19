@@ -13,4 +13,14 @@ class STICKMANIMPACT_API AStickmanGameMode : public AGameModeBase
 
 public:
 	AStickmanGameMode();
+
+	virtual void BeginPlay() override;
+
+	// DEV: procedurally build an urban scene + drop a few civilian NPCs when running on the
+	// bare engine template map (no authored level). Delete once a real city level exists.
+	UPROPERTY(EditDefaultsOnly, Category = "DevWorld")
+	bool bBuildDevCity = true;
+
+private:
+	void BuildDevCity();
 };

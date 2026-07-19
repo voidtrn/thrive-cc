@@ -56,6 +56,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "NPC", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStickmanDialogueTriggerComponent> DialogueComponent;
 
+	// Procedural stickman silhouette (green = civilian) so town NPCs are visible with no authored art.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "NPC", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UStickmanBodyComponent> NPCBody;
+
 private:
 	void UpdateGreeting();
 	void UpdateCombatFlee(float DeltaSeconds);
