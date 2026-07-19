@@ -9,6 +9,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "UObject/ConstructorHelpers.h"
+#include "StickmanVisuals/StickmanBodyComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "EngineUtils.h"
 #include "TimerManager.h"
@@ -32,6 +33,13 @@ AStickmanEnemyCharacter::AStickmanEnemyCharacter()
 	{
 		DevPlaceholder->SetStaticMesh(DevCone.Object);
 	}
+	// The procedural stickman body is the real visual now; the flat cone stays hidden.
+	DevPlaceholder->SetVisibility(false);
+
+	// Procedural stickman silhouette (red = enemy) so foes read distinctly from the blue player.
+	EnemyBody = CreateDefaultSubobject<UStickmanBodyComponent>(TEXT("EnemyBody"));
+	EnemyBody->SetupAttachment(RootComponent);
+	EnemyBody->BodyColor = FLinearColor(0.9f, 0.12f, 0.12f);
 }
 
 void AStickmanEnemyCharacter::BeginPlay()

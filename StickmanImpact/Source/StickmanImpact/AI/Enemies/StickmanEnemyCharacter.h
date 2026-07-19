@@ -190,6 +190,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStickmanAttributeSet> AttributeSet;
 
+	// Procedural stickman silhouette (red = enemy) so foes are clearly visible with no authored art.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "StickmanVisuals", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UStickmanBodyComponent> EnemyBody;
+
 	EEnemyCombatState CurrentCombatState = EEnemyCombatState::Patrol;
 
 	// Hit-reaction runtime state.

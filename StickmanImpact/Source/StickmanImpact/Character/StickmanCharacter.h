@@ -219,6 +219,11 @@ protected:
 	UPROPERTY(Transient)
 	TObjectPtr<UStaticMeshComponent> DevPlaceholderMesh;
 
+	// Procedural stickman silhouette (head + torso + limbs) so the player pawn is clearly
+	// visible with no authored art. Replaces the flat cube placeholder as the default body.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "StickmanVisuals", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UStickmanBodyComponent> PlayerBody;
+
 	// Code-generates DefaultMappingContext + core InputActions (WASD/mouse/space/etc) in-place
 	// when no IMC asset is assigned. Idempotent. No-op once DefaultMappingContext is set.
 	void BuildFallbackInput();

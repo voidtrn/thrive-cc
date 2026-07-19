@@ -15,6 +15,7 @@
 #include "InputModifiers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "StickmanVisuals/StickmanBodyComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Curves/CurveFloat.h"
 #include "Engine/Engine.h"
@@ -112,6 +113,13 @@ AStickmanCharacter::AStickmanCharacter()
 	{
 		DevPlaceholderMesh->SetStaticMesh(DevCube.Object);
 	}
+	// The procedural stickman body is the real visual now, so the flat cube starts hidden.
+	DevPlaceholderMesh->SetVisibility(false);
+
+	// Procedural stickman silhouette (blue = player). Attaches to the capsule root.
+	PlayerBody = CreateDefaultSubobject<UStickmanBodyComponent>(TEXT("PlayerBody"));
+	PlayerBody->SetupAttachment(RootComponent);
+	PlayerBody->BodyColor = FLinearColor(0.15f, 0.45f, 0.95f);
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -234,10 +242,15 @@ void AStickmanCharacter::BeginPlay()
 
 	// DEV: code-generate input + hide placeholder if a real mesh got assigned (see header).
 	BuildFallbackInput();
+	const bool bHasRealMesh = GetMesh() && GetMesh()->GetSkeletalMeshAsset() != nullptr;
 	if (DevPlaceholderMesh)
 	{
-		const bool bHasRealMesh = GetMesh() && GetMesh()->GetSkeletalMeshAsset() != nullptr;
-		DevPlaceholderMesh->SetVisibility(!bHasRealMesh);
+		DevPlaceholderMesh->SetVisibility(false); // superseded by the stickman body
+	}
+	if (PlayerBody)
+	{
+		// Show the procedural body unless a real skeletal mesh has been authored.
+		PlayerBody->SetBodyHidden(bHasRealMesh);
 	}
 
 	// DEV: drop a few enemies in front so the world isn't empty (press B for more).
@@ -462,9 +475,9 @@ void AStickmanCharacter::DevToggleCameraMode()
 		CameraBoom->TargetArmLength = bDevFirstPerson ? 0.f : 300.f;
 		CameraBoom->SetRelativeLocation(FVector(0.f, 0.f, bDevFirstPerson ? 60.f : 0.f));
 	}
-	if (DevPlaceholderMesh)
+	if (PlayerBody)
 	{
-		DevPlaceholderMesh->SetVisibility(!bDevFirstPerson); // hide own body in FPS so it doesn't block view
+		PlayerBody->SetBodyHidden(bDevFirstPerson); // hide own body in FPS so it doesn't block view
 	}
 	if (GEngine)
 	{
