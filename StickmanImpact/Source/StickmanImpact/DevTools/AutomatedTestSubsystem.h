@@ -10,7 +10,7 @@
 
 /** One recorded movement sample (20 Hz). */
 USTRUCT()
-struct FRecordedFrame
+struct FStickmanRecordedFrame
 {
 	GENERATED_BODY()
 
@@ -115,5 +115,5 @@ private:
 	float RecordSampleAccumulator = 0.f;
 	float PlaybackClock = 0.f;
 	int32 PlaybackIndex = 0;
-	TArray<FRecordedFrame> Recording;
+	TArray<FStickmanRecordedFrame> Recording;
 };

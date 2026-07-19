@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "ReplaySubsystem.generated.h"
+#include "StickmanReplaySubsystem.generated.h"
 
 USTRUCT(BlueprintType)
 struct FReplayEventMarker
@@ -46,7 +46,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReplayRecordingChanged, bool, bRe
  *   out-of-scope in-engine — route through Sequencer render or platform capture tools.
  */
 UCLASS()
-class STICKMANIMPACT_API UReplaySubsystem : public UGameInstanceSubsystem
+class STICKMANIMPACT_API UStickmanReplaySubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 

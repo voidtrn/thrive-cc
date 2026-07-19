@@ -66,7 +66,7 @@ void UAwakeningComponent::AddGauge(float Amount)
 	OnAwakeningGaugeChanged.Broadcast(GetGaugeFraction());
 }
 
-bool UAwakeningComponent::Activate()
+bool UAwakeningComponent::ActivateAwakening()
 {
 	if (bAwakened || Gauge < MaxGauge || ActivationsUsed >= MaxActivationsPerBattle)
 	{

@@ -8,6 +8,10 @@ public class StickmanImpact : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
+		// Flat module layout (no Public/Private split) — allow module-root-relative
+		// includes like "SkillSystem/StickmanSkillTypes.h".
+		PublicIncludePaths.Add(ModuleDirectory);
+
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core",
@@ -31,6 +35,7 @@ public class StickmanImpact : ModuleRules
 		{
 			"Slate",
 			"SlateCore",
+			"PhysicsCore", // EPhysicalSurface / UPhysicalMaterial::DetermineSurfaceType (footsteps)
 			"AIModule",
 			"NavigationSystem",
 			"Json",

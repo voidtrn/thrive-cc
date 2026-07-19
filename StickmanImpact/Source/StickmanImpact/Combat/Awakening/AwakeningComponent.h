@@ -76,7 +76,7 @@ public:
 	void AddGauge(float Amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Awakening")
-	bool Activate();
+	bool ActivateAwakening();
 
 	UFUNCTION(BlueprintPure, Category = "Awakening")
 	bool IsAwakened() const { return bAwakened; }

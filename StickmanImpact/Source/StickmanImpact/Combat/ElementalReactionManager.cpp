@@ -10,6 +10,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -202,7 +203,7 @@ void UElementalReactionManager::TrackReactionChain(AActor* Target, EStickmanElem
 	if (ElementsConsumedThisChain.Num() >= 7 && Target)
 	{
 		TArray<AActor*> Overlaps;
-		UGameplayStatics::SphereOverlapActors(Target, Target->GetActorLocation(), GrandReactionRadius,
+		UKismetSystemLibrary::SphereOverlapActors(Target, Target->GetActorLocation(), GrandReactionRadius,
 			TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 			TArray<AActor*>(), Overlaps);
 		for (AActor* Nearby : Overlaps)
@@ -537,7 +538,7 @@ FStickmanReactionResult UElementalReactionManager::ResolveReaction(AActor* Targe
 			// AoE freeze + physical shatter burst.
 			Result.ReactionDamage = ElementalMastery * 2.5f;
 			TArray<AActor*> Overlaps;
-			UGameplayStatics::SphereOverlapActors(Target, TargetLocation, 400.f,
+			UKismetSystemLibrary::SphereOverlapActors(Target, TargetLocation, 400.f,
 				TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 				TArray<AActor*>(), Overlaps);
 			for (AActor* Nearby : Overlaps)
@@ -553,7 +554,7 @@ FStickmanReactionResult UElementalReactionManager::ResolveReaction(AActor* Targe
 			// by design: risk/reward for triggering it close.
 			Result.ReactionDamage = ElementalMastery * 1.5f;
 			TArray<AActor*> Overlaps;
-			UGameplayStatics::SphereOverlapActors(Target, TargetLocation, 500.f,
+			UKismetSystemLibrary::SphereOverlapActors(Target, TargetLocation, 500.f,
 				TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 				TArray<AActor*>(), Overlaps);
 			for (AActor* Nearby : Overlaps)
@@ -589,7 +590,7 @@ FStickmanReactionResult UElementalReactionManager::ResolveReaction(AActor* Targe
 			// Massive swirl: heavy AoE + spreads BOTH consumed elements outward.
 			Result.ReactionDamage = ElementalMastery * 3.f;
 			TArray<AActor*> Overlaps;
-			UGameplayStatics::SphereOverlapActors(Target, TargetLocation, 700.f,
+			UKismetSystemLibrary::SphereOverlapActors(Target, TargetLocation, 700.f,
 				TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 				TArray<AActor*>(), Overlaps);
 			for (AActor* Nearby : Overlaps)
@@ -779,7 +780,7 @@ void UElementalReactionManager::StartElectroChargedTicks(AActor* Target, float E
 		// Chain to nearby actors that currently carry a Hydro aura ("wet" enemies).
 		TArray<AActor*> Overlaps;
 		TArray<AActor*> ActorsToIgnore = { Origin };
-		UGameplayStatics::SphereOverlapActors(Origin, Origin->GetActorLocation(), 400.f,
+		UKismetSystemLibrary::SphereOverlapActors(Origin, Origin->GetActorLocation(), 400.f,
 			TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 			ActorsToIgnore, Overlaps);
 		for (AActor* Nearby : Overlaps)
@@ -830,7 +831,7 @@ void UElementalReactionManager::ApplyOverloadKnockback(AActor* Center, float Rad
 	}
 
 	TArray<AActor*> Overlaps;
-	UGameplayStatics::SphereOverlapActors(Center, Center->GetActorLocation(), Radius,
+	UKismetSystemLibrary::SphereOverlapActors(Center, Center->GetActorLocation(), Radius,
 		TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 		TArray<AActor*>(), Overlaps);
 
@@ -854,7 +855,7 @@ void UElementalReactionManager::ApplySwirlSpread(AActor* Origin, EStickmanElemen
 
 	TArray<AActor*> Overlaps;
 	TArray<AActor*> ActorsToIgnore = { Origin };
-	UGameplayStatics::SphereOverlapActors(Origin, Origin->GetActorLocation(), 500.f,
+	UKismetSystemLibrary::SphereOverlapActors(Origin, Origin->GetActorLocation(), 500.f,
 		TArray<TEnumAsByte<EObjectTypeQuery>>{ UEngineTypes::ConvertToObjectType(ECC_Pawn) }, nullptr,
 		ActorsToIgnore, Overlaps);
 

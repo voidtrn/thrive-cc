@@ -106,7 +106,7 @@ void UReviveComponent::CompleteRevive()
 		{
 			Attributes->SetHealth(Attributes->GetMaxHealth() * ReviveHealthFraction);
 		}
-		Stickman->GetCharacterMovement()->MaxWalkSpeed = Stickman->WalkSpeed;
+		Stickman->GetCharacterMovement()->MaxWalkSpeed = Stickman->GetWalkSpeed();
 	}
 
 	OnRevived.Broadcast();

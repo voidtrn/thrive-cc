@@ -13,7 +13,7 @@ void UStickmanAudioManager::SetCategoryVolume(FName Category, float Volume)
 	Volume = FMath::Clamp(Volume, 0.f, 1.f);
 	CategoryVolumes.FindOrAdd(Category) = Volume;
 
-	USoundClass* const* SoundClass = CategorySoundClasses.Find(Category);
+	const TObjectPtr<USoundClass>* SoundClass = CategorySoundClasses.Find(Category);
 	if (!SoundClass || !*SoundClass || !VolumeControlMix || !GetWorld())
 	{
 		return;
@@ -95,7 +95,7 @@ void UStickmanAudioManager::SetCurrentRegion(FName Region)
 		return;
 	}
 
-	if (USoundBase* const* Track = RegionBGM.Find(Region))
+	if (const TObjectPtr<USoundBase>* Track = RegionBGM.Find(Region))
 	{
 		CrossfadeTo(*Track);
 	}
@@ -114,7 +114,7 @@ void UStickmanAudioManager::SetCombatIntensity(float Intensity, bool bBossFight)
 	}
 	else if (!bNowInCombat && bWasInCombat)
 	{
-		USoundBase* const* RegionTrack = RegionBGM.Find(CurrentRegion);
+		const TObjectPtr<USoundBase>* RegionTrack = RegionBGM.Find(CurrentRegion);
 		CrossfadeTo(RegionTrack ? *RegionTrack : nullptr);
 	}
 	// Layered intensity blending (quiet combat layer under exploration at 0<x<1) needs a

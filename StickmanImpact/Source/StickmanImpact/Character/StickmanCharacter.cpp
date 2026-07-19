@@ -10,6 +10,12 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "InputMappingContext.h"
+#include "InputAction.h"
+#include "InputModifiers.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Curves/CurveFloat.h"
 #include "Engine/Engine.h"
 #include "Combat/StickmanAbilitySystemComponent.h"
@@ -27,6 +33,8 @@
 #include "Movement/FlowStateComponent.h"
 #include "Combat/Awakening/AwakeningComponent.h"
 #include "StickmanInteractable.h"
+#include "AI/Enemies/StickmanEnemyCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AStickmanCharacter::AStickmanCharacter()
 {
@@ -92,6 +100,18 @@ AStickmanCharacter::AStickmanCharacter()
 	FlowStateComponent = CreateDefaultSubobject<UFlowStateComponent>(TEXT("FlowStateComponent"));
 
 	AwakeningComponent = CreateDefaultSubobject<UAwakeningComponent>(TEXT("AwakeningComponent"));
+
+	// DEV placeholder (revert before ship): a cube stand-in sized to the capsule so the pawn is
+	// visible with no skeletal mesh authored. Hidden in BeginPlay if a real mesh is set.
+	DevPlaceholderMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DevPlaceholderMesh"));
+	DevPlaceholderMesh->SetupAttachment(RootComponent);
+	DevPlaceholderMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DevPlaceholderMesh->SetRelativeScale3D(FVector(0.4f, 0.4f, 1.76f)); // ~20r x 88 half-height
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> DevCube(TEXT("/Engine/BasicShapes/Cube.Cube"));
+	if (DevCube.Succeeded())
+	{
+		DevPlaceholderMesh->SetStaticMesh(DevCube.Object);
+	}
 }
 
 UAbilitySystemComponent* AStickmanCharacter::GetAbilitySystemComponent() const
@@ -212,6 +232,23 @@ void AStickmanCharacter::BeginPlay()
 		AbilitySystemComponent->GrantDefaultAbilities(DefaultAbilities);
 	}
 
+	// DEV: code-generate input + hide placeholder if a real mesh got assigned (see header).
+	BuildFallbackInput();
+	if (DevPlaceholderMesh)
+	{
+		const bool bHasRealMesh = GetMesh() && GetMesh()->GetSkeletalMeshAsset() != nullptr;
+		DevPlaceholderMesh->SetVisibility(!bHasRealMesh);
+	}
+
+	// DEV: drop a few enemies in front so the world isn't empty (press B for more).
+	if (Cast<APlayerController>(GetController()))
+	{
+		const FVector Base = GetActorLocation() + FVector(600.f, 0.f, 0.f);
+		DevSpawnEnemyAt(Base + FVector(0.f, -200.f, 0.f));
+		DevSpawnEnemyAt(Base);
+		DevSpawnEnemyAt(Base + FVector(0.f,  200.f, 0.f));
+	}
+
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
@@ -254,6 +291,8 @@ void AStickmanCharacter::Tick(float DeltaSeconds)
 void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	BuildFallbackInput(); // DEV: ensure the InputActions exist before binding (no-op if IMC asset set).
 
 	if (UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
@@ -320,10 +359,20 @@ void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 			EIC->BindAction(DiveAction, ETriggerEvent::Started, this, &AStickmanCharacter::ToggleDive);
 		}
 
+		// DEV binds: V = TPS/FPS toggle, B = spawn enemy ahead.
+		if (DevCameraToggleAction)
+		{
+			EIC->BindAction(DevCameraToggleAction, ETriggerEvent::Started, this, &AStickmanCharacter::DevToggleCameraMode);
+		}
+		if (DevSpawnEnemyAction)
+		{
+			EIC->BindAction(DevSpawnEnemyAction, ETriggerEvent::Started, this, &AStickmanCharacter::DevSpawnEnemy);
+		}
+
 		if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,
-				TEXT("[StickmanCharacter] Enhanced Input bound OK."));
+				TEXT("[StickmanCharacter] Input bound. V=TPS/FPS  B=spawn enemy"));
 		}
 	}
 	else if (GEngine)
@@ -332,6 +381,123 @@ void AStickmanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 			TEXT("[StickmanCharacter] Enhanced Input FAILED: PlayerInputComponent is not a UEnhancedInputComponent."));
 	}
 }
+
+// ============================ DEV PLACEHOLDER (revert before ship) ============================
+void AStickmanCharacter::BuildFallbackInput()
+{
+	if (DefaultMappingContext)
+	{
+		return; // A real IMC asset is assigned — use it, do nothing.
+	}
+
+	UInputMappingContext* IMC = NewObject<UInputMappingContext>(this, TEXT("IMC_DevFallback"));
+
+	auto MakeAction = [this](const TCHAR* Name, EInputActionValueType Type) -> UInputAction*
+	{
+		UInputAction* IA = NewObject<UInputAction>(this, Name);
+		IA->ValueType = Type;
+		return IA;
+	};
+
+	MoveAction         = MakeAction(TEXT("IA_Move"),     EInputActionValueType::Axis2D);
+	LookAction         = MakeAction(TEXT("IA_Look"),     EInputActionValueType::Axis2D);
+	JumpAction         = MakeAction(TEXT("IA_Jump"),     EInputActionValueType::Boolean);
+	SprintAction       = MakeAction(TEXT("IA_Sprint"),   EInputActionValueType::Boolean);
+	DashAction         = MakeAction(TEXT("IA_Dash"),     EInputActionValueType::Boolean);
+	ParryAction        = MakeAction(TEXT("IA_Parry"),    EInputActionValueType::Boolean);
+	NormalAttackAction = MakeAction(TEXT("IA_Attack"),   EInputActionValueType::Boolean);
+	Skill1Action       = MakeAction(TEXT("IA_Skill1"),   EInputActionValueType::Boolean);
+	Skill2Action       = MakeAction(TEXT("IA_Skill2"),   EInputActionValueType::Boolean);
+	InteractAction     = MakeAction(TEXT("IA_Interact"), EInputActionValueType::Boolean);
+
+	// Move is Axis2D. Default key drives X; a YXZ swizzle moves a key onto Y (forward/back).
+	auto Swizzle = [this](FEnhancedActionKeyMapping& M)
+	{
+		UInputModifierSwizzleAxis* Sw = NewObject<UInputModifierSwizzleAxis>(this);
+		Sw->Order = EInputAxisSwizzle::YXZ;
+		M.Modifiers.Add(Sw);
+	};
+	auto Negate = [this](FEnhancedActionKeyMapping& M)
+	{
+		M.Modifiers.Add(NewObject<UInputModifierNegate>(this));
+	};
+
+	Swizzle(IMC->MapKey(MoveAction, EKeys::W));                                              // +Y forward
+	{ FEnhancedActionKeyMapping& M = IMC->MapKey(MoveAction, EKeys::S); Swizzle(M); Negate(M); } // -Y back
+	IMC->MapKey(MoveAction, EKeys::D);                                                       // +X right
+	Negate(IMC->MapKey(MoveAction, EKeys::A));                                               // -X left
+
+	IMC->MapKey(LookAction, EKeys::Mouse2D); // mouse X/Y delta
+
+	IMC->MapKey(JumpAction,         EKeys::SpaceBar);
+	IMC->MapKey(SprintAction,       EKeys::LeftShift);
+	IMC->MapKey(DashAction,         EKeys::LeftControl);
+	IMC->MapKey(ParryAction,        EKeys::RightMouseButton);
+	IMC->MapKey(NormalAttackAction, EKeys::LeftMouseButton);
+	IMC->MapKey(Skill1Action,       EKeys::Q);
+	IMC->MapKey(Skill2Action,       EKeys::E);
+	IMC->MapKey(InteractAction,     EKeys::F);
+
+	// Dev extras.
+	DevCameraToggleAction = MakeAction(TEXT("IA_DevCamToggle"),  EInputActionValueType::Boolean);
+	DevSpawnEnemyAction   = MakeAction(TEXT("IA_DevSpawnEnemy"), EInputActionValueType::Boolean);
+	IMC->MapKey(DevCameraToggleAction, EKeys::V);
+	IMC->MapKey(DevSpawnEnemyAction,   EKeys::B);
+
+	DefaultMappingContext = IMC; // Assign last so a second call short-circuits (idempotent).
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 6.f, FColor::Yellow,
+			TEXT("[StickmanCharacter] DEV fallback input built (WASD/Mouse/Space/Shift/Ctrl/RMB/LMB/Q/E/F)."));
+	}
+}
+
+void AStickmanCharacter::DevToggleCameraMode()
+{
+	bDevFirstPerson = !bDevFirstPerson;
+	if (CameraBoom)
+	{
+		// TPS: 300u boom behind, at capsule center. FPS: boom collapsed, raised to head height.
+		CameraBoom->TargetArmLength = bDevFirstPerson ? 0.f : 300.f;
+		CameraBoom->SetRelativeLocation(FVector(0.f, 0.f, bDevFirstPerson ? 60.f : 0.f));
+	}
+	if (DevPlaceholderMesh)
+	{
+		DevPlaceholderMesh->SetVisibility(!bDevFirstPerson); // hide own body in FPS so it doesn't block view
+	}
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Cyan,
+			bDevFirstPerson ? TEXT("Camera: FPS") : TEXT("Camera: TPS"));
+	}
+}
+
+void AStickmanCharacter::DevSpawnEnemy()
+{
+	// 500u in front of where the camera is looking.
+	const FRotator YawRot(0.f, GetControlRotation().Yaw, 0.f);
+	const FVector Ahead = GetActorLocation() + FRotationMatrix(YawRot).GetUnitAxis(EAxis::X) * 500.f;
+	DevSpawnEnemyAt(Ahead);
+}
+
+void AStickmanCharacter::DevSpawnEnemyAt(const FVector& Location)
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	AStickmanEnemyCharacter* Enemy = World->SpawnActor<AStickmanEnemyCharacter>(
+		AStickmanEnemyCharacter::StaticClass(), Location + FVector(0.f, 0.f, 100.f), FRotator::ZeroRotator, Params);
+	if (Enemy && GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Orange, TEXT("Enemy spawned."));
+	}
+}
+// ============================================================================================
 
 // -------------------------------------------------------------------
 // Movement

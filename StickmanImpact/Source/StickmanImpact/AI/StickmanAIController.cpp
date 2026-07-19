@@ -14,7 +14,7 @@
 
 AStickmanAIController::AStickmanAIController()
 {
-	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComponent"));
+	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComponent"));
 
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 	SightConfig->SightRadius = SightRadius;
@@ -30,10 +30,10 @@ AStickmanAIController::AStickmanAIController()
 	HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
 	HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
 
-	PerceptionComponent->ConfigureSense(*SightConfig);
-	PerceptionComponent->ConfigureSense(*HearingConfig);
-	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
-	SetPerceptionComponent(*PerceptionComponent);
+	AIPerception->ConfigureSense(*SightConfig);
+	AIPerception->ConfigureSense(*HearingConfig);
+	AIPerception->SetDominantSense(SightConfig->GetSenseImplementation());
+	SetPerceptionComponent(*AIPerception);
 }
 
 void AStickmanAIController::OnPossess(APawn* InPawn)
@@ -45,15 +45,16 @@ void AStickmanAIController::OnPossess(APawn* InPawn)
 		return;
 	}
 
-	UseBlackboard(BehaviorTree->BlackboardAsset, Blackboard);
-	if (Blackboard)
+	UBlackboardComponent* BlackboardComp = nullptr;
+	UseBlackboard(BehaviorTree->BlackboardAsset, BlackboardComp);
+	if (BlackboardComp)
 	{
-		Blackboard->SetValueAsEnum(StickmanBlackboardKeys::CurrentState, static_cast<uint8>(EEnemyCombatState::Patrol));
-		Blackboard->SetValueAsFloat(StickmanBlackboardKeys::AlertLevel, 0.f);
+		BlackboardComp->SetValueAsEnum(StickmanBlackboardKeys::CurrentState, static_cast<uint8>(EEnemyCombatState::Patrol));
+		BlackboardComp->SetValueAsFloat(StickmanBlackboardKeys::AlertLevel, 0.f);
 	}
 	RunBehaviorTree(BehaviorTree);
 
-	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AStickmanAIController::HandlePerceptionUpdated);
+	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AStickmanAIController::HandlePerceptionUpdated);
 }
 
 void AStickmanAIController::HandlePerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)

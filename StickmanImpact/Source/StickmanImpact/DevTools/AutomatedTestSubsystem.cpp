@@ -3,6 +3,7 @@
 #include "AutomatedTestSubsystem.h"
 #include "DevConsoleSubsystem.h"
 #include "Character/StickmanCharacter.h"
+#include "Combat/StickmanAbilitySystemComponent.h"
 #include "AI/Enemies/StickmanEnemyCharacter.h"
 #include "World/EnemySpawner.h"
 #include "SaveSystem/SaveManager.h"
@@ -74,7 +75,7 @@ void UAutomatedTestSubsystem::Tick(float DeltaTime)
 			RecordSampleAccumulator = 0.f;
 			if (const AStickmanCharacter* Player = GetPlayerCharacter())
 			{
-				FRecordedFrame Frame;
+				FStickmanRecordedFrame Frame;
 				Frame.Time = RecordClock;
 				Frame.Location = Player->GetActorLocation();
 				Frame.Rotation = Player->GetActorRotation();
@@ -107,8 +108,8 @@ void UAutomatedTestSubsystem::Tick(float DeltaTime)
 			return;
 		}
 
-		const FRecordedFrame& A = Recording[PlaybackIndex];
-		const FRecordedFrame& B = Recording[PlaybackIndex + 1];
+		const FStickmanRecordedFrame& A = Recording[PlaybackIndex];
+		const FStickmanRecordedFrame& B = Recording[PlaybackIndex + 1];
 		const float SegmentAlpha = FMath::Clamp((PlaybackClock - A.Time) / FMath::Max(B.Time - A.Time, KINDA_SMALL_NUMBER), 0.f, 1.f);
 		Player->SetActorLocationAndRotation(FMath::Lerp(A.Location, B.Location, SegmentAlpha),
 			FMath::Lerp(A.Rotation, B.Rotation, SegmentAlpha));

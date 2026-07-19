@@ -19,7 +19,7 @@ class ACharacterPreviewStage;
 /**
  * Character screen: rotatable 3D stickman preview (via ACharacterPreviewStage's render
  * target), full stat panel, equipment/artifact slot buttons (click-to-equip — real drag-drop
- * is a WBP-side OnDragDetected/OnDrop override on the slot buttons; the C++ Equip*/Unequip*
+ * is a WBP-side OnDragDetected/OnDrop override on the slot buttons; the C++ Equip.../Unequip...
  * entry points here are what both paths call), skill showcase, constellation viewer, level/EXP
  * bar, and party tabs.
  */

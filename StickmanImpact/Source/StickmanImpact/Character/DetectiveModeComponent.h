@@ -65,7 +65,7 @@ public:
 	FOnDetectiveModeChanged OnDetectiveModeChanged;
 
 private:
-	void Activate();
+	void ActivateDetectiveMode();
 	void Deactivate();
 	void HighlightNearbyInvestigables();
 	void ClearHighlights();

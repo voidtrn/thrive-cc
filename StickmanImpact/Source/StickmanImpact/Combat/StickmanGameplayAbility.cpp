@@ -2,6 +2,8 @@
 
 #include "StickmanGameplayAbility.h"
 #include "StickmanAttributeSet.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "UI/Menus/SettingsScreenWidget.h"
 #include "ElementalReactionManager.h"
 #include "UI/StickmanDamageNumberManager.h"
 #include "UI/StickmanDamageNumberTypes.h"
@@ -63,7 +65,7 @@ bool UStickmanGameplayAbility::CheckCooldown() const
 	return !ASC->HasMatchingGameplayTag(SkillData.SkillTag);
 }
 
-float UStickmanGameplayAbility::GetCooldownTimeRemaining() const
+float UStickmanGameplayAbility::GetSkillCooldownRemaining() const
 {
 	if (!GetWorld() || !CooldownTimerHandle.IsValid())
 	{
@@ -213,7 +215,7 @@ void UStickmanGameplayAbility::HandleGenericMontageEnd()
 }
 
 void UStickmanGameplayAbility::ApplyRadialElementalDamage(const FVector& Origin, const FVector& ForwardDir,
-	float Radius, float HalfAngleDegrees, float DamageMultiplier, TSubclassOf<UGameplayEffect> StatusEffectClass,
+	float Radius, float HalfAngleDegrees, float InDamageMultiplier, TSubclassOf<UGameplayEffect> StatusEffectClass,
 	TArray<AActor*>& OutHitActors, const TArray<AActor*>* ExtraActorsToIgnore) const
 {
 	OutHitActors.Reset();
@@ -231,7 +233,7 @@ void UStickmanGameplayAbility::ApplyRadialElementalDamage(const FVector& Origin,
 		ActorsToIgnore.Append(*ExtraActorsToIgnore);
 	}
 	// Pawns + world objects: torches/interactive foliage react to elemental hits too.
-	UGameplayStatics::SphereOverlapActors(this, Origin, Radius,
+	UKismetSystemLibrary::SphereOverlapActors(this, Origin, Radius,
 		TArray<TEnumAsByte<EObjectTypeQuery>>{
 			UEngineTypes::ConvertToObjectType(ECC_Pawn),
 			UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) }, nullptr,
@@ -257,7 +259,7 @@ void UStickmanGameplayAbility::ApplyRadialElementalDamage(const FVector& Origin,
 			}
 		}
 
-		ApplyDamageToTarget(HitActor, CasterAttack * DamageMultiplier, StatusEffectClass);
+		ApplyDamageToTarget(HitActor, CasterAttack * InDamageMultiplier, StatusEffectClass);
 		OutHitActors.Add(HitActor);
 	}
 }

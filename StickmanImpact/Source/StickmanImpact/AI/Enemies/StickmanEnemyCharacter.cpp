@@ -6,6 +6,9 @@
 #include "Audio/StickmanAudioManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "UObject/ConstructorHelpers.h"
 #include "NiagaraFunctionLibrary.h"
 #include "EngineUtils.h"
 #include "TimerManager.h"
@@ -17,6 +20,18 @@ AStickmanEnemyCharacter::AStickmanEnemyCharacter()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	AttributeSet = CreateDefaultSubobject<UStickmanAttributeSet>(TEXT("AttributeSet"));
+
+	// DEV placeholder (revert before ship): a cone stand-in so enemies are visible with no mesh
+	// authored. Cone shape distinguishes them from the player's cube. Delete once real content exists.
+	UStaticMeshComponent* DevPlaceholder = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DevPlaceholderMesh"));
+	DevPlaceholder->SetupAttachment(RootComponent);
+	DevPlaceholder->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DevPlaceholder->SetRelativeScale3D(FVector(0.6f, 0.6f, 1.7f));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> DevCone(TEXT("/Engine/BasicShapes/Cone.Cone"));
+	if (DevCone.Succeeded())
+	{
+		DevPlaceholder->SetStaticMesh(DevCone.Object);
+	}
 }
 
 void AStickmanEnemyCharacter::BeginPlay()

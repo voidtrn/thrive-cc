@@ -44,7 +44,7 @@ protected:
 	void HandlePerceptionUpdated(AActor* Actor, struct FAIStimulus Stimulus);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAIPerceptionComponent> PerceptionComponent;
+	TObjectPtr<UAIPerceptionComponent> AIPerception;
 
 	UPROPERTY()
 	TObjectPtr<UAISenseConfig_Sight> SightConfig;

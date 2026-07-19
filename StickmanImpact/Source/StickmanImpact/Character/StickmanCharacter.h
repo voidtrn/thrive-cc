@@ -13,6 +13,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UStaticMeshComponent;
 class UCameraShakeBase;
 class UCurveFloat;
 class UStickmanAbilitySystemComponent;
@@ -129,13 +130,16 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Abilities")
 	UStickmanAttributeSet* GetStickmanAttributeSet() const { return AttributeSet; }
 
-protected:
+	UFUNCTION(BlueprintPure, Category = "Movement")
+	float GetWalkSpeed() const { return WalkSpeed; }
 
 	// Reconfigures this same pawn to play as a different party member: mesh, base stats, and
 	// abilities (re-granted from CharacterData.SkillData). Used by UPartyManager::SwitchToIndex
 	// instead of spawning a separate actor per character.
 	UFUNCTION(BlueprintCallable, Category = "Party")
 	void ApplyCharacterData(const struct FStickmanCharacterData& CharacterData);
+
+protected:
 
 	// SkillTag values routed to ActivateSkillByTag() by the matching Enhanced Input handler —
 	// must match the SkillTag of one of the abilities in DefaultAbilities to do anything.
@@ -205,6 +209,29 @@ protected:
 	// bind an IA_Zoom asset here if you want zoom; safe to leave unset).
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> ZoomAction;
+
+	// ============================ DEV PLACEHOLDER (revert before ship) ============================
+	// Lets the pawn be visible + keyboard-controllable with ZERO authored content (no BP, no
+	// mesh asset, no IMC/IA assets). Placeholder cube shows only when GetMesh() has no skeletal
+	// mesh; BuildFallbackInput() code-generates an IMC + InputActions only when the asset-based
+	// DefaultMappingContext is unset. Delete this block + its ctor/BeginPlay/SetupInput uses once
+	// real content exists.
+	UPROPERTY(Transient)
+	TObjectPtr<UStaticMeshComponent> DevPlaceholderMesh;
+
+	// Code-generates DefaultMappingContext + core InputActions (WASD/mouse/space/etc) in-place
+	// when no IMC asset is assigned. Idempotent. No-op once DefaultMappingContext is set.
+	void BuildFallbackInput();
+
+	// Dev-only extra actions (built inside BuildFallbackInput, bound in SetupPlayerInputComponent).
+	UPROPERTY(Transient) TObjectPtr<UInputAction> DevCameraToggleAction; // key V: TPS <-> FPS
+	UPROPERTY(Transient) TObjectPtr<UInputAction> DevSpawnEnemyAction;   // key B: spawn enemy ahead
+
+	bool bDevFirstPerson = false;
+	void DevToggleCameraMode();
+	void DevSpawnEnemy();
+	void DevSpawnEnemyAt(const FVector& Location); // shared spawn helper
+	// ============================================================================================
 
 	// -------------------------------------------------------------------
 	// Stats

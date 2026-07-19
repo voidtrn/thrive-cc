@@ -30,14 +30,14 @@ void UPingComponent::PingFromCamera()
 		return; // Nothing in range — no floating ping in the sky.
 	}
 
-	EPingType Type = EPingType::Location;
+	EStickmanPingType Type = EStickmanPingType::Location;
 	if (Cast<AStickmanEnemyCharacter>(Hit.GetActor()))
 	{
-		Type = EPingType::Enemy;
+		Type = EStickmanPingType::Enemy;
 	}
 	else if (Cast<AStickmanCollectible>(Hit.GetActor()))
 	{
-		Type = EPingType::Item;
+		Type = EStickmanPingType::Item;
 	}
 
 	PingLocation(Type, Hit.ImpactPoint, Hit.GetActor());
@@ -45,10 +45,10 @@ void UPingComponent::PingFromCamera()
 
 void UPingComponent::PingDanger()
 {
-	PingLocation(EPingType::Danger, GetOwner()->GetActorLocation(), nullptr);
+	PingLocation(EStickmanPingType::Danger, GetOwner()->GetActorLocation(), nullptr);
 }
 
-void UPingComponent::PingLocation(EPingType PingType, FVector WorldLocation, AActor* PingedActor)
+void UPingComponent::PingLocation(EStickmanPingType PingType, FVector WorldLocation, AActor* PingedActor)
 {
 	const double Now = GetWorld()->GetTimeSeconds();
 	if (Now - LastPingTime < PingCooldown)

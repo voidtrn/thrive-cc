@@ -90,7 +90,7 @@ public:
 	TObjectPtr<USoundBase> BreakSound;
 
 	UFUNCTION(BlueprintCallable, Category = "Destruction")
-	void TakeDestructionDamage(EStickmanElement Element, float Amount, AActor* Instigator);
+	void TakeDestructionDamage(EStickmanElement Element, float Amount, AActor* DamageInstigator);
 
 	UFUNCTION(BlueprintPure, Category = "Destruction")
 	float GetIntegrityFraction() const { return MaxIntegrity > 0.f ? Integrity / MaxIntegrity : 0.f; }
@@ -99,7 +99,7 @@ public:
 	bool IsBroken() const { return bBroken; }
 
 	UPROPERTY(BlueprintAssignable, Category = "Destruction")
-	FOnDestroyed OnDestroyed;
+	FOnDestroyed OnDestructibleDestroyed;
 
 	// Type-specific break realization (Chaos GC swap, debris, decal) — BP content.
 	UFUNCTION(BlueprintImplementableEvent, Category = "Destruction")

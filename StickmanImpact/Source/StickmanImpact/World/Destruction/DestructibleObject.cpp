@@ -129,7 +129,7 @@ void ADestructibleObject::Break(AActor* Destroyer)
 	}
 
 	OnBroken(DestructionType, Destroyer); // Chaos GC swap / debris / decal per type (BP)
-	OnDestroyed.Broadcast(Destroyer);
+	OnDestructibleDestroyed.Broadcast(Destroyer);
 
 	// Base actor hides + drops collision; the GC/debris the BP spawned carries the visuals.
 	SetActorHiddenInGame(true);

@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.4",
+	"EngineAssociation": "5.8",
 	"Category": "",
 	"Description": "StickmanImpact - Stickman open-world action RPG",
 	"Modules": [
@@ -28,7 +28,7 @@
 			"Enabled": true
 		},
 		{
-			"Name": "MetasoundEngine",
+			"Name": "Metasound",
 			"Enabled": true
 		}
 	]

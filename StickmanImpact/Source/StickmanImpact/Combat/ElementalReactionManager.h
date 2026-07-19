@@ -10,8 +10,9 @@
 class UStickmanReactionEffectsDataAsset;
 class UStickmanAttributeSet;
 class UAbilitySystemComponent;
-class IConsoleCommand;
+struct IConsoleCommand;
 class AStickmanGeoWall;
+class AStickmanElementalShard;
 
 /** Result of a single ApplyElement() call — what (if anything) reacted, and how it should modify the triggering hit's damage. */
 USTRUCT(BlueprintType)

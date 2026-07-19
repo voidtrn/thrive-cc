@@ -6,7 +6,7 @@
 #include "StickmanEnemyCharacter.h"
 #include "EnemyElite.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBossPhaseChanged, int32, NewPhaseIndex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnElitePhaseChanged, int32, NewPhaseIndex);
 
 /**
  * Elite/Boss: health-percent phase thresholds (e.g. [0.66, 0.33] = 3 phases). Each phase can
@@ -35,7 +35,7 @@ public:
 	TArray<FStickmanWeightedAttack> PhaseAttackOverrides;
 
 	UPROPERTY(BlueprintAssignable, Category = "Boss")
-	FOnBossPhaseChanged OnPhaseChanged;
+	FOnElitePhaseChanged OnPhaseChanged;
 
 	UFUNCTION(BlueprintPure, Category = "Boss")
 	int32 GetCurrentPhase() const { return CurrentPhaseIndex; }

@@ -1,6 +1,6 @@
 // Copyright StickmanImpact Project.
 
-#include "ReplaySubsystem.h"
+#include "StickmanReplaySubsystem.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "Engine/DemoNetDriver.h"
@@ -8,7 +8,7 @@
 
 // ---------------------------------------------------------------- recording -----------
 
-void UReplaySubsystem::StartRecording(const FString& ReplayName)
+void UStickmanReplaySubsystem::StartRecording(const FString& ReplayName)
 {
 	if (bRecording)
 	{
@@ -25,7 +25,7 @@ void UReplaySubsystem::StartRecording(const FString& ReplayName)
 	OnReplayRecordingChanged.Broadcast(true);
 }
 
-void UReplaySubsystem::StopRecording()
+void UStickmanReplaySubsystem::StopRecording()
 {
 	if (!bRecording)
 	{
@@ -36,7 +36,7 @@ void UReplaySubsystem::StopRecording()
 	OnReplayRecordingChanged.Broadcast(false);
 }
 
-void UReplaySubsystem::AddEventMarker(const FString& EventType, const FString& Description)
+void UStickmanReplaySubsystem::AddEventMarker(const FString& EventType, const FString& Description)
 {
 	if (!bRecording)
 	{
@@ -49,7 +49,7 @@ void UReplaySubsystem::AddEventMarker(const FString& EventType, const FString& D
 	EventMarkers.Add(Marker);
 }
 
-void UReplaySubsystem::PruneAutoReplays()
+void UStickmanReplaySubsystem::PruneAutoReplays()
 {
 	// FIFO delete past the cap; bookmarked replays are exempt (skipped, stay on disk).
 	while (AutoReplayNames.Num() > MaxAutoReplays)
@@ -67,19 +67,19 @@ void UReplaySubsystem::PruneAutoReplays()
 
 // ---------------------------------------------------------------- playback ------------
 
-void UReplaySubsystem::PlayReplay(const FString& ReplayName)
+void UStickmanReplaySubsystem::PlayReplay(const FString& ReplayName)
 {
 	StopRecording();
 	GetGameInstance()->PlayReplay(ReplayName);
 }
 
-bool UReplaySubsystem::IsInPlayback() const
+bool UStickmanReplaySubsystem::IsInPlayback() const
 {
 	const UWorld* World = GetGameInstance()->GetWorld();
 	return World && World->IsPlayingReplay();
 }
 
-void UReplaySubsystem::SetPlaybackSpeed(float Speed)
+void UStickmanReplaySubsystem::SetPlaybackSpeed(float Speed)
 {
 	UWorld* World = GetGameInstance()->GetWorld();
 	if (!World || !World->IsPlayingReplay())
@@ -91,7 +91,7 @@ void UReplaySubsystem::SetPlaybackSpeed(float Speed)
 	UGameplayStatics::SetGlobalTimeDilation(World, FMath::Clamp(Speed, 0.001f, 8.f));
 }
 
-void UReplaySubsystem::JumpToTime(float TimeSeconds)
+void UStickmanReplaySubsystem::JumpToTime(float TimeSeconds)
 {
 	UWorld* World = GetGameInstance()->GetWorld();
 	UDemoNetDriver* Demo = World ? World->GetDemoNetDriver() : nullptr;

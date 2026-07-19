@@ -33,7 +33,7 @@ void UStickmanElementalGaugeWidget::SetElementWidgets(EStickmanElement Element, 
 	if (ElementImage)
 	{
 		ElementImage->SetVisibility(Visibility);
-		ElementImage->SetColorAndOpacity(FSlateColor(UStickmanDamageNumberStatics::GetElementColor(Element)));
+		ElementImage->SetColorAndOpacity(UStickmanDamageNumberStatics::GetElementColor(Element));
 	}
 	if (ElementBar)
 	{

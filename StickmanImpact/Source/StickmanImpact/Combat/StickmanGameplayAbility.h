@@ -50,6 +50,10 @@ public:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+	// Un-hide the parent's 3-arg virtuals (these no-arg helpers otherwise shadow them).
+	using Super::CheckCooldown;
+	using Super::CheckCost;
+
 	// True if SkillData.SkillTag is not currently marked on cooldown.
 	UFUNCTION(BlueprintPure, Category = "Skill")
 	bool CheckCooldown() const;
@@ -60,7 +64,7 @@ public:
 
 	// Seconds left on cooldown (0 if ready) — for a UI radial fill to poll.
 	UFUNCTION(BlueprintPure, Category = "Skill")
-	float GetCooldownTimeRemaining() const;
+	float GetSkillCooldownRemaining() const;
 
 protected:
 	// Called once cost + cooldown have both been committed — subclasses do their real work
@@ -88,7 +92,7 @@ protected:
 	// StatusEffectClass is set) applies that GameplayEffect to inflict the elemental status.
 	// HalfAngleDegrees >= 180 behaves as a full sphere; below that it's a forward-facing cone.
 	void ApplyRadialElementalDamage(const FVector& Origin, const FVector& ForwardDir, float Radius,
-		float HalfAngleDegrees, float DamageMultiplier, TSubclassOf<UGameplayEffect> StatusEffectClass,
+		float HalfAngleDegrees, float InDamageMultiplier, TSubclassOf<UGameplayEffect> StatusEffectClass,
 		TArray<AActor*>& OutHitActors, const TArray<AActor*>* ExtraActorsToIgnore = nullptr) const;
 
 	void ApplyDamageToTarget(AActor* TargetActor, float DamageAmount, TSubclassOf<UGameplayEffect> StatusEffectClass) const;

@@ -90,7 +90,7 @@ void USaveManager::StartAutoSaveTimer()
 {
 	const float IntervalSeconds = FMath::Max(USettingsScreenWidget::GetSavedAutoSaveIntervalMinutes(), 1.f) * 60.f;
 	GetWorld()->GetTimerManager().SetTimer(AutoSaveTimerHandle,
-		FTimerDelegate::CreateUObject(this, &USaveManager::RequestAutoSave, FString(TEXT("interval"))),
+		FTimerDelegate::CreateWeakLambda(this, [this]() { RequestAutoSave(TEXT("interval")); }),
 		IntervalSeconds, true);
 }
 

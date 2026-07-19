@@ -75,7 +75,7 @@ void UStickmanCheatManager::UnlockAllSkills()
 	UE_LOG(LogTemp, Display, TEXT("[Cheat] All skill cooldowns cleared."));
 }
 
-void UStickmanCheatManager::Teleport(const FString& WaypointID)
+void UStickmanCheatManager::TeleportToWaypoint(const FString& WaypointID)
 {
 	UWorld* World = GetWorld();
 	if (!World)

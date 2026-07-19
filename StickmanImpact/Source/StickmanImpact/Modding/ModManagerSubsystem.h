@@ -46,7 +46,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnModListChanged, int32, ModCount);
 
 /**
  * The .smod loader — a .smod is a cooked UE pak (renamed) with a mod.json manifest beside
- * it in the archive root. `ScanMods` reads <Game>/Mods/*.smod manifests; `SetModEnabled` +
+ * it in the archive root. `ScanMods` reads <Game>/Mods/<name>.smod manifests; `SetModEnabled` +
  * `SetLoadOrder` persist the config; enabled mods mount at startup via the pak platform
  * file (assets override by mount order — later wins). `FindConflicts` flags mods claiming
  * the same MountRoots; `AreRequirementsMet` checks RequiredMods.

@@ -27,7 +27,7 @@ void USkillCooldownWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 		return;
 	}
 
-	const float CooldownRemaining = Ability->GetCooldownTimeRemaining();
+	const float CooldownRemaining = Ability->GetSkillCooldownRemaining();
 	const bool bReady = CooldownRemaining <= 0.f && Ability->CheckCost();
 
 	if (CooldownRadialBar)
@@ -54,7 +54,7 @@ bool USkillCooldownWidget::TryCast()
 	UStickmanAbilitySystemComponent* ASC = GetPlayerASC();
 	UStickmanGameplayAbility* Ability = ASC ? ASC->FindGrantedAbilityForSkillTag(SkillTag) : nullptr;
 
-	const bool bCanCast = Ability && Ability->GetCooldownTimeRemaining() <= 0.f && Ability->CheckCost();
+	const bool bCanCast = Ability && Ability->GetSkillCooldownRemaining() <= 0.f && Ability->CheckCost();
 	if (bCanCast)
 	{
 		ASC->ActivateSkillByTag(SkillTag);

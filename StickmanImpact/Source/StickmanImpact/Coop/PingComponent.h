@@ -10,7 +10,7 @@ class UNiagaraSystem;
 class USoundBase;
 
 UENUM(BlueprintType)
-enum class EPingType : uint8
+enum class EStickmanPingType : uint8
 {
 	Location,
 	Enemy,
@@ -18,7 +18,7 @@ enum class EPingType : uint8
 	Danger
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPingIssued, EPingType, PingType, FVector, WorldLocation, AActor*, PingedActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPingIssued, EStickmanPingType, PingType, FVector, WorldLocation, AActor*, PingedActor);
 
 /**
  * Non-verbal communication: aim + ping. PingFromCamera() line-traces from the view —
@@ -43,7 +43,7 @@ public:
 	void PingDanger();
 
 	UFUNCTION(BlueprintCallable, Category = "Ping")
-	void PingLocation(EPingType PingType, FVector WorldLocation, AActor* PingedActor);
+	void PingLocation(EStickmanPingType PingType, FVector WorldLocation, AActor* PingedActor);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ping")
 	float PingTraceRange = 10000.f;
@@ -52,7 +52,7 @@ public:
 	float PingCooldown = 1.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ping")
-	TMap<EPingType, TObjectPtr<UNiagaraSystem>> PingVFX;
+	TMap<EStickmanPingType, TObjectPtr<UNiagaraSystem>> PingVFX;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ping")
 	TObjectPtr<USoundBase> PingSound;

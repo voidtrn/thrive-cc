@@ -29,11 +29,11 @@ void UDetectiveModeComponent::ToggleDetectiveMode()
 	}
 	else if (!IsOnCooldown())
 	{
-		Activate();
+		ActivateDetectiveMode();
 	}
 }
 
-void UDetectiveModeComponent::Activate()
+void UDetectiveModeComponent::ActivateDetectiveMode()
 {
 	bActive = true;
 

@@ -34,7 +34,7 @@ public:
 	void UnlockAllSkills();
 
 	UFUNCTION(Exec)
-	void Teleport(const FString& WaypointID);
+	void TeleportToWaypoint(const FString& WaypointID);
 
 	UFUNCTION(Exec)
 	void CompleteQuest(const FString& QuestID);
