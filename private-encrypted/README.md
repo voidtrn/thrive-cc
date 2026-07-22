@@ -7,6 +7,7 @@ Folder ini berisi dokumen **pribadi** yang sengaja dienkripsi. Isinya tidak untu
 | File | Keterangan |
 |------|------------|
 | `analisis-lengkap.md.enc` | Dokumen pribadi terenkripsi (AES-256-CBC, PBKDF2, 200k iterasi, salted). |
+| `pernikahan-pribadi.md.enc` | Catatan pribadi pertimbangan menikah (kelayakan, daftar pertanyaan sebelum lamaran, protokol cemburu masa lalu). AES-256-CBC, PBKDF2, 200k iterasi, salted. Passphrase terpisah. |
 
 ## Cara membuka (dekripsi)
 
